@@ -9,17 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: "userId",
-        targetKey: "userId",
+        foreignKey: "userKey",
+        targetKey: "userKey",
       });
-    //   this.hasMany(models.Comment, {
-    //     foreignKey: "adviceId",
-    //     sourceKey: "adviceId",
-    //   });
-    //   this.hasMany(models.Save, {
-    //     foreignKey: "adviceId",
-    //     sourceKey: "adviceId",
-    //   });
+      //   this.hasMany(models.Comment, {
+      //     foreignKey: "adviceId",
+      //     sourceKey: "adviceId",
+      //   });
+      //   this.hasMany(models.Save, {
+      //     foreignKey: "adviceId",
+      //     sourceKey: "adviceId",
+      //   });
     }
   }
   Advice.init(
@@ -30,12 +30,12 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      userId: {
+      userKey: {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "Users",
-          key: "userId",
+          model: "User",
+          key: "userKey",
         },
       },
       title: {
@@ -58,10 +58,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-    //   isSave: {
-    //     type: DataTypes.BOOLEAN,
-    //     allowNull: true,
-    //   },
+      //   isSave: {
+      //     type: DataTypes.BOOLEAN,
+      //     allowNull: true,
+      //   },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
