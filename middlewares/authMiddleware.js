@@ -82,7 +82,7 @@ module.exports = async (req, res, next) => {
 
     /**AccessToken만료시 서버에게 만료상태 전송*/
     if (!isAccessTokenValidate) {
-      return res.status(419).json({ message: "토큰 만료됨", ok: false });
+      return res.status(401).json({ message: "토큰 만료됨", ok: false });
     } else {
       /**토큰이 유효한 경우 */
       const { userKey } = jwt.verify(accesstoken, process.env.SECRET_KEY);
@@ -90,8 +90,8 @@ module.exports = async (req, res, next) => {
       res.locals.user = user;
     }
     console.log(res.locals.user);
-    res.status(200).json({ msg: "성공" });
-    // next();
+    res.status(200).json({ msg: "인증 성공" });
+    next();
   } catch (error) {
     next(error);
   }
