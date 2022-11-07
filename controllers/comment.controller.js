@@ -1,12 +1,12 @@
-const AdviceCommentService = require('./advice.comment.service');
+const CommentService = require('../services/comment.service');
 
-class AdviceCommentController {
-    adviceCommentService = new AdviceCommentService();
+class CommentController {
+    commentService = new CommentService();
 
     // getComment = async(req, res, next) => {
     //     try{
     //     const {adviceId} = req.params;//포스트의 아이디를 가져와야 함
-    //     const comments = await this.adviceCommentService.findComment(adviceId);//포스트서비스의 findAllPost를 사용
+    //     const comments = await this.commentService.findComment(adviceId);//포스트서비스의 findAllPost를 사용
     //     res.status(200).json({data:comments});//컨트롤러는 요청과 응답에 관여하니 응답만
     //     }catch(error){
     //         return res.status(500).send({ errorMessage:error.message});
@@ -25,7 +25,7 @@ class AdviceCommentController {
                 return;
             } 
 
-            const createComment = await this.adviceCommentService.createComment(userId, adviceId, comment)
+            const createComment = await this.commentService.createComment(userId, adviceId, comment)
             res.status(201).send({data: createComment});  
        
         }catch(error){
@@ -40,7 +40,7 @@ class AdviceCommentController {
             const user=req.locals.user;              
             const userId = user.userId;
 
-            const updateComment = await this.adviceCommentService.updateComment(userId, commentId, comment)
+            const updateComment = await this.commentService.updateComment(userId, commentId, comment)
 
             if(!updateComment){
                 res.status(400).send({errorMessage:"수정권한이 없습니다."})
@@ -58,7 +58,7 @@ class AdviceCommentController {
             const user=req.locals.user;
             const userId = user.userId;
 
-            const deleteComment = await this.adviceCommentService.deleteComment(commentId, userId);
+            const deleteComment = await this.commentService.deleteComment(commentId, userId);
             if(!deleteComment){
                 res.status(400).send({errorMessage:"삭제권한이 없습니다."})
                 return;  
@@ -70,4 +70,4 @@ class AdviceCommentController {
     }
 
 }
-module.exports = AdviceCommentController;
+module.exports = CommentController;
