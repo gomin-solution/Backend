@@ -8,19 +8,19 @@ class UserService {
   userRepository = new UserRepository();
 
   createUser = async ({
-    userKey: userKey,
+    userId: userId,
     nickname: nickname,
     password: hashed,
   }) => {
     await this.userRepository.createUser({
-      userKey: userKey,
+      userId: userId,
       nickname: nickname,
       password: hashed,
     });
   };
 
-  verifyUser = async (userKey, password) => {
-    const user = await this.userRepository.findUser(userKey);
+  verifyUser = async (userId, password) => {
+    const user = await this.userRepository.findUser(userId);
     if (!user) throw new ErrorCustom(400, "가입되지 않은 아이디 입니다");
 
     const passwordVerify = await bcrypt.compare(password, user.password);

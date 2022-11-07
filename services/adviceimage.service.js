@@ -1,16 +1,15 @@
-const AdviceRepository = require("../repositories/advice.rpository");
+const AdviceImageRepository = require("../repositories/adviceimage.rpository");
 
-class AdviceService {
-    adviceRepository = new AdviceRepository();
+class AdviceImageService {
+    adviceImageRepository = new AdviceImageRepository();
     
-    createAdvice = async (userKey, adviceId, imageUrl) => {
-        const createAdviceData = await this.adviceRepository.createAdvice(
-            userKey,
+    createAdviceImage = async (adviceId, imageUrl) => {
+        const createAdviceImageData = await this.adviceImageRepository.createAdviceImage(
             adviceId,
             imageUrl
         );
-        return createAdviceData;
+        return createAdviceImageData;
     }
 }
 
-module.exports = AdviceService;
+module.exports = AdviceImageService;

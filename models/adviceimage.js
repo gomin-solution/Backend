@@ -8,10 +8,6 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.User, {
-        foreignKey: "userKey",
-        targetKey: "userKey",
-      });
       this.belongsTo(models.Advice, {
         foreignKey: "adviceId",
         targetKey: "adviceId",
@@ -33,14 +29,6 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-      },
-      userKey: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "userKey",
-        },
       },
       adviceId: {
         allowNull: false,
