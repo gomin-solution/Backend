@@ -53,7 +53,29 @@ class UserController {
     }
   };
 
-  check = async (req, res, next) => {};
+  check = async (req, res, next) => {
+    try {
+      const { nickname, userId } = req.body;
+
+      if (!nickname && !userId) {
+        return res.status(400).json({ message: "잘못된 요청입니다" });
+      }
+
+      //닉네임 중복 검사
+      if (nickname) {
+        await this.userService.findNickname(nickname);
+        return res.status(200).json({ message: "사용 가능한 닉네임 입니다" });
+      }
+
+      //아이디 중복 검사
+      if (userId) {
+        await this.userService.findUserId(userId);
+        return res.status(200).json({ message: "사용 가능한 아이디 입니다" });
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 module.exports = UserController;

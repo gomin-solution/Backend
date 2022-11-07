@@ -17,6 +17,14 @@ class UserRepository {
     console.log("repository", userId);
     return await User.findOne({ where: { userId: userId } });
   };
+
+  findNickname = async (nickname) => {
+    return await User.findOne({ where: { nickname: nickname } });
+  };
+
+  findUserId = async (userId) => {
+    return await User.findOne({ where: { userId: userId } });
+  };
 }
 
 module.exports = UserRepository;
