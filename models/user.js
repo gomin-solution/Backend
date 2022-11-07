@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       //   foreignKey: "userId",
       //   targetKey: "userId",
       // });
-      // this.hasMany(models.File, {
+      // this.hasMany(models.Comment, {
       //   foreignKey: "userId",
       //   targetKey: "userId",
       // });

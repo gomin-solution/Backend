@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 const ErrorCustom = require("../exceptions/error-custom");
+const redisCli = require("../util/redis");
 require("dotenv").config();
 
 // 유저 인증에 실패하면 403 상태 코드를 반환한다.
@@ -53,8 +54,14 @@ module.exports = async (req, res, next) => {
     /**RefreshToken검증 */
     function validateRefreshToken(refreshtoken) {
       try {
-        jwt.verify(refreshtoken, process.env.SECRET_KEY);
-        return true;
+        const decoded = jwt.decode(refreshtoken);
+        const token = redisCli.get(decoded.userId);
+        if (refreshtoken === token) {
+          jwt.verify(refreshtoken, process.env.SECRET_KEY);
+          return true;
+        } else {
+          return false;
+        }
       } catch (error) {
         return false;
       }
@@ -82,7 +89,7 @@ module.exports = async (req, res, next) => {
 
     /**AccessToken만료시 서버에게 만료상태 전송*/
     if (!isAccessTokenValidate) {
-      return res.status(419).json({ message: "토큰 만료됨", ok: false });
+      return res.status(401).json({ message: "토큰 만료됨", ok: false });
     } else {
       /**토큰이 유효한 경우 */
       const { userKey } = jwt.verify(accesstoken, process.env.SECRET_KEY);
@@ -90,7 +97,6 @@ module.exports = async (req, res, next) => {
       res.locals.user = user;
     }
     console.log(res.locals.user);
-    // res.status(200).json({ msg: "성공" });
     next();
   } catch (error) {
     next(error);
