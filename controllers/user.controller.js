@@ -11,7 +11,7 @@ class UserController {
   /**회원가입 컨트롤러 */
   signup = async (req, res, next) => {
     try {
-      const { userId, nickname, password } =
+      const { userId, nickname, password, confirm, IsAdult } =
         await joi.signupSchema.validateAsync(req.body);
 
       const hashed = await bcrypt.hash(password, 12);
@@ -20,6 +20,7 @@ class UserController {
         userId: userId,
         nickname: nickname,
         password: hashed,
+        IsAdult: IsAdult,
       });
       res.status(200).json({ message: "회원가입 성공" });
     } catch (error) {

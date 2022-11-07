@@ -21,6 +21,7 @@ module.exports = {
       )
       .required()
       .error(new ErrorCustom(400, "비밀번호는 최소 8자 이상이어야 합니다.")),
+    confirm: Joi.ref("password"),
   }),
 
   loginSchema: Joi.object({

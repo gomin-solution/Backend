@@ -5,11 +5,13 @@ class UserRepository {
     userId: userId,
     nickname: nickname,
     password: hashed,
+    IsAdult: IsAdult,
   }) => {
     await User.create({
       userId: userId,
       nickname: nickname,
       password: hashed,
+      IsAdult: IsAdult,
     });
   };
 
