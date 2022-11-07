@@ -14,9 +14,8 @@ module.exports = {
       .min(1)
       .max(8)
       .required()
-      .error(
-        new ErrorCustom(400, "닉네임은 한글, 영문, 숫자 8자 이내여야 합니다.")
-      ),
+      .error(new ErrorCustom(400, "닉네임은 8자 이내여야 합니다.")),
+
     password: Joi.string()
       .min(8)
       .max(20)
@@ -26,9 +25,10 @@ module.exports = {
 
   loginSchema: Joi.object({
     username: Joi.string()
-      .email({ minDomainSegments: 2, tlds: { allow: false } })
+      .alphanum()
       .required()
-      .error(new ErrorCustom(400, "올바른 이메일 형식이 아닙니다.")),
+      .error(new ErrorCustom(400, "올바른 아이디가 아닙니다.")),
+
     password: Joi.string()
       .min(4)
       .required()

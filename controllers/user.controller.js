@@ -34,11 +34,16 @@ class UserController {
       const { username, password } = req.body;
       console.log(username, password);
 
-      const { accessToken, refreshToken } = await this.userService.findUser(
-        req,
-        res
+      const { accessToken, refreshToken } = await this.userService.verifyUser(
+        username,
+        password
       );
+
       const data = await redisCli.set(username, refreshToken);
+
+      res.cookie("accesstoken", accessToken);
+      res.cookie("refreshtoken", refreshToken);
+
       console.log(data);
       return res
         .status(200)

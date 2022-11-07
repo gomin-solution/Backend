@@ -7,5 +7,6 @@ const userController = new UserController();
 
 router.post("/signup", LoginMiddleware, userController.signup);
 router.post("/login", LoginMiddleware, userController.login);
+router.post("/test", authMiddleware);
 
 module.exports = router;

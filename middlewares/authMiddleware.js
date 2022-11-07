@@ -1,13 +1,30 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+const ErrorCustom = require("../exceptions/error-custom");
 require("dotenv").config();
 
 // 유저 인증에 실패하면 403 상태 코드를 반환한다.
 module.exports = async (req, res, next) => {
   try {
-    const { accesstoken, refreshtoken } = req.cookie;
+    let accesstoken;
+    let refreshtoken;
 
-    if (!accesstoken || !refreshtoken) {
+    //개발환경일때 쿠키로 받음
+    if (process.env.NODE_ENV == "development") {
+      const { accesstoken = accesstoken, refreshtoken = refreshtoken } =
+        req.cookies;
+    }
+
+    //배포환경일땐 헤더로 전송받음
+    if (process.env.NODE_ENV == "production") {
+      const { authorization } = req.headers;
+      const tokenType = authorization.split(" ")[0];
+      accesstoken = authorization.split(" ")[1];
+      if (tokenType !== "Bearer")
+        throw new ErrorCustom(400, "잘못된 요청입니다. 다시 로그인 해주세요");
+    }
+
+    if (!accesstoken) {
       return res.status(403).send({
         errorMessage: "로그인이 필요한 기능입니다.",
       });
@@ -45,8 +62,9 @@ module.exports = async (req, res, next) => {
     if (!isAccessTokenValidate) {
       /**refresh토큰 에서 유저정보 받아오기 */
       console.log(jwt.verify(refreshtoken, process.env.SECRET_KEY));
-      const { userId } = jwt.verify(refreshtoken, process.env.SECRET_KEY);
-      console.log(userId);
+      const decoded = jwt.decode(accesstoken);
+      console.log("hereeeeeeeeeeee");
+      console.log(decoded);
 
       /**AccessToken 재발급 */
       const newAccessToken = jwt.sign(
@@ -71,6 +89,9 @@ module.exports = async (req, res, next) => {
       res.locals.user = user;
     }
 
-    next();
-  } catch (error) {}
+    res.status(200).json({ msg: "성공" });
+    // next();
+  } catch (error) {
+    next(error);
+  }
 };
