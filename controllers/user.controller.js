@@ -39,8 +39,8 @@ class UserController {
         password
       );
 
-      // const data = await redisCli.set(userId, refreshToken);
-      // console.log(data);
+      //refreshtoken을 userId키로 redis에 저장
+      await redisCli.set(userId, refreshToken);
 
       res.cookie("accesstoken", accessToken);
       res.cookie("refreshtoken", refreshToken);
@@ -52,6 +52,8 @@ class UserController {
       next(error);
     }
   };
+
+  check = async (req, res, next) => {};
 }
 
 module.exports = UserController;
