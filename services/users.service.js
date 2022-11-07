@@ -1,11 +1,14 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const UserRepository = require("../repositories/users.repository.js");
+const AdviceRepository = require("../repositories/advice.rpository");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 class UserService {
   userRepository = new UserRepository();
+  adviceRepository = new AdviceRepository();
 
   createUser = async ({
     userId: userId,
@@ -56,6 +59,12 @@ class UserService {
       throw new ErrorCustom(400, "이미 존재하는 아이디 입니다.");
 
     return;
+  };
+
+  mainPage = async () => {
+    const getChoice = await this.choiceRepository;
+
+    const getAdvice = await this.adviceRepository;
   };
 }
 
