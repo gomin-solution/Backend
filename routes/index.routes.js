@@ -11,5 +11,4 @@ router.use("/post", adviceRouter);
 // 조언 게시글 조회
 router.use("/advice", adviceRouter);
 
-
 module.exports = router;
