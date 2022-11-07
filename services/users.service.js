@@ -51,17 +51,14 @@ class UserService {
 
   findNickname = async (nickname) => {
     const findNickname = await this.userRepository.findNickname(nickname);
-    if (nickname !== findNickname)
+    if (findNickname)
       throw new ErrorCustom(400, "이미 존재하는 닉네임 입니다.");
-
     return;
   };
 
   findUserId = async (userId) => {
     const findUserId = await this.userRepository.findUserId(userId);
-    if (userId !== findUserId)
-      throw new ErrorCustom(400, "이미 존재하는 아이디 입니다.");
-
+    if (findUserId) throw new ErrorCustom(400, "이미 존재하는 아이디 입니다.");
     return;
   };
 

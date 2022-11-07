@@ -58,6 +58,7 @@ class UserController {
     try {
       const { nickname, userId } = req.body;
 
+      console.log(nickname, userId);
       if (!nickname && !userId) {
         return res.status(400).json({ message: "잘못된 요청입니다" });
       }
