@@ -1,4 +1,4 @@
-const { Advice } = require('../models');
+const {Advice} = require('../models');
 
 class AdviceRepository {
     //조언 게시글 업로드
