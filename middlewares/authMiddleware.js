@@ -1,13 +1,36 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+const ErrorCustom = require("../exceptions/error-custom");
 require("dotenv").config();
 
 // 유저 인증에 실패하면 403 상태 코드를 반환한다.
 module.exports = async (req, res, next) => {
   try {
-    const { accesstoken, refreshtoken } = req.cookie;
+    console.log("////////////미들웨어///////////////");
+    console.log(req.cookies);
+    let accesstoken;
+    let refreshtoken;
 
-    if (!accesstoken || !refreshtoken) {
+    //개발환경일때 쿠키로 받음
+    // if (process.env.NODE_ENV == "development") {
+    //   console.log("throw");
+    //   const { accesstoken: a_token, refreshtoken: r_token } = req.cookies;
+    //   accesstoken = a_token;
+    //   refreshtoken = r_token;
+    // }
+
+    //배포환경일땐 헤더로 전송받음
+    if ("production" == "production") {
+      const { authorization, refreshtoken: r_token } = req.headers;
+      const tokenType = authorization.split(" ")[0];
+      accesstoken = authorization.split(" ")[1];
+      refreshtoken = r_token;
+      console.log(authorization.split(" "));
+      if (tokenType !== "Bearer")
+        throw new ErrorCustom(400, "잘못된 요청입니다. 다시 로그인 해주세요");
+    }
+
+    if (!accesstoken) {
       return res.status(403).send({
         errorMessage: "로그인이 필요한 기능입니다.",
       });
@@ -37,40 +60,39 @@ module.exports = async (req, res, next) => {
       }
     }
 
-    /**refreshToken만료시 재로그인 요청 */
-    if (!isRefreshTokenValidate)
-      return res.status(419).json({ message: "다시 로그인 해주세요." });
-
-    /**AccessToken만 만료시 AccessToken재발급 */
-    if (!isAccessTokenValidate) {
-      /**refresh토큰 에서 유저정보 받아오기 */
-      console.log(jwt.verify(refreshtoken, process.env.SECRET_KEY));
-      const { userId } = jwt.verify(refreshtoken, process.env.SECRET_KEY);
-      console.log(userId);
-
-      /**AccessToken 재발급 */
-      const newAccessToken = jwt.sign(
-        { userId: userId },
-        process.env.SECRET_KEY,
-        { expiresIn: "10s" }
-      );
-
-      /**유저정보 DB에서 찾아오기*/
-      const user = await User.findByPk(userId);
-
-      /**새로 발급받은 토큰전송 */
-      res.cookie("accessToken", newAccessToken);
-      console.log("토큰 재발급");
-
-      /**로그인 유저정보 저장 */
-      res.locals.user = user;
-    } else {
-      /**토큰이 모두 유효한 경우 */
-      const { userId } = jwt.verify(accesstoken, process.env.SECRET_KEY);
-      const user = await User.findByPk(userId);
-      res.locals.user = user;
+    /**refreshToken 만료시 재로그인 */
+    if (refreshtoken && !isRefreshTokenValidate) {
+      return res.status(419).json({ message: "다시 로그인 해주세요" });
     }
 
-    next();
-  } catch (error) {}
+    /**refreshToken유효 accesstoken 재발급*/
+    if (refreshtoken && accesstoken && isRefreshTokenValidate) {
+      const decoded = jwt.decode(accesstoken);
+      const accessToken = jwt.sign(
+        { userKey: decoded.userKey },
+        process.env.SECRET_KEY,
+        {
+          expiresIn: "60s",
+        }
+      );
+      res
+        .status(200)
+        .json({ message: "토큰 재발급 성공", accesstoken: accessToken });
+    }
+
+    /**AccessToken만료시 서버에게 만료상태 전송*/
+    if (!isAccessTokenValidate) {
+      return res.status(419).json({ message: "토큰 만료됨", ok: false });
+    } else {
+      /**토큰이 유효한 경우 */
+      const { userKey } = jwt.verify(accesstoken, process.env.SECRET_KEY);
+      const user = await User.findByPk(userKey);
+      res.locals.user = user;
+    }
+    console.log(res.locals.user);
+    res.status(200).json({ msg: "성공" });
+    // next();
+  } catch (error) {
+    next(error);
+  }
 };
