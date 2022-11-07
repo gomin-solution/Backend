@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "userKey",
       });
 
-      this.hasMany(models.Vote, {
+      this.hasMany(models.Choice, {
         foreignKey: "userKey",
         targetKey: "userKey",
       });
