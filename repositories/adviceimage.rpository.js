@@ -6,7 +6,7 @@ class AdviceImageRepository {
     for (let i = 0; i < imageUrl.length; i++) {
       await AdviceImage.create({
         adviceId: adviceId,
-        adviceImg: imageUrl[i],
+        adviceImage: imageUrl[i],
       });
     }
     return;
