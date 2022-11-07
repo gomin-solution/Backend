@@ -53,6 +53,7 @@ class UserService {
     const findNickname = await this.userRepository.findNickname(nickname);
     if (findNickname)
       throw new ErrorCustom(400, "이미 존재하는 닉네임 입니다.");
+
     return;
   };
 
