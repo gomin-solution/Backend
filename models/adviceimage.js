@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "adviceId",
         },
       },
-      adviceImg: {
+      adviceImage: {
         type: DataTypes.STRING,
         allowNull: true,
       },
