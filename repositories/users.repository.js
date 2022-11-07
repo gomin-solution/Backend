@@ -2,20 +2,20 @@ const { User } = require("../models");
 
 class UserRepository {
   createUser = async ({
-    username: username,
+    userId: userId,
     nickname: nickname,
     password: hashed,
   }) => {
     await User.create({
-      username: username,
+      userId: userId,
       nickname: nickname,
       password: hashed,
     });
   };
 
-  findUser = async (username) => {
-    console.log("repository", username);
-    return await User.findOne({ where: { username: username } });
+  findUser = async (userId) => {
+    console.log("repository", userId);
+    return await User.findOne({ where: { userId: userId } });
   };
 }
 

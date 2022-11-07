@@ -8,20 +8,19 @@ class UserService {
   userRepository = new UserRepository();
 
   createUser = async ({
-    username: username,
+    userId: userId,
     nickname: nickname,
     password: hashed,
   }) => {
     await this.userRepository.createUser({
-      username: username,
+      userId: userId,
       nickname: nickname,
       password: hashed,
     });
   };
 
-  verifyUser = async (username, password) => {
-    console.log("service", username);
-    const user = await this.userRepository.findUser(username);
+  verifyUser = async (userId, password) => {
+    const user = await this.userRepository.findUser(userId);
     if (!user) throw new ErrorCustom(400, "가입되지 않은 아이디 입니다");
 
     const passwordVerify = await bcrypt.compare(password, user.password);
@@ -29,7 +28,7 @@ class UserService {
     if (!passwordVerify) throw new ErrorCustom(400, "비밀번호 오류");
 
     const accessToken = jwt.sign(
-      { userId: user.userId },
+      { userKey: user.userKey },
       process.env.SECRET_KEY,
       {
         expiresIn: "60s",
