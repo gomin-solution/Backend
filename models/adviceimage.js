@@ -1,54 +1,46 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Advice extends Model {
+  class AdviceImage extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.User, {
-        foreignKey: "userKey",
-        targetKey: "userKey",
+      this.belongsTo(models.Advice, {
+        foreignKey: "adviceId",
+        targetKey: "adviceId",
       });
-      // this.hasMany(models.AdviceImage, {
-      //   foreignKey: "adviceId",
-      //   sourceKey: "adviceId",
-      // });
+    //   this.hasMany(models.Comment, {
+    //     foreignKey: "adviceId",
+    //     sourceKey: "adviceId",
+    //   });
     //   this.hasMany(models.Save, {
     //     foreignKey: "adviceId",
     //     sourceKey: "adviceId",
     //   });
     }
   }
-  Advice.init(
+  AdviceImage.init(
     {
-      adviceId: {
+      adviceimageId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      userKey: {
+      adviceId: {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "Users",
-          key: "userKey",
+          model: "Advice",
+          key: "adviceId",
         },
       },
-      title: {
+      adviceImg: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      categoryId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      content: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
     //   isSave: {
     //     type: DataTypes.BOOLEAN,
@@ -65,8 +57,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Advice",
+      modelName: "AdviceImage",
     }
   );
-  return Advice;
+  return AdviceImage;
 };
