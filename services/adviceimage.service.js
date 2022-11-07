@@ -3,12 +3,11 @@ const AdviceRepository = require("../repositories/advice.rpository");
 class AdviceService {
     adviceRepository = new AdviceRepository();
     
-    createAdvice = async (userKey, title, categoryId, content, imageUrl1, imageUrl2) => {
+    createAdvice = async (userKey, adviceId, imageUrl) => {
         const createAdviceData = await this.adviceRepository.createAdvice(
             userKey,
-            title,
-            categoryId,
-            content,
+            adviceId,
+            imageUrl
         );
         return createAdviceData;
     }

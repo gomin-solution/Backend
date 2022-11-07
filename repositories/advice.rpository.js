@@ -2,14 +2,12 @@ const { Advice } = require('../models');
 
 class AdviceRepository {
     //조언 게시글 업로드
-    createAdvice = async (userId, title, categoryId, content, uploadImage1, uploadImage2) => {
+    createAdvice = async (userKey, title, categoryId, content) => {
         const createAdvice = await Advice.create({
-            userId: userId,
+            userKey: userKey,
             title: title,
             categoryId: categoryId,
             content: content,
-            adviceImg1: uploadImage1,
-            adviceImg2: uploadImage2,
           });
       
           return createAdvice;

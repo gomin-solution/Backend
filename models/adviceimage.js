@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Advice extends Model {
+  class AdviceImage extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,19 +12,23 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         targetKey: "userKey",
       });
-      this.hasMany(models.AdviceImage, {
+      this.belongsTo(models.Advice, {
         foreignKey: "adviceId",
-        sourceKey: "adviceId",
+        targetKey: "adviceId",
       });
+    //   this.hasMany(models.Comment, {
+    //     foreignKey: "adviceId",
+    //     sourceKey: "adviceId",
+    //   });
     //   this.hasMany(models.Save, {
     //     foreignKey: "adviceId",
     //     sourceKey: "adviceId",
     //   });
     }
   }
-  Advice.init(
+  AdviceImage.init(
     {
-      adviceId: {
+      adviceimageId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -38,17 +42,17 @@ module.exports = (sequelize, DataTypes) => {
           key: "userKey",
         },
       },
-      title: {
-        type: DataTypes.STRING,
+      adviceId: {
         allowNull: false,
-      },
-      categoryId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        references: {
+          model: "Advice",
+          key: "adviceId",
+        },
       },
-      content: {
+      adviceImg: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
     //   isSave: {
     //     type: DataTypes.BOOLEAN,
@@ -65,8 +69,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Advice",
+      modelName: "AdviceImage",
     }
   );
-  return Advice;
+  return AdviceImage;
 };
