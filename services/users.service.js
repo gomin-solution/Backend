@@ -1,6 +1,7 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const UserRepository = require("../repositories/users.repository.js");
 const AdviceRepository = require("../repositories/advice.rpository");
+// const ChoiceRepository = require("../repositories/choice.repository");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -9,6 +10,7 @@ require("dotenv").config();
 class UserService {
   userRepository = new UserRepository();
   adviceRepository = new AdviceRepository();
+  // choiceRepository = new ChoiceRepository();
 
   createUser = async ({
     userId: userId,
@@ -65,6 +67,8 @@ class UserService {
     const getChoice = await this.choiceRepository;
 
     const getAdvice = await this.adviceRepository;
+
+    return { choice: getChoice, advice: getAdvice };
   };
 }
 

@@ -79,6 +79,7 @@ class UserController {
 
   mainPage = async (req, res, next) => {
     try {
+      await this.userService.mainPage();
     } catch (error) {
       next(error);
     }
