@@ -1,8 +1,8 @@
-//const { Users, Posts, Comments } = require('../db/models');          //모델 데이터를 가져오고
+const { Users, Posts, Comment } = require('../models');          //모델 데이터를 가져오고
 
 class CommentRepository {
 
-    Comment = new Comments()
+    Comment = new Comment()
 
     //덧글 찾기
     // findComment = async (postId) =>{
@@ -25,29 +25,29 @@ class CommentRepository {
 
     //덧글 추가
     createComment = async (userId, adviceId, comment) => {
-        const createCommentData = await Comments.create({userId, adviceId, comment});
+        const createCommentData = await Comment.create({userId, adviceId, comment});
         return createCommentData;
     }
 
     //덧글 수정
     updateComment = async (userId, commentId, comment) => {
-        const comment = await Comments.findByPk(commentId); 
+        const comment = await Comment.findByPk(commentId); 
         const commentId = comment.userId  
         if(userId !== commentId){    
             return;
         }
-        const updateCommentData = await Comments.update({comment}, {where: {commentId}})
+        const updateCommentData = await Comment.update({comment}, {where: {commentId}})
         return updateCommentData
     }
 
     //덧글 삭제
     deleteComment = async (userId, commentId) => {
-        const comment = await Comments.findByPk(commentId); 
+        const comment = await Comment.findByPk(commentId); 
         const commentId = comment.userId 
         if(userId !== commentId){                 
             return;
         }
-        const deleteCommentData = await Comments.destroy({where: {commentId}})
+        const deleteCommentData = await Comment.destroy({where: {commentId}})
         return deleteCommentData
     }
 
