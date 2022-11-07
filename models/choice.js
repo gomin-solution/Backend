@@ -1,30 +1,23 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Advice extends Model {
+  class Choice extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.User, {
-        foreignKey: "userKey",
-        targetKey: "userKey",
-      });
-      // this.hasMany(models.AdviceImage, {
-      //   foreignKey: "adviceId",
-      //   sourceKey: "adviceId",
-      // });
-    //   this.hasMany(models.Save, {
-    //     foreignKey: "adviceId",
-    //     sourceKey: "adviceId",
-    //   });
+        this.belongsTo(models.User, {
+          foreignKey: "userKey",
+          targetKey: "userKey",
+        });
+
     }
   }
-  Advice.init(
+  Choice.init(
     {
-      adviceId: {
+      choiceId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -34,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "Users",
+          model: "User",
           key: "userKey",
         },
       },
@@ -42,18 +35,30 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      categoryId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      content: {
+      choice1Name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-    //   isSave: {
-    //     type: DataTypes.BOOLEAN,
-    //     allowNull: true,
-    //   },
+      choice2Name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      choice1Per: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      choice2Per: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      choiceCount: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      endTime: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
@@ -65,8 +70,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Advice",
+      modelName: "Choice",
     }
   );
-  return Advice;
+  return Choice;
 };

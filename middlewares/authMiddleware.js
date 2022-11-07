@@ -97,7 +97,6 @@ module.exports = async (req, res, next) => {
       res.locals.user = user;
     }
     console.log(res.locals.user);
-    res.status(200).json({ msg: "인증 성공" });
     next();
   } catch (error) {
     next(error);

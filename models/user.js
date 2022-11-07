@@ -12,6 +12,16 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         targetKey: "userKey",
       });
+
+      this.hasMany(models.Choice, {
+        foreignKey: "userKey",
+        targetKey: "userKey",
+      });
+
+      this.hasMany(models.Comment, {
+        foreignKey: "userKey",
+        targetKey: "userKey",
+      });
       // this.hasMany(models.Choice, {
       //   foreignKey: "userId",
       //   targetKey: "userId",
