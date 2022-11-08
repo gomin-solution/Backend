@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "userKey",
       });
 
-
       // this.hasMany(models.Choice, {
       //   foreignKey: "userId",
       //   targetKey: "userId",
@@ -72,6 +71,10 @@ module.exports = (sequelize, DataTypes) => {
       isAdult: {
         allowNull: true,
         type: DataTypes.BOOLEAN,
+      },
+      userImg: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

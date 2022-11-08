@@ -12,6 +12,8 @@ class UserRepository {
       nickname: nickname,
       password: hashed,
       isAdult: isAdult,
+      userImg:
+        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
     });
   };
 
