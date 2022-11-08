@@ -78,6 +78,7 @@ class ChoiceRepository {
             choice_2_length,
         };
     }
+
 }
 
 module.exports = ChoiceRepository;

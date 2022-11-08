@@ -54,6 +54,7 @@ class UserController {
     }
   };
 
+  //아이디 닉네임 중복검사
   check = async (req, res, next) => {
     try {
       const { nickname, userId } = req.body;
@@ -82,12 +83,14 @@ class UserController {
   //메인페이지 가져오기
   mainPage = async (req, res, next) => {
     try {
-      await this.userService.mainPage();
+      const { userKey } = res.locals.user;
+      const data = await this.userService.mainPage(userKey);
+
+      return res.status(200).json({ data: data });
     } catch (error) {
       next(error);
     }
   };
-
 
   // // 프로필 수정
   // profileUpdate = async (req, res, next) => {
@@ -158,8 +161,6 @@ class UserController {
   //     next(error);
   //   }
   // };
-
-
 }
 
 module.exports = UserController;

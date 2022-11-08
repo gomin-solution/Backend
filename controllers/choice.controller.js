@@ -1,3 +1,4 @@
+
 const ChoiceService = require('../services/choice.service');
 
 class ChoiceController {
@@ -21,15 +22,14 @@ class ChoiceController {
         }
 
     }
+  };
 
-    allchoice = async (req, res, next) =>{
-        try{
-            const allchoice = await this.choiceService.findAllchoice();
-            res.status(200).json({data:allchoice});
-
-        }catch(err){
-            next(err);
-        }
+  allchoice = async (req, res, next) => {
+    try {
+      const allchoice = await this.choiceService.findAllchoice();
+      res.status(200).json({ data: allchoice });
+    } catch (err) {
+      next(err);
     }
 
     mychoice = async (req, res, next) =>{
@@ -74,9 +74,6 @@ class ChoiceController {
             next(err);
         }
     }
-
-
-
 
 }
 

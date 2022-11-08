@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       //   foreignKey: "adviceId",
       //   sourceKey: "adviceId",
       // });
-    //   this.hasMany(models.Save, {
-    //     foreignKey: "adviceId",
-    //     sourceKey: "adviceId",
-    //   });
+      this.hasMany(models.AdviceBM, {
+        foreignKey: "adviceId",
+        sourceKey: "adviceId",
+      });
     }
   }
   Advice.init(
@@ -50,10 +50,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-    //   isSave: {
-    //     type: DataTypes.BOOLEAN,
-    //     allowNull: true,
-    //   },
+      //   isSave: {
+      //     type: DataTypes.BOOLEAN,
+      //     allowNull: true,
+      //   },
+      viewCount: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      isAdult: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

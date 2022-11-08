@@ -6,12 +6,16 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 const AdviceController = require("../controllers/advice.controller");
 const adviceController = new AdviceController();
-const AdviceImageController = require("../controllers/adviceimage.controller")
-const adviceImageController = new AdviceImageController();
 
 //조언 게시글 업로드
-adviceRouter.post("/", authMiddleware, adviceController.creatAdvice);
+adviceRouter.post(
+  "/",
+  authMiddleware,
+  upload.array("image", 3),
+  adviceController.creatAdvice
+);
 
-//조언 이미지 업로드
-adviceRouter.post("/:adviceId", upload.array("image", 5), adviceImageController.creatAdviceImage);
+//조언 게시글 수정
+adviceRouter.put("/:adviceId", adviceController.updateAdvice);
+
 module.exports = adviceRouter;

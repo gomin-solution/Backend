@@ -3,7 +3,11 @@ require("dotenv").config();
 // 로그인 되어 있는 유저일 경우 Error를 반환한다.
 module.exports = (req, res, next) => {
   try {
-    const { accesstoken, refreshtoken } = req.headers;
+    const { authorization, refreshtoken } = req.headers;
+    let accesstoken;
+    if (authorization) {
+      accesstoken = authorization.split(" ")[1];
+    }
 
     if (accesstoken || refreshtoken) {
       return res.status(403).send({
