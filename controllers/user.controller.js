@@ -79,6 +79,7 @@ class UserController {
     }
   };
 
+  //메인페이지 가져오기
   mainPage = async (req, res, next) => {
     try {
       await this.userService.mainPage();

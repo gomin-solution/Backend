@@ -1,7 +1,7 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const UserRepository = require("../repositories/users.repository.js");
 const AdviceRepository = require("../repositories/advice.rpository");
-// const ChoiceRepository = require("../repositories/choice.repository");
+const ChoiceRepository = require("../repositories/choice.repository");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -10,7 +10,7 @@ require("dotenv").config();
 class UserService {
   userRepository = new UserRepository();
   adviceRepository = new AdviceRepository();
-  // choiceRepository = new ChoiceRepository();
+  choiceRepository = new ChoiceRepository();
 
   createUser = async ({
     userId: userId,
@@ -53,7 +53,6 @@ class UserService {
     const findNickname = await this.userRepository.findNickname(nickname);
     if (findNickname)
       throw new ErrorCustom(400, "이미 존재하는 닉네임 입니다.");
-
     return;
   };
 
@@ -64,9 +63,9 @@ class UserService {
   };
 
   mainPage = async () => {
-    const getChoice = await this.choiceRepository;
+    const getChoice = await this.choiceRepository();
 
-    const getAdvice = await this.adviceRepository;
+    const getAdvice = await this.adviceRepository();
 
     return { choice: getChoice, advice: getAdvice };
   };
