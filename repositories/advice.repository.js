@@ -25,18 +25,10 @@ class AdviceRepository {
     return adviceHot5;
   };
 
-  findAdvice = async ({ adviceId }) => {
-    const findAdvice = await Advice.findOne({ where: { adviceId } });
-    return findAdvice;
-  };
-
-  updateAdvice = async (adviceId, title, content) => {
-    const updateAdvice = await Advice.update(
-      { title: title, content: content },
-      { where: { adviceId: adviceId } }
-    );
-    return updateAdvice;
-  };
+  findAllAdvice = async () => {
+    const findAllAdvice = await Advice.findAll()
+    return findAllAdvice;
+  }
 }
 
 module.exports = AdviceRepository;

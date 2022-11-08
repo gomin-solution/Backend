@@ -15,7 +15,10 @@ adviceRouter.post(
   adviceController.creatAdvice
 );
 
+//조언 게시글 검색
+adviceRouter.get("/:categoryId", adviceController.allAdvice)
+
 //조언 게시글 수정
-adviceRouter.put("/:adviceId", adviceController.updateAdvice);
+//adviceRouter.put("/:adviceId", authMiddleware, adviceController.updateAdvice);
 
 module.exports = adviceRouter;

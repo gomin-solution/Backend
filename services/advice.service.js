@@ -15,26 +15,11 @@ class AdviceService {
     return createAdviceData;
   };
 
-  updateAdvice = async ({ adviceId, title, content }) => {
-    const updateAdvice = await this.adviceRepository.updateAdvice({
-      adviceId,
-      title,
-      content,
-    });
-    return updateAdvice;
-    // const findAdvice = await this.adviceRepository.findAdvice({adviceId});
-    // console.log(findAdvice);
-    // if (!findAdvice) {
-    //     throw new ValidationError("잘못 들어왔어요~!");
-    // }
-    // if (findAdvice.adviceId === adviceId) {
-    //     return await this.adviceRepository.updateAdvice({
-    //         adviceId,
-    //         title,
-    //         content,
-    //     });
-    // }
-  };
+  findAllAdvice = async () => {
+    const findAllAdvice = await this.adviceRepository.findAllAdvice();
+    return findAllAdvice;
+  }
+
 }
 
 module.exports = AdviceService;
