@@ -1,4 +1,4 @@
-const AdviceImageRepository = require("../repositories/adviceimage.rpository");
+const AdviceImageRepository = require("../repositories/adviceimage.repository");
 
 class AdviceImageService {
     adviceImageRepository = new AdviceImageRepository();

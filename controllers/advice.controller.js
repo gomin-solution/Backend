@@ -22,7 +22,7 @@ class AdviceController {
 
       let imageUrl = [];
       if (images) {
-        const adviceId = creatAdvice.adviceId
+        const adviceId = creatAdvice.adviceId;
         const values = Object.values({ images });
         //console.log(values);
         for (let i = 0; i < values[0].length; i++) {
@@ -38,30 +38,27 @@ class AdviceController {
         title: title,
         categoryId: categoryId,
         content: content,
-        adviceImage: imageUrl
+        adviceImage: imageUrl,
       });
     } catch (error) {
       next(error);
     }
   };
 
-  updateAdvice = async (req, res, next) => {
+  allAdvice = async (req, res, next) => {
+    const categoryNum = req.params;
     try {
-      const { adviceId } = req.params;
-      const { title, content } = req.body;
+        const allAdvice = await this.adviceService.findAllAdvice();
+        res.status(200).json({ data: allAdvice });
 
-      const updateAdvice = await this.adviceService.updateAdvice({
-        adviceId,
-        title,
-        content,
-      });
-      res
-        .status(200)
-        .json({ data: updateAdvice, massage: "조언 게시글 수정완료!" });
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   };
+
+  //조언 게시글 검색
+
+  // 조언 게시글 수정
 }
 
 module.exports = AdviceController;
