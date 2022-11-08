@@ -27,6 +27,15 @@ class UserRepository {
   findUserId = async (userId) => {
     return await User.findOne({ where: { userId: userId } });
   };
+
+  // uploadUserImage = async (userImage, userKey) => {
+  //   const updateImageUrl = await User.update(
+  //     { userImage: userImage },
+  //     { where: { userKey } }
+  //   );
+
+  //   return updateImageUrl;
+  // };
 }
 
 module.exports = UserRepository;

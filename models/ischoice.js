@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Choice extends Model {
+  class isChoice extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,56 +13,33 @@ module.exports = (sequelize, DataTypes) => {
           targetKey: "userKey",
         });
 
-              //투표여부
-      this.hasMany(models.isChoice, {
-        foreignKey: "choiceId",
-        targetKey: "choiceId",
-      });
+        this.belongsTo(models.Choice, {
+            foreignKey: "choiceId",
+            targetKey: "choiceId",
+        });
 
     }
   }
-  Choice.init(
+  isChoice.init(
     {
-      choiceId: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-      },
       userKey: {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "User",
-          key: "userKey",
+            model: "User",
+            key: "userKey",
         },
       },
-      title: {
-        type: DataTypes.STRING,
+      choiceId: {
         allowNull: false,
-      },
-      choice1Name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      choice2Name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      choice1Per: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        references: {
+          model: "Choice",
+          key: "choiceId",
+        },
       },
-      choice2Per: {
+      choiceNum: {
         type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      choiceCount: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      endTime: {
-        type: DataTypes.DATE,
         allowNull: false,
       },
       createdAt: {
@@ -76,8 +53,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Choice",
+      modelName: "isChoice",
     }
   );
-  return Choice;
+  return isChoice;
 };
