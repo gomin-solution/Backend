@@ -14,7 +14,7 @@ class AdviceImageController {
       //console.log(values);
       let imageLocation = [];
       for (let i = 0; i < values[0].length; i++) {
-        imageLocation.push(values[0][i].transforms[0].location)
+        imageLocation.push(values[0][i].transforms[0].location);
       }
       //const imageUrl = imageLocation[0]
       //const imageUrl2 = imageLocation[2]
@@ -26,16 +26,11 @@ class AdviceImageController {
       // console.log(values, "아아아아아아")
       // console.log(imageUrl1)
 
-      await this.adviceImageService.createAdviceImage(
-        adviceId,
-        imageLocation
-      );
+      await this.adviceImageService.createAdviceImage(adviceId, imageLocation);
 
-      res
-        .status(200)
-        .json({
-          msg: "이미지 업로드 완료!"
-        });
+      res.status(200).json({
+        msg: "이미지 업로드 완료!",
+      });
     } catch (error) {
       next(error);
     }
