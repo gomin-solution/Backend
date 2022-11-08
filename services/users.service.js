@@ -61,10 +61,10 @@ class UserService {
     return;
   };
 
-  mainPage = async () => {
-    const getChoice = await this.choiceRepository.choiceHot();
+  mainPage = async (userKey) => {
+    const getChoice = await this.choiceRepository.choiceHot(userKey);
 
-    const getAdvice = await this.adviceRepository.adviceHot();
+    const getAdvice = await this.adviceRepository.adviceHot(userKey);
 
     return { choice: getChoice, advice: getAdvice };
   };
