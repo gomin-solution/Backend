@@ -28,23 +28,22 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         targetKey: "userKey",
       });
-
       // this.hasMany(models.Choice, {
-      //   foreignKey: "userId",
-      //   targetKey: "userId",
+      //   foreignKey: "userKey",
+      //   targetKey: "userKey",
       // });
       // this.hasMany(models.Comment, {
-      //   foreignKey: "userId",
-      //   targetKey: "userId",
+      //   foreignKey: "userKey",
+      //   targetKey: "userKey",
       // });
-      // this.hasMany(models.AdviceBookmark, {
-      //   foreignKey: "userId",
-      //   targetKey: "userId",
-      // });
-      // this.hasMany(models.ChoicecBookmark, {
-      //   foreignKey: "userId",
-      //   targetKey: "userId",
-      // });
+      this.hasMany(models.AdviceBM, {
+        foreignKey: "userKey",
+        targetKey: "userKey",
+      });
+      this.hasMany(models.ChoiceBM, {
+        foreignKey: "userKey",
+        targetKey: "userKey",
+      });
     }
   }
   User.init(

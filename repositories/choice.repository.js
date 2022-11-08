@@ -1,4 +1,4 @@
-const { User, choice, isChoice } = require("../models");
+const { User, choice, isChoice, ChoiceBM } = require("../models");
 const { Op } = require("sequelize");
 
 class ChoiceRepository {
@@ -20,6 +20,20 @@ class ChoiceRepository {
   findMychoice = async (userId) => {
     const findMychoice = await choice.findByPk(userId);
     return findMychoice;
+  };
+
+  choiceHot = async (userKey) => {
+    const choiceHot5 = await choice.findAll({
+      attributes: ["choiceCount"],
+      order: [["choiceCount", "DESC"]],
+      limit: 5,
+      include: [
+        { model: User },
+        { model: ChoiceBM, where: { userKey: userKey }, required: false },
+      ],
+    });
+
+    return choiceHot5;
   };
 
   deletechoice = async (userId, choiceId) => {
