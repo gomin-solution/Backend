@@ -8,17 +8,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-        this.belongsTo(models.User, {
-          foreignKey: "userKey",
-          targetKey: "userKey",
-        });
-
-              //투표여부
-      this.hasMany(models.isChoice, {
-        foreignKey: "choiceId",
-        targetKey: "choiceId",
+      this.belongsTo(models.User, {
+        foreignKey: "userKey",
+        targetKey: "userKey",
       });
 
+      //투표여부
+      this.hasMany(models.isChoice, {
+        foreignKey: "choiceId",
+        sourceKey: "choiceId",
+      });
+
+      this.hasMany(models.ChoiceBM, {
+        foreignKey: "choiceId",
+        sourceKey: "choiceId",
+      });
     }
   }
   Choice.init(

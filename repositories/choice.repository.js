@@ -1,9 +1,9 @@
-const { User, choice, isChoice, ChoiceBM } = require("../models");
+const { User, Choice, isChoice, ChoiceBM } = require("../models");
 const { Op } = require("sequelize");
 
 class ChoiceRepository {
   createchoice = async (title, choice1Name, choice2Name, endTime) => {
-    const createData = await choice.create({
+    const createData = await Choice.create({
       title,
       choice1Name,
       choice2Name,
@@ -13,17 +13,17 @@ class ChoiceRepository {
   };
 
   findAllchoice = async () => {
-    const findAllchoice = await choice.findAll();
+    const findAllchoice = await Choice.findAll();
     return findAllchoice;
   };
 
   findMychoice = async (userId) => {
-    const findMychoice = await choice.findByPk(userId);
+    const findMychoice = await Choice.findByPk(userId);
     return findMychoice;
   };
 
   choiceHot = async (userKey) => {
-    const choiceHot5 = await choice.findAll({
+    const choiceHot5 = await Choice.findAll({
       attributes: ["choiceCount"],
       order: [["choiceCount", "DESC"]],
       limit: 5,
@@ -37,7 +37,7 @@ class ChoiceRepository {
   };
 
   deletechoice = async (userId, choiceId) => {
-    const temp = await choice.findByPk(choiceId);
+    const temp = await Choice.findByPk(choiceId);
     const temp_Id = temp.userId;
     if (uesrId !== temp_Id) {
       return;
