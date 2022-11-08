@@ -17,8 +17,7 @@ class CommentController {
     try {
       const { adviceId } = req.params;
       const { comment } = req.body;
-      const user = req.locals.user;
-      const userId = user.userId;
+      const {userKey}= res.locals.user;
 
       if (!comment) {
         res.status(400).send({ errorMessage: "댓글 내용을 입력해주세요" }); //덧글 내용이 없다면 덧글을 입력해달라는 메시지 출력
@@ -26,13 +25,13 @@ class CommentController {
       }
 
       const createComment = await this.commentService.createComment(
-        userId,
+        userKey,
         adviceId,
         comment
       );
       res.status(201).send({ data: createComment });
     } catch (error) {
-      return res.status(500).send({ errorMessage: error.message });
+      next(error);
     }
   };
 
@@ -40,11 +39,10 @@ class CommentController {
     try {
       const { commentId } = req.params;
       const { comment } = req.body;
-      const user = req.locals.user;
-      const userId = user.userId;
+      const {userKey}= res.locals.user;
 
       const updateComment = await this.commentService.updateComment(
-        userId,
+        userKey,
         commentId,
         comment
       );
@@ -55,19 +53,18 @@ class CommentController {
       }
       res.status(200).json({ Message: "덧글 수정 성공" });
     } catch (error) {
-      return res.status(500).send({ errorMessage: error.message });
+      next(error);
     }
   };
 
   deleteComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
-      const user = req.locals.user;
-      const userId = user.userId;
+      const {userKey}= res.locals.user;
 
       const deleteComment = await this.commentService.deleteComment(
         commentId,
-        userId
+        userKey
       );
       if (!deleteComment) {
         res.status(400).send({ errorMessage: "삭제권한이 없습니다." });
@@ -75,7 +72,7 @@ class CommentController {
       }
       res.status(200).json({ data: deleteComment });
     } catch (error) {
-      return res.status(400).send({ errorMessage: "수정 실패." });
+      next(error);
     }
   };
 
@@ -83,10 +80,9 @@ class CommentController {
     try {
       const { commentId } = req.params;
       const { comment } = req.body;
-      const user = req.locals.user;
-      const userId = user.userId;
-      const updateComment = await this.adviceCommentService.updateComment(
-        userId,
+      const {userKey}= res.locals.user;
+      const updateComment = await this.commentService.updateComment(
+        userKey,
         commentId,
         comment
       );
@@ -97,19 +93,18 @@ class CommentController {
       }
       res.status(200).json({ Message: "덧글 수정 성공" });
     } catch (error) {
-      return res.status(500).send({ errorMessage: error.message });
+      next(error);
     }
   };
 
   deleteComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
-      const user = req.locals.user;
-      const userId = user.userId;
+      const {userKey}= res.locals.user;
 
-      const deleteComment = await this.adviceCommentService.deleteComment(
+      const deleteComment = await this.commentService.deleteComment(
         commentId,
-        userId
+        userKey
       );
       if (!deleteComment) {
         res.status(400).send({ errorMessage: "삭제권한이 없습니다." });
@@ -117,7 +112,7 @@ class CommentController {
       }
       res.status(200).json({ data: deleteComment });
     } catch (error) {
-      return res.status(400).send({ errorMessage: "수정 실패." });
+      next(error);
     }
   };
 }

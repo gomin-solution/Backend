@@ -96,7 +96,11 @@ module.exports = async (req, res, next) => {
     } else {
       /**토큰이 유효한 경우 */
       const { userId } = jwt.verify(accessToken, process.env.SECRET_KEY);
+      console.log("유저아이디");
+      console.log(userId);
       const user = await User.findOne({ where: { userId: userId } });
+      console.log("유저정보");
+      console.log(user);
       res.locals.user = user;
     }
     next();

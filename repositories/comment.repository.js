@@ -24,16 +24,16 @@ class CommentRepository {
     // };
 
     //덧글 추가
-    createComment = async (userId, adviceId, comment) => {
-        const createCommentData = await Comment.create({userId, adviceId, comment});
+    createComment = async (userKey, adviceId, comment) => {
+        const createCommentData = await Comment.create({userKey, adviceId, comment});
         return createCommentData;
     }
 
     //덧글 수정
-    updateComment = async (userId, commentId, comment) => {
+    updateComment = async (userKey, commentId, comment) => {
         const data = await Comment.findByPk(commentId); 
-        const dataId = data.userId  
-        if(userId !== dataId){    //로그인한 사람의 id와 comment가 가진 userid가 다를 경우
+        const dataId = data.userKey  
+        if(userKey !== dataId){    //로그인한 사람의 id와 comment가 가진 userKey가 다를 경우
             return;
         }
         const updateCommentData = await Comment.update({comment}, {where: {commentId}})
@@ -41,10 +41,10 @@ class CommentRepository {
     }
 
     //덧글 삭제
-    deleteComment = async (userId, commentId) => {
+    deleteComment = async (userKey, commentId) => {
         const data = await Comment.findByPk(commentId); 
-        const dataId = data.userId 
-        if(userId !== datatId){                 
+        const dataId = data.userKey 
+        if(userKey !== datatId){                 
             return;
         }
         const deleteCommentData = await Comment.destroy({where: {commentId}})

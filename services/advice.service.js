@@ -18,7 +18,7 @@ class AdviceService {
   findAllAdvice = async () => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
     return findAllAdvice;
-}
+  }
 
 }
 

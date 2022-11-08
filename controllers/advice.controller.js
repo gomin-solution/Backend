@@ -8,6 +8,7 @@ class AdviceController {
   adviceImageService = new AdviceImageService();
 
   creatAdvice = async (req, res, next) => {
+    console.log(res.locals.user);
     const { userKey } = res.locals.user;
     const { title, categoryId, content } = req.body;
     const images = req.files;
