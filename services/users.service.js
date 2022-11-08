@@ -33,12 +33,11 @@ class UserService {
     const passwordVerify = await bcrypt.compare(password, user.password);
 
     if (!passwordVerify) throw new ErrorCustom(400, "비밀번호 오류");
-
     const accessToken = jwt.sign(
-      { userKey: user.userKey },
-      process.env.SECRET_KEY,
+      { userId: user.userId },
+      process.env.SECRET_KEY
       // {
-      //   expiresIn: "60s",
+      //   expiresIn: "1h",
       // }
     );
 
@@ -63,31 +62,12 @@ class UserService {
   };
 
   mainPage = async () => {
-    const getChoice = await this.choiceRepository();
+    const getChoice = await this.choiceRepository.choiceHot();
 
-    const getAdvice = await this.adviceRepository();
+    const getAdvice = await this.adviceRepository.adviceHot();
 
     return { choice: getChoice, advice: getAdvice };
   };
-
-
-  // uploadUserImage = async (imageUrl, userKey) => {
-  //   const foundData = await this.userRepository.findUserId(userKey);
-  //   const userIdData = foundData.userId;
-  //   console.log("유저:", userIdData, "잘 받아오나 보자")
-  //   if (!foundData) {
-  //     throw new ValidationError("사용자를 찾을 수 없습니다.");
-  //   }
-
-  //   const userImage = imageUrl;
-  //   console.log(userImage, "아무거나");
-
-  //   const uploadImagesData = await this.userRepository.uploadUserImage(
-  //     userImage,
-  //     userKey
-  //   );
-  //   return uploadImagesData;
-  // };
 }
 
 module.exports = UserService;
