@@ -1,5 +1,5 @@
-const { User, choice, isChoice } = require('../models');
-const { Op } = require('sequelize');
+const { User, choice, isChoice } = require("../models");
+const { Op } = require("sequelize");
 
 class ChoiceRepository {
   createchoice = async (title, choice1Name, choice2Name, endTime) => {
@@ -28,36 +28,35 @@ class ChoiceRepository {
     if (uesrId !== temp_Id) {
       return;
     }
+  };
 
-    //투표 여부 데이터 가져오기
-    isChoice = async (userId, choiceId) => {
-        const isChoiceData = await isChoice.findOne({
-            where: {
-                [Op.and]: [{ userId }, { postId }],
-            },
-        });
-        return isChoiceData;
-    }
+  //투표 여부 데이터 가져오기
+  isChoice = async (userId, choiceId) => {
+    const isChoiceData = await isChoice.findOne({
+      where: {
+        [Op.and]: [{ userId }, { postId }],
+      },
+    });
+    return isChoiceData;
+  };
 
-    //선택을 한 경우, 데이터 생성
-    choice = async (userId, choiceId, choiceData) => {
-        const isChoiceData = await isChoice.create(userId, choiceId, choiceData);
-        return isChoiceData; 
-    }
+  //선택을 한 경우, 데이터 생성
+  choice = async (userId, choiceId, choiceData) => {
+    const isChoiceData = await isChoice.create(userId, choiceId, choiceData);
+    return isChoiceData;
+  };
 
-    //선택을 취소한 경우, 데이터 삭제
-    cancelChoice = async (userId, choiceId) =>{
-        const isChoice = await isChoice.destroy({
-            where: {
-                [Op.and]: [{ userId }, { choiceId }],
-            }
-        });
-        return isChoiceData; 
-    }
+  //선택을 취소한 경우, 데이터 삭제
+  cancelChoice = async (userId, choiceId) => {
+    const isChoice = await isChoice.destroy({
+      where: {
+        [Op.and]: [{ userId }, { choiceId }],
+      },
+    });
+    return isChoiceData;
+  };
 
-    //투표를 완료한 경우, 해당 choice테이블에서 투표 데이터를 가져온다.
-
-   
+  //투표를 완료한 경우, 해당 choice테이블에서 투표 데이터를 가져온다.
 }
 
 module.exports = ChoiceRepository;
