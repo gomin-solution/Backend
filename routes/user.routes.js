@@ -11,4 +11,7 @@ router.post("/signup/check", userController.check);
 router.post("/login", LoginMiddleware, userController.login);
 router.post("/test", authMiddleware);
 
+// 프로필 이미지 업로드
+//router.put("/mypage", authMiddleware, userController.profileUpdate);
+
 module.exports = router;

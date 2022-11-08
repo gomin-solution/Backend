@@ -17,7 +17,7 @@ module.exports = {
           key: "adviceId",
         },
       },
-      adviceImg: {
+      adviceImage: {
         type: Sequelize.STRING,
         allowNull: true,
       },
