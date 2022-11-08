@@ -17,7 +17,7 @@ module.exports = {
           key: "userKey",
         },
       },
-      userKey: {
+      adviceKey: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {

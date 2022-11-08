@@ -1,11 +1,11 @@
-const ChoiceService = require('../services/Choice.service');
+const ChoiceService = require('../services/choice.service');
 
 class ChoiceController {
     choiceService = new ChoiceService();
 
     createchoice = async (req, res, next) =>{
         try{
-            const {userId} = req.params.user;
+            const { userKey } = res.locals.user;
             const {title, choice1Name, choice2Name, endTime} = req.body;
 
             if (!title || !choice1Name || !choice2Name || !endTime){
@@ -13,7 +13,7 @@ class ChoiceController {
                 return;
             }
 
-            const createchoice = await this.choiceService.createchoice(title, choice1Name, choice2Name, endTime)
+            const createchoice = await this.choiceService.createchoice(userKey, title, choice1Name, choice2Name, endTime)
             res.status(201).send({data: createchoice});  
 
         }catch(err){
@@ -34,8 +34,8 @@ class ChoiceController {
 
     mychoice = async (req, res, next) =>{
         try{
-            const {userId} = req.params.user;
-            const mychoice = await this.choiceService.findMychoice(userId);
+            const {userKey} = res.locals.user;
+            const mychoice = await this.choiceService.findMychoice(userKey);
             res.status(200).json({data: mychoice});
         }catch(err){
             next(err);
@@ -44,11 +44,11 @@ class ChoiceController {
 
     deletechoice = async (req, res, next) =>{
         try{
-            const {userId} = req.params.user;
+            const {userKey} = res.locals.user;
             const {choiceId} = req.params;
-            if(!userId) throw new Error("없는 게시글 입니다.")
+            if(!choiceId) throw new Error("없는 게시글 입니다.")
 
-            const deletechoice = await this.choiceService.deletechoice(userId, choiceId);
+            const deletechoice = await this.choiceService.deletechoice(userKey, choiceId);
             res.status(200).json({data: deletechoice});
         }catch(err){
             next(err);
@@ -57,24 +57,25 @@ class ChoiceController {
 
     choice = async (req, res, next) =>{
         try{
-            const {userId} = req.params.user;
+            const {userKey} = res.locals.user;
             const {choiceId} = req.params;
             const {choiceNum} = req.body;
+            let choice
             if(!choiceId)throw new Error("없는 게시글 입니다.")
-            if(choiceNum === 1 || choiceNum ===2){
-                 const choice = await this.choiceService.choice(userId, choiceId, choiceNum);
+            if(choiceNum === 1 || choiceNum === 2){
+                 choice = await this.choiceService.choice(userKey, choiceId, choiceNum);
             }else{
                 throw new Error("잘못된 접근 입니다.")
             }
-
             res.status(200).json({message: '투표 성공'});
-
-
+            return choice
         }
         catch(err){
             next(err);
         }
     }
+
+
 
 
 }

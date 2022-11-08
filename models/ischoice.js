@@ -22,6 +22,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   isChoice.init(
     {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
       userKey: {
         allowNull: false,
         type: DataTypes.INTEGER,
