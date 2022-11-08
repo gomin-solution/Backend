@@ -1,6 +1,6 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const UserRepository = require("../repositories/users.repository.js");
-const AdviceRepository = require("../repositories/advice.rpository");
+const AdviceRepository = require("../repositories/advice.repository");
 const ChoiceRepository = require("../repositories/choice.repository");
 
 const bcrypt = require("bcrypt");

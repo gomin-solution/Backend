@@ -8,6 +8,7 @@ class AdviceController {
   adviceImageService = new AdviceImageService();
 
   creatAdvice = async (req, res, next) => {
+    console.log(res.locals.user);
     const { userKey } = res.locals.user;
     const { title, categoryId, content } = req.body;
     const images = req.files;
@@ -22,7 +23,7 @@ class AdviceController {
 
       let imageUrl = [];
       if (images) {
-        const adviceId = creatAdvice.adviceId
+        const adviceId = creatAdvice.adviceId;
         const values = Object.values({ images });
         //console.log(values);
         for (let i = 0; i < values[0].length; i++) {
@@ -38,7 +39,7 @@ class AdviceController {
         title: title,
         categoryId: categoryId,
         content: content,
-        adviceImage: imageUrl
+        adviceImage: imageUrl,
       });
     } catch (error) {
       next(error);
