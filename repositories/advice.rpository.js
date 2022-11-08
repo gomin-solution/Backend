@@ -9,7 +9,6 @@ class AdviceRepository {
       categoryId: categoryId,
       content: content,
     });
-
     return createAdvice;
   };
 
@@ -20,6 +19,19 @@ class AdviceRepository {
       limit: 5,
     });
     return adviceHot5;
+  };
+
+  findAdvice = async ({adviceId}) => {
+    const findAdvice = await Advice.findOne({where: { adviceId }})
+    return findAdvice
+  }
+
+  updateAdvice = async (adviceId, title, content) => {
+    const updateAdvice = await Advice.update(
+        {title: title, content: content},
+        { where: { adviceId: adviceId}}
+    )
+    return updateAdvice;
   };
 }
 
