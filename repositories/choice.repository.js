@@ -28,6 +28,7 @@ class ChoiceRepository {
     if (uesrId !== temp_Id) {
       return;
     }
+  }
 
     //투표 여부 데이터 가져오기
     isChoice = async (userId, choiceId) => {
@@ -56,7 +57,6 @@ class ChoiceRepository {
     }
 
     //투표를 완료한 경우, 해당 choice테이블에서 투표 데이터를 가져온다.
-
    
 }
 
