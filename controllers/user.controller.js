@@ -11,7 +11,7 @@ class UserController {
   /**회원가입 컨트롤러 */
   signup = async (req, res, next) => {
     try {
-      const { userId, nickname, password } =
+      const { userId, nickname, password, confirm, isAdult } =
         await joi.signupSchema.validateAsync(req.body);
 
       const hashed = await bcrypt.hash(password, 12);
@@ -20,6 +20,7 @@ class UserController {
         userId: userId,
         nickname: nickname,
         password: hashed,
+        isAdult: isAdult,
       });
       res.status(200).json({ message: "회원가입 성공" });
     } catch (error) {
@@ -57,6 +58,7 @@ class UserController {
     try {
       const { nickname, userId } = req.body;
 
+      console.log(nickname, userId);
       if (!nickname && !userId) {
         return res.status(400).json({ message: "잘못된 요청입니다" });
       }
@@ -77,6 +79,7 @@ class UserController {
     }
   };
 
+  //메인페이지 가져오기
   mainPage = async (req, res, next) => {
     try {
       await this.userService.mainPage();

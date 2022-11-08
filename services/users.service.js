@@ -1,7 +1,7 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const UserRepository = require("../repositories/users.repository.js");
 const AdviceRepository = require("../repositories/advice.rpository");
-// const ChoiceRepository = require("../repositories/choice.repository");
+const ChoiceRepository = require("../repositories/choice.repository");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -10,17 +10,19 @@ require("dotenv").config();
 class UserService {
   userRepository = new UserRepository();
   adviceRepository = new AdviceRepository();
-  // choiceRepository = new ChoiceRepository();
+  choiceRepository = new ChoiceRepository();
 
   createUser = async ({
     userId: userId,
     nickname: nickname,
     password: hashed,
+    isAdult: isAdult,
   }) => {
     await this.userRepository.createUser({
       userId: userId,
       nickname: nickname,
       password: hashed,
+      isAdult: isAdult,
     });
   };
 
@@ -35,9 +37,9 @@ class UserService {
     const accessToken = jwt.sign(
       { userKey: user.userKey },
       process.env.SECRET_KEY,
-      // {
-      //   expiresIn: "60s",
-      // }
+      {
+        expiresIn: "60s",
+      }
     );
 
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
@@ -49,24 +51,21 @@ class UserService {
 
   findNickname = async (nickname) => {
     const findNickname = await this.userRepository.findNickname(nickname);
-    if (nickname !== findNickname)
+    if (findNickname)
       throw new ErrorCustom(400, "이미 존재하는 닉네임 입니다.");
-
     return;
   };
 
   findUserId = async (userId) => {
     const findUserId = await this.userRepository.findUserId(userId);
-    if (userId !== findUserId)
-      throw new ErrorCustom(400, "이미 존재하는 아이디 입니다.");
-
+    if (findUserId) throw new ErrorCustom(400, "이미 존재하는 아이디 입니다.");
     return;
   };
 
   mainPage = async () => {
-    const getChoice = await this.choiceRepository;
+    const getChoice = await this.choiceRepository();
 
-    const getAdvice = await this.adviceRepository;
+    const getAdvice = await this.adviceRepository();
 
     return { choice: getChoice, advice: getAdvice };
   };
