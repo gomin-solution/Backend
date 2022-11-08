@@ -1,4 +1,4 @@
-const { Advice, AdviceBM } = require("../models");
+const { Advice, AdviceBM, User } = require("../models");
 
 class AdviceRepository {
   //조언 게시글 업로드
@@ -12,8 +12,8 @@ class AdviceRepository {
     return createAdvice;
   };
 
-  adviceHot = async () => {
-    const adviceHot5 = await choice.findAll({
+  adviceHot = async (userKey) => {
+    const adviceHot5 = await Advice.findAll({
       attributes: ["viewCount"],
       order: [["viewCount", "DESC"]],
       limit: 5,

@@ -54,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
       //     type: DataTypes.BOOLEAN,
       //     allowNull: true,
       //   },
+      viewCount: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
