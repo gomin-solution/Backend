@@ -22,6 +22,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         targetKey: "userKey",
       });
+
+      //투표여부
+      this.hasMany(models.isChoice, {
+        foreignKey: "userKey",
+        targetKey: "userKey",
+      });
+
+
       // this.hasMany(models.Choice, {
       //   foreignKey: "userId",
       //   targetKey: "userId",
