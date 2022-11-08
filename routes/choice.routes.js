@@ -1,13 +1,23 @@
 const express = require('express');
 const router = express.Router();
 
-const ChoiceController = require('./choice.controller');
+const ChoiceController = require('../controllers/choice.controller');
 
 const choiceController = new ChoiceController;
 
-router.post('/', choiceController.createchoice);
+//투표 게시글 만들기
+router.post('/choice', choiceController.createchoice);
+
+//투표 게시글 가져오기
 router.get('/choice', choiceController.allchoice);
+
+//투표 선택
+router.put('/choice/:choiceId', choiceController.choice);
+
+//마이페이지에서 내가 작성한 투표 게시글 가져오기
 router.get('/mypage/choice', choiceController.mychoice);
+
+//마이페이지에서 내가 작성한 투표 게시글 삭제
 router.delete;('/mypage/choice/:choiceId', choiceController.deletechoice);
 
 module.exports = router;

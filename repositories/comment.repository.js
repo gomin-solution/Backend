@@ -31,9 +31,9 @@ class CommentRepository {
 
     //덧글 수정
     updateComment = async (userId, commentId, comment) => {
-        const comment = await Comment.findByPk(commentId); 
-        const commentId = comment.userId  
-        if(userId !== commentId){    
+        const data = await Comment.findByPk(commentId); 
+        const dataId = data.userId  
+        if(userId !== dataId){    //로그인한 사람의 id와 comment가 가진 userid가 다를 경우
             return;
         }
         const updateCommentData = await Comment.update({comment}, {where: {commentId}})
@@ -42,9 +42,9 @@ class CommentRepository {
 
     //덧글 삭제
     deleteComment = async (userId, commentId) => {
-        const comment = await Comment.findByPk(commentId); 
-        const commentId = comment.userId 
-        if(userId !== commentId){                 
+        const data = await Comment.findByPk(commentId); 
+        const dataId = data.userId 
+        if(userId !== datatId){                 
             return;
         }
         const deleteCommentData = await Comment.destroy({where: {commentId}})
