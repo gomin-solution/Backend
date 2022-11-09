@@ -28,7 +28,7 @@ class BookMarkService {
 
     //북마크가 있을시 삭제
     if (!createBookmark) {
-      await this.bookmarkRepository.cancelBookmark(userKey, adviceId);
+      await this.bookmarkRepository.cancelAdviceBm(userKey, adviceId);
       return { msg: "취소 되었습니다" };
     }
 
