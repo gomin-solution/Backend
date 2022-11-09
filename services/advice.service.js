@@ -16,17 +16,25 @@ class AdviceService {
     return createAdviceData;
   };
 
-  findAllAdvice = async () => {
-    const findAllAdvice = await this.adviceRepository.findAllAdvice();
-    console.log(findAllAdvice)
-    return findAllAdvice;
-  }
+  findAllAdvice = async (userKey) => {
+    const findAllAdvice = await this.adviceRepository.findAllAdvice(userKey);
 
-  findCategoryAdvice = async (categoryId) => {
-    const findCategiryAdvice = await this.adviceRepository.findCategoryAdvice(categoryId);
-    return findCategiryAdvice;
-}
-
-}
+    const data = findAllAdvice.map((post) => {
+      let boolean;
+      post.AdviceBMs.length ? (boolean = true) : (boolean = false);
+      return {
+        adviceId: post.adviceId,
+        title: post.title,
+        content: post.content,
+        createdAt: post.createdAt,
+        userImage: post.User.userImg,
+        nickname: post.User.nickname,
+        isBookMark: boolean,
+        viewCount: post.viewCount,
+      };
+    });
+    return data;
+  };
+};
 
 module.exports = AdviceService;

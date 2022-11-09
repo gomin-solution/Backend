@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      isAdult: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+      },
       viewCount: {
         type: Sequelize.INTEGER,
         allowNull: true,

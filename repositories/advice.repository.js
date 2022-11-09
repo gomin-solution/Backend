@@ -14,19 +14,23 @@ class AdviceRepository {
 
   adviceHot = async (userKey) => {
     const adviceHot5 = await Advice.findAll({
-      attributes: ["viewCount"],
       order: [["viewCount", "DESC"]],
       limit: 5,
       include: [
-        { model: User },
+        { model: User, attributes: ["nickname", "userImg"] },
         { model: AdviceBM, where: { userKey: userKey }, required: false },
       ],
     });
     return adviceHot5;
   };
 
-  findAllAdvice = async () => {
-    const findAllAdvice = await Advice.findAll()
+  findAllAdvice = async (userKey) => {
+    const findAllAdvice = await Advice.findAll({
+      include: [
+        { model: User, attributes: ["nickname", "userImg"] },
+        { model: AdviceBM, where: { userKey: userKey } },
+      ],
+    });
     return findAllAdvice;
   };
 
@@ -35,7 +39,7 @@ class AdviceRepository {
     return findCategiryAdvice;
   };
 
-}
+};
 
 
 

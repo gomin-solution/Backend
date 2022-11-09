@@ -64,9 +64,43 @@ class UserService {
   mainPage = async (userKey) => {
     const getChoice = await this.choiceRepository.choiceHot(userKey);
 
+    const choiceData = getChoice.map((post) => {
+      let boolean;
+      post.ChoiceBMs.length ? (boolean = true) : (boolean = false);
+      return {
+        choiceId: post.choiceId,
+        title: post.title,
+        choice1Name: post.choice1Name,
+        choice2Name: post.choice2Name,
+        choice1Per: post.choice1Per,
+        choice2Per: post.choice2Per,
+        userImage: post.User.userImg,
+        nickname: post.User.nickname,
+        createdAt: post.createdAt,
+        endTime: post.endTime,
+        choiceCount: post.choiceCount,
+        isBookMark: boolean,
+      };
+    });
+
     const getAdvice = await this.adviceRepository.adviceHot(userKey);
 
-    return { choice: getChoice, advice: getAdvice };
+    const adviceData = getAdvice.map((post) => {
+      let boolean;
+      post.AdviceBMs.length ? (boolean = true) : (boolean = false);
+      return {
+        adviceId: post.adviceId,
+        title: post.title,
+        content: post.content,
+        createdAt: post.createdAt,
+        userImage: post.User.userImg,
+        nickname: post.User.nickname,
+        adviceCount: post.adviceCount,
+        isBookMark: boolean,
+      };
+    });
+
+    return { choice: choiceData, advice: adviceData };
   };
 }
 
