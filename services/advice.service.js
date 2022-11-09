@@ -15,11 +15,25 @@ class AdviceService {
     return createAdviceData;
   };
 
-  findAllAdvice = async () => {
-    const findAllAdvice = await this.adviceRepository.findAllAdvice();
-    return findAllAdvice;
-  }
+  findAllAdvice = async (userKey) => {
+    const findAllAdvice = await this.adviceRepository.findAllAdvice(userKey);
 
+    const data = findAllAdvice.map((post) => {
+      let boolean;
+      post.AdviceBMs.length ? (boolean = true) : (boolean = false);
+      return {
+        adviceId: post.adviceId,
+        title: post.title,
+        content: post.content,
+        createdAt: post.createdAt,
+        userImage: post.User.userImg,
+        nickname: post.User.nickname,
+        isBookMark: boolean,
+        viewCount: post.viewCount,
+      };
+    });
+    return data;
+  };
 }
 
 module.exports = AdviceService;
