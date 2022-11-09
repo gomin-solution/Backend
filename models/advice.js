@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "adviceId",
         sourceKey: "adviceId",
       });
+      this.hasMany(models.Comment, {
+        foreignKey: "adviceId",
+        sourceKey: "adviceId",
+      });
     }
   }
   Advice.init(

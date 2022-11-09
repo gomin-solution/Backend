@@ -4,7 +4,7 @@ class BookMarkService {
   bookmarkRepository = new BookMarkRepository();
 
   updateChoiceBM = async (userKey, choiceId) => {
-    await this.bookmarkRepository.addBookmark;
+    await this.bookmarkRepository.addBookmark(userKey, choiceId);
 
     await this.bookmarkRepository.cancelBookmark;
   };
