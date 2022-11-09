@@ -34,6 +34,48 @@ class BookMarkService {
 
     return { msg: "등록 되었습니다" };
   };
+
+  findBmChoice = async (userKey) => {
+    const findBmChoice = await this.bookmarkRepository.findBmChoice(userKey);
+
+    const result = findBmChoice.map((post) => {
+      return {
+        choiceId: post.Choice.choiceId,
+        title: post.Choice.title,
+        choice1Name: post.Choice.choice1Name,
+        choice2Name: post.Choice.choice2Name,
+        choice1Per: post.Choice.choice1Per,
+        choice2Per: post.Choice.choice2Per,
+        userImage: post.Choice.User.userImage,
+        nickname: post.Choice.User.nickname,
+        createdAt: post.Choice.createdAt,
+        endTime: post.Choice.endTime,
+        choiceCount: post.Choice.choiceCount,
+        userKey: post.Choice.userKey,
+        isBookmark: true,
+        isChoice: null,
+      };
+    });
+
+    return result;
+  };
+
+  findBmAdvice = async (userKey) => {
+    const findBmAdvice = await this.bookmarkRepository.findBmAdvice(userKey);
+
+    const result = findBmAdvice.map((post) => {
+      return {
+        adviceId: post.Advice.adviceId,
+        title: post.Advice.title,
+        content: post.Advice.content,
+        createdAt: post.Advice.createdAt,
+        userKey: post.Advice.userKey,
+        CommentCount: post.Advice.Comments.length,
+      };
+    });
+
+    return result;
+  };
 }
 
 module.exports = BookMarkService;

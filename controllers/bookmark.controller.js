@@ -30,6 +30,30 @@ class BookMarkController {
       next(err);
     }
   };
+
+  findBmChoice = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+
+      const findBmchoice = await this.bookmarkService.findBmChoice(userKey);
+
+      res.status(200).json(findBmchoice);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  findBmAdvice = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+
+      const findBmAdvice = await this.bookmarkService.findBmAdvice(userKey);
+
+      res.status(200).json(findBmAdvice);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = BookMarkController;

@@ -1,4 +1,11 @@
-const { ChoiceBM, AdviceBM } = require("../models");
+const {
+  ChoiceBM,
+  AdviceBM,
+  Choice,
+  Advice,
+  User,
+  Comment,
+} = require("../models");
 
 class BookMarkRepository {
   //투표게시글 북마크 없을시 생성 있을시 false반환
@@ -35,6 +42,30 @@ class BookMarkRepository {
   //조언게시글 북마크 삭제
   cancelAdviceBm = async (userKey, adviceId) => {
     await AdviceBM.destroy({ where: { userKey: userKey, adviceId: adviceId } });
+  };
+
+  findBmChoice = async (userKey) => {
+    const findBmChoice = await ChoiceBM.findAll({
+      where: { userKey: userKey },
+      include: {
+        model: Choice,
+        include: { model: User, attributes: ["nickname", "userImg"] },
+      },
+    });
+
+    return findBmChoice;
+  };
+
+  findBmAdvice = async (userKey) => {
+    const findBmAdvice = await AdviceBM.findAll({
+      where: { userKey: userKey },
+      include: {
+        model: Advice,
+        include: { model: Comment },
+      },
+    });
+
+    return findBmAdvice;
   };
 }
 

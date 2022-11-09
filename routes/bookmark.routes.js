@@ -6,14 +6,10 @@ const BookmarkController = require("../controllers/bookmark.controller");
 const bookmarkController = new BookmarkController();
 
 //북마크 투표 페이지
-bookMarkRouter.get(
-  "/choice",
-  authMiddleware,
-  bookmarkController.updateChoiceBM
-);
+bookMarkRouter.get("/choice", authMiddleware, bookmarkController.findBmChoice);
 
 //북마크 조언 페이지
-bookMarkRouter.get("/advice", authMiddleware);
+bookMarkRouter.get("/advice", authMiddleware, bookmarkController.findBmAdvice);
 
 //북마크 투표 등록 및 취소
 bookMarkRouter.put(
