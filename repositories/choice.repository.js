@@ -20,20 +20,19 @@ class ChoiceRepository {
     return findAllchoice;
   };
 
-
-                //추가해야 하는 기능
-        //리턴에서 userImage, nickname, isBookMark, isChoice, 추가
+  //추가해야 하는 기능
+  //리턴에서 userImage, nickname, isBookMark, isChoice, 추가
   //choice를 작성한 유저의 데이터를 가져와야 한다.
   findUserData = async (userKey) => {
-    const data = await User.findByPk(userKey)
-    const returnData ={
+    const data = await User.findByPk(userKey);
+    const returnData = {
       userKey: data.userKey,
       userImg: data.userImg,
-      nickname: data.nickname
-    }
+      nickname: data.nickname,
+    };
 
-    return returnData
-  }
+    return returnData;
+  };
 
   findMychoice = async (userId) => {
     const findMychoice = await Choice.findByPk(userId);
@@ -105,6 +104,21 @@ class ChoiceRepository {
       ],
     });
     return choiceHot5;
+  };
+
+  choiceSeach = async (userKey, keyword) => {
+    const seachResult = await Choice.findAll({
+      where: {
+        title: {
+          [Op.like]: "%" + keyword + "%",
+        },
+      },
+      include: [
+        { model: User, attributes: ["nickname", "userImg"] },
+        { model: ChoiceBM, where: { userKey: userKey }, required: false },
+      ],
+    });
+    return seachResult;
   };
 }
 

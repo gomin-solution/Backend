@@ -17,9 +17,8 @@ class UserRepository {
     });
   };
 
-  findUser = async (userId) => {
-    console.log("repository", userId);
-    return await User.findOne({ where: { userId: userId } });
+  findUser = async (userKey) => {
+    return await User.findbyPk(userKey);
   };
 
   findNickname = async (nickname) => {
