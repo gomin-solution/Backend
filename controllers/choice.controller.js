@@ -24,7 +24,7 @@ class ChoiceController {
     } catch (err) {
       next(err);
     }
-
+  };
 
   allchoice = async (req, res, next) => {
     try {
@@ -33,8 +33,7 @@ class ChoiceController {
     } catch (err) {
       next(err);
     }
-  }
-
+  };
 
   mychoice = async (req, res, next) => {
     try {
@@ -80,6 +79,6 @@ class ChoiceController {
       next(err);
     }
   };
-};
+}
 
 module.exports = ChoiceController;
