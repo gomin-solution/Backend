@@ -5,35 +5,40 @@ class ChoiceController {
 
   createchoice = async (req, res, next) => {
     try {
-      const { userKey } = res.locals.user;
-      const { title, choice1Name, choice2Name, endTime } = req.body;
+        const { userKey } = res.locals.user;
+        const { title, choice1Name, choice2Name, endTime } = req.body;
 
-      if (!title || !choice1Name || !choice2Name || !endTime) {
-        res.status(400).send({ errorMessage: "모든 내용을 입력해 주세요" });
-        return;
-      }
+        if (!title || !choice1Name || !choice2Name || !endTime) {
+            res.status(400).send({ errorMessage: "입력 내용을 확인해 주십시오" });
+            return;
+        }
 
-      const createchoice = await this.choiceService.createchoice(
-        userKey,
-        title,
-        choice1Name,
-        choice2Name,
-        endTime
-      );
-      res.status(201).send({ data: createchoice });
-    } catch (err) {
-      next(err);
+        const createchoice = await this.choiceService.createchoice(
+            userKey,
+            title,
+            choice1Name,
+            choice2Name,
+            endTime
+        );
+            res.status(201).send({ message: "투표 등록이 완료되었습니다.", data: createchoice });
+        } catch (err) {
+            next(err);
+        }   
     }
   };
 
-  allchoice = async (req, res, next) => {
-    try {
-      const allchoice = await this.choiceService.findAllchoice();
-      res.status(200).json({ data: allchoice });
-    } catch (err) {
-      next(err);
+
+    allchoice = async (req, res, next) => {
+        //추가해야 하는 기능
+        //리턴에서 userImage, nickname, isBookMark, isChoice, 추가
+        try {
+            const allchoice = await this.choiceService.findAllchoice();
+            res.status(200).json({ data: allchoice });
+        } catch (err) {
+            next(err);
+        }
     }
-  };
+
 
   mychoice = async (req, res, next) => {
     try {

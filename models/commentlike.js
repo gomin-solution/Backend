@@ -13,15 +13,27 @@ module.exports = (sequelize, DataTypes) => {
           targetKey: "userKey",
         });
 
-        this.belongsTo(models.Choice, {
-            foreignKey: "choiceId",
-            targetKey: "choiceId",
-        });
+        // this.belongsTo(models.Choice, {
+        //     foreignKey: "choiceId",
+        //     targetKey: "choiceId",
+        // });
+
+        this.belongsTo(models.Comment, {
+          foreignKey: "commentId",
+          targetKey: "commentId",
+      });
 
     }
   }
   CommentLike.init(
     {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+
+      },
       userKey: {
         allowNull: false,
         type: DataTypes.INTEGER,
@@ -38,6 +50,14 @@ module.exports = (sequelize, DataTypes) => {
           key: "commentId",
         },
       },
+      // choiceId: {
+      //   allowNull: false,
+      //   type: DataTypes.INTEGER,
+      //   references: {
+      //     model: "Choice",
+      //     key: "choiceId",
+      //   },
+      // },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

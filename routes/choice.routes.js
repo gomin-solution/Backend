@@ -9,7 +9,7 @@ const choiceController = new ChoiceController;
 //투표 게시글 만들기
 router.post('/choice',authMiddleware, choiceController.createchoice);
 
-//투표 게시글 가져오기
+//모든 투표 게시글 가져오기
 router.get('/choice',authMiddleware, choiceController.allchoice);
 
 //투표 선택
