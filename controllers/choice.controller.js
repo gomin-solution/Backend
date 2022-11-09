@@ -24,6 +24,8 @@ class ChoiceController {
     } catch (err) {
       next(err);
     }
+  }
+    
 
 
     allchoice = async (req, res, next) => {
@@ -34,7 +36,7 @@ class ChoiceController {
         next(err);
         }
     }
-  };
+
 
   mychoice = async (req, res, next) => {
     try {
