@@ -47,6 +47,7 @@ class AdviceController {
 
   //조언 게시글조회
   allAdvice = async (req, res, next) => {
+    //const { userKey } = res.locals.user;
     const { categoryId } = req.params;
     const allAdvice = await this.adviceService.findAllAdvice();
     const allCategoryAdvice = await this.adviceService.findCategoryAdvice(categoryId);
@@ -62,6 +63,19 @@ class AdviceController {
       next(err);
     }
   };
+
+  findAdvice = async (req, res, next) => {
+    const {userKey} = res.locals.user;
+    const { adviceId } = req.params;
+    const findAdvice = await this.adviceService.findOneAdvice(userKey, adviceId);
+    try{
+      res.status(200).json({ data: findAdvice })
+
+    } catch(error) {
+      next(err);
+    }
+   
+  }
 }
 
 module.exports = AdviceController;
