@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         sourceKey: "userKey",
       });
+
       this.hasMany(models.ChoiceBM, {
         foreignKey: "userKey",
         sourceKey: "userKey",
