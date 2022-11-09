@@ -12,13 +12,20 @@ class AdviceService {
       content
     );
     console.log(createAdviceData.adviceId, "으아아아아아아아");
+    console.log(createAdviceData.categoryId, "나오나아아아")
     return createAdviceData;
   };
 
   findAllAdvice = async () => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
+    console.log(findAllAdvice)
     return findAllAdvice;
   }
+
+  findCategoryAdvice = async (categoryId) => {
+    const findCategiryAdvice = await this.adviceRepository.findCategoryAdvice(categoryId);
+    return findCategiryAdvice;
+}
 
 }
 
