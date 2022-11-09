@@ -39,18 +39,18 @@ class ChoiceService {
 
             let absolute_a = result.choice_1_length
             let absolute_b = result.choice_2_length
-            let relative_a= 1;
-            let relative_b= 1;
+            let choice1Per
+            let choice2Per
             if(absolute_a+absolute_b > 0){
-                relative_a = (absolute_a)/(absolute_a+absolute_b);
-                relative_b = (absolute_b)/(absolute_a+absolute_b);
+                choice1Per = (absolute_a)/(absolute_a+absolute_b)*100;
+                choice2Per = (absolute_b)/(absolute_a+absolute_b)*100;
             }
             let count = absolute_a + absolute_b
             return {
-                absolute_a,
-                absolute_b,
-                relative_a, 
-                relative_b,
+                // absolute_a,
+                // absolute_b,
+                choice1Per, 
+                choice2Per,
                 count
             }
         }
