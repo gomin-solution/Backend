@@ -76,44 +76,18 @@ class CommentController {
     }
   };
 
-  updateComment = async (req, res, next) => {
-    try {
-      const { commentId } = req.params;
-      const { comment } = req.body;
-      const {userKey}= res.locals.user;
-      const updateComment = await this.commentService.updateComment(
-        userKey,
-        commentId,
-        comment
-      );
+  likeComment = async (req, res, next) => {
 
-      if (!updateComment) {
-        res.status(400).send({ errorMessage: "수정권한이 없습니다." });
-        return;
-      }
-      res.status(200).json({ Message: "덧글 수정 성공" });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  deleteComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
       const {userKey}= res.locals.user;
+      const Likes = await this.likeService.updateCommentLike(userKey, commentId);    //위의 두개를 서비스로 보내고 받아온 값을
+      res.status(200).json({ data: Likes });              //리스폰 상태창에 보낸다.
 
-      const deleteComment = await this.commentService.deleteComment(
-        commentId,
-        userKey
-      );
-      if (!deleteComment) {
-        res.status(400).send({ errorMessage: "삭제권한이 없습니다." });
-        return;
-      }
-      res.status(200).json({ data: deleteComment });
-    } catch (error) {
+    }catch(error){
       next(error);
     }
-  };
+  }
+
 }
 module.exports = CommentController;

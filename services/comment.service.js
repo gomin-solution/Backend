@@ -23,8 +23,28 @@ class CommentService{
 
     //덧글 삭제하기
     deleteComment= async (commentId, userKey) => {
-        const createComment = await this.commentRepository.deleteComment(userKey, commentId);
+        const createComment = await this.commentRepository.deleteComment(commentId, userKey);
         return createComment
+    }
+
+    //덧글 좋아요 또는 취소
+    updateCommentLike= async (userKey, commentId) => {
+
+        //우선 리포에 좋아요를 한 이력이 있는지부터 찾아보고
+        const isCommentLike = await this.commentRepository.isCommentLike(userKey,commentId)
+
+
+        //있다면 리포에 좋아요데이터를 삭제하도록 지시하고
+        //없다면 리포에 좋아요데이터를 생성하도록 지시
+
+        if (isCommentLike){
+            const cancel = await this.commentRepository.cancelCommentLike(userKey,commentId)
+            return cancel;
+        }else{
+            const like = await this.commentRepository.createCommentLike(userKey,commentId);
+            return like
+        }
+
     }
 
 }

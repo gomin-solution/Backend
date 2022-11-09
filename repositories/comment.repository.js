@@ -41,15 +41,36 @@ class CommentRepository {
     }
 
     //덧글 삭제
-    deleteComment = async (userKey, commentId) => {
+    deleteComment = async ( commentId, userKey) => {
         const data = await Comment.findByPk(commentId); 
         const dataId = data.userKey 
-        if(userKey !== datatId){                 
+        if(userKey !== dataId){                 
             return;
         }
         const deleteCommentData = await Comment.destroy({where: {commentId}})
         return deleteCommentData
     }
+
+    //좋아요 이력 확인
+
+    isCommentLike= async (userKey, commentId) =>{
+
+    }
+
+
+    //좋아요 취소
+
+    cancelCommentLike=async (userKey, commentId)=>{
+
+    }
+
+
+    //좋아요 생성
+
+    createCommentLike = async (userKey, commentId) =>{
+    
+    }
+
 
 }
 
