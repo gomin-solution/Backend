@@ -33,6 +33,14 @@ class AdviceRepository {
     });
     return findAllAdvice;
   };
-}
+
+  findCategoryAdvice = async (categoryId) => {
+    const findCategiryAdvice = await Advice.findAll({where: {categoryId:categoryId}});
+    return findCategiryAdvice;
+  };
+
+};
+
+
 
 module.exports = AdviceRepository;

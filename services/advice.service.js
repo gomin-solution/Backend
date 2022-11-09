@@ -12,6 +12,7 @@ class AdviceService {
       content
     );
     console.log(createAdviceData.adviceId, "으아아아아아아아");
+    console.log(createAdviceData.categoryId, "나오나아아아")
     return createAdviceData;
   };
 
@@ -34,6 +35,6 @@ class AdviceService {
     });
     return data;
   };
-}
+};
 
 module.exports = AdviceService;

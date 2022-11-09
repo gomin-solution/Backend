@@ -8,7 +8,6 @@ class AdviceController {
   adviceImageService = new AdviceImageService();
 
   creatAdvice = async (req, res, next) => {
-    console.log(res.locals.user);
     const { userKey } = res.locals.user;
     const { title, categoryId, content } = req.body;
     const images = req.files;
@@ -46,20 +45,23 @@ class AdviceController {
     }
   };
 
+  //조언 게시글조회
   allAdvice = async (req, res, next) => {
-    const categoryNum = req.params;
-    try {
-        const allAdvice = await this.adviceService.findAllAdvice();
-        res.status(200).json({ data: allAdvice });
+    const { categoryId } = req.params;
+    const allAdvice = await this.adviceService.findAllAdvice();
+    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(categoryId);
 
+    try {
+      //전체 조회
+      if (categoryId == 0) {
+        return res.status(200).json({ data: allAdvice });
+      }
+      //카테고리별 조회
+      return res.status(200).json({ data: allCategoryAdvice })
     } catch (err) {
       next(err);
     }
   };
-
-  //조언 게시글 검색
-
-  // 조언 게시글 수정
 }
 
 module.exports = AdviceController;
