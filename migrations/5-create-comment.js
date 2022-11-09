@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("Comment", {
-      choiceId: {
+      commentId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -17,7 +17,7 @@ module.exports = {
           key: "userKey",
         },
       },
-      adviceKey: {
+      adviceId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
