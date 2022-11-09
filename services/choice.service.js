@@ -9,8 +9,74 @@ class ChoiceService {
     }
 
     findAllchoice = async () => {
-        const findAllchoice = await this.choiceRepository.findAllchoice();
-        return findAllchoice
+
+        try{
+            const findAllChoice = await this.choiceRepository.findAllchoice();
+            const author= findAllChoice
+            let data = new Array();
+
+            //작성자의 닉네임과 유저 아이디를 가져오는 명령
+            for(let i = 0 ; i<findAllChoice.length; i++) {
+                const authorKey = author[i].userKey
+                console.log(authorKey)
+                const findAuthorData = await this.choiceRepository.findUserData(authorKey)
+                console.log("또다른 구분선==96+++++++++++++")
+                console.log(findAuthorData)
+                console.log(findAuthorData.userImg)
+                data[i] = findAuthorData
+            }
+
+
+
+            console.log("구분선=============")
+            console.log(data)
+            console.log("구분선=============222222")
+            console.log(findAllChoice)
+
+                //추가해야 하는 기능
+            //리턴에서 userImage, nickname, isBookMark, isChoice, 추가
+
+            //작성자자 이 투표에 참여했는가?
+
+            //작성자가 이 투표에 북마크를 했는가?
+
+            console.log(
+                // findAllChoice.choiceId,
+                // findAllChoice.userKey,
+                // findAllChoice.title,
+                // findAllChoice.choice1Name,
+                // findAllChoice.choice1Name,
+                // findAllChoice.choice1Per,
+                // findAllChoice.choice2Per,
+
+                // data.userImg,
+                // data.nickname,
+                // findAllChoice.createdAt,
+                // findAllChoice.endTime,
+            )
+
+
+            return {
+                choiceId: findAllChoice.choiceId,
+                userKey: findAllChoice.userKey,
+                title: findAllChoice.title,
+                choice1Name: findAllChoice.choice1Name,
+                choice2Name: findAllChoice.choice1Name,
+                choice1Per: findAllChoice.choice1Per,
+                choice2Per: findAllChoice.choice2Per,
+
+                userImage: data.userImg,
+                nickname: data.nickname,
+                createdAt: findAllChoice.createdAt,
+                endTime:findAllChoice.endTime,
+                // choiceCount:,
+
+                // isBookMark:,
+                // isChoice:
+            }
+        }catch(err){
+
+        }
     }
 
     findMychoice = async (userKey) => {

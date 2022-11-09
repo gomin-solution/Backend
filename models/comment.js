@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
             targetKey: "adviceId",
         });
 
+        this.hasMany(models.CommentLike, {
+          foreignKey: "commentId",
+          sourceKey: "commentId",
+        });
+
     }
   }
   Comment.init(
