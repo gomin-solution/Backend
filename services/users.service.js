@@ -34,7 +34,7 @@ class UserService {
 
     if (!passwordVerify) throw new ErrorCustom(400, "비밀번호 오류");
     const accessToken = jwt.sign(
-      { userId: user.userId },
+      { userId: user.userId, userKey: user.userKey },
       process.env.SECRET_KEY
       // {
       //   expiresIn: "1h",
@@ -80,23 +80,21 @@ class UserService {
         endTime: post.endTime,
         choiceCount: post.choiceCount,
         isBookMark: boolean,
+        userKey: post.userKey,
       };
     });
 
     const getAdvice = await this.adviceRepository.adviceHot(userKey);
 
     const adviceData = getAdvice.map((post) => {
-      let boolean;
-      post.AdviceBMs.length ? (boolean = true) : (boolean = false);
       return {
         adviceId: post.adviceId,
         title: post.title,
         content: post.content,
         createdAt: post.createdAt,
-        userImage: post.User.userImg,
-        nickname: post.User.nickname,
-        adviceCount: post.adviceCount,
-        isBookMark: boolean,
+        viewCount: post.viewCount,
+        CommentCount: post.Comments.length,
+        userKey: post.userKey,
       };
     });
 

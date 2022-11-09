@@ -1,4 +1,6 @@
+
 const { Advice, AdviceBM, User, AdviceImage, Comment } = require("../models");
+
 
 class AdviceRepository {
   //조언 게시글 업로드
@@ -16,10 +18,7 @@ class AdviceRepository {
     const adviceHot5 = await Advice.findAll({
       order: [["viewCount", "DESC"]],
       limit: 5,
-      include: [
-        { model: User, attributes: ["nickname", "userImg"] },
-        { model: AdviceBM, where: { userKey: userKey }, required: false },
-      ],
+      include: [{ model: Comment }],
     });
     return adviceHot5;
   };
