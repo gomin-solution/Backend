@@ -95,7 +95,7 @@ class UserService {
         createdAt: post.createdAt,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
-        adviceCount: post.adviceCount,
+        viewCount: post.viewCount,
         isBookMark: boolean,
       };
     });
