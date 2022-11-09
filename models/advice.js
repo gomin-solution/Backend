@@ -12,11 +12,15 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         targetKey: "userKey",
       });
-      // this.hasMany(models.AdviceImage, {
-      //   foreignKey: "adviceId",
-      //   sourceKey: "adviceId",
-      // });
+      this.hasMany(models.AdviceImage, {
+        foreignKey: "adviceId",
+        sourceKey: "adviceId",
+      });
       this.hasMany(models.AdviceBM, {
+        foreignKey: "adviceId",
+        sourceKey: "adviceId",
+      });
+      this.hasMany(models.Comment, {
         foreignKey: "adviceId",
         sourceKey: "adviceId",
       });

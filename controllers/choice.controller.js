@@ -25,6 +25,7 @@ class ChoiceController {
             next(err);
         }   
     }
+  };
 
 
     allchoice = async (req, res, next) => {
