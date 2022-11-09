@@ -34,8 +34,14 @@ class AdviceRepository {
     return findAllAdvice;
   };
 
-  findCategoryAdvice = async (categoryId) => {
-    const findCategiryAdvice = await Advice.findAll({where: {categoryId:categoryId}});
+  findCategoryAdvice = async (userKey, categoryId) => {
+    const findCategiryAdvice = await Advice.findAll(
+      {where: {categoryId:categoryId}},
+      {include: [
+        { model: User, attributes: ["nickname", "userImg"] },
+        { model: AdviceBM, where: { userKey: userKey } },
+      ],
+    });
     return findCategiryAdvice;
   };
 

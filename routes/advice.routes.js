@@ -16,7 +16,7 @@ adviceRouter.post(
 );
 
 //조언 게시글 검색
-adviceRouter.get("/:categoryId", adviceController.allAdvice)
+adviceRouter.get("/:categoryId", authMiddleware, adviceController.allAdvice)
 
 //조언 게시글 수정
 //adviceRouter.put("/:adviceId", authMiddleware, adviceController.updateAdvice);

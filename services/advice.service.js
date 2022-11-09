@@ -11,8 +11,8 @@ class AdviceService {
       categoryId,
       content
     );
-    console.log(createAdviceData.adviceId, "으아아아아아아아");
-    console.log(createAdviceData.categoryId, "나오나아아아")
+    //console.log(createAdviceData.adviceId, "으아아아아아아아");
+    //console.log(createAdviceData.categoryId, "나오나아아아");
     return createAdviceData;
   };
 
@@ -35,6 +35,25 @@ class AdviceService {
     });
     return data;
   };
-};
+
+  findCategoryAdvice = async (userKey, categoryId) => {
+    const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(userKey, categoryId);
+    const data = findCategoryAdvice.map((post) => {
+      let boolean;
+      post.AdviceBMs.length ? (boolean = true) : (boolean = false);
+      return {
+        adviceId: post.adviceId,
+        title: post.title,
+        content: post.content,
+        createdAt: post.createdAt,
+        userImage: post.User.userImg,
+        nickname: post.User.nickname,
+        isBookMark: boolean,
+        viewCount: post.viewCount,
+      };
+    });
+    return data;
+  };
+}
 
 module.exports = AdviceService;

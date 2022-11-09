@@ -47,9 +47,10 @@ class AdviceController {
 
   //조언 게시글조회
   allAdvice = async (req, res, next) => {
+    const { userKey } = res.locals.user;
     const { categoryId } = req.params;
-    const allAdvice = await this.adviceService.findAllAdvice();
-    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(categoryId);
+    const allAdvice = await this.adviceService.findAllAdvice(userKey);
+    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(userKey, categoryId);
 
     try {
       //전체 조회
