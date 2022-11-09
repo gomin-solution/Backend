@@ -1,16 +1,40 @@
 const { ChoiceBM, AdviceBM } = require("../models");
 
 class BookMarkRepository {
+  //투표게시글 북마크 없을시 생성 있을시 false반환
   addChoiceBm = async (userKey, choiceId) => {
-    await ChoiceBM.findOrCreate({
+    const [data, created] = await ChoiceBM.findOrCreate({
       where: { userKey: userKey, choiceId: choiceId },
+      defaults: {
+        userKey: userKey,
+        choiceId: choiceId,
+      },
     });
+
+    return created;
   };
 
+  //조언게시글 북마크 없을시 생성 있을시 false반환
   addAdviceBm = async (userKey, adviceId) => {
-    await AdviceBM.findOrCreate({
+    const [data, created] = await AdviceBM.findOrCreate({
       where: { userKey: userKey, adviceId: adviceId },
+      defaults: {
+        userKey: userKey,
+        adviceId: adviceId,
+      },
     });
+
+    return created;
+  };
+
+  //투표게시글 북마크 삭제
+  cancelChoiceBm = async (userKey, choiceId) => {
+    await ChoiceBM.destroy({ where: { userKey: userKey, choiceId: choiceId } });
+  };
+
+  //조언게시글 북마크 삭제
+  cancelAdviceBm = async (userKey, adviceId) => {
+    await AdviceBM.destroy({ where: { userKey: userKey, adviceId: adviceId } });
   };
 }
 

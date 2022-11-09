@@ -16,9 +16,17 @@ bookMarkRouter.get(
 bookMarkRouter.get("/advice", authMiddleware);
 
 //북마크 투표 등록 및 취소
-bookMarkRouter.put("/choice/:choiceId", authMiddleware);
+bookMarkRouter.put(
+  "/choice/:choiceId",
+  authMiddleware,
+  bookmarkController.updateChoiceBM
+);
 
 //북마크 조언 등록 및 취소
-bookMarkRouter.put("/advice/:adviceId", authMiddleware);
+bookMarkRouter.put(
+  "/advice/:adviceId",
+  authMiddleware,
+  bookmarkController.updateAdviceBM
+);
 
 module.exports = bookMarkRouter;
