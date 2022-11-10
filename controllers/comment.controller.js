@@ -23,7 +23,6 @@ class CommentController {
         res.status(400).send({ errorMessage: "댓글 내용을 입력해주세요" }); //덧글 내용이 없다면 덧글을 입력해달라는 메시지 출력
         return;
       }
-
       const createComment = await this.commentService.createComment(
         userKey,
         adviceId,
@@ -61,7 +60,6 @@ class CommentController {
     try {
       const { commentId } = req.params;
       const {userKey}= res.locals.user;
-
       const deleteComment = await this.commentService.deleteComment(
         commentId,
         userKey
@@ -76,14 +74,14 @@ class CommentController {
     }
   };
 
+  //좋아요를 하면 해당 데이터와 해당 덧글의 좋아요의 수를 반환한다.
   likeComment = async (req, res, next) => {
-
     try {
       const { commentId } = req.params;
       const {userKey}= res.locals.user;
-      const Likes = await this.likeService.updateCommentLike(userKey, commentId);    //위의 두개를 서비스로 보내고 받아온 값을
-      res.status(200).json({ data: Likes });              //리스폰 상태창에 보낸다.
-
+      const Likes = await this.commentService.updateCommentLike(userKey, commentId);
+      const count = await this.commentService.countComment(commentId)
+      res.status(200).json({ data: Likes, count: count });
     }catch(error){
       next(error);
     }

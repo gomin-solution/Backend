@@ -1,6 +1,5 @@
-
 const { Advice, AdviceBM, User, AdviceImage, Comment } = require("../models");
-
+const { Op } = require("sequelize");
 
 class AdviceRepository {
   //조언 게시글 업로드
@@ -14,13 +13,25 @@ class AdviceRepository {
     return createAdvice;
   };
 
-  adviceHot = async (userKey) => {
+  adviceHot = async () => {
     const adviceHot5 = await Advice.findAll({
       order: [["viewCount", "DESC"]],
       limit: 5,
       include: [{ model: Comment }],
     });
     return adviceHot5;
+  };
+
+  adviceSearch = async (keyword) => {
+    const searchResult = await Advice.findAll({
+      where: {
+        title: {
+          [Op.like]: "%" + keyword + "%",
+        },
+      },
+      include: [{ model: Comment }],
+    });
+    return searchResult;
   };
 
   findAllAdvice = async () => {
@@ -34,12 +45,13 @@ class AdviceRepository {
   };
 
   findCategoryAdvice = async (categoryId) => {
-    const findCategiryAdvice = await Advice.findAll(
-      {where: {categoryId:categoryId},
+    const findCategiryAdvice = await Advice.findAll({
+      where: { categoryId: categoryId },
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
         //{ model: AdviceBM, where: { userKey: userKey } },
-      ],});
+      ],
+    });
     return findCategiryAdvice;
   };
 
@@ -67,7 +79,6 @@ class AdviceRepository {
   }
 
 };
-
 
 
 module.exports = AdviceRepository;

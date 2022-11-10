@@ -13,10 +13,16 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "userKey",
       });
 
+        this.hasMany(models.CommentLike, {
+          foreignKey: "commentId",
+          sourceKey: "commentId",
+        });
+
       this.belongsTo(models.Advice, {
         foreignKey: "adviceId",
         targetKey: "adviceId",
       });
+
     }
   }
   Comment.init(

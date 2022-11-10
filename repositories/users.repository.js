@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, isChoice } = require("../models");
 
 class UserRepository {
   createUser = async ({
@@ -17,9 +17,11 @@ class UserRepository {
     });
   };
 
-  findUser = async (userId) => {
-    console.log("repository", userId);
-    return await User.findOne({ where: { userId: userId } });
+  findUser = async (userKey) => {
+    return await User.findOne({
+      where: { userKey: userKey },
+      include: { model: isChoice },
+    });
   };
 
   findNickname = async (nickname) => {
@@ -30,6 +32,7 @@ class UserRepository {
     return await User.findOne({ where: { userId: userId } });
   };
 
+
   uploadUserImage = async (uploadedImage, userKey) => {
     const updateImageUrl = await User.update(
       { userImg: uploadedImage },
@@ -37,6 +40,13 @@ class UserRepository {
     );
     return updateImageUrl;
   };
+  
+  totalChoice = async (userKey) => {
+    return await isChoice.findAll({ where: { userKey: userKey } });
+  };
+
+
+
 }
 
 module.exports = UserRepository;

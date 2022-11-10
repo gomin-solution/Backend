@@ -84,9 +84,34 @@ class UserController {
   mainPage = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      const data = await this.userService.mainPage(userKey);
+      const mainpage = await this.userService.mainPage(userKey);
 
-      return res.status(200).json({ data: data });
+      return res.status(200).json({ data: mainpage });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  mypage = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+
+      const mypage = await this.userService.mypage(userKey);
+
+      return res.status(200).json(mypage);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  search = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+      const { keyword } = req.body;
+      // const { keyword } = req.params;
+      const result = await this.userService.search(userKey, keyword);
+
+      return res.status(200).json(result);
     } catch (error) {
       next(error);
     }
