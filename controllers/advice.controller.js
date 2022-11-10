@@ -94,7 +94,7 @@ class AdviceController {
     const findImageAdvice = await this.adviceService.findOneAdvice(userKey, adviceId)
     //console.log(findImageAdvice, "여기선 뭘 받아오나")
     const findAdviceImage1 = findImageAdvice.adviceImage[0].split("/")[4]
-    const findAdviceImage2 = findImageAdvice.adviceImage[0].split("/")[4]
+    const findAdviceImage2 = findImageAdvice.adviceImage[1].split("/")[4]
     console.log(findAdviceImage1, "첫번째 키 받아오나?");
     console.log(findAdviceImage2, "두번째 키 받아오나?");
 
