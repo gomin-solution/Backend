@@ -13,31 +13,32 @@ class ChoiceController {
         return;
       }
 
-      const createchoice = await this.choiceService.createchoice(
-        userKey,
-        title,
-        choice1Name,
-        choice2Name,
-        endTime
-      );
-      res
-        .status(201)
-        .send({ message: "투표 등록이 완료되었습니다.", data: createchoice });
-    } catch (err) {
-      next(err);
-    }
-  };
+
+        const createchoice = await this.choiceService.createchoice(
+            userKey,
+            title,
+            choice1Name,
+            choice2Name,
+            endTime
+        );
+            res.status(201).send({ message: "투표 등록이 완료되었습니다.", data: createchoice });
+        } catch (err) {
+            next(err);
+        }   
+  }
+
+
+
 
   allchoice = async (req, res, next) => {
-    //추가해야 하는 기능
-    //리턴에서 userImage, nickname, isBookMark, isChoice, 추가
-    try {
-      const allchoice = await this.choiceService.findAllchoice();
-      res.status(200).json({ data: allchoice });
-    } catch (err) {
-      next(err);
-    }
-
+      try {
+          const { userKey } = res.locals.user;
+          const allchoice = await this.choiceService.findAllchoice(userKey);
+          res.status(200).json({ data: allchoice });
+      } catch (err) {
+          next(err);
+      }
+  }
 
   mychoice = async (req, res, next) => {
     try {
@@ -59,7 +60,14 @@ class ChoiceController {
         userKey,
         choiceId
       );
-      res.status(200).json({ data: deletechoice });
+
+      let msg
+      if (deletechoice) {
+        msg = "삭제 성공"
+      }else{
+        res.status(400).json({ message: "없는 데이터 입니다." });
+      }
+      res.status(200).json({ data: msg });
     } catch (err) {
       next(err);
     }
@@ -77,7 +85,7 @@ class ChoiceController {
       } else {
         throw new Error("잘못된 접근 입니다.");
       }
-      res.status(200).json({ message: "투표 성공" });
+      res.status(200).json({ message: "투표 성공", data: choice});
       return choice;
     } catch (err) {
       next(err);
