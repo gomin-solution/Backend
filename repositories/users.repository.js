@@ -30,14 +30,13 @@ class UserRepository {
     return await User.findOne({ where: { userId: userId } });
   };
 
-  // uploadUserImage = async (userImage, userKey) => {
-  //   const updateImageUrl = await User.update(
-  //     { userImage: userImage },
-  //     { where: { userKey } }
-  //   );
-
-  //   return updateImageUrl;
-  // };
+  uploadUserImage = async (uploadedImage, userKey) => {
+    const updateImageUrl = await User.update(
+      { userImg: uploadedImage },
+      { where: { userKey } }
+    );
+    return updateImageUrl;
+  };
 }
 
 module.exports = UserRepository;

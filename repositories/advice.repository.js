@@ -46,9 +46,9 @@ class AdviceRepository {
   findOneAdvice = async (userKey, adviceId) => {
     //console.log(userKey, adviceId, "잘 받아오나 보자")
     const AdviceOne = await Advice.findOne({
-      where: { adviceId: adviceId },
+      where: { adviceId },
       include:[
-        {model:User, attributes: ["nickname", "userImg"] },
+        {model:User, attributes: ["userKey", "nickname", "userImg"] },
         {model: AdviceBM, where: { userKey: userKey }, required:false },
         {model:AdviceImage, attributes: ["adviceImage"] },
         {model:Comment}
@@ -56,6 +56,14 @@ class AdviceRepository {
     })
     //console.log(AdviceOne, "가자가아아하나아아")
     return AdviceOne
+  }
+
+  updateAdvice = async (adviceId, title, content) => {
+    const updateAdviceData = await Advice.update(
+      {title, content},
+      {where: {adviceId}}
+    );
+    return updateAdviceData;
   }
 
 };
