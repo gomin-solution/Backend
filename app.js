@@ -41,7 +41,7 @@ if (process.env.NODE_ENV == "production") {
     console.log("HTTPS 서버가 실행되지 않습니다.");
     console.log(error);
   }
-} else {
+} else if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
     console.log("HTTP 서버가 실행되었습니다. 포트 :: " + port);
   });

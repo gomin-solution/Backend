@@ -114,7 +114,7 @@ class UserService {
       userKey: userKey,
       nickname: user.nickname,
       userImage: user.userImage,
-      totalAdvice: 1,
+      totalAdvice: user.Comments.length,
       totalChoice: user.isChoices.length,
     };
     return result;

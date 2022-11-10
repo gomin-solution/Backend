@@ -50,7 +50,9 @@ class AdviceController {
     //const { userKey } = res.locals.user;
     const { categoryId } = req.params;
     const allAdvice = await this.adviceService.findAllAdvice();
-    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(categoryId);
+    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
+      categoryId
+    );
 
     try {
       //전체 조회
@@ -58,24 +60,25 @@ class AdviceController {
         return res.status(200).json({ data: allAdvice });
       }
       //카테고리별 조회
-      return res.status(200).json({ data: allCategoryAdvice })
+      return res.status(200).json({ data: allCategoryAdvice });
     } catch (err) {
       next(err);
     }
   };
 
   findAdvice = async (req, res, next) => {
-    const {userKey} = res.locals.user;
-    const { adviceId } = req.params;
-    const findAdvice = await this.adviceService.findOneAdvice(userKey, adviceId);
-    try{
-      res.status(200).json({ data: findAdvice })
-
-    } catch(error) {
+    try {
+      const { userKey } = res.locals.user;
+      const { adviceId } = req.params;
+      const findAdvice = await this.adviceService.findOneAdvice(
+        userKey,
+        adviceId
+      );
+      res.status(200).json({ data: findAdvice });
+    } catch (err) {
       next(err);
     }
-   
-  }
+  };
 }
 
 module.exports = AdviceController;
