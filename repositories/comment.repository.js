@@ -43,12 +43,15 @@ class CommentRepository {
 
     //덧글 삭제
     deleteComment = async ( commentId, userKey) => {
-        const data = await Comment.findByPk(commentId); 
-        const dataId = data.userKey 
-        if(userKey !== dataId){                 
-            return;
-        }
-        const deleteCommentData = await Comment.destroy({where: {commentId}})
+        console.log('덧삭리포시작')
+        // const data = await Comment.findByPk(commentId); 
+        // const dataId = data.userKey 
+        // if(userKey !== dataId){                 
+        //     return;
+        // }
+        console.log(commentId)
+        const deleteCommentData = await Comment.destroy({where: {commentId, userKey}})
+        console.log('덧삭리포끝')
         return deleteCommentData
     }
 
@@ -81,7 +84,7 @@ class CommentRepository {
 
     //해당 덧글의 좋아요는 총 몇개인가?
     countComment= async (commentId) =>{
-        const data = await CommentLike.findAll({commentId})
+        const data = await CommentLike.findAll({where : {commentId}})
         const data_length = data.length
         return data_length; 
     }
