@@ -160,6 +160,25 @@ class UserService {
 
     return { choice: choiceData, advice: adviceData };
   };
+
+  uploadUserImage = async (imageUrl, userKey) => {
+    const foundData = await this.userRepository.findById(userKey);
+    const userIdData = foundData.userKey;
+    // console.log("유저:", userIdData, "잘 받아오나 보자")
+    if (!foundData) {
+      throw new ValidationError("사용자를 찾을 수 없습니다.");
+    }
+
+    const uploadImage = imageUrl;
+    console.log(uploadImage, "아무거나");
+
+    const uploadImagesData = await this.userRepository.uploadUserImage(
+      uploadImage,
+      userId
+    );
+    return uploadImagesData;
+  };
+
 }
 
 module.exports = UserService;
