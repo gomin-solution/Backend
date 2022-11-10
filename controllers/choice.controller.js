@@ -5,13 +5,14 @@ class ChoiceController {
 
   createchoice = async (req, res, next) => {
     try {
-        const { userKey } = res.locals.user;
-        const { title, choice1Name, choice2Name, endTime } = req.body;
+      const { userKey } = res.locals.user;
+      const { title, choice1Name, choice2Name, endTime } = req.body;
 
-        if (!title || !choice1Name || !choice2Name || !endTime) {
-            res.status(400).send({ errorMessage: "입력 내용을 확인해 주십시오" });
-            return;
-        }
+      if (!title || !choice1Name || !choice2Name || !endTime) {
+        res.status(400).send({ errorMessage: "입력 내용을 확인해 주십시오" });
+        return;
+      }
+
 
         const createchoice = await this.choiceService.createchoice(
             userKey,
@@ -25,6 +26,8 @@ class ChoiceController {
             next(err);
         }   
   }
+
+
 
 
   allchoice = async (req, res, next) => {

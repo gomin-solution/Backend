@@ -84,83 +84,95 @@ class UserController {
   mainPage = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      const data = await this.userService.mainPage(userKey);
+      const mainpage = await this.userService.mainPage(userKey);
 
-      return res.status(200).json({ data: data });
+      return res.status(200).json({ data: mainpage });
     } catch (error) {
       next(error);
     }
   };
 
-  // // 프로필 수정
-  // profileUpdate = async (req, res, next) => {
-  //   const { userId } = res.locals.user;
-  //   //console.log(userId, "아이디");
-  //   const { userKey } = req.params;
-  //   //console.log(userKey)
-  //   const findUser = await this.usersService.profile(userKey);
-  //   //console.log(findUser)
-  //   if (userId !== findUser.userId) {
-  //     return res.status(400).json({ errorMessage: "권한이 없습니다." });
-  //   }
-  //   try {
-  //     //console.log(req.file);
-  //     const image = req.files;
-  //     // const { nickname, introduce } = req.body;
+  mypage = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
 
-  //     //이미지 수정
-  //     if (image) {
-  //       const findUserImage = findUser.avatar.split("/")[4];
-  //       const findUserLastImage = `profileimage/${findUserImage}`;
-  //       // console.log(findUserImage, "아아아아");
+      const mypage = await this.userService.mypage(userKey);
 
-  //       try {
-  //         const s3 = new aws.S3({
-  //           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  //           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  //           region: process.env.AWS_REGION,
-  //         });
+      return res.status(200).json(mypage);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-  //         const params = {
-  //           Bucket: process.env.AWS_BUCKET_NAME,
-  //           Key: findUserLastImage,
-  //         };
+  search = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+      const { keyword } = req.body;
+      // const { keyword } = req.params;
+      const result = await this.userService.search(userKey, keyword);
 
-  //         s3.deleteObject(params, function (err, data) {
-  //           if (err) {
-  //             console.log(err, err.stack);
-  //           } else {
-  //             res.status(200);
-  //             next();
-  //           }
-  //         });
-  //       } catch (error) {
-  //         next(error);
-  //       }
+      return res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-  //       const value = Object.values({ image });
-  //       const imageUrl = value[0][0].transforms[0].location;
-  //       await this.userService.uploadUserImage(imageUrl, userKey);
-  //     }
+  // 프로필 수정
+  profileUpdate = async (req, res, next) => {
+    const { userId } = res.locals.user;
+    console.log(userId, "아이디");
+    //const { userKey } = req.params;
+    //console.log(userKey)
+    const findUser = await this.userService.findProfile(userId);
+    //console.log(findUser)
+    if (userId !== findUser.userId) {
+      return res.status(400).json({ errorMessage: "권한이 없습니다." });
+    }
+    try {
+      //console.log(req.file);
+      const image = req.files;
+      // const { nickname, introduce } = req.body;
 
-  //     // //닉네임 수정
-  //     // if (nickname) {
-  //     //   await this.usersService.updateNickname(nickname, userId);
-  //     // }
+      //이미지 수정
+      if (image) {
+        const findUserImage = findUser.avatar.split("/")[4];
+        const findUserLastImage = `profileimage/${findUserImage}`;
+        // console.log(findUserImage, "아아아아");
 
-  //     // //소개글 수정
-  //     // if (introduce) {
-  //     //   await this.usersService.updateIntroduce(introduce, userId);
-  //     // }
+        try {
+          const s3 = new aws.S3({
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            region: process.env.AWS_REGION,
+          });
 
-  //     // if (!image && !nickname && !introduce) {
-  //     //   res.status(200).json({ msg: "변경할 내용이 없습니다" });
-  //     // }
-  //     res.status(200).json({ msg: "프로필 수정 완료!" });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+          const params = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: findUserLastImage,
+          };
+
+          s3.deleteObject(params, function (err, data) {
+            if (err) {
+              console.log(err, err.stack);
+            } else {
+              res.status(200);
+              next();
+            }
+          });
+        } catch (error) {
+          next(error);
+        }
+
+        const value = Object.values({ image });
+        const imageUrl = value[0][0].transforms[0].location;
+        await this.userService.uploadUserImage(imageUrl, userKey);
+      }
+
+      res.status(200).json({ msg: "프로필 이미지 수정 완료!" });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 module.exports = UserController;

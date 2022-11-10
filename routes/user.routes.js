@@ -20,7 +20,14 @@ router.post("/login", LoginMiddleware, userController.login);
 //로그인테스트
 router.post("/test", authMiddleware);
 
-// 프로필 이미지 업로드
-//router.put("/mypage", authMiddleware, userController.profileUpdate);
+// 프로필 이미지 수정
+router.put("/mypage", authMiddleware, userController.profileUpdate);
+
+//마이페이지
+router.get("/mypage", authMiddleware, userController.mypage);
+
+//검색
+router.get("/search", authMiddleware, userController.search);
+
 
 module.exports = router;

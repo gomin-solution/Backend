@@ -68,13 +68,79 @@ class AdviceController {
     const {userKey} = res.locals.user;
     const { adviceId } = req.params;
     const findAdvice = await this.adviceService.findOneAdvice(userKey, adviceId);
+
     try{
       res.status(200).json({ data: findAdvice })
 
     } catch(error) {
       next(err);
     }
-   
+  }
+
+  updateAdvice = async (req, res, next) => {
+    const { userKey } = res.locals.user;
+    const { adviceId } = req.params;
+    const { title, content } = req.body;
+    const images = req.files;
+    //console.log(userKey, "유저키를 잘 받아오나")
+    
+    const findAdvice = await this.adviceService.findAllAdvice(adviceId)
+    //console.log(findAdvice, "있는가??")
+
+    if (userKey !== findAdvice[0].userKey) {
+      return res.status(400).json({errorMessage: "권한이 없습니다."})
+    }
+
+    const findImageAdvice = await this.adviceService.findOneAdvice(userKey, adviceId)
+    //console.log(findImageAdvice, "여기선 뭘 받아오나")
+    const findAdviceImage1 = findImageAdvice.adviceImage[0].split("/")[4]
+    const findAdviceImage2 = findImageAdvice.adviceImage[1].split("/")[4]
+    console.log(findAdviceImage1, "첫번째 키 받아오나?");
+    console.log(findAdviceImage2, "두번째 키 받아오나?");
+
+    if (images) {
+      const findAdviceImage = findAdvice[0].imageUrl[0].split("/")[4];
+      const findAdviceLastImage = `profileimage/${findAdviceImage}`;
+      //console.log(findAdviceImage, "아아아아");
+      //console.log(findAdviceLastImage, "이미지 키를 잘 받아오나");
+      
+      try {
+        const s3 = new aws.S3({
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+          region: process.env.AWS_REGION,
+        });
+
+        const params = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: findAdviceLastImage,
+        };
+
+        // s3.deleteObject(params, function (err, data) {
+        //   if (err) {
+        //     console.log(err, err.stack);
+        //   } else {
+        //     res.status(200);
+        //     next();
+        //   }
+        // });
+      } catch (error) {
+        next(error);
+      }
+    }
+
+
+
+
+    await this.adviceService.updateAdvice(
+      adviceId,
+      title,
+      content
+    )
+
+
+    res.status(200).json({ message:"수정 완료"})
+
   }
 }
 
