@@ -3,6 +3,7 @@ const joi = require("../util/joi");
 const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
 require("dotenv").config();
+const aws = require("aws-sdk");
 const redisCli = require("../util/redis");
 
 class UserController {

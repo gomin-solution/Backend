@@ -62,16 +62,18 @@ class AdviceService {
   findOneAdvice = async (userKey, adviceId) => {
     const findOneAdvice = await this.adviceRepository.findOneAdvice(
       userKey,
-      adviceId
+      adviceId,
     );
+
     const findAdviceImageArray = findOneAdvice.AdviceImages.map(
-      (post) => post.adviceImage
+      (post) => {return [post.dataValues.adviceImageId, post.adviceImage]}
+        //let test1 = {};
+        // console.log(post.dataValues.adviceImageId, "나와라~!")
+        //test1[post.dataValues.adviceImageId] = post.adviceImage
+        //return test1}
     );
-    //const test = findAdviceImageArray;
-    //console.log(findAdviceImageArray, "배열이 아닌가?")
-    //console.log(findOneAdvice.AdviceImages[0].adviceImage, "어떻게 들어있나?")
-    //console.log(test, "어떻게 나오나 보자")
-    //return findOneAdvice
+    //console.log(findAdviceImageArray)
+    // return findOneAdvice
     let boolean;
     findOneAdvice.AdviceBMs.length ? (boolean = true) : (boolean = false);
     return {
@@ -90,23 +92,46 @@ class AdviceService {
     };
   };
 
-  updateAdvice = async (adviceId, title, content) => {
+  findImages = async (imageId) => {
+    const findImage = await this.adviceRepository.findImages(imageId)
+    return findImage
+  }
+
+  updateAdviceTitle = async (adviceId, title) => {
     const findAdvice = await this.adviceRepository.findAllAdvice(adviceId);
-    //console.log(findAdvice, "이게 없다고?");
+    console.log(findAdvice, "이게 없다고?");
     if (!findAdvice) throw new ErrorCustom(400, "게시물이 존재하지 않습니다.");
 
-    await this.adviceRepository.updateAdvice(adviceId, title, content);
+    await this.adviceRepository.updateAdviceTitle(adviceId, title);
 
-    const updateAdvice = await this.adviceRepository.findAllAdvice(adviceId);
+    // const updateAdvice = await this.adviceRepository.findAllAdvice(adviceId);
 
-    return {
-      adviceId: updateAdvice.adviceId,
-      title: updateAdvice.title,
-      content: updateAdvice.content,
-      createdAt: updateAdvice.createdAt,
-      updatedAt: updateAdvice.updatedAt,
-    };
+    // return {
+    //   adviceId: updateAdvice.adviceId,
+    //   title: updateAdvice.title,
+    //   createdAt: updateAdvice.createdAt,
+    //   updatedAt: updateAdvice.updatedAt,
+    // };
   };
+
+  updateAdviceContent = async (adviceId, content) => {
+    const findAdvice = await this.adviceRepository.findAllAdvice(adviceId);
+    console.log(findAdvice, "이게 없다고?");
+    if (!findAdvice) throw new ErrorCustom(400, "게시물이 존재하지 않습니다.");
+
+    await this.adviceRepository.updateAdviceContent(adviceId, content);
+
+    // const updateAdvice = await this.adviceRepository.findAllAdvice(adviceId);
+
+    // return {
+    //   adviceId: updateAdvice.adviceId,
+    //   title: updateAdvice.title,
+    //   createdAt: updateAdvice.createdAt,
+    //   updatedAt: updateAdvice.updatedAt,
+    // };
+  };
+
+  
 }
 
 module.exports = AdviceService;

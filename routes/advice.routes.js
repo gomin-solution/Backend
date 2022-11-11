@@ -22,6 +22,6 @@ adviceRouter.get("/category/:categoryId", authMiddleware, adviceController.allAd
 adviceRouter.get("/:adviceId", authMiddleware, adviceController.findAdvice)
 
 //조언 게시글 수정
-adviceRouter.put("/:adviceId", authMiddleware, adviceController.updateAdvice);
+adviceRouter.put("/:adviceId", authMiddleware, upload.array("image", 3), adviceController.updateAdvice);
 
 module.exports = adviceRouter;
