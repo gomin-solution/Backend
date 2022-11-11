@@ -167,9 +167,7 @@ class UserService {
     const foundData = await this.userRepository.findUser(userKey);
     const userIdData = foundData.userKey;
     console.log("유저:", userIdData, "잘 받아오나 보자")
-    if (!foundData) {
-      throw new ValidationError("사용자를 찾을 수 없습니다.");
-    }
+    if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
 
     const uploadImage = imageUrl;
     console.log(uploadImage, "아무거나");
@@ -179,6 +177,14 @@ class UserService {
       userKey
     );
     return uploadImagesData;
+  };
+
+  updateUserNickname = async (userKey, nickname) => {
+    const findUser = await this.userRepository.findUser(userKey);;
+    console.log(findUser, "이게 없다고?");
+    if (!findUser) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
+
+    await this.userRepository.updateUserNickname(userKey, nickname);
   };
 
 }
