@@ -46,6 +46,14 @@ class UserRepository {
   };
 
 
+  updateUserNickname = async (userKey, nickname) => {
+    const updateAdviceContentData = await User.update(
+      {nickname:nickname},
+      {where: {userKey: userKey}}
+    );
+    return updateAdviceContentData;
+  }
+
 
 }
 
