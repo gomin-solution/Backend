@@ -44,6 +44,7 @@ class UserRepository {
     return await isChoice.findAll({ where: { userKey: userKey } });
   };
 
+
   totalReword = async (userKey) => {
     return await User.findAll({
       where: { userKey: userKey },
@@ -54,6 +55,17 @@ class UserRepository {
       ],
     });
   };
+
+
+  updateUserNickname = async (userKey, nickname) => {
+    const updateAdviceContentData = await User.update(
+      {nickname:nickname},
+      {where: {userKey: userKey}}
+    );
+    return updateAdviceContentData;
+  }
+
+
 }
 
 module.exports = UserRepository;

@@ -172,10 +172,9 @@ class UserService {
   uploadUserImage = async (imageUrl, userKey) => {
     const foundData = await this.userRepository.findUser(userKey);
     const userIdData = foundData.userKey;
-    console.log("유저:", userIdData, "잘 받아오나 보자");
-    if (!foundData) {
-      throw new ValidationError("사용자를 찾을 수 없습니다.");
-    }
+
+    console.log("유저:", userIdData, "잘 받아오나 보자")
+    if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
 
     const uploadImage = imageUrl;
     console.log(uploadImage, "아무거나");
@@ -186,6 +185,7 @@ class UserService {
     );
     return uploadImagesData;
   };
+
 
   reword = async (userKey) => {
     //휙득한 좋아요수
@@ -213,6 +213,13 @@ class UserService {
     return totalReword;
     const misson = await this.missonRepository();
   };
+
+  updateUserNickname = async (userKey, nickname) => {
+    const findUser = await this.userRepository.findUser(userKey);;
+    if (!findUser) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
+    await this.userRepository.updateUserNickname(userKey, nickname);
+  };
+
 }
 
 module.exports = UserService;

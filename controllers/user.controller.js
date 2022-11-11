@@ -135,6 +135,7 @@ class UserController {
   profileUpdate = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const image = req.files;
+    const { nickname } = req.body;  
     //console.log(nickname, "아이디");
     //const { userKey } = req.params;
     //console.log(userKey, "유저고유")
@@ -176,7 +177,14 @@ class UserController {
         //console.log(imageUrl);
       }
 
-      res.status(200).json({ msg: "프로필 이미지 수정 완료!" });
+      if (nickname) {
+        await this.userService.updateUserNickname(userKey, nickname);
+      }
+
+      if (!image && !nickname) {
+        return res.status(200).json({ msg: "변경할 내용이 없습니다" });
+      }
+      res.status(200).json({ msg: "프로필 수정 완료!" });
     } catch (error) {
       next(error);
     }
