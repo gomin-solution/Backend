@@ -2,7 +2,7 @@ const UserService = require("../services/users.service");
 const joi = require("../util/joi");
 const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
-const Post = require("../schemas/post");
+const Post = require("../schemas/misson");
 require("dotenv").config();
 const aws = require("aws-sdk");
 const redisCli = require("../util/redis");
@@ -119,16 +119,17 @@ class UserController {
     }
   };
 
-  // reword = async (req, res, next) => {
-  //   try {
-  //     const { userKey } = res.locals.user;
-  //     const misson = await this.userService.reword(userKey);
+  //리워드 페이지
+  reword = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+      const misson = await this.userService.reword(userKey);
 
-  //     return res.status(200).json(misson);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+      return res.status(200).json(misson);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   // 프로필 수정
   profileUpdate = async (req, res, next) => {

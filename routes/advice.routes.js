@@ -16,12 +16,21 @@ adviceRouter.post(
 );
 
 //조언 게시글 조회
-adviceRouter.get("/category/:categoryId", authMiddleware, adviceController.allAdvice)
+adviceRouter.get(
+  "/category/:categoryId",
+  authMiddleware,
+  adviceController.allAdvice
+);
 
 //조언 게시글 상세조회
-adviceRouter.get("/:adviceId", authMiddleware, adviceController.findAdvice)
+adviceRouter.get("/:adviceId", authMiddleware, adviceController.findOneAdvice);
 
 //조언 게시글 수정
-adviceRouter.put("/:adviceId", authMiddleware, upload.array("image", 3), adviceController.updateAdvice);
+adviceRouter.put(
+  "/:adviceId",
+  authMiddleware,
+  upload.array("image", 3),
+  adviceController.updateAdvice
+);
 
 module.exports = adviceRouter;

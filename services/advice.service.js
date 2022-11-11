@@ -62,15 +62,17 @@ class AdviceService {
   findOneAdvice = async (userKey, adviceId) => {
     const findOneAdvice = await this.adviceRepository.findOneAdvice(
       userKey,
-      adviceId,
+      adviceId
     );
 
     const findAdviceImageArray = findOneAdvice.AdviceImages.map(
-      (post) => {return [post.dataValues.adviceImageId, post.adviceImage]}
-        //let test1 = {};
-        // console.log(post.dataValues.adviceImageId, "나와라~!")
-        //test1[post.dataValues.adviceImageId] = post.adviceImage
-        //return test1}
+      (post) => {
+        return [post.dataValues.adviceImageId, post.adviceImage];
+      }
+      //let test1 = {};
+      // console.log(post.dataValues.adviceImageId, "나와라~!")
+      //test1[post.dataValues.adviceImageId] = post.adviceImage
+      //return test1}
     );
     //console.log(findAdviceImageArray)
     // return findOneAdvice
@@ -93,9 +95,9 @@ class AdviceService {
   };
 
   findImages = async (imageId) => {
-    const findImage = await this.adviceRepository.findImages(imageId)
-    return findImage
-  }
+    const findImage = await this.adviceRepository.findImages(imageId);
+    return findImage;
+  };
 
   updateAdviceTitle = async (adviceId, title) => {
     const findAdvice = await this.adviceRepository.findAllAdvice(adviceId);
@@ -131,7 +133,13 @@ class AdviceService {
     // };
   };
 
-  
+  upCountView = async (adviceId, userKey) => {
+    const findAdvice = await this.adviceRepository.findAdvice(adviceId);
+
+    if (userKey !== findAdvice.userKey) {
+      await this.adviceRepository.upCountView(adviceId);
+    }
+  };
 }
 
 module.exports = AdviceService;
