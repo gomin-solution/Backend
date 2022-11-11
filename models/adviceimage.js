@@ -42,10 +42,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-    //   isSave: {
-    //     type: DataTypes.BOOLEAN,
-    //     allowNull: true,
-    //   },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

@@ -62,7 +62,7 @@ class AdviceRepository {
       include:[
         {model:User, attributes: ["userKey", "nickname", "userImg"] },
         {model: AdviceBM, where: { userKey: userKey }, required:false },
-        {model:AdviceImage, attributes: ["adviceImage"] },
+        {model:AdviceImage, attributes: ["adviceImageId", "adviceImage"] },
         {model:Comment}
       ]
     })
@@ -70,12 +70,29 @@ class AdviceRepository {
     return AdviceOne
   }
 
-  updateAdvice = async (adviceId, title, content) => {
-    const updateAdviceData = await Advice.update(
-      {title, content},
-      {where: {adviceId}}
+  findImages = async (imageId) => {
+    const imageIds = imageId.split(',')
+    const findImage = await AdviceImage.findAll({
+      where: {adviceImageId: imageIds},
+    })
+    //console.log(findImage, "잘 나오나")
+    return findImage
+  }
+
+  updateAdviceTitle = async (adviceId, title) => {
+    const updateAdviceTitleData = await Advice.update(
+      {title:title},
+      {where: {adviceId: adviceId}}
     );
-    return updateAdviceData;
+    return updateAdviceTitleData;
+  }
+
+  updateAdviceContent = async (adviceId, content) => {
+    const updateAdviceContentData = await Advice.update(
+      {content:content},
+      {where: {adviceId: adviceId}}
+    );
+    return updateAdviceContentData;
   }
 
 };
