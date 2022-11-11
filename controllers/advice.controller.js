@@ -64,16 +64,15 @@ class AdviceController {
   };
 
   findAdvice = async (req, res, next) => {
-    const { userKey } = res.locals.user;
-    const { adviceId } = req.params;
-    const findAdvice = await this.adviceService.findOneAdvice(
-      userKey,
-      adviceId
-    );
-
     try {
+      const { userKey } = res.locals.user;
+      const { adviceId } = req.params;
+      const findAdvice = await this.adviceService.findOneAdvice(
+        userKey,
+        adviceId
+      );
       res.status(200).json({ data: findAdvice });
-    } catch (error) {
+    } catch (err) {
       next(err);
     }
   };
@@ -94,7 +93,6 @@ class AdviceController {
       // 이미지 수정
       // const findImageAdvice = await this.adviceService.findImages(imageId);
       // console.log(findImageAdvice, "정보정보");
-      
 
       const AdviceImageArray = [];
       let imageUrl = [];
@@ -134,7 +132,7 @@ class AdviceController {
           }
         }
         console.log(AdviceImageArray, "key가 잘 나오나");
-        
+
         await this.adviceImageService.imageDelete(imageUrl, imageId);
         res.status(200).send({ ok: true, msg: "이미지가 삭제되었습니다" });
 
@@ -143,8 +141,6 @@ class AdviceController {
           imageUrl.push(values[0][i].transforms[0].location);
         }
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
-
-
       }
 
       // 타이틀 수정

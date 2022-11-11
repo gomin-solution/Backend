@@ -7,28 +7,13 @@ require("dotenv").config();
 // 유저 인증에 실패하면 403 상태 코드를 반환한다.
 module.exports = async (req, res, next) => {
   try {
-    console.log(req.cookies);
-    let accessToken;
-    let refreshToken;
-
-    // //개발환경일때 쿠키로 받음
-    // if (process.env.NODE_ENV == "development") {
-    //   console.log("throw");
-    //   const { accesstoken: a_token, refreshtoken: r_token } = req.cookies;
-    //   accesstoken = a_token;
-    //   refreshtoken = r_token;
-    // }
-
-    //배포환경일땐 헤더로 전송받음
-    if ("production" == "production") {
-      const { authorization, refreshtoken } = req.headers;
-      const tokenType = authorization.split(" ")[0];
-      accessToken = authorization.split(" ")[1];
-      refreshToken = refreshtoken;
-      console.log(authorization.split(" "));
-      if (tokenType !== "Bearer")
-        throw new ErrorCustom(400, "잘못된 요청입니다. 다시 로그인 해주세요");
-    }
+    const { authorization, refreshtoken } = req.headers;
+    const tokenType = authorization.split(" ")[0];
+    const accessToken = authorization.split(" ")[1];
+    const refreshToken = refreshtoken;
+    console.log(authorization.split(" "));
+    if (tokenType !== "Bearer")
+      throw new ErrorCustom(400, "잘못된 요청입니다. 다시 로그인 해주세요");
 
     if (!accessToken) {
       return res.status(403).send({
@@ -51,6 +36,7 @@ module.exports = async (req, res, next) => {
       try {
         const decoded = jwt.decode(accessToken);
         const token = await redisCli.get(`${decoded.userId}`);
+        console.log(token);
         if (refreshToken === token) {
           jwt.verify(refreshToken, process.env.SECRET_KEY);
           return true;
@@ -66,10 +52,6 @@ module.exports = async (req, res, next) => {
     const isAccessTokenValidate = validateAccessToken(accessToken);
     const isRefreshTokenValidate = await validateRefreshToken(refreshToken);
 
-    console.log("여기;");
-    console.log();
-    console.log(isRefreshTokenValidate);
-
     /**refreshToken 만료시 재로그인 */
     if (refreshToken && !isRefreshTokenValidate) {
       return res.status(419).json({ message: "다시 로그인 해주세요" });
@@ -78,20 +60,20 @@ module.exports = async (req, res, next) => {
     /**refreshToken유효 accesstoken 재발급*/
     if (refreshToken && accessToken && isRefreshTokenValidate) {
       const decoded = jwt.decode(accessToken);
-      const accessToken = jwt.sign(
-        { userId: decoded.userId },
-        process.env.SECRET_KEY,
-        {
-          expiresIn: "60s",
-        }
+      const newAccessToken = jwt.sign(
+        { userId: decoded.userId, userKey: decoded.userKey },
+        process.env.SECRET_KEY
+        // {
+        //   expiresIn: "60s",
+        // }
       );
       return res
         .status(200)
-        .json({ message: "토큰 재발급 성공", accessToken: accessToken });
+        .json({ message: "토큰 재발급 성공", accessToken: newAccessToken });
     }
 
     /**AccessToken만료시 서버에게 만료상태 전송*/
-    if (!isAccessTokenValidate) {
+    if (!refreshToken && !isAccessTokenValidate) {
       return res.status(401).json({ message: "토큰 만료됨", ok: false });
     } else {
       /**토큰이 유효한 경우 */
@@ -99,8 +81,6 @@ module.exports = async (req, res, next) => {
       console.log("유저아이디");
       console.log(userId);
       const user = await User.findOne({ where: { userId: userId } });
-      console.log("유저정보");
-      console.log(user);
       res.locals.user = user;
     }
     next();
