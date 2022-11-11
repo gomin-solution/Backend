@@ -2,6 +2,7 @@ const ErrorCustom = require("../exceptions/error-custom");
 const UserRepository = require("../repositories/users.repository.js");
 const AdviceRepository = require("../repositories/advice.repository");
 const ChoiceRepository = require("../repositories/choice.repository");
+const MissonRepository = require("../repositories/misson.repository");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -11,6 +12,7 @@ class UserService {
   userRepository = new UserRepository();
   adviceRepository = new AdviceRepository();
   choiceRepository = new ChoiceRepository();
+  missonRepository = new MissonRepository();
 
   //유저 생성(가입)
   createUser = async ({
@@ -182,6 +184,34 @@ class UserService {
       userKey
     );
     return uploadImagesData;
+  };
+
+
+  reword = async (userKey) => {
+    //휙득한 좋아요수
+    const totalReword = await this.userRepository.totalReword(userKey);
+    //내가 받은 총 좋아요수
+    const likeArray = totalReword[0].Comments.map((x) => x.CommentLikes.length);
+    let likeTotal = 0;
+    likeArray.forEach((x) => {
+      likeTotal += x;
+    });
+    //내 게시글의 총 조회수
+    const viewCountArray = totalReword[0].Advice.map((x) => x.viewCount);
+    let viewCount = 0;
+    viewCountArray.forEach((x) => {
+      viewCount += x;
+    });
+    const totalAdvice = totalReword[0].Comments.length;
+    const totalChoice = totalReword[0].isChoices.length;
+    const totalPost = totalReword[0].Advice.length;
+
+    console.log(
+      `totalAdvice:${totalAdvice}, totalChoice:${totalChoice}, totalPost:${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
+    );
+
+    return totalReword;
+    const misson = await this.missonRepository();
   };
 
   updateUserNickname = async (userKey, nickname) => {

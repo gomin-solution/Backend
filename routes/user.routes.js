@@ -36,7 +36,7 @@ router.get("/mypage", authMiddleware, userController.mypage);
 router.get("/search", authMiddleware, userController.search);
 
 //리워드
-// router.get("/mypage/reword", authMiddleware, userController.reword);
+router.get("/mypage/reword", authMiddleware, userController.reword);
 
 // 프로필 이미지 업로드
 //router.put("/mypage", authMiddleware, userController.profileUpdate);

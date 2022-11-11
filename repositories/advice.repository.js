@@ -9,6 +9,7 @@ class AdviceRepository {
       title: title,
       categoryId: categoryId,
       content: content,
+      viewCount: 0,
     });
     return createAdvice;
   };
@@ -59,43 +60,49 @@ class AdviceRepository {
     //console.log(userKey, adviceId, "잘 받아오나 보자")
     const AdviceOne = await Advice.findOne({
       where: { adviceId },
-      include:[
-        {model:User, attributes: ["userKey", "nickname", "userImg"] },
-        {model: AdviceBM, where: { userKey: userKey }, required:false },
-        {model:AdviceImage, attributes: ["adviceImageId", "adviceImage"] },
-        {model:Comment}
-      ]
-    })
+      include: [
+        { model: User, attributes: ["userKey", "nickname", "userImg"] },
+        { model: AdviceBM, where: { userKey: userKey }, required: false },
+        { model: AdviceImage, attributes: ["adviceImageId", "adviceImage"] },
+        { model: Comment },
+      ],
+    });
     //console.log(AdviceOne, "가자가아아하나아아")
-    return AdviceOne
-  }
+    return AdviceOne;
+  };
+
+  findAdvice = async (adviceId) => {
+    return await Advice.findByPk(adviceId);
+  };
 
   findImages = async (imageId) => {
-    const imageIds = imageId.split(',')
+    const imageIds = imageId.split(",");
     const findImage = await AdviceImage.findAll({
-      where: {adviceImageId: imageIds},
-    })
+      where: { adviceImageId: imageIds },
+    });
     //console.log(findImage, "잘 나오나")
-    return findImage
-  }
+    return findImage;
+  };
 
   updateAdviceTitle = async (adviceId, title) => {
     const updateAdviceTitleData = await Advice.update(
-      {title:title},
-      {where: {adviceId: adviceId}}
+      { title: title },
+      { where: { adviceId: adviceId } }
     );
     return updateAdviceTitleData;
-  }
+  };
 
   updateAdviceContent = async (adviceId, content) => {
     const updateAdviceContentData = await Advice.update(
-      {content:content},
-      {where: {adviceId: adviceId}}
+      { content: content },
+      { where: { adviceId: adviceId } }
     );
     return updateAdviceContentData;
-  }
+  };
 
-};
-
+  upCountView = async (adviceId) => {
+    await Advice.increment({ viewCount: 1 }, { where: { adviceId: adviceId } });
+  };
+}
 
 module.exports = AdviceRepository;

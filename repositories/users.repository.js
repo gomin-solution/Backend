@@ -1,4 +1,4 @@
-const { User, isChoice, Comment } = require("../models");
+const { User, isChoice, Comment, CommentLike, Advice } = require("../models");
 
 class UserRepository {
   createUser = async ({
@@ -32,7 +32,6 @@ class UserRepository {
     return await User.findOne({ where: { userId: userId } });
   };
 
-
   uploadUserImage = async (uploadedImage, userKey) => {
     const updateImageUrl = await User.update(
       { userImg: uploadedImage },
@@ -40,9 +39,21 @@ class UserRepository {
     );
     return updateImageUrl;
   };
-  
+
   totalChoice = async (userKey) => {
     return await isChoice.findAll({ where: { userKey: userKey } });
+  };
+
+
+  totalReword = async (userKey) => {
+    return await User.findAll({
+      where: { userKey: userKey },
+      include: [
+        { model: Comment, include: { model: CommentLike } },
+        { model: isChoice },
+        { model: Advice },
+      ],
+    });
   };
 
 

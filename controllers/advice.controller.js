@@ -63,7 +63,8 @@ class AdviceController {
     }
   };
 
-  findAdvice = async (req, res, next) => {
+  //상세페이지 조회
+  findOneAdvice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
       const { adviceId } = req.params;
@@ -71,6 +72,8 @@ class AdviceController {
         userKey,
         adviceId
       );
+
+      await this.adviceService.upCountView(adviceId, userKey);
       res.status(200).json({ data: findAdvice });
     } catch (err) {
       next(err);
