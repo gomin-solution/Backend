@@ -3,6 +3,7 @@ const express = require("express");
 const fs = require("fs");
 const HTTPS = require("https");
 
+const connect = require("./schemas/index");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const indexRouter = require("./routes/index.routes");
@@ -10,6 +11,8 @@ const { errorLogger, errorHandler } = require("./exceptions/error-handler");
 
 const app = express();
 const port = process.env.EXPRESS_PORT || 3000;
+
+connect();
 
 app.use(cors());
 

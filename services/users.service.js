@@ -110,6 +110,10 @@ class UserService {
   mypage = async (userKey) => {
     const user = await this.userRepository.findUser(userKey);
 
+    // if (user.Comments.length >= misson.adviceCount) {
+    //   await this.missonComplete.create(userKey, missoni);
+    // }
+
     const result = {
       userKey: userKey,
       nickname: user.nickname,
