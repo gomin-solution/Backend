@@ -43,15 +43,15 @@ class CommentRepository {
 
     //덧글 삭제
     deleteComment = async ( commentId, userKey) => {
-        console.log('덧삭리포시작')
-        // const data = await Comment.findByPk(commentId); 
-        // const dataId = data.userKey 
-        // if(userKey !== dataId){                 
-        //     return;
-        // }
         console.log(commentId)
+        //하위 데이터 전부 삭제
+        const data = await CommentLike.destroy({
+            where: {
+                [Op.and]: [ { commentId }],
+            },
+            });
         const deleteCommentData = await Comment.destroy({where: {commentId, userKey}})
-        console.log('덧삭리포끝')
+
         return deleteCommentData
     }
 

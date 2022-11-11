@@ -26,11 +26,6 @@ class ChoiceRepository {
     return findOnechoice[i] ;
   };
 
-
-  //추가해야 하는 기능
-  //리턴에서 userImage, nickname, isBookMark, isChoice, 추가
-  //choice를 작성한 유저의 데이터를 가져와야 한다.
-
   findUserData = async (userKey) => {
     const data = await User.findByPk(userKey);
     const returnData = {
@@ -150,7 +145,6 @@ class ChoiceRepository {
   };
 
   //투표를 완료한 경우, 해당 choice테이블에서 투표 데이터를 가져온다.
-  //choice1Per의 값은 자신의 choiceId를 가진 투표 파일 중 choiceNum이 1인 것의 수
   resultChoice = async (choiceId) => {
     const result = await Choice.findOne({
       where: {
