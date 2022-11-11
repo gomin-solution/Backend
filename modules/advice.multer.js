@@ -42,6 +42,5 @@ const upload = multer({
     // },
   }),
 });
-console.log(upload, "업로드 정보")
 
 module.exports = upload;
