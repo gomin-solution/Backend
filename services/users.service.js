@@ -39,7 +39,7 @@ class UserService {
       { userId: user.userId, userKey: user.userKey },
       process.env.SECRET_KEY
       // {
-      //   expiresIn: "1h",
+      //   expiresIn: "5s",
       // }
     );
 
@@ -111,11 +111,15 @@ class UserService {
     const user = await this.userRepository.findUser(userKey);
     //console.log(user, "무엇인가?")
 
+    // if (user.Comments.length >= misson.adviceCount) {
+    //   await this.missonComplete.create(userKey, missoni);
+    // }
+
     const result = {
       userKey: userKey,
       nickname: user.nickname,
-      userImage: user.userImg,
-      totalAdvice: 1,
+      userImage: user.userImage,
+      totalAdvice: user.Comments.length,
       totalChoice: user.isChoices.length,
     };
     //console.log(result, "어떤게 들어있나")
@@ -166,7 +170,7 @@ class UserService {
   uploadUserImage = async (imageUrl, userKey) => {
     const foundData = await this.userRepository.findUser(userKey);
     const userIdData = foundData.userKey;
-    console.log("유저:", userIdData, "잘 받아오나 보자")
+    console.log("유저:", userIdData, "잘 받아오나 보자");
     if (!foundData) {
       throw new ValidationError("사용자를 찾을 수 없습니다.");
     }
@@ -180,7 +184,6 @@ class UserService {
     );
     return uploadImagesData;
   };
-
 }
 
 module.exports = UserService;
