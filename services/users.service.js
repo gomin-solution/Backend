@@ -109,14 +109,16 @@ class UserService {
   //마이페이지 데이터 가져오기
   mypage = async (userKey) => {
     const user = await this.userRepository.findUser(userKey);
+    //console.log(user, "무엇인가?")
 
     const result = {
       userKey: userKey,
       nickname: user.nickname,
-      userImage: user.userImage,
+      userImage: user.userImg,
       totalAdvice: 1,
       totalChoice: user.isChoices.length,
     };
+    //console.log(result, "어떤게 들어있나")
     return result;
   };
 
@@ -162,9 +164,9 @@ class UserService {
   };
 
   uploadUserImage = async (imageUrl, userKey) => {
-    const foundData = await this.userRepository.findById(userKey);
+    const foundData = await this.userRepository.findUser(userKey);
     const userIdData = foundData.userKey;
-    // console.log("유저:", userIdData, "잘 받아오나 보자")
+    console.log("유저:", userIdData, "잘 받아오나 보자")
     if (!foundData) {
       throw new ValidationError("사용자를 찾을 수 없습니다.");
     }
@@ -174,7 +176,7 @@ class UserService {
 
     const uploadImagesData = await this.userRepository.uploadUserImage(
       uploadImage,
-      userId
+      userKey
     );
     return uploadImagesData;
   };
