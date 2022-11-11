@@ -28,7 +28,7 @@ class CommentController {
         adviceId,
         comment
       );
-      res.status(201).send({ data: createComment });
+      res.status(201).send({ Message: "댓글 작성 완료", data: createComment });
     } catch (error) {
       next(error);
     }
@@ -50,7 +50,7 @@ class CommentController {
         res.status(400).send({ errorMessage: "수정권한이 없습니다." });
         return;
       }
-      res.status(200).json({ Message: "덧글 수정 성공" });
+      res.status(200).json({ Message: "덧글 수정 완료" });
     } catch (error) {
       next(error);
     }
@@ -68,7 +68,7 @@ class CommentController {
         res.status(400).send({ errorMessage: "삭제권한이 없습니다." });
         return;
       }
-      res.status(200).json({ data: deleteComment });
+      res.status(200).json({Message: "덧글 삭제 완료", data: deleteComment });
     } catch (error) {
       next(error);
     }
@@ -81,7 +81,13 @@ class CommentController {
       const {userKey}= res.locals.user;
       const Likes = await this.commentService.updateCommentLike(userKey, commentId);
       const count = await this.commentService.countComment(commentId)
-      res.status(200).json({ data: Likes, count: count });
+      let mes = ""
+      if(Likes){
+        mes = "좋아요 성공"
+      }else{
+        mes = "좋아요 취소"
+      }
+      res.status(200).json({Message: mes, data: Likes, count: count });
     }catch(error){
       next(error);
     }

@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
 const Post = require("../schemas/post");
 require("dotenv").config();
+const aws = require("aws-sdk");
 const redisCli = require("../util/redis");
 
 class UserController {
@@ -129,75 +130,56 @@ class UserController {
   //   }
   // };
 
-  // // 프로필 수정
-  // profileUpdate = async (req, res, next) => {
-  //   const { userId } = res.locals.user;
-  //   //console.log(userId, "아이디");
-  //   const { userKey } = req.params;
-  //   //console.log(userKey)
-  //   const findUser = await this.usersService.profile(userKey);
-  //   //console.log(findUser)
-  //   if (userId !== findUser.userId) {
-  //     return res.status(400).json({ errorMessage: "권한이 없습니다." });
-  //   }
-  //   try {
-  //     //console.log(req.file);
-  //     const image = req.files;
-  //     // const { nickname, introduce } = req.body;
+  // 프로필 수정
+  profileUpdate = async (req, res, next) => {
+    const { userKey } = res.locals.user;
+    const image = req.files;
+    //console.log(nickname, "아이디");
+    //const { userKey } = req.params;
+    //console.log(userKey, "유저고유")
+    const findUser = await this.userService.mypage(userKey);
+    //console.log(findUser.userKey, "뭐가 담겨있나")
+    if (userKey !== findUser.userKey) {
+      return res.status(400).json({ errorMessage: "권한이 없습니다." });
+    }
+    try {
+      //이미지 수정
+      if (image) {
+        const findUserImage = findUser.userImage;
+        const findUserLastImage = `profileimage/${findUserImage}`;
+        console.log(findUserImage, "아아아아");
 
-  //     //이미지 수정
-  //     if (image) {
-  //       const findUserImage = findUser.avatar.split("/")[4];
-  //       const findUserLastImage = `profileimage/${findUserImage}`;
-  //       // console.log(findUserImage, "아아아아");
+        const s3 = new aws.S3({
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+          region: process.env.AWS_REGION,
+        });
 
-  //       try {
-  //         const s3 = new aws.S3({
-  //           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  //           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  //           region: process.env.AWS_REGION,
-  //         });
+        const params = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: findUserLastImage,
+        };
 
-  //         const params = {
-  //           Bucket: process.env.AWS_BUCKET_NAME,
-  //           Key: findUserLastImage,
-  //         };
+        s3.deleteObject(params, function (err, data) {
+          if (err) {
+            console.log(err, err.stack);
+          } else {
+            res.status(200);
+            next();
+          }
+        });
 
-  //         s3.deleteObject(params, function (err, data) {
-  //           if (err) {
-  //             console.log(err, err.stack);
-  //           } else {
-  //             res.status(200);
-  //             next();
-  //           }
-  //         });
-  //       } catch (error) {
-  //         next(error);
-  //       }
+        const value = Object.values({ image });
+        const imageUrl = value[0][0].transforms[0].location;
+        await this.userService.uploadUserImage(imageUrl, userKey);
+        //console.log(imageUrl);
+      }
 
-  //       const value = Object.values({ image });
-  //       const imageUrl = value[0][0].transforms[0].location;
-  //       await this.userService.uploadUserImage(imageUrl, userKey);
-  //     }
-
-  //     // //닉네임 수정
-  //     // if (nickname) {
-  //     //   await this.usersService.updateNickname(nickname, userId);
-  //     // }
-
-  //     // //소개글 수정
-  //     // if (introduce) {
-  //     //   await this.usersService.updateIntroduce(introduce, userId);
-  //     // }
-
-  //     // if (!image && !nickname && !introduce) {
-  //     //   res.status(200).json({ msg: "변경할 내용이 없습니다" });
-  //     // }
-  //     res.status(200).json({ msg: "프로필 수정 완료!" });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+      res.status(200).json({ msg: "프로필 이미지 수정 완료!" });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 module.exports = UserController;

@@ -58,17 +58,44 @@ class AdviceRepository {
   findOneAdvice = async (userKey, adviceId) => {
     //console.log(userKey, adviceId, "잘 받아오나 보자")
     const AdviceOne = await Advice.findOne({
-      where: { adviceId: adviceId },
-      include: [
-        { model: User, attributes: ["nickname", "userImg"] },
-        { model: AdviceBM, where: { userKey: userKey }, required: false },
-        { model: AdviceImage, attributes: ["adviceImage"] },
-        { model: Comment },
-      ],
-    });
+      where: { adviceId },
+      include:[
+        {model:User, attributes: ["userKey", "nickname", "userImg"] },
+        {model: AdviceBM, where: { userKey: userKey }, required:false },
+        {model:AdviceImage, attributes: ["adviceImageId", "adviceImage"] },
+        {model:Comment}
+      ]
+    })
     //console.log(AdviceOne, "가자가아아하나아아")
-    return AdviceOne;
-  };
-}
+    return AdviceOne
+  }
+
+  findImages = async (imageId) => {
+    const imageIds = imageId.split(',')
+    const findImage = await AdviceImage.findAll({
+      where: {adviceImageId: imageIds},
+    })
+    //console.log(findImage, "잘 나오나")
+    return findImage
+  }
+
+  updateAdviceTitle = async (adviceId, title) => {
+    const updateAdviceTitleData = await Advice.update(
+      {title:title},
+      {where: {adviceId: adviceId}}
+    );
+    return updateAdviceTitleData;
+  }
+
+  updateAdviceContent = async (adviceId, content) => {
+    const updateAdviceContentData = await Advice.update(
+      {content:content},
+      {where: {adviceId: adviceId}}
+    );
+    return updateAdviceContentData;
+  }
+
+};
+
 
 module.exports = AdviceRepository;

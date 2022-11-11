@@ -19,7 +19,7 @@ router.put('/choice/:choiceId',authMiddleware, choiceController.choice);
 router.get('/mypage/choice',authMiddleware, choiceController.mychoice);
 
 //마이페이지에서 내가 작성한 투표 게시글 삭제
-router.delete;('/mypage/choice/:choiceId',authMiddleware, choiceController.deletechoice);
+router.delete('/mypage/choice/:choiceId',authMiddleware, choiceController.deletechoice);
 
 module.exports = router;
 

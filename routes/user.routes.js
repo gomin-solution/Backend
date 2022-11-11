@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
 const LoginMiddleware = require("../middlewares/LoginMiddleware");
+const upload = require("../modules/user.multer");
 const UserController = require("../controllers/user.controller");
 const userController = new UserController();
 
@@ -19,6 +20,14 @@ router.post("/login", LoginMiddleware, userController.login);
 
 //로그인테스트
 router.post("/test", authMiddleware);
+
+// 프로필 이미지 수정
+router.put(
+  "/mypage",
+  authMiddleware,
+  upload.array("image", 1),
+  userController.profileUpdate
+);
 
 //마이페이지
 router.get("/mypage", authMiddleware, userController.mypage);
