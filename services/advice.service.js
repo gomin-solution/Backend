@@ -91,7 +91,6 @@ class AdviceService {
   // 이미지 찾기(조언 게시글 수정용)
   findImages = async (imageId) => {
     const findImage = await this.adviceRepository.findImages(imageId);
-    // console.log(findImage, "이것도 넘어가고")
     return findImage;
   };
 
