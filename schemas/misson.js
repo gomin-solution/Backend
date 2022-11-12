@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const missonSchema = new Schema({
+const missionSchema = new Schema({
   user: {
     type: String,
     required: true,
@@ -11,4 +11,4 @@ const missonSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model(`Misson`, missonSchema);
+module.exports = mongoose.model(`Mission`, missionSchema);

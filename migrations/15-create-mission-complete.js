@@ -2,16 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("MissonCompletes", {
-      missonId: {
+    await queryInterface.createTable("MissionCompletes", {
+      missionId: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
         references: {
-          model: "Missons",
-          key: "missonId",
+          model: "Missions",
+          key: "missionId",
         },
       },
       userKey: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
         references: {
           model: "Users",
           key: "userKey",
@@ -20,6 +22,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("MissonCompletes");
+    await queryInterface.dropTable("MissionCompletes");
   },
 };

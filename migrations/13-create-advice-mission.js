@@ -2,23 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("LikeMissons", {
-      missonId: {
+    await queryInterface.createTable("AdviceMissions", {
+      missionId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
         references: {
-          model: "Missons",
-          key: "missonId",
+          model: "Missions",
+          key: "missionId",
         },
       },
-      likeMisson: {
+      adviceMission: {
         type: Sequelize.INTEGER,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("LikeMissons");
+    await queryInterface.dropTable("AdviceMissions");
   },
 };
