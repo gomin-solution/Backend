@@ -16,6 +16,7 @@ module.exports = {
           model: "Advice",
           key: "adviceId",
         },
+        onDelete: 'cascade',
       },
       adviceImage: {
         type: Sequelize.STRING,

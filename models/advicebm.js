@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
           model: "Advice",
           key: "adviceId",
         },
+        onDelete: 'cascade',
       },
       userKey: {
         type: DataTypes.INTEGER,

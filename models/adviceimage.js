@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
           model: "Advice",
           key: "adviceId",
         },
+        onDelete: 'cascade',
       },
       adviceImage: {
         type: DataTypes.STRING,

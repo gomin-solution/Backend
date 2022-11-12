@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
           model: "Advice",
           key: "adviceId",
         },
+        onDelete: 'cascade',
       },
       comment: {
         type: DataTypes.STRING,
