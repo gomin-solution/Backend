@@ -12,19 +12,19 @@ class AdviceImageRepository {
     return;
   };
 
-  uploadImage = async (imageUrl, imageId) => {
-    //console.log(imageUrl, imageId.split(','), "어떻게 나오고있나")
-    const imageIds = imageId.split(",");
+  // updateAdviceImage = async (imageUrl, imageId) => {
+  //   const imageIds = imageId.split(",");
 
-    for (let i = 0; i < imageIds.length; i++) {
-      await AdviceImage.update(
-        { adviceImage: imageUrl[i] },
-        { where: { adviceImageId: imageIds[i] } }
-      );
-    }
-    return;
-  };
+  //   for (let i = 0; i < imageIds.length; i++) {
+  //     await AdviceImage.update(
+  //       { adviceImage: imageUrl[i] },
+  //       { where: { adviceImageId: imageIds[i] } }
+  //     );
+  //   }
+  //   return;
+  // };
 
+  // 조언 게시글 이미지 삭제(수정용)
   imageDelete = async (imageId) => {
     const imageIds = imageId.split(",");
     for (let i = 0; i < imageIds.length; i++) {
@@ -34,6 +34,18 @@ class AdviceImageRepository {
     }
     return;
   };
+
+  adviceImageFind = async (adviceId) => {
+    const findAdviceImage = await AdviceImage.findAll({
+      where: {adviceId: adviceId}
+    })
+    const adviceFindAllImage = [];
+    for (let i=0; i<findAdviceImage.length; i++){
+      adviceFindAllImage.push(findAdviceImage[i].adviceImage)
+    }
+    return adviceFindAllImage;
+  }  
+
 }
 
 module.exports = AdviceImageRepository;

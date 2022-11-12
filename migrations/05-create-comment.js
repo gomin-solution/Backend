@@ -24,6 +24,7 @@ module.exports = {
           model: "Advice",
           key: "adviceId",
         },
+        onDelete: 'cascade',
       },
       comment: {
         type: Sequelize.STRING,

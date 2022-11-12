@@ -136,11 +136,8 @@ class UserController {
     const { userKey } = res.locals.user;
     const image = req.files;
     const { nickname } = req.body;
-    //console.log(nickname, "아이디");
-    //const { userKey } = req.params;
-    //console.log(userKey, "유저고유")
     const findUser = await this.userService.mypage(userKey);
-    //console.log(findUser.userKey, "뭐가 담겨있나")
+
     if (userKey !== findUser.userKey) {
       return res.status(400).json({ errorMessage: "권한이 없습니다." });
     }

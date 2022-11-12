@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const adviceRouter = Router();
-const upload = require("../modules/advice.multer");
+const uploadadvice = require("../modules/advice.multer");
 
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -11,7 +11,7 @@ const adviceController = new AdviceController();
 adviceRouter.post(
   "/",
   authMiddleware,
-  upload.array("image", 3),
+  uploadadvice.array("image", 3),
   adviceController.creatAdvice
 );
 
@@ -29,7 +29,7 @@ adviceRouter.get("/:adviceId", authMiddleware, adviceController.findOneAdvice);
 adviceRouter.put(
   "/:adviceId",
   authMiddleware,
-  upload.array("image", 3),
+  uploadadvice.array("image", 3),
   adviceController.updateAdvice
 );
 

@@ -7,6 +7,7 @@ class AdviceController {
   adviceService = new AdviceService();
   adviceImageService = new AdviceImageService();
 
+  // 조언 게시물 생성
   creatAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { title, categoryId, content } = req.body;
@@ -20,6 +21,7 @@ class AdviceController {
         content
       );
 
+      // 조언 게시물 이미지 업로드
       let imageUrl = [];
       if (images) {
         const adviceId = creatAdvice.adviceId;
@@ -93,17 +95,11 @@ class AdviceController {
     }
 
     try {
-      // 이미지 수정
-      // const findImageAdvice = await this.adviceService.findImages(imageId);
-      // console.log(findImageAdvice, "정보정보");
-
       const AdviceImageArray = [];
       let imageUrl = [];
-
       if (images) {
         const findImageAdvice = await this.adviceService.findImages(imageId);
-        console.log(findImageAdvice, "정보정보");
-
+        
         for (let i = 0; i < findImageAdvice.length; i++) {
           AdviceImageArray.push(
             "adviceimage/" + findImageAdvice[i].adviceImage.split("/")[4]
@@ -120,7 +116,6 @@ class AdviceController {
               Bucket: process.env.AWS_BUCKET_NAME,
               Key: AdviceImageArray[i],
             };
-            console.log(params, "파람스");
 
             s3.deleteObject(params, function (err, data) {
               if (err) {
@@ -134,10 +129,7 @@ class AdviceController {
             next(error);
           }
         }
-        console.log(AdviceImageArray, "key가 잘 나오나");
-
-        await this.adviceImageService.imageDelete(imageUrl, imageId);
-        res.status(200).send({ ok: true, msg: "이미지가 삭제되었습니다" });
+        await this.adviceImageService.imageDelete(imageId);
 
         const values = Object.values({ images });
         for (let i = 0; i < values[0].length; i++) {
@@ -160,6 +152,53 @@ class AdviceController {
         return res.status(200).json({ msg: "변경할 내용이 없습니다" });
       }
       return res.status(200).json({ msg: "수정 완료!" });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  // 조언 게시글 삭제
+  deleteAdvice = async (req, res, next) => {
+    const { userKey } = res.locals.user;
+    const { adviceId } = req.params;
+    const findAdvice = await this.adviceService.findAllAdvice(adviceId);
+    
+    if (userKey !== findAdvice[0].userKey) {
+      return res.status(400).json({ errorMessage: "권한이 없습니다." });
+    }
+
+    try {
+      const findDeleteImages = await this.adviceImageService.adviceImageFind(adviceId);
+      const findDeleteImagesArray = [];
+      for (let i = 0; i < findDeleteImages.length; i++) {
+        findDeleteImagesArray.push(
+          "adviceimage/" + findDeleteImages[i].split("/")[4]
+        );
+        console.log(findDeleteImagesArray)
+        const s3 = new aws.S3({
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+          region: process.env.AWS_REGION,
+        });
+
+        const params = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: findDeleteImagesArray[i],
+        };
+        
+        s3.deleteObject(params, function (err, data) {
+          if (err) {
+            console.log(err, err.stack);
+          } else {
+            res.status(200);
+            next();
+          }
+        });
+      }
+
+      //게시물 삭제
+      await this.adviceService.adviceDelete(adviceId);
+      return res.status(200).json({msg: "게시물 삭제 완료!"})
     } catch (err) {
       next(err);
     }

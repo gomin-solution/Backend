@@ -4,7 +4,8 @@ const AdviceRepository = require("../repositories/advice.repository");
 
 class AdviceService {
   adviceRepository = new AdviceRepository();
-
+  
+  // 게시물 생성
   createAdvice = async (userKey, title, categoryId, content) => {
     const createAdviceData = await this.adviceRepository.createAdvice(
       userKey,
@@ -12,16 +13,14 @@ class AdviceService {
       categoryId,
       content
     );
-    //console.log(createAdviceData.adviceId, "으아아아아아아아");
-    //console.log(createAdviceData.categoryId, "나오나아아아");
+
     return createAdviceData;
   };
 
+  // 조언 게시물 전체 조회
   findAllAdvice = async () => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
-    //let boolean;
     return findAllAdvice.map((post) => {
-      //post.AdviceBMs.length ? (boolean = true) : (boolean = false);
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
@@ -31,19 +30,17 @@ class AdviceService {
         createdAt: post.createdAt,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
-        //isBookMark: boolean,
         viewCount: post.viewCount,
       };
     });
   };
 
+  // 조언 게시물 카테고리별 조회
   findCategoryAdvice = async (categoryId) => {
     const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
       categoryId
     );
     const data = findCategoryAdvice.map((post) => {
-      //let boolean;
-      //post.AdviceBMs.length ? (boolean = true) : (boolean = false);
       return {
         adviceId: post.adviceId,
         categoryId: post.categoryId,
@@ -52,13 +49,14 @@ class AdviceService {
         createdAt: post.createdAt,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
-        //isBookMark: boolean,
+
         viewCount: post.viewCount,
       };
     });
     return data;
   };
 
+  //  조언 게시물 상세페이지 조회
   findOneAdvice = async (userKey, adviceId) => {
     const findOneAdvice = await this.adviceRepository.findOneAdvice(
       userKey,
@@ -69,13 +67,9 @@ class AdviceService {
       (post) => {
         return [post.dataValues.adviceImageId, post.adviceImage];
       }
-      //let test1 = {};
-      // console.log(post.dataValues.adviceImageId, "나와라~!")
-      //test1[post.dataValues.adviceImageId] = post.adviceImage
-      //return test1}
+
     );
-    //console.log(findAdviceImageArray)
-    // return findOneAdvice
+
     let boolean;
     findOneAdvice.AdviceBMs.length ? (boolean = true) : (boolean = false);
     return {
@@ -94,45 +88,31 @@ class AdviceService {
     };
   };
 
+  // 이미지 찾기(조언 게시글 수정용)
   findImages = async (imageId) => {
     const findImage = await this.adviceRepository.findImages(imageId);
     return findImage;
   };
 
+  // 조언 게시물 타이틀 수정
   updateAdviceTitle = async (adviceId, title) => {
     const findAdvice = await this.adviceRepository.findAllAdvice(adviceId);
-    console.log(findAdvice, "이게 없다고?");
     if (!findAdvice) throw new ErrorCustom(400, "게시물이 존재하지 않습니다.");
 
     await this.adviceRepository.updateAdviceTitle(adviceId, title);
 
-    // const updateAdvice = await this.adviceRepository.findAllAdvice(adviceId);
-
-    // return {
-    //   adviceId: updateAdvice.adviceId,
-    //   title: updateAdvice.title,
-    //   createdAt: updateAdvice.createdAt,
-    //   updatedAt: updateAdvice.updatedAt,
-    // };
   };
 
+  // 조언 게시물 콘텐츠 수정
   updateAdviceContent = async (adviceId, content) => {
     const findAdvice = await this.adviceRepository.findAllAdvice(adviceId);
-    console.log(findAdvice, "이게 없다고?");
     if (!findAdvice) throw new ErrorCustom(400, "게시물이 존재하지 않습니다.");
 
     await this.adviceRepository.updateAdviceContent(adviceId, content);
 
-    // const updateAdvice = await this.adviceRepository.findAllAdvice(adviceId);
-
-    // return {
-    //   adviceId: updateAdvice.adviceId,
-    //   title: updateAdvice.title,
-    //   createdAt: updateAdvice.createdAt,
-    //   updatedAt: updateAdvice.updatedAt,
-    // };
   };
 
+  // 조언 게시물 조회 수
   upCountView = async (adviceId, userKey) => {
     const findAdvice = await this.adviceRepository.findAdvice(adviceId);
 
@@ -140,6 +120,12 @@ class AdviceService {
       await this.adviceRepository.upCountView(adviceId);
     }
   };
+
+  // 조언 게시물 삭제
+  adviceDelete = async (adviceId) => {
+    await this.adviceRepository.adviceDelete(adviceId);
+  };
+  
 }
 
 module.exports = AdviceService;
