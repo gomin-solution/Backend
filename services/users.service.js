@@ -2,17 +2,18 @@ const ErrorCustom = require("../exceptions/error-custom");
 const UserRepository = require("../repositories/users.repository.js");
 const AdviceRepository = require("../repositories/advice.repository");
 const ChoiceRepository = require("../repositories/choice.repository");
-const MissonRepository = require("../repositories/misson.repository");
+const MissionRepository = require("../repositories/mission.repository");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { boolean } = require("joi");
 require("dotenv").config();
 
 class UserService {
   userRepository = new UserRepository();
   adviceRepository = new AdviceRepository();
   choiceRepository = new ChoiceRepository();
-  missonRepository = new MissonRepository();
+  missionRepository = new MissionRepository();
 
   //유저 생성(가입)
   createUser = async ({
@@ -114,8 +115,8 @@ class UserService {
     const user = await this.userRepository.findUser(userKey);
     //console.log(user, "무엇인가?")
 
-    // if (user.Comments.length >= misson.adviceCount) {
-    //   await this.missonComplete.create(userKey, missoni);
+    // if (user.Comments.length >= mission.adviceCount) {
+    //   await this.missionComplete.create(userKey, missioni);
     // }
 
     const result = {
@@ -211,10 +212,26 @@ class UserService {
     console.log(
       `totalAdvice:${totalAdvice}, totalChoice:${totalChoice}, totalPost:${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
     );
+    const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const completeMission = await this.missionRepository.completeMission(
+      userKey
+    );
+    const CompleteMission = completeMission.map((x) => x.missionId);
+    // const unCompleteMission = missionarray.filter(
+    //   (x) => !CompleteMission.includes(x)
+    // );
+    console.log(unCompleteMission);
+    const mission = await this.missionRepository.mission(CompleteMission);
+    let result = [];
+    for (let i = 1; i < 10; i++) {
+      result.push({
+        mission: i,
+        isComplete: boolean,
+        isGet: boolean,
+      });
+    }
 
-    const misson = await this.missonRepository();
-
-    return totalReword;
+    return mission;
   };
 
   updateUserNickname = async (userKey, nickname) => {

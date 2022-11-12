@@ -1,40 +1,44 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class ChoiceMisson extends Model {
+  class Mission extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Misson, {
-        foreignKey: "missonId",
-        targetKey: "missonId",
+      this.hasOne(models.ChoiceMission, {
+        foreignKey: "missionId",
+      });
+      this.hasOne(models.LikeMission, {
+        foreignKey: "missionId",
+      });
+      this.hasOne(models.AdviceMission, {
+        foreignKey: "missionId",
+      });
+      this.hasOne(models.PostMission, {
+        foreignKey: "missionId",
+      });
+      this.hasMany(models.MissionComplete, {
+        foreignKey: "missionId",
       });
     }
   }
-  ChoiceMisson.init(
+  Mission.init(
     {
-      missonId: {
+      missionId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Missons",
-          key: "missonId",
-        },
-      },
-      choiceMisson: {
         type: DataTypes.INTEGER,
       },
     },
     {
       sequelize,
-      modelName: "ChoiceMisson",
+      modelName: "Mission",
       timestamps: false,
     }
   );
-  return ChoiceMisson;
+  return Mission;
 };

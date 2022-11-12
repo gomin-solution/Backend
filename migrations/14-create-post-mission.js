@@ -2,19 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("ChoiceMissons", {
-      missonId: {
+    await queryInterface.createTable("PostMissions", {
+      missionId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        references: {
+          model: "Missions",
+          key: "missionId",
+        },
       },
-      choiceMisson: {
+      postMission: {
         type: Sequelize.INTEGER,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("ChoiceMissons");
+    await queryInterface.dropTable("PostMissions");
   },
 };
