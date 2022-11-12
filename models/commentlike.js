@@ -8,21 +8,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-        this.belongsTo(models.User, {
-          foreignKey: "userKey",
-          targetKey: "userKey",
-        });
-
-        // this.belongsTo(models.Choice, {
-        //     foreignKey: "choiceId",
-        //     targetKey: "choiceId",
-        // });
-
-        this.belongsTo(models.Comment, {
-          foreignKey: "commentId",
-          targetKey: "commentId",
+      this.belongsTo(models.User, {
+        foreignKey: "userKey",
+        targetKey: "userKey",
       });
 
+      // this.belongsTo(models.Choice, {
+      //     foreignKey: "choiceId",
+      //     targetKey: "choiceId",
+      // });
+
+      this.belongsTo(models.Comment, {
+        foreignKey: "commentId",
+        targetKey: "commentId",
+      });
     }
   }
   CommentLike.init(
@@ -32,14 +31,13 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-
       },
       userKey: {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-            model: "User",
-            key: "userKey",
+          model: "User",
+          key: "userKey",
         },
       },
       commentId: {
@@ -49,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
           model: "Comment",
           key: "commentId",
         },
-        onDelete: 'cascade',
+        onDelete: "cascade",
       },
       // choiceId: {
       //   allowNull: false,

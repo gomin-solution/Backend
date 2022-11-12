@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "adviceId",
         targetKey: "adviceId",
       });
-    //   this.hasMany(models.Comment, {
-    //     foreignKey: "adviceId",
-    //     sourceKey: "adviceId",
-    //   });
-    //   this.hasMany(models.Save, {
-    //     foreignKey: "adviceId",
-    //     sourceKey: "adviceId",
-    //   });
+      //   this.hasMany(models.Comment, {
+      //     foreignKey: "adviceId",
+      //     sourceKey: "adviceId",
+      //   });
+      //   this.hasMany(models.Save, {
+      //     foreignKey: "adviceId",
+      //     sourceKey: "adviceId",
+      //   });
     }
   }
   AdviceImage.init(
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
           model: "Advice",
           key: "adviceId",
         },
-        onDelete: 'cascade',
+        onDelete: "cascade",
       },
       adviceImage: {
         type: DataTypes.STRING,

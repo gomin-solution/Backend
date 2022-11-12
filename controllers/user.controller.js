@@ -13,7 +13,7 @@ class UserController {
   /**회원가입 컨트롤러 */
   signup = async (req, res, next) => {
     try {
-      const { userId, nickname, password, confirm, isAdult } =
+      const { userId, nickname, password, confirm, IsAdult } =
         await joi.signupSchema.validateAsync(req.body);
 
       const hashed = await bcrypt.hash(password, 12);
@@ -22,7 +22,7 @@ class UserController {
         userId: userId,
         nickname: nickname,
         password: hashed,
-        isAdult: isAdult,
+        IsAdult: IsAdult,
       });
       res.status(200).json({ message: "회원가입 성공" });
     } catch (error) {
@@ -88,7 +88,7 @@ class UserController {
       const { userKey } = res.locals.user;
       const mainpage = await this.userService.mainPage(userKey);
 
-      return res.status(200).json({ data: mainpage });
+      return res.status(200).json({ mainData: mainpage });
     } catch (error) {
       next(error);
     }
@@ -135,7 +135,7 @@ class UserController {
   profileUpdate = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const image = req.files;
-    const { nickname } = req.body;  
+    const { nickname } = req.body;
     const findUser = await this.userService.mypage(userKey);
 
     if (userKey !== findUser.userKey) {

@@ -13,18 +13,18 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-            model: "Users",
-            key: "userKey",
+          model: "Users",
+          key: "userKey",
         },
       },
       commentId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-            model: "Comments",
-            key: "commentId",
+          model: "Comments",
+          key: "commentId",
         },
-        onDelete: 'cascade',
+        onDelete: "cascade",
       },
       // choiceId: {
       //   allowNull: false,

@@ -19,13 +19,14 @@ class UserService {
     userId: userId,
     nickname: nickname,
     password: hashed,
-    isAdult: isAdult,
+    IsAdult: IsAdult,
   }) => {
+    IsAdult == "true" ? (IsAdult = true) : (IsAdult = false);
     await this.userRepository.createUser({
       userId: userId,
       nickname: nickname,
       password: hashed,
-      isAdult: isAdult,
+      IsAdult: IsAdult,
     });
   };
 
@@ -173,7 +174,7 @@ class UserService {
     const foundData = await this.userRepository.findUser(userKey);
     const userIdData = foundData.userKey;
 
-    console.log("유저:", userIdData, "잘 받아오나 보자")
+    console.log("유저:", userIdData, "잘 받아오나 보자");
     if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
 
     const uploadImage = imageUrl;
@@ -185,7 +186,6 @@ class UserService {
     );
     return uploadImagesData;
   };
-
 
   reword = async (userKey) => {
     //휙득한 좋아요수
@@ -202,7 +202,9 @@ class UserService {
     viewCountArray.forEach((x) => {
       viewCount += x;
     });
+    //내가 조언해준 횟수
     const totalAdvice = totalReword[0].Comments.length;
+    //내가 투표한횟수
     const totalChoice = totalReword[0].isChoices.length;
     const totalPost = totalReword[0].Advice.length;
 
@@ -210,16 +212,16 @@ class UserService {
       `totalAdvice:${totalAdvice}, totalChoice:${totalChoice}, totalPost:${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
     );
 
-    return totalReword;
     const misson = await this.missonRepository();
+
+    return totalReword;
   };
 
   updateUserNickname = async (userKey, nickname) => {
-    const findUser = await this.userRepository.findUser(userKey);;
+    const findUser = await this.userRepository.findUser(userKey);
     if (!findUser) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
     await this.userRepository.updateUserNickname(userKey, nickname);
   };
-
 }
 
 module.exports = UserService;

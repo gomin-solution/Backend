@@ -2,31 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("AdviceBMs", {
-      adviceBMId: {
+    await queryInterface.createTable("AdviceMissons", {
+      missonId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-      },
-      adviceId: {
-        type: Sequelize.INTEGER,
         references: {
-          model: "Advice",
-          key: "adviceId",
+          model: "Missons",
+          key: "missonId",
         },
-        onDelete: 'cascade',
       },
-      userKey: {
+      adviceMisson: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "Users",
-          key: "userKey",
-        },
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("AdviceBMs");
+    await queryInterface.dropTable("AdviceMissons");
   },
 };

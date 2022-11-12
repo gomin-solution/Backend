@@ -14,7 +14,12 @@ const port = process.env.EXPRESS_PORT || 3000;
 
 connect();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credential: "true",
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());

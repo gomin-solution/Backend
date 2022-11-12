@@ -1,16 +1,16 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class AdviceBM extends Model {
+  class MissonComplete extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Advice, {
-        foreignKey: "adviceId",
-        targetKey: "adviceId",
+      this.belongsTo(models.Misson, {
+        foreignKey: "missonId",
+        targetKey: "missonId",
       });
       this.belongsTo(models.User, {
         foreignKey: "userKey",
@@ -18,35 +18,28 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  AdviceBM.init(
+  MissonComplete.init(
     {
-      adviceBMId: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-      },
-      adviceId: {
+      missonId: {
         type: DataTypes.INTEGER,
         references: {
-          model: "Advice",
-          key: "adviceId",
+          model: "Missons",
+          key: "missonId",
         },
-        onDelete: "cascade",
       },
       userKey: {
         type: DataTypes.INTEGER,
         references: {
-          model: "User",
+          model: "Users",
           key: "userKey",
         },
       },
     },
     {
       sequelize,
-      modelName: "AdviceBM",
+      modelName: "MissonComplete",
       timestamps: false,
     }
   );
-  return AdviceBM;
+  return MissonComplete;
 };

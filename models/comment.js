@@ -13,16 +13,15 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "userKey",
       });
 
-        this.hasMany(models.CommentLike, {
-          foreignKey: "commentId",
-          sourceKey: "commentId",
-        });
+      this.hasMany(models.CommentLike, {
+        foreignKey: "commentId",
+        sourceKey: "commentId",
+      });
 
       this.belongsTo(models.Advice, {
         foreignKey: "adviceId",
         targetKey: "adviceId",
       });
-
     }
   }
   Comment.init(
@@ -48,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
           model: "Advice",
           key: "adviceId",
         },
-        onDelete: 'cascade',
+        onDelete: "cascade",
       },
       comment: {
         type: DataTypes.STRING,

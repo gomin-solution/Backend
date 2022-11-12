@@ -45,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         sourceKey: "userKey",
       });
+      this.hasMany(models.MissonComplete, {
+        foreignKey: "userKey",
+        sourceKey: "userKey",
+      });
     }
   }
   User.init(
