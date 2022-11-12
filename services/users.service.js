@@ -213,25 +213,78 @@ class UserService {
       `totalAdvice:${totalAdvice}, totalChoice:${totalChoice}, totalPost:${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
     );
     const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const completeMission = await this.missionRepository.completeMission(
+    const completedMission = await this.missionRepository.completeMission(
       userKey
     );
-    const CompleteMission = completeMission.map((x) => x.missionId);
-    // const unCompleteMission = missionarray.filter(
-    //   (x) => !CompleteMission.includes(x)
-    // );
+    const CompleteMission = completedMission.map((x) => x.missionId);
+    const unCompleteMission = missionarray.filter(
+      (x) => !CompleteMission.includes(x)
+    );
     console.log(unCompleteMission);
-    const mission = await this.missionRepository.mission(CompleteMission);
+    console.log(CompleteMission);
+    const mission = await this.missionRepository.mission(unCompleteMission);
+    const newCompleteMissionId = [];
+    mission.forEach((x) => {
+      x.missionId;
+      if (x.AdviceMission) {
+        x.AdviceMission.adviceMission <= totalAdvice
+          ? newCompleteMissionId.push(x.missionId)
+          : false;
+      }
+      if (x.ChoiceMission) {
+        x.ChoiceMission.choiceMission <= totalChoice
+          ? newCompleteMissionId.push(x.missionId)
+          : false;
+      }
+      if (x.PostMission) {
+        x.PostMission.postMission <= totalPost
+          ? newCompleteMissionId.push(x.missionId)
+          : false;
+      }
+      if (x.LikeMission) {
+        x.LikeMission.likeMission <= likeTotal
+          ? newCompleteMissionId.push(x.missionId)
+          : false;
+      }
+    });
+
+    for (const missionId of newCompleteMissionId) {
+      await this.missionRepository.createCompleteMission(userKey, missionId);
+    }
+
+    const missionComplete = await this.missionRepository.completeMission(
+      userKey
+    );
+    const missionCompleteId = missionComplete.map((x) => {
+      return [x.missionId, x.isGet];
+    });
+    console.log(missionCompleteId);
+
     let result = [];
     for (let i = 1; i < 10; i++) {
+      let isComplete = false;
+      let isGet = false;
+      missionCompleteId.forEach((x) => {
+        if (x[0] == i) {
+          isComplete = true;
+        }
+        if (x[0] == i && x[1] == 1) {
+          isGet = true;
+        }
+      });
+
       result.push({
         mission: i,
-        isComplete: boolean,
-        isGet: boolean,
+        isComplete: isComplete,
+        isGet: isGet,
       });
     }
 
-    return mission;
+    return result;
+  };
+
+  getReword = async (userKey, missionId) => {
+    await this.missionRepository.getReword(userKey, missionId);
   };
 
   updateUserNickname = async (userKey, nickname) => {

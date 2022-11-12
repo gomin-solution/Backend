@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
           key: "userKey",
         },
       },
+      isGet: {
+        type: DataTypes.BOOLEAN,
+      },
     },
     {
       sequelize,
