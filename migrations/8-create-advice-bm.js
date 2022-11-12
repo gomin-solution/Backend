@@ -15,6 +15,7 @@ module.exports = {
           model: "Advice",
           key: "adviceId",
         },
+        onDelete: 'cascade',
       },
       userKey: {
         type: Sequelize.INTEGER,

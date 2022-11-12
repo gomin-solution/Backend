@@ -24,6 +24,7 @@ module.exports = {
             model: "Comments",
             key: "commentId",
         },
+        onDelete: 'cascade',
       },
       // choiceId: {
       //   allowNull: false,
