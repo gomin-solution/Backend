@@ -45,6 +45,16 @@ router.get("/mypage/reword", authMiddleware, userController.reword);
 //router.put("/mypage", authMiddleware, userController.profileUpdate);
 
 //조언 게시글 삭제
-router.delete("/mypage/advice/:adviceId", authMiddleware, adviceController.deleteAdvice)
+router.delete(
+  "/mypage/advice/:adviceId",
+  authMiddleware,
+  adviceController.deleteAdvice
+);
+
+router.put(
+  "/mypage/reword/:missionId",
+  authMiddleware,
+  userController.getReword
+);
 
 module.exports = router;

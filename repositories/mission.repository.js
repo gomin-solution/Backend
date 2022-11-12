@@ -14,9 +14,9 @@ class MissionRepository {
     return await MissionComplete.findAll({ where: { userKey: userKey } });
   };
 
-  mission = async (CompleteMission) => {
+  mission = async (unCompleteMission) => {
     return await Mission.findAll({
-      where: { missionId: CompleteMission },
+      where: { missionId: unCompleteMission },
       include: [
         { model: AdviceMission },
         { model: ChoiceMission },
@@ -24,6 +24,21 @@ class MissionRepository {
         { model: LikeMission },
       ],
     });
+  };
+
+  createCompleteMission = async (userKey, missionId) => {
+    await MissionComplete.create({
+      userKey: userKey,
+      missionId: missionId,
+      isGet: false,
+    });
+  };
+
+  getReword = async (userKey, missionId) => {
+    await MissionComplete.update(
+      { isGet: 1 },
+      { where: { userKey: userKey, missionId: missionId } }
+    );
   };
 }
 

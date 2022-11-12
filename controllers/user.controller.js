@@ -2,7 +2,7 @@ const UserService = require("../services/users.service");
 const joi = require("../util/joi");
 const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
-const Post = require("../schemas/mission");
+// const Post = require("../schemas/mission");
 require("dotenv").config();
 const aws = require("aws-sdk");
 const redisCli = require("../util/redis");
@@ -126,6 +126,18 @@ class UserController {
       const mission = await this.userService.reword(userKey);
 
       return res.status(200).json(mission);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getReword = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+      const { missionId } = req.params;
+      await this.userService.getReword(userKey, missionId);
+
+      return res.status(200).json({ message: "리워드 휙득완료!" });
     } catch (error) {
       next(error);
     }

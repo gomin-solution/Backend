@@ -19,6 +19,9 @@ module.exports = {
           key: "userKey",
         },
       },
+      isGet: {
+        type: Sequelize.BOOLEAN,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
