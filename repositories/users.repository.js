@@ -5,13 +5,13 @@ class UserRepository {
     userId: userId,
     nickname: nickname,
     password: hashed,
-    isAdult: isAdult,
+    IsAdult: IsAdult,
   }) => {
     await User.create({
       userId: userId,
       nickname: nickname,
       password: hashed,
-      isAdult: isAdult,
+      IsAdult: IsAdult,
       userImg:
         "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
     });
@@ -44,7 +44,6 @@ class UserRepository {
     return await isChoice.findAll({ where: { userKey: userKey } });
   };
 
-
   totalReword = async (userKey) => {
     return await User.findAll({
       where: { userKey: userKey },
@@ -56,16 +55,13 @@ class UserRepository {
     });
   };
 
-
   updateUserNickname = async (userKey, nickname) => {
     const updateAdviceContentData = await User.update(
-      {nickname:nickname},
-      {where: {userKey: userKey}}
+      { nickname: nickname },
+      { where: { userKey: userKey } }
     );
     return updateAdviceContentData;
-  }
-
-
+  };
 }
 
 module.exports = UserRepository;

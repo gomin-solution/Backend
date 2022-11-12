@@ -1,52 +1,40 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class AdviceBM extends Model {
+  class ChoiceMisson extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Advice, {
-        foreignKey: "adviceId",
-        targetKey: "adviceId",
-      });
-      this.belongsTo(models.User, {
-        foreignKey: "userKey",
-        targetKey: "userKey",
+      this.belongsTo(models.Misson, {
+        foreignKey: "missonId",
+        targetKey: "missonId",
       });
     }
   }
-  AdviceBM.init(
+  ChoiceMisson.init(
     {
-      adviceBMId: {
+      missonId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-      },
-      adviceId: {
-        type: DataTypes.INTEGER,
         references: {
-          model: "Advice",
-          key: "adviceId",
+          model: "Missons",
+          key: "missonId",
         },
-        onDelete: "cascade",
       },
-      userKey: {
+      choiceMisson: {
         type: DataTypes.INTEGER,
-        references: {
-          model: "User",
-          key: "userKey",
-        },
       },
     },
     {
       sequelize,
-      modelName: "AdviceBM",
+      modelName: "ChoiceMisson",
       timestamps: false,
     }
   );
-  return AdviceBM;
+  return ChoiceMisson;
 };
