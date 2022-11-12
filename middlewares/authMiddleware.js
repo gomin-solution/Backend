@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
     if (tokenType !== "Bearer")
       throw new ErrorCustom(400, "잘못된 요청입니다. 다시 로그인 해주세요");
 
-    if (!accessToken) {
+    if (!accessToken || accessToken == "undefined") {
       return res.status(403).send({
         errorMessage: "로그인이 필요한 기능입니다.",
       });
