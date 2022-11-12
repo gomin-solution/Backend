@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
       accesstoken = authorization.split(" ")[1];
     }
 
-    if (accesstoken || refreshtoken) {
+    if (accesstoken !== "undefined" || refreshtoken) {
       return res.status(403).send({
         errorMessage: "이미 로그인이 되어있습니다.",
       });

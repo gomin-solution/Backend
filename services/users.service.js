@@ -118,7 +118,6 @@ class UserService {
     // if (user.Comments.length >= mission.adviceCount) {
     //   await this.missionComplete.create(userKey, missioni);
     // }
-
     const result = {
       userKey: userKey,
       nickname: user.nickname,
@@ -207,6 +206,7 @@ class UserService {
     const totalAdvice = totalReword[0].Comments.length;
     //내가 투표한횟수
     const totalChoice = totalReword[0].isChoices.length;
+    //
     const totalPost = totalReword[0].Advice.length;
 
     console.log(
