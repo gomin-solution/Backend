@@ -49,8 +49,8 @@ class ChoiceService {
           title: findOneChoice.title,
           choice1Name: findOneChoice.choice1Name,
           choice2Name: findOneChoice.choice2Name,
-          choice1Per: res_a,
-          choice2Per: res_b,
+          choice1Per: Math.round(res_a),
+          choice2Per: Math.round(res_b),
           userImage: findAuthorData.userImg,
           nickname: findAuthorData.nickname,
           createdAt: findOneChoice.createdAt,
@@ -94,8 +94,8 @@ class ChoiceService {
           title: findMychoice[i].title,
           choice1Name: findMychoice[i].choice1Name,
           choice2Name: findMychoice[i].choice2Name,
-          choice1Per: result_a,
-          choice2Per: result_b,
+          choice1Per: Math.round(result_a),
+          choice2Per: Math.round(result_b),
           userImage: myData.userImg,
           nickname: myData.nickname,
           createdAt: findMychoice[i].createdAt,
@@ -137,11 +137,15 @@ class ChoiceService {
       let absolute_b = result.choice_2;
       let choice1Per;
       let choice2Per;
+      let a;
+      let b;
       if (absolute_a + absolute_b > 0) {
-        choice1Per = (absolute_a / (absolute_a + absolute_b)) * 100;
-        choice2Per = (absolute_b / (absolute_a + absolute_b)) * 100;
+        a = (absolute_a / (absolute_a + absolute_b)) * 100;
+        b = (absolute_b / (absolute_a + absolute_b)) * 100;
       }
       let count = result.choiceCount;
+      choice1Per = Math.round(a);
+      choice2Per = Math.round(b);
       return {
         choice1Per,
         choice2Per,
