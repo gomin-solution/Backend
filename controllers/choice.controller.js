@@ -12,8 +12,6 @@ class ChoiceController {
         res.status(400).send({ errorMessage: "입력 내용을 확인해 주십시오" });
         return;
       }
-
-
         const createchoice = await this.choiceService.createchoice(
             userKey,
             title,
@@ -26,9 +24,6 @@ class ChoiceController {
             next(err);
         }   
   }
-
-
-
 
   allchoice = async (req, res, next) => {
       try {
@@ -85,7 +80,11 @@ class ChoiceController {
       } else {
         throw new Error("잘못된 접근 입니다.");
       }
-      res.status(200).json({ message: "투표 성공", data: choice});
+      if(choice.count){
+      res.status(200).json({ message: choiceNum + "번에 투표 성공", data: choice});
+      } else{
+        res.status(200).json({ message:"투표 취소", data: choice});
+      }
       return choice;
     } catch (err) {
       next(err);
