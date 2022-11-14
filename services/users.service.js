@@ -112,12 +112,18 @@ class UserService {
 
   //마이페이지 데이터 가져오기
   mypage = async (userKey) => {
+    if (userKey == 0) {
+      return {
+        userKey: userKey,
+        nickname: "로그인이 필요합니다.",
+        userImage:
+          "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
+        totalAdvice: 0,
+        totalChoice: 0,
+      };
+    }
     const user = await this.userRepository.findUser(userKey);
-    //console.log(user, "무엇인가?")
 
-    // if (user.Comments.length >= mission.adviceCount) {
-    //   await this.missionComplete.create(userKey, missioni);
-    // }
     const result = {
       userKey: userKey,
       nickname: user.nickname,
@@ -125,7 +131,7 @@ class UserService {
       totalAdvice: user.Comments.length,
       totalChoice: user.isChoices.length,
     };
-    //console.log(result, "어떤게 들어있나")
+
     return result;
   };
 
