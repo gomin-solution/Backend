@@ -43,6 +43,9 @@ class ChoiceController {
   mychoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
+      if (userKey == 0) {
+        res.status(400).send({ message: "로그인이 필요합니다." });
+      }
       const mychoice = await this.choiceService.findMychoice(userKey);
       res.status(200).json({ data: mychoice });
     } catch (err) {
