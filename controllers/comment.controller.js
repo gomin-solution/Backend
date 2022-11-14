@@ -18,6 +18,7 @@ class CommentController {
       const { adviceId } = req.params;
       const { comment } = req.body;
       const { userKey } = res.locals.user;
+
       if (userKey == 0) {
         res.status(400).send({ message: "로그인이 필요합니다." });
       }
@@ -82,9 +83,11 @@ class CommentController {
     try {
       const { commentId } = req.params;
       const { userKey } = res.locals.user;
+
       if (userKey == 0) {
         res.status(400).send({ message: "로그인이 필요합니다." });
       }
+
       const Likes = await this.commentService.updateCommentLike(
         userKey,
         commentId
