@@ -22,14 +22,21 @@ class ChoiceService {
                 const choiceIdforRepo = findOneChoice.choiceId
                 const isChoice = await this.choiceRepository.isChoiceForAll(Key, choiceIdforRepo)
                 const isBookMark = await this.choiceRepository.isBookMark(Key, choiceIdforRepo)
+
+                const a =findOneChoice.choice1Per
+                const b =findOneChoice.choice2Per
+                const sum = a+b
+                const res_a = (a/sum)*100
+                const res_b = (b/sum)*100
+
                 data[i] = {
                     choiceId: findOneChoice.choiceId,
                     userKey: findOneChoice.userKey,
                     title: findOneChoice.title,
                     choice1Name: findOneChoice.choice1Name,
                     choice2Name: findOneChoice.choice2Name,
-                    choice1Per: findOneChoice.choice1Per,
-                    choice2Per: findOneChoice.choice2Per,
+                    choice1Per: res_a,
+                    choice2Per: res_b,
                     userImage: findAuthorData.userImg,
                     nickname: findAuthorData.nickname,
                     createdAt: findOneChoice.createdAt,
