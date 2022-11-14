@@ -11,19 +11,20 @@ class ChoiceRepository {
       choice1Name,
       choice2Name,
       endTime,
+      choice1Per: 0,
+      choice2Per: 0,
     });
     return createData;
   };
 
   findAllchoice = async () => {
     const findAllchoice = await Choice.findAll();
-    return findAllchoice ;
+    return findAllchoice;
   };
-
 
   findOneData = async (i) => {
     const findOnechoice = await Choice.findAll();
-    return findOnechoice[i] ;
+    return findOnechoice[i];
   };
 
   findUserData = async (userKey) => {
@@ -32,15 +33,14 @@ class ChoiceRepository {
       userKey: data.userKey,
       userImg: data.userImg,
 
-      nickname: data.nickname
+      nickname: data.nickname,
     };
-    return returnData
+    return returnData;
   };
-
 
   findMychoice = async (userKey) => {
     const findMychoice = await Choice.findAll({
-      where: {userKey: userKey}
+      where: { userKey: userKey },
     });
     return findMychoice;
   };
@@ -48,19 +48,18 @@ class ChoiceRepository {
   myData = async (userKey) => {
     const data = await User.findByPk(userKey);
     return data;
-  }
+  };
 
   deletechoice = async (userKey, choiceId) => {
-    return await Choice.destroy({where:{choiceId, userKey}})
+    return await Choice.destroy({ where: { choiceId, userKey } });
   };
 
   isChoiceForAll = async (userKey, choiceId) => {
     const data = await isChoice.findOne({
-      where: { userKey, choiceId }
-    })
-    return data
-
-  }
+      where: { userKey, choiceId },
+    });
+    return data;
+  };
 
   //투표 여부 데이터 가져오기
   isChoice = async (userKey, choiceId) => {
@@ -75,14 +74,14 @@ class ChoiceRepository {
   //북마크 여부 가져오기
   isBookMark = async (userKey, choiceId) => {
     const data = await ChoiceBM.findOne({
-      where: { userKey, choiceId }
-    })
-    return data
-  }
+      where: { userKey, choiceId },
+    });
+    return data;
+  };
 
   //선택을 한 경우, 데이터 생성
   doChoice = async (userKey, choiceId, choiceNum) => {
-      try{
+    try {
       const isChoiceData = await isChoice.create({
         userKey,
         choiceId,
@@ -90,28 +89,26 @@ class ChoiceRepository {
       });
 
       const dataCount = await isChoice.findAll({
-        where: {choiceId}
-      })
+        where: { choiceId },
+      });
       let data_1 = 0;
       let data_2 = 0;
-      for (let i = 0; i < dataCount.length; i++){
-        console.log(dataCount[i])
-        if(dataCount[i].choiceNum ===1){
-          data_1++
-        }else{
-          data_2++
+      for (let i = 0; i < dataCount.length; i++) {
+        console.log(dataCount[i]);
+        if (dataCount[i].choiceNum === 1) {
+          data_1++;
+        } else {
+          data_2++;
         }
       }
-      let all = data_1 + data_2
-      
-      await Choice.update({choice1Per: data_1}, { where: {choiceId }})
-      await Choice.update({choice2Per: data_2}, { where: {choiceId }})
-      await Choice.update({choiceCount: all}, { where: {choiceId }})
+      let all = data_1 + data_2;
+
+      await Choice.update({ choice1Per: data_1 }, { where: { choiceId } });
+      await Choice.update({ choice2Per: data_2 }, { where: { choiceId } });
+      await Choice.update({ choiceCount: all }, { where: { choiceId } });
 
       return isChoiceData;
-    }catch(err){
-      
-    }
+    } catch (err) {}
   };
 
   //선택을 취소한 경우, 데이터 삭제
@@ -123,23 +120,22 @@ class ChoiceRepository {
     });
 
     const dataCount = await isChoice.findAll({
-      where: {choiceId}
-    })
+      where: { choiceId },
+    });
     let data_1 = 0;
     let data_2 = 0;
-    for (let i = 0; i < dataCount.length; i++){
-      console.log(dataCount[i])
-      if(dataCount[i].choiceNum ===1){
-        data_1++
-      }else{
-        data_2++
+    for (let i = 0; i < dataCount.length; i++) {
+      console.log(dataCount[i]);
+      if (dataCount[i].choiceNum === 1) {
+        data_1++;
+      } else {
+        data_2++;
       }
     }
-    let all = data_1 + data_2
-    await Choice.update({choice1Per: data_1}, { where: {choiceId }})
-    await Choice.update({choice2Per: data_2}, { where: {choiceId }})
-    await Choice.update({choiceCount: all}, { where: {choiceId }})
-
+    let all = data_1 + data_2;
+    await Choice.update({ choice1Per: data_1 }, { where: { choiceId } });
+    await Choice.update({ choice2Per: data_2 }, { where: { choiceId } });
+    await Choice.update({ choiceCount: all }, { where: { choiceId } });
 
     return isChoiceData;
   };
@@ -152,20 +148,20 @@ class ChoiceRepository {
       },
     });
 
-    const choice_1 = result.choice1Per
-    const choice_2 = result.choice2Per
-    const choiceCount = result.choiceCount
+    const choice_1 = result.choice1Per;
+    const choice_2 = result.choice2Per;
+    const choiceCount = result.choiceCount;
     return {
       choice_1,
       choice_2,
-      choiceCount
+      choiceCount,
     };
   };
 
   choiceHot = async (userKey) => {
     const choiceHot5 = await Choice.findAll({
       order: [["choiceCount", "DESC"]],
-      limit: 5,
+      limit: 3,
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
         { model: ChoiceBM, where: { userKey: userKey }, required: false },

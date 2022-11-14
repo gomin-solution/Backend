@@ -7,6 +7,9 @@ class BookMarkController {
     try {
       const { choiceId } = req.params;
       const { userKey } = res.locals.user;
+      if (userKey == 0) {
+        res.status(400).send({ message: "로그인이 필요합니다." });
+      }
       const updateMSG = await this.bookmarkService.updateChoiceBM(
         userKey,
         choiceId
@@ -21,6 +24,9 @@ class BookMarkController {
     try {
       const { adviceId } = req.params;
       const { userKey } = res.locals.user;
+      if (userKey == 0) {
+        res.status(400).send({ message: "로그인이 필요합니다." });
+      }
       const updateMSG = await this.bookmarkService.updateAdviceBM(
         userKey,
         adviceId
@@ -34,6 +40,9 @@ class BookMarkController {
   findBmChoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
+      if (userKey == 0) {
+        res.status(400).send({ message: "로그인이 필요합니다." });
+      }
 
       const findBmchoice = await this.bookmarkService.findBmChoice(userKey);
 
@@ -46,6 +55,9 @@ class BookMarkController {
   findBmAdvice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
+      if (userKey == 0) {
+        res.status(400).send({ message: "로그인이 필요합니다." });
+      }
 
       const findBmAdvice = await this.bookmarkService.findBmAdvice(userKey);
 

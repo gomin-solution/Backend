@@ -88,7 +88,7 @@ class UserController {
       const { userKey } = res.locals.user;
       const mainpage = await this.userService.mainPage(userKey);
 
-      return res.status(200).json({ mainData: mainpage });
+      return res.status(200).json({ mainpage });
     } catch (error) {
       next(error);
     }
@@ -123,6 +123,9 @@ class UserController {
   reword = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
+      if (userKey == 0) {
+        res.status(400).send({ message: "로그인이 필요합니다." });
+      }
       const mission = await this.userService.reword(userKey);
 
       return res.status(200).json(mission);
@@ -146,6 +149,9 @@ class UserController {
   // 프로필 수정
   profileUpdate = async (req, res, next) => {
     const { userKey } = res.locals.user;
+    if (userKey == 0) {
+      res.status(400).send({ message: "로그인이 필요합니다." });
+    }
     const image = req.files;
     const { nickname } = req.body;
     const findUser = await this.userService.mypage(userKey);

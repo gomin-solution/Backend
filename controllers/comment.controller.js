@@ -19,6 +19,10 @@ class CommentController {
       const { comment } = req.body;
       const { userKey } = res.locals.user;
 
+      if (userKey == 0) {
+        res.status(400).send({ message: "로그인이 필요합니다." });
+      }
+
       if (!comment) {
         res.status(400).send({ errorMessage: "댓글 내용을 입력해주세요" }); //덧글 내용이 없다면 덧글을 입력해달라는 메시지 출력
         return;
@@ -79,6 +83,11 @@ class CommentController {
     try {
       const { commentId } = req.params;
       const { userKey } = res.locals.user;
+
+      if (userKey == 0) {
+        res.status(400).send({ message: "로그인이 필요합니다." });
+      }
+
       const Likes = await this.commentService.updateCommentLike(
         userKey,
         commentId
