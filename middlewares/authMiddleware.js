@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
-const ErrorCustom = require("../exceptions/error-custom");
 const redisCli = require("../util/redis");
 require("dotenv").config();
 
@@ -14,7 +13,7 @@ module.exports = async (req, res, next) => {
     const refreshToken = refreshtoken;
     console.log(authorization.split(" "));
     if (tokenType !== "Bearer")
-      throw new ErrorCustom(400, "잘못된 요청입니다. 다시 로그인 해주세요");
+      return res.status(400).json({message:"잘못된 요청입니다. 다시 로그인 해주세요"}) ;
 
     // if (!accessToken || accessToken == "undefined") {
     //   return res.status(403).send({

@@ -5,6 +5,7 @@ const {
   Advice,
   User,
   Comment,
+  isChoice,
 } = require("../models");
 
 class BookMarkRepository {
@@ -49,7 +50,10 @@ class BookMarkRepository {
       where: { userKey: userKey },
       include: {
         model: Choice,
-        include: { model: User, attributes: ["nickname", "userImg"] },
+        include: [
+          { model: User, attributes: ["nickname", "userImg"] },
+          { model: isChoice, where: { userKey: userKey } },
+        ],
       },
     });
 
