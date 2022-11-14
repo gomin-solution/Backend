@@ -73,16 +73,33 @@ class UserService {
   mainPage = async (userKey) => {
     const getChoice = await this.choiceRepository.choiceHot(userKey);
 
+    let absolute_a = result.choice_1;
+    let absolute_b = result.choice_2;
+    let choice1Per;
+    let choice2Per;
+    if (absolute_a + absolute_b > 0) {
+      choice1Per = (absolute_a / (absolute_a + absolute_b)) * 100;
+      choice2Per = (absolute_b / (absolute_a + absolute_b)) * 100;
+    }
+
     const choiceData = getChoice.map((post) => {
       let boolean;
+      let absolute_a = post.choice1Per;
+      let absolute_b = post.choice2Per;
+      let choice1Per;
+      let choice2Per;
+      if (absolute_a + absolute_b > 0) {
+        choice1Per = (absolute_a / (absolute_a + absolute_b)) * 100;
+        choice2Per = (absolute_b / (absolute_a + absolute_b)) * 100;
+      }
       post.ChoiceBMs.length ? (boolean = true) : (boolean = false);
       return {
         choiceId: post.choiceId,
         title: post.title,
         choice1Name: post.choice1Name,
         choice2Name: post.choice2Name,
-        choice1Per: post.choice1Per,
-        choice2Per: post.choice2Per,
+        choice1Per: choice1Per,
+        choice2Per: choice2Per,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         createdAt: post.createdAt,
