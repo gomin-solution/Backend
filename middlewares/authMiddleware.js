@@ -8,6 +8,7 @@ require("dotenv").config();
 module.exports = async (req, res, next) => {
   try {
     const { authorization, refreshtoken } = req.headers;
+
     const tokenType = authorization.split(" ")[0];
     const accessToken = authorization.split(" ")[1];
     const refreshToken = refreshtoken;
@@ -15,11 +16,11 @@ module.exports = async (req, res, next) => {
     if (tokenType !== "Bearer")
       throw new ErrorCustom(400, "잘못된 요청입니다. 다시 로그인 해주세요");
 
-    if (!accessToken || accessToken == "undefined") {
-      return res.status(403).send({
-        errorMessage: "로그인이 필요한 기능입니다.",
-      });
-    }
+    // if (!accessToken || accessToken == "undefined") {
+    //   return res.status(403).send({
+    //     errorMessage: "로그인이 필요한 기능입니다.",
+    //   });
+    // }
 
     /**AccessToken검증 */
     function validateAccessToken(accessToken) {
@@ -73,15 +74,21 @@ module.exports = async (req, res, next) => {
     }
 
     /**AccessToken만료시 서버에게 만료상태 전송*/
-    if (!refreshToken && !isAccessTokenValidate) {
+    if (
+      !refreshToken &&
+      !isAccessTokenValidate &&
+      accessToken !== "undefined"
+    ) {
       return res.status(401).json({ message: "토큰 만료됨", ok: false });
-    } else {
+    } else if (accessToken !== "undefined") {
       /**토큰이 유효한 경우 */
       const { userId } = jwt.verify(accessToken, process.env.SECRET_KEY);
       console.log("유저아이디");
       console.log(userId);
       const user = await User.findOne({ where: { userId: userId } });
       res.locals.user = user;
+    } else {
+      res.locals.user = { userKey: 0, userId: "Anonymous" };
     }
     next();
   } catch (error) {
