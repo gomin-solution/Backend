@@ -102,7 +102,7 @@ class UserService {
         content: post.content,
         createdAt: post.createdAt,
         viewCount: post.viewCount,
-        CommentCount: post.Comments.length,
+        commentCount: post.Comments.length,
         userKey: post.userKey,
       };
     });
@@ -188,40 +188,57 @@ class UserService {
   };
 
   reword = async (userKey) => {
-    //휙득한 좋아요수
+    /**유저의 활동 정보를 모두 가져옴 */
     const totalReword = await this.userRepository.totalReword(userKey);
-    //내가 받은 총 좋아요수
+
     const likeArray = totalReword[0].Comments.map((x) => x.CommentLikes.length);
+    /**내가 받은 총 좋아요수 */
     let likeTotal = 0;
     likeArray.forEach((x) => {
       likeTotal += x;
     });
-    //내 게시글의 총 조회수
+
     const viewCountArray = totalReword[0].Advice.map((x) => x.viewCount);
+
+    /**내 게시글의 총 조회수 */
     let viewCount = 0;
+
     viewCountArray.forEach((x) => {
       viewCount += x;
     });
-    //내가 조언해준 횟수
+
+    /** 내가 조언해준 횟수*/
     const totalAdvice = totalReword[0].Comments.length;
-    //내가 투표한횟수
+
+    /**내가 투표한횟수 */
     const totalChoice = totalReword[0].isChoices.length;
-    //
+
+    /**내가 쓴 조언게시글 수 */
     const totalPost = totalReword[0].Advice.length;
 
     console.log(
       `totalAdvice:${totalAdvice}, totalChoice:${totalChoice}, totalPost:${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
     );
+    /**모든 미션Id */
     const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    /**완료한 미션 */
     const completedMission = await this.missionRepository.completeMission(
       userKey
     );
+
+    /**완료한 미션 ID */
     const CompleteMission = completedMission.map((x) => x.missionId);
+
+    /**미완료 미션ID */
     const unCompleteMission = missionarray.filter(
       (x) => !CompleteMission.includes(x)
     );
+
     console.log(unCompleteMission);
     console.log(CompleteMission);
+
+    /**미완료 미션을 가져와 기준에 충족하면 */
     const mission = await this.missionRepository.mission(unCompleteMission);
     const newCompleteMissionId = [];
     mission.forEach((x) => {

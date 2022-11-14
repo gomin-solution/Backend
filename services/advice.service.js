@@ -4,7 +4,7 @@ const AdviceRepository = require("../repositories/advice.repository");
 
 class AdviceService {
   adviceRepository = new AdviceRepository();
-  
+
   // 게시물 생성
   createAdvice = async (userKey, title, categoryId, content) => {
     const createAdviceData = await this.adviceRepository.createAdvice(
@@ -63,12 +63,9 @@ class AdviceService {
       adviceId
     );
 
-    const findAdviceImageArray = findOneAdvice.AdviceImages.map(
-      (post) => {
-        return [post.dataValues.adviceImageId, post.adviceImage];
-      }
-
-    );
+    const findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
+      return [post.dataValues.adviceImageId, post.adviceImage];
+    });
 
     let boolean;
     findOneAdvice.AdviceBMs.length ? (boolean = true) : (boolean = false);
@@ -100,7 +97,6 @@ class AdviceService {
     if (!findAdvice) throw new ErrorCustom(400, "게시물이 존재하지 않습니다.");
 
     await this.adviceRepository.updateAdviceTitle(adviceId, title);
-
   };
 
   // 조언 게시물 콘텐츠 수정
@@ -109,7 +105,6 @@ class AdviceService {
     if (!findAdvice) throw new ErrorCustom(400, "게시물이 존재하지 않습니다.");
 
     await this.adviceRepository.updateAdviceContent(adviceId, content);
-
   };
 
   // 조언 게시물 조회 수
@@ -125,7 +120,6 @@ class AdviceService {
   adviceDelete = async (adviceId) => {
     await this.adviceRepository.adviceDelete(adviceId);
   };
-  
 }
 
 module.exports = AdviceService;
