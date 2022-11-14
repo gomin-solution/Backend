@@ -10,6 +10,9 @@ class AdviceController {
   // 조언 게시물 생성
   creatAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
+    if (userKey == 0) {
+      res.status(400).send({ message: "로그인이 필요합니다." });
+    }
     const { title, categoryId, content } = req.body;
     const images = req.files;
 
@@ -99,7 +102,7 @@ class AdviceController {
       let imageUrl = [];
       if (images) {
         const findImageAdvice = await this.adviceService.findImages(imageId);
-        
+
         for (let i = 0; i < findImageAdvice.length; i++) {
           AdviceImageArray.push(
             "adviceimage/" + findImageAdvice[i].adviceImage.split("/")[4]
@@ -162,19 +165,21 @@ class AdviceController {
     const { userKey } = res.locals.user;
     const { adviceId } = req.params;
     const findAdvice = await this.adviceService.findAllAdvice(adviceId);
-    
+
     if (userKey !== findAdvice[0].userKey) {
       return res.status(400).json({ errorMessage: "권한이 없습니다." });
     }
 
     try {
-      const findDeleteImages = await this.adviceImageService.adviceImageFind(adviceId);
+      const findDeleteImages = await this.adviceImageService.adviceImageFind(
+        adviceId
+      );
       const findDeleteImagesArray = [];
       for (let i = 0; i < findDeleteImages.length; i++) {
         findDeleteImagesArray.push(
           "adviceimage/" + findDeleteImages[i].split("/")[4]
         );
-        console.log(findDeleteImagesArray)
+        console.log(findDeleteImagesArray);
         const s3 = new aws.S3({
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -185,7 +190,7 @@ class AdviceController {
           Bucket: process.env.AWS_BUCKET_NAME,
           Key: findDeleteImagesArray[i],
         };
-        
+
         s3.deleteObject(params, function (err, data) {
           if (err) {
             console.log(err, err.stack);
@@ -198,7 +203,7 @@ class AdviceController {
 
       //게시물 삭제
       await this.adviceService.adviceDelete(adviceId);
-      return res.status(200).json({msg: "게시물 삭제 완료!"})
+      return res.status(200).json({ msg: "게시물 삭제 완료!" });
     } catch (err) {
       next(err);
     }
