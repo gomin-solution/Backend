@@ -120,6 +120,26 @@ class AdviceService {
   adviceDelete = async (adviceId) => {
     await this.adviceRepository.adviceDelete(adviceId);
   };
+
+  //내가쓴 조언게시물 조회
+  myadvice = async (userKey) =>{
+    const myadvice = await this.adviceRepository.myadvice(userKey)
+
+    return myadvice.map((post) => {
+      return {
+        adviceId: post.adviceId,
+        userKey: post.userKey,
+        categoryId: post.categoryId,
+        title: post.title,
+        content: post.content,
+        createdAt: post.createdAt,
+        userImage: post.User.userImg,
+        nickname: post.User.nickname,
+        viewCount: post.viewCount,
+      };
+    });
+    
+  }
 }
 
 module.exports = AdviceService;
