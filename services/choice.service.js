@@ -50,7 +50,7 @@ class ChoiceService {
           choice1Name: findOneChoice.choice1Name,
           choice2Name: findOneChoice.choice2Name,
           choice1Per: Math.round(res_a),
-          choice2Per: Math.round(res_b),
+          choice2Per: 100 - Math.round(res_a),
           userImage: findAuthorData.userImg,
           nickname: findAuthorData.nickname,
           createdAt: findOneChoice.createdAt,
@@ -95,7 +95,7 @@ class ChoiceService {
           choice1Name: findMychoice[i].choice1Name,
           choice2Name: findMychoice[i].choice2Name,
           choice1Per: Math.round(result_a),
-          choice2Per: Math.round(result_b),
+          choice2Per: 100 - Math.round(result_a),
           userImage: myData.userImg,
           nickname: myData.nickname,
           createdAt: findMychoice[i].createdAt,
@@ -145,7 +145,7 @@ class ChoiceService {
       }
       let count = result.choiceCount;
       choice1Per = Math.round(a);
-      choice2Per = Math.round(b);
+      choice2Per = 100 - Math.round(a);
       return {
         choice1Per,
         choice2Per,
