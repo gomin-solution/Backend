@@ -20,6 +20,7 @@ class AdviceService {
   // 조언 게시물 전체 조회
   findAllAdvice = async () => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
+
     return findAllAdvice.map((post) => {
       return {
         adviceId: post.adviceId,
