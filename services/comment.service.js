@@ -13,12 +13,6 @@ class CommentService {
     return createComment;
   };
 
-  //특정 포스트의 모든 덧글을 가져옴
-  // getComment =async (postId) => {
-  //     const findComment = await this.commentRepository.findComment(postId);
-  //     return findComment;
-  // }
-
   //덧글 수정하기
   updateComment = async (userKey, commentId, comment) => {
     const createComment = await this.commentRepository.updateComment(
