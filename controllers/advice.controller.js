@@ -57,7 +57,7 @@ class AdviceController {
     );
     console.log(page)
 
-    const total1 = allAdvice.map((x) => x);
+    const totalAdvice = allAdvice.map((x) => x);
     function chunk(data = [], size = 1) {
       const arr = [];
       for (let i = 0; i < data.length; i += size) {
@@ -65,10 +65,10 @@ class AdviceController {
       }
       return arr;
     }
-    const test1 = chunk(total1,10)[Number(page)-1]
+    const allAdviceGet = chunk(totalAdvice,10)[Number(page)]
 
 
-    const total2 = allCategoryAdvice.map((x) => x);
+    const totalCategory = allCategoryAdvice.map((x) => x);
     function chunk(data = [], size = 1) {
       const arr = [];
       for (let i = 0; i < data.length; i += size) {
@@ -76,15 +76,15 @@ class AdviceController {
       }    
       return arr;
     }
-    const test2 = chunk(total2,10)[Number(page)-1]
+    const allCategoryAdviceGet = chunk(totalCategory,10)[Number(page)]
 
     try {
       //전체 조회
       if (categoryId == 0) {
-        return res.status(200).json({ test1 });
+        return res.status(200).json({ allAdviceGet });
       }
       //카테고리별 조회
-      return res.status(200).json({ test2 });
+      return res.status(200).json({ allCategoryAdviceGet });
     } catch (err) {
       next(err);
     }
