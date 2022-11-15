@@ -20,7 +20,7 @@ module.exports = {
         unique: true,
       },
       password: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
       },
       isAdult: {

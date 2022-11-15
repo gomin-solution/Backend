@@ -66,10 +66,6 @@ class AdviceController {
       return arr;
     }
     const allAdviceGet = chunk(totalAdvice, 10)[Number(page)];
-    let boolean;
-    allAdviceGet.length < 10 || !allAdviceGet.length
-      ? (boolean = true)
-      : (boolean = false);
 
     const totalCategory = allCategoryAdvice.map((x) => x);
     function chunk(data = [], size = 1) {
@@ -84,7 +80,7 @@ class AdviceController {
     try {
       //전체 조회
       if (categoryId == 0) {
-        return res.status(200).json({ allAdviceGet, isLast: boolean });
+        return res.status(200).json({ allAdviceGet });
       }
       //카테고리별 조회
       return res.status(200).json({ allCategoryAdviceGet });
