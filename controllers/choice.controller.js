@@ -30,16 +30,31 @@ class ChoiceController {
     }
   };
 
+  //모든 게시글 조회(1~10)
   allchoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
+      const { page } = req.query;
       const allchoice = await this.choiceService.findAllchoice(userKey);
-      res.status(200).json({ data: allchoice });
+
+      const low = (page - 1) * 10 + 1;
+      const high = page * 10;
+
+      let end = new Array();
+      let a = 0;
+      for (let i = low; i <= high; i++) {
+        end[a] = allchoice[i];
+        a++;
+      }
+      a = 0;
+
+      res.status(200).json({ data: end });
     } catch (err) {
       next(err);
     }
   };
 
+  //마이페이지 게시글 조회
   mychoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -98,7 +113,6 @@ class ChoiceController {
           .json({ message: choiceNum + "번에 투표 성공", data: choice });
       } else {
         res.status(200).json({ message: "투표 취소", data: choice });
-
       }
       return choice;
     } catch (err) {
