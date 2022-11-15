@@ -34,8 +34,8 @@ class ChoiceController {
   allchoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      const allchoice = await this.choiceService.findAllchoice(userKey);
-      res.status(200).json({ data: allchoice });
+      const choice = await this.choiceService.findAllchoice(userKey);
+      res.status(200).json({ choice });
     } catch (err) {
       next(err);
     }
