@@ -3,16 +3,6 @@ const CommentService = require("../services/comment.service");
 class CommentController {
   commentService = new CommentService();
 
-  // getComment = async(req, res, next) => {
-  //     try{
-  //     const {adviceId} = req.params;//포스트의 아이디를 가져와야 함
-  //     const comments = await this.commentService.findComment(adviceId);//포스트서비스의 findAllPost를 사용
-  //     res.status(200).json({data:comments});//컨트롤러는 요청과 응답에 관여하니 응답만
-  //     }catch(error){
-  //         return res.status(500).send({ errorMessage:error.message});
-  //     }
-  // }
-
   createComment = async (req, res, next) => {
     try {
       const { adviceId } = req.params;

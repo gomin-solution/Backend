@@ -50,7 +50,6 @@ class AdviceController {
   allAdvice = async (req, res, next) => {
     const { categoryId } = req.params;
     const { page } = req.query;
-
     const allAdvice = await this.adviceService.findAllAdvice();
     const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
       categoryId
@@ -84,7 +83,7 @@ class AdviceController {
     try {
       //전체 조회
       if (categoryId == 0) {
-        return res.status(200).json({ allAdviceGet, isLast: boolean });
+        return res.status(200).json({ allAdviceGet });
       }
       //카테고리별 조회
       return res.status(200).json({ allCategoryAdviceGet });
