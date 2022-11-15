@@ -49,20 +49,42 @@ class AdviceController {
 
   //조언 게시글조회
   allAdvice = async (req, res, next) => {
-    //const { userKey } = res.locals.user;
-    const { categoryId } = req.params;
+    const { categoryId} = req.params;
+    const { page } = req.query;
     const allAdvice = await this.adviceService.findAllAdvice();
     const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
       categoryId
     );
+    console.log(page)
+
+    const total1 = allAdvice.map((x) => x);
+    function chunk(data = [], size = 1) {
+      const arr = [];
+      for (let i = 0; i < data.length; i += size) {
+        arr.push(data.slice(i, i + size));
+      }
+      return arr;
+    }
+    const test1 = chunk(total1,10)[Number(page)-1]
+
+
+    const total2 = allCategoryAdvice.map((x) => x);
+    function chunk(data = [], size = 1) {
+      const arr = [];
+      for (let i = 0; i < data.length; i += size) {
+        arr.push(data.slice(i, i + size));
+      }    
+      return arr;
+    }
+    const test2 = chunk(total2,10)[Number(page)-1]
 
     try {
       //전체 조회
       if (categoryId == 0) {
-        return res.status(200).json({ data: allAdvice });
+        return res.status(200).json({ test1 });
       }
       //카테고리별 조회
-      return res.status(200).json({ data: allCategoryAdvice });
+      return res.status(200).json({ test2 });
     } catch (err) {
       next(err);
     }
@@ -224,6 +246,40 @@ class AdviceController {
     }
 
   }
+
+
+  allAdviceTest = async (req, res, next) => {
+    const { categoryId, pageId } = req.params;
+    const allAdvice = await this.adviceService.findAllAdvice();
+    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
+      categoryId
+    );
+
+    const total = allAdvice.map((x) => x).sort((a,b)=> (b-a));
+    console.log(total.length)
+
+    function chunk(data = [], size = 1) {
+      const arr = [];
+        
+      for (let i = 0; i < data.length; i += size) {
+        arr.push(data.slice(i, i + size));
+      }    
+      return arr;
+    }
+    console.log(chunk(total,4))
+
+    try {
+      //전체 조회
+      if (categoryId == 0) {
+        return res.status(200).json({ allAdvice });
+      }
+      //카테고리별 조회
+      return res.status(200).json({ allCategoryAdvice });
+    } catch (err) {
+      next(err);
+    }
+  };
+  
 }
 
 module.exports = AdviceController;

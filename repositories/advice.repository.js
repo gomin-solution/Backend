@@ -40,6 +40,7 @@ class AdviceRepository {
   // 조언 게시물 전체 조회
   findAllAdvice = async () => {
     const findAllAdvice = await Advice.findAll({
+      order: [["createdAt", "DESC"]], // 오름차순: ASC, 내림차순 : DESC
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
         //{ model: AdviceBM, where: { userKey: userKey }}, // 북마크를 받아와야하면 쓰자
