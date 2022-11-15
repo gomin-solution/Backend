@@ -11,7 +11,7 @@ class AdviceController {
   creatAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
     if (userKey == 0) {
-      res.status(400).send({ message: "로그인이 필요합니다." });
+      return res.status(400).send({ message: "로그인이 필요합니다." });
     }
     const { title, categoryId, content } = req.body;
     const images = req.files;
@@ -48,7 +48,7 @@ class AdviceController {
 
   //조언 게시글조회
   allAdvice = async (req, res, next) => {
-    //const { userKey } = res.locals.user;
+    const { userKey } = res.locals.user;
     const { categoryId } = req.params;
     const allAdvice = await this.adviceService.findAllAdvice();
     const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
@@ -89,6 +89,9 @@ class AdviceController {
     const { userKey } = res.locals.user;
     const { adviceId } = req.params;
     const { title, content, imageId } = req.body;
+    if (userKey == 0) {
+      return res.status(400).send({ message: "권한이 없습니다." });
+    }
     const images = req.files;
     const findAdvice = await this.adviceService.findAllAdvice(adviceId);
 
@@ -163,6 +166,9 @@ class AdviceController {
   deleteAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { adviceId } = req.params;
+    if (userKey == 0) {
+      return res.status(400).send({ message: "권한이 없습니다." });
+    }
     const findAdvice = await this.adviceService.findAllAdvice(adviceId);
 
     if (userKey !== findAdvice[0].userKey) {
@@ -213,7 +219,7 @@ class AdviceController {
     try {
       const { userKey } = res.locals.user;
       if (userKey == 0) {
-        res.status(400).send({ message: "로그인이 필요합니다." });
+        return res.status(400).send({ message: "로그인이 필요합니다." });
       }
       const myadvice = await this.adviceService.myadvice(userKey);
       return res.status(200).json(myadvice);
