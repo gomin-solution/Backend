@@ -20,14 +20,14 @@ class UserService {
     userId: userId,
     nickname: nickname,
     password: hashed,
-    IsAdult: IsAdult,
+    isAdult: isAdult,
   }) => {
-    IsAdult == "true" ? (IsAdult = true) : (IsAdult = false);
+    isAdult == "true" ? (isAdult = true) : (isAdult = false);
     await this.userRepository.createUser({
       userId: userId,
       nickname: nickname,
       password: hashed,
-      IsAdult: IsAdult,
+      isAdult: isAdult,
     });
   };
 
@@ -123,6 +123,7 @@ class UserService {
 
   //마이페이지 데이터 가져오기
   mypage = async (userKey) => {
+    /**익명 유저인경우 기본 데이터 전송 */
     if (userKey == 0) {
       return {
         userKey: userKey,

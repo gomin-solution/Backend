@@ -5,13 +5,13 @@ class UserRepository {
     userId: userId,
     nickname: nickname,
     password: hashed,
-    IsAdult: IsAdult,
+    isAdult: isAdult,
   }) => {
     await User.create({
       userId: userId,
       nickname: nickname,
       password: hashed,
-      IsAdult: IsAdult,
+      isAdult: isAdult,
       userImg:
         "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
     });

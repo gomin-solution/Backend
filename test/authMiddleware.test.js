@@ -1,4 +1,3 @@
-const JsonWebTokenError = require("jsonwebtoken/lib/JsonWebTokenError");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 describe("미들웨어", () => {
@@ -10,7 +9,7 @@ describe("미들웨어", () => {
 
   test("토큰타입이 Bearer가 아닌경우 에러 메세지 응답", async () => {
     const req = {
-      headers: { authorization: "Beare undefined", refreshtoken: "token" },
+      headers: { authorization: "Bear undefined", refreshtoken: "token" },
     };
     await authMiddleware(req, res, next);
     expect(res.status).toBeCalledWith(400);

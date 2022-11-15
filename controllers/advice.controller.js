@@ -15,7 +15,6 @@ class AdviceController {
     }
     const { title, categoryId, content } = req.body;
     const images = req.files;
-
     try {
       const creatAdvice = await this.adviceService.createAdvice(
         userKey,
@@ -210,20 +209,18 @@ class AdviceController {
   };
 
   /**내가쓴 조언글 가져오기 */
-  myadvice = async(req,res,next)=>{
-    try{
+  myadvice = async (req, res, next) => {
+    try {
       const { userKey } = res.locals.user;
       if (userKey == 0) {
         res.status(400).send({ message: "로그인이 필요합니다." });
       }
-      const myadvice = await this.adviceService.myadvice(userKey)
-      return res.status(200).json(myadvice)
-
-    }catch(err){
-      next(err)
+      const myadvice = await this.adviceService.myadvice(userKey);
+      return res.status(200).json(myadvice);
+    } catch (err) {
+      next(err);
     }
-
-  }
+  };
 }
 
 module.exports = AdviceController;
