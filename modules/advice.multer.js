@@ -3,7 +3,7 @@ const multer = require("multer");
 const multerS3 = require("multer-s3-transform");
 const sharp = require("sharp");
 const aws = require("aws-sdk");
-const path = require('path');
+const path = require("path");
 require("dotenv").config();
 
 const s3 = new aws.S3({
@@ -33,7 +33,6 @@ const upload = multer({
     ],
     acl: "public-read",
     contentType: multerS3.AUTO_CONTENT_TYPE,
-
     // key: fileName
     // key: function (req, file, cb) {
     //   //cb(null, `${Date.now()}_${file.originalname}`);

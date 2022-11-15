@@ -13,7 +13,7 @@ class UserController {
   /**회원가입 컨트롤러 */
   signup = async (req, res, next) => {
     try {
-      const { userId, nickname, password, confirm, IsAdult } =
+      const { userId, nickname, password, confirm, isAdult } =
         await joi.signupSchema.validateAsync(req.body);
 
       const hashed = await bcrypt.hash(password, 12);
@@ -22,7 +22,7 @@ class UserController {
         userId: userId,
         nickname: nickname,
         password: hashed,
-        IsAdult: IsAdult,
+        IsAdult: isAdult,
       });
       res.status(200).json({ message: "회원가입 성공" });
     } catch (error) {
@@ -124,7 +124,7 @@ class UserController {
     try {
       const { userKey } = res.locals.user;
       if (userKey == 0) {
-        res.status(400).send({ message: "로그인이 필요합니다." });
+        return res.status(400).send({ message: "로그인이 필요합니다." });
       }
       const mission = await this.userService.reword(userKey);
 
@@ -138,6 +138,9 @@ class UserController {
     try {
       const { userKey } = res.locals.user;
       const { missionId } = req.params;
+      if (userKey == 0) {
+        return res.status(400).send({ message: "로그인이 필요합니다." });
+      }
       await this.userService.getReword(userKey, missionId);
 
       return res.status(200).json({ message: "리워드 휙득완료!" });
@@ -150,7 +153,7 @@ class UserController {
   profileUpdate = async (req, res, next) => {
     const { userKey } = res.locals.user;
     if (userKey == 0) {
-      res.status(400).send({ message: "로그인이 필요합니다." });
+      return res.status(400).send({ message: "로그인이 필요합니다." });
     }
     const image = req.files;
     const { nickname } = req.body;
@@ -164,7 +167,6 @@ class UserController {
       if (image) {
         const findUserImage = findUser.userImage;
         const findUserLastImage = `profileimage/${findUserImage}`;
-        console.log(findUserImage, "아아아아");
 
         const s3 = new aws.S3({
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,

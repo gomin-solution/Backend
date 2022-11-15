@@ -10,7 +10,7 @@ class CommentController {
       const { userKey } = res.locals.user;
 
       if (userKey == 0) {
-        res.status(400).send({ message: "로그인이 필요합니다." });
+        return res.status(400).send({ message: "로그인이 필요합니다." });
       }
 
       if (!comment) {
@@ -34,6 +34,10 @@ class CommentController {
       const { comment } = req.body;
       const { userKey } = res.locals.user;
 
+      if (userKey == 0) {
+        return res.status(400).send({ message: "수정권한이 없습니다." });
+      }
+
       const updateComment = await this.commentService.updateComment(
         userKey,
         commentId,
@@ -54,6 +58,10 @@ class CommentController {
     try {
       const { commentId } = req.params;
       const { userKey } = res.locals.user;
+
+      if (userKey == 0) {
+        return res.status(400).send({ message: "삭제권한이 없습니다." });
+      }
       const deleteComment = await this.commentService.deleteComment(
         commentId,
         userKey
@@ -75,7 +83,7 @@ class CommentController {
       const { userKey } = res.locals.user;
 
       if (userKey == 0) {
-        res.status(400).send({ message: "로그인이 필요합니다." });
+        return res.status(400).send({ message: "로그인이 필요합니다." });
       }
 
       const Likes = await this.commentService.updateCommentLike(

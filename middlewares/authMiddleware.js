@@ -13,7 +13,9 @@ module.exports = async (req, res, next) => {
     const refreshToken = refreshtoken;
     console.log(authorization.split(" "));
     if (tokenType !== "Bearer")
-      return res.status(400).json({message:"잘못된 요청입니다. 다시 로그인 해주세요"}) ;
+      return res
+        .status(400)
+        .json({ message: "잘못된 요청입니다. 다시 로그인 해주세요" });
 
     // if (!accessToken || accessToken == "undefined") {
     //   return res.status(403).send({
@@ -87,6 +89,7 @@ module.exports = async (req, res, next) => {
       const user = await User.findOne({ where: { userId: userId } });
       res.locals.user = user;
     } else {
+      //토큰이 없는 요청일시 익명유저 정보를 저장
       res.locals.user = { userKey: 0, userId: "Anonymous" };
     }
     next();
