@@ -54,9 +54,8 @@ class AdviceController {
     const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
       categoryId
     );
-    console.log(page);
+    
 
-    const totalAdvice = allAdvice.map((x) => x);
     function chunk(data = [], size = 1) {
       const arr = [];
       for (let i = 0; i < data.length; i += size) {
@@ -64,17 +63,14 @@ class AdviceController {
       }
       return arr;
     }
-    const allAdviceGet = chunk(totalAdvice, 10)[Number(page)];
+    let allAdviceGet = chunk(allAdvice, 10)[Number(page)];
 
-    const totalCategory = allCategoryAdvice.map((x) => x);
-    function chunk(data = [], size = 1) {
-      const arr = [];
-      for (let i = 0; i < data.length; i += size) {
-        arr.push(data.slice(i, i + size));
-      }
-      return arr;
+    let allCategoryAdviceGet = chunk(allCategoryAdvice, 10)[Number(page)];
+    
+    if(!allAdviceGet || !allCategoryAdviceGet) {
+      allAdviceGet = [];
+      allCategoryAdviceGet=[];
     }
-    const allCategoryAdviceGet = chunk(totalCategory, 10)[Number(page)];
 
     try {
       //전체 조회
