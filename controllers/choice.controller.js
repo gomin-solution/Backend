@@ -46,7 +46,7 @@ class ChoiceController {
         if (allchoice[i] == null) {
           break;
         }
-        end[a] = allchoice[i];
+        choice[a] = allchoice[i];
         a++;
       }
       a = 0;

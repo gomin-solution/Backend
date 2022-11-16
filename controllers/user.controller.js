@@ -88,7 +88,7 @@ class UserController {
       const { userKey } = res.locals.user;
       const mainpage = await this.userService.mainPage(userKey);
 
-      return res.status(200).json({ mainpage });
+      return res.status(200).json(mainpage);
     } catch (error) {
       next(error);
     }
