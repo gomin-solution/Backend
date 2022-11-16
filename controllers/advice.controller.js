@@ -50,39 +50,35 @@ class AdviceController {
   allAdvice = async (req, res, next) => {
     const { categoryId } = req.params;
     const { page } = req.query;
-    const allAdvice = await this.adviceService.findAllAdvice();
-    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
-      categoryId
-    );
-    console.log(page);
 
-    const totalAdvice = allAdvice.map((x) => x);
+    let arr = [];
+    let advice;
+    if (categoryId == 0) {
+      const allAdvice = await this.adviceService.findAllAdvice();
+      advice = chunk(allAdvice, 10)[Number(page)];
+    } else {
+      const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
+        categoryId
+      );
+      advice = chunk(allCategoryAdvice, 10)[Number(page)];
+    }
+
     function chunk(data = [], size = 1) {
-      const arr = [];
+      arr = [];
       for (let i = 0; i < data.length; i += size) {
         arr.push(data.slice(i, i + size));
       }
+      console.log("함수", arr);
       return arr;
     }
-    const allAdviceGet = chunk(totalAdvice, 10)[Number(page)];
-
-    const totalCategory = allCategoryAdvice.map((x) => x);
-    function chunk(data = [], size = 1) {
-      const arr = [];
-      for (let i = 0; i < data.length; i += size) {
-        arr.push(data.slice(i, i + size));
-      }
-      return arr;
-    }
-    const allCategoryAdviceGet = chunk(totalCategory, 10)[Number(page)];
 
     try {
-      //전체 조회
-      if (categoryId == 0) {
-        return res.status(200).json({ allAdviceGet });
+      if (!advice) {
+        advice = [];
       }
+
       //카테고리별 조회
-      return res.status(200).json({ allCategoryAdviceGet });
+      return res.status(200).json({ advice });
     } catch (err) {
       next(err);
     }

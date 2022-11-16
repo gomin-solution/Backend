@@ -6,7 +6,7 @@ const MissionRepository = require("../repositories/mission.repository");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { boolean } = require("joi");
+const redisCli = require("../util/redis");
 require("dotenv").config();
 
 class UserService {
@@ -67,6 +67,11 @@ class UserService {
     const findUserId = await this.userRepository.findUserId(userId);
     if (findUserId) throw new ErrorCustom(400, "이미 존재하는 아이디 입니다.");
     return;
+  };
+
+  //모든유저 조회
+  findAllUser = async () => {
+    return await this.userRepository.findAllUser();
   };
 
   //메인페이지 데이터 가공해서 보내주기
