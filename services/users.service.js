@@ -6,7 +6,7 @@ const MissionRepository = require("../repositories/mission.repository");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { boolean } = require("joi");
+const redisCli = require("../util/redis");
 require("dotenv").config();
 
 class UserService {
@@ -69,56 +69,79 @@ class UserService {
     return;
   };
 
+  //모든유저 조회
+  findAllUser = async () => {
+    return await this.userRepository.findAllUser();
+  };
+
   //메인페이지 데이터 가공해서 보내주기
   mainPage = async (userKey) => {
-    const getChoice = await this.choiceRepository.choiceHot(userKey);
-
-    const choiceData = getChoice.map((post) => {
-      let boolean;
-      let isChoice;
-      let absolute_a = post.choice1Per;
-      let absolute_b = post.choice2Per;
-      let choice1Per;
-      let choice2Per;
-      if (absolute_a + absolute_b > 0) {
-        choice1Per = Math.round((absolute_a / (absolute_a + absolute_b)) * 100);
-        choice2Per = 100 - choice1Per;
-      }
-      post.isChoices.length ? (isChoice = true) : (isChoice = false);
-      post.ChoiceBMs.length ? (boolean = true) : (boolean = false);
-      return {
-        choiceId: post.choiceId,
-        title: post.title,
-        choice1Name: post.choice1Name,
-        choice2Name: post.choice2Name,
-        choice1Per: choice1Per,
-        choice2Per: choice2Per,
-        userImage: post.User.userImg,
-        nickname: post.User.nickname,
-        createdAt: post.createdAt,
-        endTime: post.endTime,
-        choiceCount: post.choiceCount,
-        isBookMark: boolean,
-        isChoice: isChoice,
-        userKey: post.userKey,
-      };
+    const getAdvice = await this.adviceRepository.getAdvice();
+    let adviceData = [];
+    getAdvice.forEach((post) => {
+      post.Comments.length < 2
+        ? adviceData.push({
+            adviceId: post.adviceId,
+            categoryId: post.categoryId,
+            title: post.title,
+            viewCount: post.viewCount,
+            commentCount: post.Comments.length,
+          })
+        : null;
     });
+    adviceData.sort((a, b) => a.commentCount - b.commentCount);
+    const getChoice = await this.choiceRepository.findAllchoice();
+    const totalCount = getAdvice.length + getChoice.length;
+    const { nickname } = await this.userRepository.findUser(userKey);
+    return {
+      advice: adviceData.slice(0, 5),
+      totalCount: totalCount,
+      nickname: nickname,
+    };
+    // const getChoice = await this.choiceRepository.choiceHot(userKey);
 
-    const getAdvice = await this.adviceRepository.adviceHot();
+    // const choiceData = getChoice.map((post) => {
+    //   let boolean;
+    //   let isChoice;
+    //   let absolute_a = post.choice1Per;
+    //   let absolute_b = post.choice2Per;
+    //   let choice1Per;
+    //   let choice2Per;
+    //   if (absolute_a + absolute_b > 0) {
+    //     choice1Per = Math.round((absolute_a / (absolute_a + absolute_b)) * 100);
+    //     choice2Per = 100 - choice1Per;
+    //   }
+    //   post.isChoices.length ? (isChoice = true) : (isChoice = false);
+    //   post.ChoiceBMs.length ? (boolean = true) : (boolean = false);
+    //   return {
+    //     choiceId: post.choiceId,
+    //     title: post.title,
+    //     choice1Name: post.choice1Name,
+    //     choice2Name: post.choice2Name,
+    //     choice1Per: choice1Per,
+    //     choice2Per: choice2Per,
+    //     userImage: post.User.userImg,
+    //     nickname: post.User.nickname,
+    //     createdAt: post.createdAt,
+    //     endTime: post.endTime,
+    //     choiceCount: post.choiceCount,
+    //     isBookMark: boolean,
+    //     isChoice: isChoice,
+    //     userKey: post.userKey,
+    //   };
+    // });
 
-    const adviceData = getAdvice.map((post) => {
-      return {
-        adviceId: post.adviceId,
-        title: post.title,
-        content: post.content,
-        createdAt: post.createdAt,
-        viewCount: post.viewCount,
-        commentCount: post.Comments.length,
-        userKey: post.userKey,
-      };
-    });
-
-    return { choice: choiceData, advice: adviceData };
+    // const adviceData = getAdvice.map((post) => {
+    //   return {
+    //     adviceId: post.adviceId,
+    //     title: post.title,
+    //     content: post.content,
+    //     createdAt: post.createdAt,
+    //     viewCount: post.viewCount,
+    //     commentCount: post.Comments.length,
+    //     userKey: post.userKey,
+    //   };
+    // });
   };
 
   //마이페이지 데이터 가져오기
