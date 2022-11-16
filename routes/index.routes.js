@@ -7,6 +7,7 @@ const passportConfig = require("../passport");
 
 const choiceRouter = require("./choice.routes");
 const commentRouter = require("./comment.routes");
+const noteRouter = require("./note.routes")
 // const kakaoCallback = require("./kakao.routes")
 const kakaoRouter = require("./kakao.routes");
 passportConfig();
@@ -25,5 +26,8 @@ router.use("/", choiceRouter);
 router.use("/advice/comment", commentRouter);
 
 router.use("/", kakaoRouter);
+
+// 쪽지 관련
+router.use("/note", noteRouter);
 
 module.exports = router;
