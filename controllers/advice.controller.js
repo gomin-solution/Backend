@@ -50,7 +50,7 @@ class AdviceController {
   allAdvice = async (req, res, next) => {
     const { categoryId } = req.params;
     const { page } = req.query;
-
+    
     let arr = [];
     let advice;
     if (categoryId == 0) {
@@ -70,6 +70,7 @@ class AdviceController {
       }
       console.log("함수", arr);
       return arr;
+
     }
 
     try {
