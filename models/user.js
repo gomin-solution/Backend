@@ -10,23 +10,23 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasMany(models.Advice, {
         foreignKey: "userKey",
-        sourceKey: "userKey",
+        targetKey: "userKey",
       });
 
       this.hasMany(models.Choice, {
         foreignKey: "userKey",
-        sourceKey: "userKey",
+        targetKey: "userKey",
       });
 
       this.hasMany(models.Comment, {
         foreignKey: "userKey",
-        sourceKey: "userKey",
+        targetKey: "userKey",
       });
 
       //투표여부
       this.hasMany(models.isChoice, {
         foreignKey: "userKey",
-        sourceKey: "userKey",
+        targetKey: "userKey",
       });
       // this.hasMany(models.Choice, {
       //   foreignKey: "userKey",
@@ -38,16 +38,24 @@ module.exports = (sequelize, DataTypes) => {
       // });
       this.hasMany(models.AdviceBM, {
         foreignKey: "userKey",
-        sourceKey: "userKey",
+        targetKey: "userKey",
       });
 
       this.hasMany(models.ChoiceBM, {
         foreignKey: "userKey",
-        sourceKey: "userKey",
+        targetKey: "userKey",
       });
       this.hasMany(models.MissionComplete, {
         foreignKey: "userKey",
-        sourceKey: "userKey",
+        targetKey: "userKey",
+      });
+      this.hasMany(models.Note, {
+        foreignKey: "userKey",
+        targetKey: "fUser",
+      });
+      this.hasMany(models.Note, {
+        foreignKey: "userKey",
+        targetKey: "tUser",
       });
     }
   }
@@ -79,6 +87,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       userImg: {
         type: DataTypes.STRING,
+        allowNull: true,
+      },
+      level: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      grade: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       createdAt: {
