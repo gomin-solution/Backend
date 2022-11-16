@@ -64,11 +64,12 @@ class AdviceController {
       return arr;
     }
     let allAdviceGet = chunk(allAdvice, 10)[Number(page)];
-
     let allCategoryAdviceGet = chunk(allCategoryAdvice, 10)[Number(page)];
     
-    if(!allAdviceGet || !allCategoryAdviceGet) {
+    if(!allAdviceGet) {
       allAdviceGet = [];
+    }
+    if(!allCategoryAdviceGet) {
       allCategoryAdviceGet=[];
     }
 
