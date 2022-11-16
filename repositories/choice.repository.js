@@ -18,7 +18,9 @@ class ChoiceRepository {
   };
 
   findAllchoice = async () => {
-    const findAllchoice = await Choice.findAll();
+    const findAllchoice = await Choice.findAll({
+      order: [["createdAt", "DESC"]],
+    });
     return findAllchoice;
   };
 

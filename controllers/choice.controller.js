@@ -30,7 +30,6 @@ class ChoiceController {
     }
   };
 
-
   //모든 게시글 조회(1~10)
   allchoice = async (req, res, next) => {
     try {
@@ -40,7 +39,8 @@ class ChoiceController {
 
       const low = page * 10;
       const high = low + 9;
-      let end = new Array();
+
+      let choice = new Array();
       let a = 0;
       for (let i = low; i <= high; i++) {
         if (allchoice[i] == null) {
@@ -51,12 +51,11 @@ class ChoiceController {
       }
       a = 0;
 
-      res.status(200).json({ data: end });
+      res.status(200).json({ choice });
     } catch (err) {
       next(err);
     }
   };
-
 
   //마이페이지 게시글 조회
   mychoice = async (req, res, next) => {

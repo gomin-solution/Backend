@@ -31,6 +31,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      level: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      grade: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
