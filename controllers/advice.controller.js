@@ -65,10 +65,6 @@ class AdviceController {
       return arr;
     }
     const allAdviceGet = chunk(totalAdvice, 10)[Number(page)];
-    let boolean;
-    allAdviceGet.length < 10 || !allAdviceGet.length
-      ? (boolean = true)
-      : (boolean = false);
 
     const totalCategory = allCategoryAdvice.map((x) => x);
     function chunk(data = [], size = 1) {

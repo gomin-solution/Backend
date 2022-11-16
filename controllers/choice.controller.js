@@ -37,13 +37,16 @@ class ChoiceController {
       const { page } = req.query;
       const allchoice = await this.choiceService.findAllchoice(userKey);
 
-      const low = page * 10 + 1;
+      const low = page * 10;
       const high = low + 9;
 
       let choice = new Array();
       let a = 0;
       for (let i = low; i <= high; i++) {
-        choice[a] = allchoice[i];
+        if (allchoice[i] == null) {
+          break;
+        }
+        end[a] = allchoice[i];
         a++;
       }
       a = 0;
