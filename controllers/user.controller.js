@@ -8,17 +8,6 @@ const aws = require("aws-sdk");
 
 const redisCli = require("../util/redis");
 
-const schedule = require("node-schedule");
-
-//최소 1분단위
-schedule.scheduleJob({ minute: 1 }, async () => {
-  const userKey = await new UserService().findAllUser();
-  for (const item of userKey) {
-    console.log(item.userKey);
-    await redisCli.set(item.userKey, "오늘의 행운의 말");
-  }
-});
-
 class UserController {
   userService = new UserService();
 

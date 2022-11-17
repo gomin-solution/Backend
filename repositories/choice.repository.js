@@ -183,6 +183,7 @@ class ChoiceRepository {
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
         { model: ChoiceBM, where: { userKey: userKey }, required: false },
+        { model: isChoice, where: { userKey: userKey }, required: false },
       ],
     });
     return seachResult;

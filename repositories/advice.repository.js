@@ -14,14 +14,12 @@ class AdviceRepository {
     return createAdvice;
   };
 
-  // 조언 인기 게시물(메인페이지 용)
-  adviceHot = async () => {
-    const adviceHot5 = await Advice.findAll({
-      order: [["viewCount", "DESC"]],
-      limit: 3,
+  // 조언 게시물(메인페이지 용)
+  getAdvice = async () => {
+    const getAdvice = await Advice.findAll({
       include: [{ model: Comment }],
     });
-    return adviceHot5;
+    return getAdvice;
   };
 
   // 조언 게시물 검색(키워드 검색)
@@ -121,8 +119,8 @@ class AdviceRepository {
 
   //내가 쓴 조언글 조회
   myadvice = async (userKey) => {
-    return await Advice.findAll({where:{userKey:userKey}})
-  }
+    return await Advice.findAll({ where: { userKey: userKey } });
+  };
 }
 
 module.exports = AdviceRepository;
