@@ -10,23 +10,23 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasMany(models.Advice, {
         foreignKey: "userKey",
-        targetKey: "userKey",
+        sourceKey: "userKey",
       });
 
       this.hasMany(models.Choice, {
         foreignKey: "userKey",
-        targetKey: "userKey",
+        sourceKey: "userKey",
       });
 
       this.hasMany(models.Comment, {
         foreignKey: "userKey",
-        targetKey: "userKey",
+        sourceKey: "userKey",
       });
 
       //투표여부
       this.hasMany(models.isChoice, {
         foreignKey: "userKey",
-        targetKey: "userKey",
+        sourceKey: "userKey",
       });
       // this.hasMany(models.Choice, {
       //   foreignKey: "userKey",
@@ -38,24 +38,24 @@ module.exports = (sequelize, DataTypes) => {
       // });
       this.hasMany(models.AdviceBM, {
         foreignKey: "userKey",
-        targetKey: "userKey",
+        sourceKey: "userKey",
       });
 
       this.hasMany(models.ChoiceBM, {
         foreignKey: "userKey",
-        targetKey: "userKey",
+        sourceKey: "userKey",
       });
       this.hasMany(models.MissionComplete, {
         foreignKey: "userKey",
-        targetKey: "userKey",
+        sourceKey: "userKey",
       });
       this.hasMany(models.Note, {
-        foreignKey: "userKey",
-        targetKey: "fUser",
+        foreignKey: "fUser",
+        sourceKey: "userKey",
       });
       this.hasMany(models.Note, {
-        foreignKey: "userKey",
-        targetKey: "tUser",
+        foreignKey: "tUser",
+        sourceKey: "userKey",
       });
     }
   }

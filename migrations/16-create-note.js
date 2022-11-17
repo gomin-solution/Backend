@@ -26,9 +26,6 @@ module.exports = {
       note: {
         type: Sequelize.STRING,
       },
-      isMe: {
-        type: Sequelize.BOOLEAN,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

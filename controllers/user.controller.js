@@ -7,6 +7,14 @@ require("dotenv").config();
 const aws = require("aws-sdk");
 const redisCli = require("../util/redis");
 
+const schedule = require("node-schedule");
+
+schedule.scheduleJob({ minute: 1 }, async () => {
+  const userKey = await new UserService().findAllUser();
+  console.log(userKey[0].userKey);
+  // await redisCli.set(userId, refreshToken);
+});
+
 class UserController {
   userService = new UserService();
 
@@ -88,7 +96,7 @@ class UserController {
       const { userKey } = res.locals.user;
       const mainpage = await this.userService.mainPage(userKey);
 
-      return res.status(200).json({ mainpage });
+      return res.status(200).json(mainpage);
     } catch (error) {
       next(error);
     }

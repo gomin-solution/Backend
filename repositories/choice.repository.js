@@ -160,18 +160,18 @@ class ChoiceRepository {
     };
   };
 
-  choiceHot = async (userKey) => {
-    const choiceHot5 = await Choice.findAll({
-      order: [["choiceCount", "DESC"]],
-      // limit: 3,
-      include: [
-        { model: User, attributes: ["nickname", "userImg"] },
-        { model: ChoiceBM, where: { userKey: userKey }, required: false },
-        { model: isChoice, where: { userKey: userKey }, required: false },
-      ],
-    });
-    return choiceHot5;
-  };
+  // choiceHot = async (userKey) => {
+  //   const choiceHot5 = await Choice.findAll({
+  //     order: [["choiceCount", "DESC"]],
+  //     // limit: 3,
+  //     include: [
+  //       { model: User, attributes: ["nickname", "userImg"] },
+  //       { model: ChoiceBM, where: { userKey: userKey }, required: false },
+  //       { model: isChoice, where: { userKey: userKey }, required: false },
+  //     ],
+  //   });
+  //   return choiceHot5;
+  // };
 
   choiceSeach = async (userKey, keyword) => {
     const seachResult = await Choice.findAll({
