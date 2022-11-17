@@ -35,7 +35,7 @@ class CommentController {
       const { userKey } = res.locals.user;
 
       if (userKey == 0) {
-        return res.status(400).send({ message: "수정권한이 없습니다." });
+        return res.status(400).send({ message: "로그인이 필요합니다." });
       }
 
       const updateComment = await this.commentService.updateComment(
@@ -98,6 +98,33 @@ class CommentController {
         mes = "좋아요 취소";
       }
       res.status(200).json({ Message: mes, data: Likes, count: count });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  reportComment = async (req, res, next) => {
+    try {
+      const { commentId } = req.params;
+      const { userKey } = res.locals.user;
+
+      if (userKey == 0) {
+        return res.status(400).send({ message: "로그인 하시기 바랍니다." });
+      }
+
+      const updateComment = await this.commentService.reportComment(
+        userKey,
+        commentId
+      );
+
+      let mes;
+      if (!updateComment) {
+        mes = "뭐하자는 겁니까?"; //본인이 쓴 덧글 본인이 신고한 경우
+      } else {
+        mes = "신고 성공";
+      }
+
+      res.status(200).json({ Message: mes, data: updateComment });
     } catch (error) {
       next(error);
     }
