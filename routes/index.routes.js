@@ -7,9 +7,10 @@ const passportConfig = require("../passport");
 
 const choiceRouter = require("./choice.routes");
 const commentRouter = require("./comment.routes");
-const noteRouter = require("./note.routes")
+const noteRouter = require("./note.routes");
 // const kakaoCallback = require("./kakao.routes")
 const kakaoRouter = require("./kakao.routes");
+const managerRouter = require("./manager.routes");
 passportConfig();
 //로그인,회원가입,메인페이지
 router.use("/", userRouter);
@@ -29,5 +30,8 @@ router.use("/", kakaoRouter);
 
 // 쪽지 관련
 router.use("/note", noteRouter);
+
+// 관리자 관련
+router.use("/", managerRouter);
 
 module.exports = router;

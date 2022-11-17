@@ -1,5 +1,6 @@
 const { Users, Posts, Comment, CommentLike } = require("../models"); //모델 데이터를 가져오고
 const { Op } = require("sequelize");
+const Report = require("../schemas/report");
 
 class CommentRepository {
   Comment = new Comment();
@@ -75,6 +76,27 @@ class CommentRepository {
     const data = await CommentLike.findAll({ where: { commentId } });
     const data_length = data.length;
     return data_length;
+  };
+
+  //덧글 신고하기, 이 덧글 누가 썻나?
+  reportCommentAuthor = async (commentId) => {
+    const data = await Comment.findByPk(commentId);
+    const dataId = data.userKey;
+    return dataId;
+  };
+
+  //덧글 신고하기
+  reportComment = async (reporterId, suspectId, targetId, targetName) => {
+    const date = new Date();
+    const reportId = date.valueOf();
+    const result = await Report.create({
+      reportId,
+      reporterId,
+      suspectId,
+      targetId,
+      targetName,
+    });
+    return result;
   };
 }
 

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 const uri = process.env.MONGODB;
+
 const connect = () => {
   mongoose.connect(uri, (error) => {
     if (error) console.log("Mongo DB Connect Error");
