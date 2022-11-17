@@ -36,7 +36,7 @@ router.put(
 router.get("/mypage", authMiddleware, userController.mypage);
 
 //검색
-router.get("/search", authMiddleware, userController.search);
+router.get("/search/:keyword", authMiddleware, userController.search);
 
 //리워드
 router.get("/mypage/reword", authMiddleware, userController.reword);

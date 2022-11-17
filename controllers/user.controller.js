@@ -2,17 +2,21 @@ const UserService = require("../services/users.service");
 const joi = require("../util/joi");
 const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
-// const Post = require("../schemas/mission");
+
 require("dotenv").config();
 const aws = require("aws-sdk");
+
 const redisCli = require("../util/redis");
 
 const schedule = require("node-schedule");
 
+//최소 1분단위
 schedule.scheduleJob({ minute: 1 }, async () => {
   const userKey = await new UserService().findAllUser();
-  console.log(userKey[0].userKey);
-  // await redisCli.set(userId, refreshToken);
+  for (const item of userKey) {
+    console.log(item.userKey);
+    await redisCli.set(item.userKey, "오늘의 행운의 말");
+  }
 });
 
 class UserController {
@@ -117,8 +121,8 @@ class UserController {
   search = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      const { keyword } = req.body;
-      // const { keyword } = req.params;
+      // const { keyword } = req.body;
+      const { keyword } = req.params;
       const result = await this.userService.search(userKey, keyword);
 
       return res.status(200).json(result);

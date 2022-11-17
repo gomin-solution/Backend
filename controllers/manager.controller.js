@@ -50,9 +50,11 @@ class ManagerController {
       if (userKey == 0) {
         return res.status(400).send({ message: "로그인이 필요합니다." });
       }
+
       if (grade == 0 || grade == null) {
         return res.status(400).send({ message: "당신은 관리자가 아닙니다." });
       }
+
       if (isGuilty == 0) {
         const forgive = await this.managerService.forgive(reportId);
         return res.status(200).json({ Message: "봐줌", data: forgive });
