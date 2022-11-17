@@ -1,10 +1,11 @@
+const { SchemaTextFieldPhonetics } = require("redis");
 const NoteService = require("../services/note.service");
 
 
 class NoteController {
   noteService = new NoteService()
 
-
+  // 쪽지 등록
   creatNote = async (req, res, next) => {
     const { userKey:fUser } = res.locals.user;
     const { userKey:tUser } = req.params;
@@ -25,20 +26,34 @@ class NoteController {
     }
   };
 
+  // 쪽지 목록 페이지
   allMyNote = async (req, res, next) => {
     const { userKey } = res.locals.user;
-    const allMyNote = await this.noteService.allMyNote(userKey);
-    console.log(userKey, "이건 어떤가?")
-    console.log(allMyNote, "나오나")
+    const myNotePage = await this.noteService.allMyNote(userKey);
+    // const test = myNotePage.map((x) => x.recipient)
+    // console.log(test, "나오나")
 
     try {
-      return res.status(200).json({ allMyNote });
+      return res.status(200).json({ myNotePage });
     } catch(err) {
       next(err);
-    }
-
-    
+    }    
   }
+
+  // 보낸 쪽지 상세 페이지
+  findNoteOne = async (req, res, next) => {
+    const { userKey } = res.locals.user; 
+    const { noteId } = req.params;
+
+    const findNoteOne = await this.noteService.findNoteOne(noteId, userKey);
+
+    try {
+      return res.status(200).json({findNoteOne})
+    }catch(err) {
+      next(err)
+    }
+  }
+
       
 }
 

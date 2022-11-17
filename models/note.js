@@ -9,12 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: "userKey",
-        sourceKey: "fUser",
+        foreignKey: "fUser",
+        as : "fUserData",
+        targetKey: "userKey",
       });
       this.belongsTo(models.User, {
-        foreignKey: "userKey",
-        sourceKey: "tUser",
+        foreignKey: "tUser",
+        as : "tUserData",
+        targetKey: "userKey",
       });
     }
   }
@@ -42,9 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       note: {
         type: DataTypes.STRING,
-      },
-      isMe: {
-        type: DataTypes.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
