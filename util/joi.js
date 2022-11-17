@@ -30,7 +30,7 @@ module.exports = {
       ),
     confirm: Joi.ref("password"),
 
-    IsAdult: Joi.string(),
+    isAdult: Joi.string(),
   }),
 
   loginSchema: Joi.object({

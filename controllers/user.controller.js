@@ -23,7 +23,7 @@ class UserController {
         userId: userId,
         nickname: nickname,
         password: hashed,
-        IsAdult: isAdult,
+        isAdult: isAdult,
       });
       res.status(200).json({ message: "회원가입 성공" });
     } catch (error) {

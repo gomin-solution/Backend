@@ -23,6 +23,7 @@ class UserService {
     isAdult: isAdult,
   }) => {
     isAdult == "true" ? (isAdult = true) : (isAdult = false);
+    console.log(isAdult, "/////here?//");
     await this.userRepository.createUser({
       userId: userId,
       nickname: nickname,
