@@ -85,6 +85,11 @@ class CommentRepository {
     return dataId;
   };
 
+  //덧글 신고하기, 신고가 중복되는가?
+  reportRedup = async (reporterId, suspectId, targetId, targetName) => {
+    const result = await Report.find();
+  };
+
   //덧글 신고하기
   reportComment = async (reporterId, suspectId, targetId, targetName) => {
     const date = new Date();

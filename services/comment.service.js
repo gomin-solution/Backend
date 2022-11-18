@@ -68,6 +68,16 @@ class CommentService {
     if (author === userKey) {
       return;
     }
+
+    const redup = await this.commentRepository.reportRedup(
+      userKey,
+      author,
+      commentId,
+      type
+    );
+
+    console.log(redup);
+
     const report = await this.commentRepository.reportComment(
       userKey,
       author,
