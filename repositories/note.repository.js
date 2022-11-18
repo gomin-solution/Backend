@@ -34,10 +34,14 @@ class NoteRepository {
         { model: User, as: "tUserData", attributes: ["nickname", "userImg"] },
       ],
     });
-    console.log(findNoteOne, "이건 안나오나?");
+    //console.log(findNoteOne, "이건 안나오나?");
 
     return findNoteOne;
   };
+
+  deleteNote = async (noteId, userKey) => {
+   return await Note.destroy({ where: { noteId, fUser:userKey } });
+  }
 }
 
 module.exports = NoteRepository;
