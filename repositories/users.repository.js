@@ -8,7 +8,7 @@ class UserRepository {
     isAdult: isAdult,
   }) => {
     console.log("레파지토리", isAdult);
-    await User.create({
+    return await User.create({
       userId: userId,
       nickname: nickname,
       password: hashed,

@@ -16,8 +16,8 @@ class NoteService {
       note.fUser == userKey ? (isMe = true) : (isMe = false);
       return {
         noteId: note.noteId,
-        fUser: note.fUser,
-        tUser: note.tUser,
+        fUser: note.fUser, //보낸이
+        tUser: note.tUser, //빋는이
         note: note.note,
         isMe: isMe,
       };
@@ -28,24 +28,22 @@ class NoteService {
 
   findNoteOne = async (noteId, userKey) => {
     const findNoteOne = await this.noteRepository.findNoteOne(noteId, userKey);
-      return {
-        noteId: findNoteOne.noteId,
-        fUser: findNoteOne.fUser,
-        fUserNickname: findNoteOne.fUserData.nickname,
-        fUserImg: findNoteOne.fUserData.userImg,
-        tUser: findNoteOne.tUser,
-        tUserNickname: findNoteOne.tUserData.nickname,
-        tUserImg: findNoteOne.tUserData.userImg,
-        note: findNoteOne.note,
-      };
+    return {
+      noteId: findNoteOne.noteId,
+      fUser: findNoteOne.fUser,
+      fUserNickname: findNoteOne.fUserData.nickname,
+      fUserImg: findNoteOne.fUserData.userImg,
+      tUser: findNoteOne.tUser,
+      tUserNickname: findNoteOne.tUserData.nickname,
+      tUserImg: findNoteOne.tUserData.userImg,
+      note: findNoteOne.note,
+    };
   };
 
   deleteNote = async (noteId, userKey) => {
     const deleteNote = await this.noteRepository.deleteNote(noteId, userKey);
-    return deleteNote
-  }
-
-
+    return deleteNote;
+  };
 }
 
 module.exports = NoteService;

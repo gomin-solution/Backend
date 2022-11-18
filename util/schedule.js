@@ -4,16 +4,14 @@ const { User, DailyMessage } = require("../models");
 
 const rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0, 6)];
-rule.hour = 24;
-// rule.minute = 7;
+rule.hour = 0;
+// rule.minute = 1;
 // rule.second = 0;
 rule.tz = "Asia/Seoul";
 
-//최소 1분단위
 module.exports = async () => {
-  console.log("스케줄실행됨");
-
   schedule.scheduleJob(rule, async () => {
+    console.log("스케줄실행됨");
     const DailyArray = await DailyMessage.findAll({});
     const msgArray = DailyArray.map((x) => x.msg);
     const allUser = await User.findAll({ attributes: ["userKey"] });

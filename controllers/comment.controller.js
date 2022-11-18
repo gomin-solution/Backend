@@ -124,7 +124,7 @@ class CommentController {
         mes = "신고 성공";
       }
 
-      res.status(200).json({ Message: mes, data: updateComment });
+      res.status(200).json({ Message: mes });
     } catch (error) {
       next(error);
     }

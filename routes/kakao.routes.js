@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const { Users } = require("../models");
 require("dotenv").config();
+const redisCli = require("../util/redis");
 
 // 카카오로그인
 const kakaoCallback = (req, res, next) => {
