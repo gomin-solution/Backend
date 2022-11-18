@@ -68,6 +68,17 @@ class AdviceService {
       return [post.dataValues.adviceImageId, post.adviceImage];
     });
 
+    const comment = findOneAdvice.Comments.map((comment) => {
+      return {
+        commentId: comment.commentId,
+        userKey: comment.userKey,
+        nickname: comment.User.nickname,
+        userImg: comment.User.userImg,
+        comment: comment.comment,
+        createdAt: comment.createdAt,
+      };
+    });
+
     let boolean;
     findOneAdvice.AdviceBMs.length ? (boolean = true) : (boolean = false);
     return {
@@ -83,6 +94,7 @@ class AdviceService {
       adviceImage: findAdviceImageArray,
       isBookMark: boolean,
       commentcount: findOneAdvice.Comments.length,
+      comment: comment,
     };
   };
 
@@ -123,8 +135,8 @@ class AdviceService {
   };
 
   //내가쓴 조언게시물 조회
-  myadvice = async (userKey) =>{
-    const myadvice = await this.adviceRepository.myadvice(userKey)
+  myadvice = async (userKey) => {
+    const myadvice = await this.adviceRepository.myadvice(userKey);
 
     return myadvice.map((post) => {
       return {
@@ -139,8 +151,7 @@ class AdviceService {
         viewCount: post.viewCount,
       };
     });
-    
-  }
+  };
 }
 
 module.exports = AdviceService;

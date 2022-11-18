@@ -67,7 +67,7 @@ class AdviceRepository {
         { model: User, attributes: ["userKey", "nickname", "userImg"] },
         { model: AdviceBM, where: { userKey: userKey }, required: false },
         { model: AdviceImage, attributes: ["adviceImageId", "adviceImage"] },
-        { model: Comment },
+        { model: Comment, include: { model: User } },
       ],
     });
     return AdviceOne;

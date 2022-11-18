@@ -11,7 +11,6 @@ module.exports = async (req, res, next) => {
     const tokenType = authorization.split(" ")[0];
     const accessToken = authorization.split(" ")[1];
     const refreshToken = refreshtoken;
-    console.log(authorization.split(" "));
     if (tokenType !== "Bearer")
       return res
         .status(400)

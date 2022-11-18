@@ -1,2 +1,1 @@
-const AdviceController = require("../controllers/advice.controller")
-
+const AdviceController = require("../controllers/advice.controller");

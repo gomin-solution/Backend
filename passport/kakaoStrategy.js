@@ -17,6 +17,8 @@ module.exports = () => {
       // profile: 카카오가 보내준 유저 정보. profile의 정보를 바탕으로 회원가입
       async (accessToken, refreshToken, profile, done) => {
         try {
+          console.log(accessToken);
+          console.log(refreshToken);
           const userImg = profile._json.properties.profile_image;
           const email = profile._json.kakao_account.email;
           const ageRange = profile._json.kakao_account.age_range;

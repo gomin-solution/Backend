@@ -1,4 +1,11 @@
-const { User, isChoice, Comment, CommentLike, Advice } = require("../models");
+const {
+  User,
+  isChoice,
+  Comment,
+  CommentLike,
+  Advice,
+  Choice,
+} = require("../models");
 
 class UserRepository {
   createUser = async ({
@@ -52,6 +59,7 @@ class UserRepository {
         { model: Comment, include: { model: CommentLike } },
         { model: isChoice },
         { model: Advice },
+        { model: Choice },
       ],
     });
   };

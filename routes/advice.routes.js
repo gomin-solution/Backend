@@ -36,7 +36,4 @@ adviceRouter.put(
   adviceController.updateAdvice
 );
 
-
-
-
 module.exports = adviceRouter;

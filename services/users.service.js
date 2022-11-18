@@ -158,7 +158,7 @@ class UserService {
         nickname: "로그인이 필요합니다.",
         userImage:
           "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
-        totalAdvice: 0,
+        totalAdviceComment: 0,
         totalChoicePick: 0,
       };
     }
@@ -168,7 +168,7 @@ class UserService {
       userKey: userKey,
       nickname: user.nickname,
       userImage: user.userImage,
-      totalAdvice: user.Comments.length,
+      totalAdviceComment: user.Comments.length,
       totalChoicePick: user.isChoices.length,
     };
 
@@ -265,18 +265,24 @@ class UserService {
     });
 
     /** 내가 조언해준 횟수*/
-    const totalAdvice = totalReword[0].Comments.length;
+    const totalAdviceComment = totalReword[0].Comments.length;
 
     /**내가 투표한횟수 */
     const totalChoicePick = totalReword[0].isChoices.length;
 
     /**내가 쓴 조언게시글 수 */
-    const totalPost = totalReword[0].Advice.length;
+    const totalAdvice = totalReword[0].Advice.length;
 
     /**투표 게시글 작성 수 */
+    const totalChoice = totalReword[0].Choices.length;
+
+    /**총게시글 작성 수 */
+    const totalPost = totalAdvice + totalChoice;
+
+    /**행운의 편지 열기 횟수 */
 
     console.log(
-      `totalAdvice:${totalAdvice}, totalChoicePick:${totalChoicePick}, totalPost:${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
+      `totalAdviceComment:${totalAdviceComment}, totalChoicePick:${totalChoicePick}, totalAdvice:${totalAdvice},totalChoice${totalChoice},totalPost${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
     );
     /**모든 미션Id */
     const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -303,7 +309,7 @@ class UserService {
     mission.forEach((x) => {
       x.missionId;
       if (x.AdviceMission) {
-        x.AdviceMission.adviceMission <= totalAdvice
+        x.AdviceMission.adviceMission <= totalAdviceComment
           ? newCompleteMissionId.push(x.missionId)
           : false;
       }
@@ -313,7 +319,7 @@ class UserService {
           : false;
       }
       if (x.PostMission) {
-        x.PostMission.postMission <= totalPost
+        x.PostMission.postMission <= totalAdvice
           ? newCompleteMissionId.push(x.missionId)
           : false;
       }
@@ -353,7 +359,15 @@ class UserService {
         mission: i,
         isComplete: isComplete,
         isGet: isGet,
-        missonCount: [total],
+        missonCount: {
+          totalAdviceComment: totalAdviceComment,
+          totalChoicePick: totalChoicePick,
+          totalAdvice: totalAdvice,
+          totalChoice: totalChoice,
+          totalPost: totalPost,
+          viewCount: viewCount,
+          likeTotal: likeTotal,
+        },
       });
     }
 
