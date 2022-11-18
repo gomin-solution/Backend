@@ -1,10 +1,10 @@
-const schedule = require("node-schedule-tz");
+const schedule = require("node-schedule");
 const redisCli = require("../util/redis");
 const { User, DailyMessage } = require("../models");
 
 const rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0, 6)];
-rule.hour = 0;
+rule.hour = 20;
 // rule.minute = 1;
 // rule.second = 0;
 rule.tz = "Asia/Seoul";
@@ -19,7 +19,6 @@ module.exports = async () => {
       const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
       console.log(msg);
       await redisCli.set(`${item.userKey}`, msg);
-      //   console.log(await redisCli.get(`${item.userKey}`));
     }
   });
 };
