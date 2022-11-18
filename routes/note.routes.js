@@ -17,7 +17,7 @@ noteRouter.get("/", authMiddleware, noteController.allMyNote);
 noteRouter.get("/:noteId", authMiddleware, noteController.findNoteOne);
 
 // 쪽지 삭제
-//noteRouter.delete("/:noteId", authMiddleware, noteController.deleteNote);
+noteRouter.delete("/:noteId", authMiddleware, noteController.deleteNote);
 
 
 module.exports = noteRouter;

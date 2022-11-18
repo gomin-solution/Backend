@@ -16,8 +16,8 @@ class NoteService {
       note.fUser == userKey ? (isMe = true) : (isMe = false);
       return {
         noteId: note.noteId,
-        sender: note.fUser,
-        recipient: note.tUser,
+        fUser: note.fUser,
+        tUser: note.tUser,
         note: note.note,
         isMe: isMe,
       };
@@ -39,6 +39,13 @@ class NoteService {
         note: findNoteOne.note,
       };
   };
+
+  deleteNote = async (noteId, userKey) => {
+    const deleteNote = await this.noteRepository.deleteNote(noteId, userKey);
+    return deleteNote
+  }
+
+
 }
 
 module.exports = NoteService;
