@@ -6,13 +6,13 @@ class ManagerController {
   //관리자 권한 부여
   newManager = async (req, res, next) => {
     try {
-      const { userKey } = req.body; //권한을 부여할 대상
+      const { targetUser } = req.body; //권한을 부여할 대상
 
-      if (userKey == 0 || userKey == null) {
+      if (targetUser == 0 || targetUser == null) {
         return res.status(400).send({ message: "없는 사람입니다." });
       }
 
-      const newManager = await this.managerService.newManager(userKey);
+      const newManager = await this.managerService.newManager(targetUser);
 
       res.status(200).json({ Message: "새로운 관리자!", data: newManager });
     } catch (error) {
@@ -50,9 +50,11 @@ class ManagerController {
       if (userKey == 0) {
         return res.status(400).send({ message: "로그인이 필요합니다." });
       }
+
       if (grade == 0 || grade == null) {
         return res.status(400).send({ message: "당신은 관리자가 아닙니다." });
       }
+
       if (isGuilty == 0) {
         const forgive = await this.managerService.forgive(reportId);
         return res.status(200).json({ Message: "봐줌", data: forgive });

@@ -4,9 +4,12 @@ class ManagerService {
   managerRepository = new ManagerRepository();
 
   //관리자 권한 부여
-  newManager = async (userKey) => {
+  newManager = async (targetUser) => {
     const grade = 1;
-    const newManager = await this.managerRepository.newManager(userKey, grade);
+    const newManager = await this.managerRepository.newManager(
+      targetUser,
+      grade
+    );
     return newManager;
   };
 

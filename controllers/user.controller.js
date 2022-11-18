@@ -2,18 +2,11 @@ const UserService = require("../services/users.service");
 const joi = require("../util/joi");
 const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
-// const Post = require("../schemas/mission");
+
 require("dotenv").config();
 const aws = require("aws-sdk");
+
 const redisCli = require("../util/redis");
-
-const schedule = require("node-schedule");
-
-schedule.scheduleJob({ minute: 1 }, async () => {
-  const userKey = await new UserService().findAllUser();
-  console.log(userKey[0].userKey);
-  // await redisCli.set(userId, refreshToken);
-});
 
 class UserController {
   userService = new UserService();
@@ -30,7 +23,7 @@ class UserController {
         userId: userId,
         nickname: nickname,
         password: hashed,
-        IsAdult: isAdult,
+        isAdult: isAdult,
       });
       res.status(200).json({ message: "회원가입 성공" });
     } catch (error) {
@@ -117,8 +110,8 @@ class UserController {
   search = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      const { keyword } = req.body;
-      // const { keyword } = req.params;
+      // const { keyword } = req.body;
+      const { keyword } = req.params;
       const result = await this.userService.search(userKey, keyword);
 
       return res.status(200).json(result);

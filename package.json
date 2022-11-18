@@ -24,6 +24,7 @@
     "multer-s3-transform": "^2.10.3",
     "mysql2": "^2.3.3",
     "node-schedule": "^2.1.0",
+    "node-schedule-tz": "^1.2.1-4",
     "passport": "^0.6.0",
     "passport-kakao": "^1.0.1",
     "redis": "^4.4.0",

@@ -4,8 +4,11 @@ const Report = require("../schemas/report");
 
 class ManagerRepository {
   //관리자 권한 부여
-  newManager = async (userKey, grade) => {
-    const newManager = await User.update({ grade }, { where: { userKey } });
+  newManager = async (targetUser, grade) => {
+    const newManager = await User.update(
+      { grade },
+      { where: { userKey: targetUser } }
+    );
     return newManager;
   };
 

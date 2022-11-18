@@ -23,6 +23,7 @@ class UserService {
     isAdult: isAdult,
   }) => {
     isAdult == "true" ? (isAdult = true) : (isAdult = false);
+    console.log(isAdult, "/////here?//");
     await this.userRepository.createUser({
       userId: userId,
       nickname: nickname,
@@ -69,14 +70,10 @@ class UserService {
     return;
   };
 
-  //모든유저 조회
-  findAllUser = async () => {
-    return await this.userRepository.findAllUser();
-  };
-
   //메인페이지 데이터 가공해서 보내주기
   mainPage = async (userKey) => {
     const getAdvice = await this.adviceRepository.getAdvice();
+    const msg = await redisCli.get(`${userKey}`);
     let adviceData = [];
     getAdvice.forEach((post) => {
       post.Comments.length < 2
@@ -97,6 +94,7 @@ class UserService {
       advice: adviceData.slice(0, 5),
       totalCount: totalCount,
       nickname: nickname,
+      dailyMsg: msg,
     };
     // const getChoice = await this.choiceRepository.choiceHot(userKey);
 
@@ -176,20 +174,31 @@ class UserService {
 
     const choiceData = getChoice.map((post) => {
       let boolean;
+      let isChoice;
+      let absolute_a = post.choice1Per;
+      let absolute_b = post.choice2Per;
+      let choice1Per;
+      let choice2Per;
+      if (absolute_a + absolute_b > 0) {
+        choice1Per = Math.round((absolute_a / (absolute_a + absolute_b)) * 100);
+        choice2Per = 100 - choice1Per;
+      }
+      post.isChoices.length ? (isChoice = true) : (isChoice = false);
       post.ChoiceBMs.length ? (boolean = true) : (boolean = false);
       return {
         choiceId: post.choiceId,
         title: post.title,
         choice1Name: post.choice1Name,
         choice2Name: post.choice2Name,
-        choice1Per: post.choice1Per,
-        choice2Per: post.choice2Per,
+        choice1Per: choice1Per,
+        choice2Per: choice2Per,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         createdAt: post.createdAt,
         endTime: post.endTime,
         choiceCount: post.choiceCount,
         isBookMark: boolean,
+        isChoice: isChoice,
         userKey: post.userKey,
       };
     });

@@ -1,5 +1,4 @@
 const { User, isChoice, Comment, CommentLike, Advice } = require("../models");
-const user = require("../models/user");
 
 class UserRepository {
   createUser = async ({
@@ -8,6 +7,7 @@ class UserRepository {
     password: hashed,
     isAdult: isAdult,
   }) => {
+    console.log("레파지토리", isAdult);
     await User.create({
       userId: userId,
       nickname: nickname,
@@ -23,10 +23,6 @@ class UserRepository {
       where: { userKey: userKey },
       include: [{ model: isChoice }, { model: Comment }],
     });
-  };
-
-  findAllUser = async () => {
-    return await User.findAll({ attributes: ["userKey"] });
   };
 
   findNickname = async (nickname) => {
