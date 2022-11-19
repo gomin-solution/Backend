@@ -81,6 +81,7 @@ class AdviceService {
       userImage: findOneAdvice.User.userImg,
       nickname: findOneAdvice.User.nickname,
       adviceImage: findAdviceImageArray,
+      viewCount: findOneAdvice.viewCount,
       isBookMark: boolean,
       commentcount: findOneAdvice.Comments.length,
     };
