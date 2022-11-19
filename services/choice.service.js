@@ -11,6 +11,11 @@ class ChoiceService {
       choice2Name,
       endTime
     );
+
+    schedule.scheduleJob(endTime, async () => {
+      await this.choiceRepository.updateEnd(createchoice.choiceId);
+    });
+
     return createchoice;
   };
 

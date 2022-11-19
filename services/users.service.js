@@ -87,19 +87,16 @@ class UserService {
         adviceId: post.adviceId,
         categoryId: post.categoryId,
         title: post.title,
-        viewCount: post.viewCount,
-        commentCount: post.Comments.length,
       };
     });
     adviceData.sort((a, b) => a.commentCount - b.commentCount);
     const lowAdviceData = adviceData.slice(0, 10);
     const getChoice = await this.choiceRepository.findAllchoice();
     const totalCount = getAdvice.length + getChoice.length;
-    const { nickname } = await this.userRepository.findUser(userKey);
+
     return {
       advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],
       totalCount: totalCount,
-      nickname: nickname,
       dailyMsg: msg,
     };
     // const getChoice = await this.choiceRepository.choiceHot(userKey);

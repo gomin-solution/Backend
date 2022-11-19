@@ -10,11 +10,14 @@ class AdviceController {
   // 조언 게시물 생성
   creatAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
+
     if (userKey == 0) {
       return res.status(400).send({ message: "로그인이 필요합니다." });
     }
+
     const { title, categoryId, content } = req.body;
     const images = req.files;
+
     try {
       const creatAdvice = await this.adviceService.createAdvice(
         userKey,
@@ -25,6 +28,7 @@ class AdviceController {
 
       // 조언 게시물 이미지 업로드
       let imageUrl = [];
+
       if (images) {
         const adviceId = creatAdvice.adviceId;
         const values = Object.values({ images });
@@ -50,7 +54,7 @@ class AdviceController {
   allAdvice = async (req, res, next) => {
     const { categoryId } = req.params;
     const { page } = req.query;
-    
+
     let arr = [];
     let advice;
     if (categoryId == 0) {
@@ -70,7 +74,6 @@ class AdviceController {
       }
       console.log("함수", arr);
       return arr;
-
     }
 
     try {
@@ -249,11 +252,10 @@ class AdviceController {
   reportAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { adviceId } = req.params;
-    
 
     try {
       if (userKey == 0) {
-        return res.status(400).send({message: "로그인이 필요합니다."})
+        return res.status(400).send({ message: "로그인이 필요합니다." });
       }
       const adviceUpdate = await this.adviceService.reportAdvice(
         userKey,
@@ -262,16 +264,15 @@ class AdviceController {
 
       let mes;
       if (!adviceUpdate) {
-        mes = "지금 자신의 글을 신고한다고??"
+        mes = "지금 자신의 글을 신고한다고??";
       } else {
-        mes = "신고"
+        mes = "신고";
       }
 
-      res.status(200).json({message: mes, adviceUpdate})
-
-    } catch(err) {
+      res.status(200).json({ message: mes, adviceUpdate });
+    } catch (err) {
       next(err);
-    };
+    }
   };
 }
 

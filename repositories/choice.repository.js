@@ -17,6 +17,10 @@ class ChoiceRepository {
     return createData;
   };
 
+  updateEnd = async (choiceId) => {
+    await Choice.update({ isEnd: false }, { where: { choiceId: choiceId } });
+  };
+
   findAllchoice = async () => {
     const findAllchoice = await Choice.findAll({
       order: [["createdAt", "DESC"]],
