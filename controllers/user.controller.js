@@ -38,10 +38,8 @@ class UserController {
       const { userId, password } = req.body;
       console.log(userId, password);
 
-      const { accessToken, refreshToken } = await this.userService.verifyUser(
-        userId,
-        password
-      );
+      const { accessToken, refreshToken, nickname } =
+        await this.userService.verifyUser(userId, password);
 
       //refreshtoken을 userId키로 redis에 저장
       await redisCli.set(userId, refreshToken);
@@ -51,7 +49,7 @@ class UserController {
 
       return res
         .status(200)
-        .json({ accessToken, refreshToken, message: "로그인 성공." });
+        .json({ accessToken, refreshToken, message: "로그인 성공.", nickname });
     } catch (error) {
       next(error);
     }

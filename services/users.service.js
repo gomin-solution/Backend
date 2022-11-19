@@ -58,8 +58,8 @@ class UserService {
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1h",
     });
-
-    return { accessToken, refreshToken };
+    const nickname = user.nickname;
+    return { accessToken, refreshToken, nickname };
   };
 
   //닉네임 중복검사
