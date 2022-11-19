@@ -13,7 +13,7 @@ const missionSchema = new Schema({
     type: String,
   },
   content: {
-    type: String,
+    type: Object,
     required: true,
   },
   guilty: {
