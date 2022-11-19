@@ -99,50 +99,6 @@ class UserService {
       totalCount: totalCount,
       dailyMsg: msg,
     };
-    // const getChoice = await this.choiceRepository.choiceHot(userKey);
-
-    // const choiceData = getChoice.map((post) => {
-    //   let boolean;
-    //   let isChoice;
-    //   let absolute_a = post.choice1Per;
-    //   let absolute_b = post.choice2Per;
-    //   let choice1Per;
-    //   let choice2Per;
-    //   if (absolute_a + absolute_b > 0) {
-    //     choice1Per = Math.round((absolute_a / (absolute_a + absolute_b)) * 100);
-    //     choice2Per = 100 - choice1Per;
-    //   }
-    //   post.isChoices.length ? (isChoice = true) : (isChoice = false);
-    //   post.ChoiceBMs.length ? (boolean = true) : (boolean = false);
-    //   return {
-    //     choiceId: post.choiceId,
-    //     title: post.title,
-    //     choice1Name: post.choice1Name,
-    //     choice2Name: post.choice2Name,
-    //     choice1Per: choice1Per,
-    //     choice2Per: choice2Per,
-    //     userImage: post.User.userImg,
-    //     nickname: post.User.nickname,
-    //     createdAt: post.createdAt,
-    //     endTime: post.endTime,
-    //     choiceCount: post.choiceCount,
-    //     isBookMark: boolean,
-    //     isChoice: isChoice,
-    //     userKey: post.userKey,
-    //   };
-    // });
-
-    // const adviceData = getAdvice.map((post) => {
-    //   return {
-    //     adviceId: post.adviceId,
-    //     title: post.title,
-    //     content: post.content,
-    //     createdAt: post.createdAt,
-    //     viewCount: post.viewCount,
-    //     commentCount: post.Comments.length,
-    //     userKey: post.userKey,
-    //   };
-    // });
   };
 
   //마이페이지 데이터 가져오기
