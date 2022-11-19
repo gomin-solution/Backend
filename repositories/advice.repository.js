@@ -1,4 +1,11 @@
-const { Advice, AdviceBM, User, AdviceImage, Comment } = require("../models");
+const {
+  Advice,
+  AdviceBM,
+  User,
+  AdviceImage,
+  Comment,
+  CommentLike,
+} = require("../models");
 const { Op } = require("sequelize");
 
 class AdviceRepository {
@@ -67,7 +74,10 @@ class AdviceRepository {
         { model: User, attributes: ["userKey", "nickname", "userImg"] },
         { model: AdviceBM, where: { userKey: userKey }, required: false },
         { model: AdviceImage, attributes: ["adviceImageId", "adviceImage"] },
-        { model: Comment, include: { model: User } },
+        {
+          model: Comment,
+          include: [{ model: CommentLike }, { model: User }],
+        },
       ],
     });
     return AdviceOne;
