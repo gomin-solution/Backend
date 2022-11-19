@@ -35,14 +35,18 @@ class ChoiceService {
         let isChoice;
         choice.ChoiceBMs.length ? (isBookMark = true) : (isBookMark = false);
         choice.isChoices.length ? (isChoice = true) : (isChoice = false);
+        const a = choice.choice1Per;
+        const b = choice.choice2Per;
+        const sum = a + b;
+        const res_a = (a / sum) * 100;
         return {
           choiceId: choice.choiceId,
           userKey: choice.userKey,
           title: choice.title,
           choice1Name: choice.choice1Name,
           choice2Name: choice.choice2Name,
-          choice1Per: choice.choice1Per,
-          choice2Per: choice.choice2Per,
+          choice1Per: Math.round(res_a),
+          choice2Per: 100 - Math.round(res_a),
           userImage: choice.User.userImg,
           nickname: choice.User.nickname,
           createdAt: choice.createdAt,
