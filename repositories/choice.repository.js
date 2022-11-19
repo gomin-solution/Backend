@@ -33,9 +33,9 @@ class ChoiceRepository {
     return findAllchoice;
   };
 
-  findOneData = async (i) => {
-    const findOnechoice = await Choice.findAll();
-    return findOnechoice[i];
+  findUserChoice = async (userKey) => {
+    const findOnechoice = await Choice.findAll({ where: { userKey: userKey } });
+    return findOnechoice;
   };
 
   findUserData = async (userKey) => {

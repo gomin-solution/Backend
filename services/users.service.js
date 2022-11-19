@@ -91,7 +91,7 @@ class UserService {
     });
     adviceData.sort((a, b) => a.commentCount - b.commentCount);
     const lowAdviceData = adviceData.slice(0, 10);
-    const getChoice = await this.choiceRepository.findAllchoice();
+    const getChoice = await this.choiceRepository.findUserChoice(userKey);
     const totalCount = getAdvice.length + getChoice.length;
 
     return {
