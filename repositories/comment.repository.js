@@ -87,12 +87,24 @@ class CommentRepository {
 
   //덧글 신고하기, 신고가 중복되는가?
   reportRedup = async (reporterId, suspectId, targetId, targetName) => {
-    const result = await Report.find({
-      reporterId: reporterId,
-      suspectId: suspectId,
-      targetId: targetId,
+    const data = {
+      reporterId: Number(reporterId),
+      suspectId: Number(suspectId),
+      targetId: Number(targetId),
       targetName: targetName,
+    };
+
+    const result = await Report.find({
+      ids: data,
     });
+
+    // const result = await Report.find({
+    //   "ids.reportId": Number(reporterId),
+    //   "ids.suspectId": Number(suspectId),
+    //   "ids.targetId": Number(targetId),
+    //   "ids.targetName": targetName,
+    // });
+
     return result;
   };
 
