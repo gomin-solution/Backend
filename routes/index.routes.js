@@ -11,7 +11,9 @@ const noteRouter = require("./note.routes");
 // const kakaoCallback = require("./kakao.routes")
 const kakaoRouter = require("./kakao.routes");
 const managerRouter = require("./manager.routes");
+
 passportConfig();
+
 //로그인,회원가입,메인페이지
 router.use("/", userRouter);
 

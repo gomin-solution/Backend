@@ -11,7 +11,6 @@ module.exports = async (req, res, next) => {
     const tokenType = authorization.split(" ")[0];
     const accessToken = authorization.split(" ")[1];
     const refreshToken = refreshtoken;
-    console.log(authorization.split(" "));
     if (tokenType !== "Bearer")
       return res
         .status(400)
@@ -86,7 +85,7 @@ module.exports = async (req, res, next) => {
       const { userId } = jwt.verify(accessToken, process.env.SECRET_KEY);
       console.log("유저아이디");
       console.log(userId);
-      const user = await User.findOne({ where: { userId: userId } });
+      const user = await User.findOne({ where: { userId: userId } }); //
       res.locals.user = user;
     } else {
       //토큰이 없는 요청일시 익명유저 정보를 저장

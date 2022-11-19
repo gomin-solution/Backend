@@ -3,6 +3,7 @@ const UserRepository = require("../repositories/users.repository.js");
 const AdviceRepository = require("../repositories/advice.repository");
 const ChoiceRepository = require("../repositories/choice.repository");
 const MissionRepository = require("../repositories/mission.repository");
+const DailyMsgRepository = require("../repositories/dailymessage.repository");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -14,6 +15,7 @@ class UserService {
   adviceRepository = new AdviceRepository();
   choiceRepository = new ChoiceRepository();
   missionRepository = new MissionRepository();
+  dailyMsgRepository = new DailyMsgRepository();
 
   //유저 생성(가입)
   createUser = async ({
@@ -23,13 +25,18 @@ class UserService {
     isAdult: isAdult,
   }) => {
     isAdult == "true" ? (isAdult = true) : (isAdult = false);
-    console.log(isAdult, "/////here?//");
-    await this.userRepository.createUser({
+    const createUser = await this.userRepository.createUser({
       userId: userId,
       nickname: nickname,
       password: hashed,
       isAdult: isAdult,
     });
+    //오늘의 랜덤 메세지 유저키와 함께 생성
+    const DailyArray = await this.dailyMsgRepository.allMsg();
+    const msgArray = DailyArray.map((x) => x.msg);
+    const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
+
+    await redisCli.set(`${createUser.userKey}`, msg);
   };
 
   //유저 검증
@@ -151,8 +158,8 @@ class UserService {
         nickname: "로그인이 필요합니다.",
         userImage:
           "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
-        totalAdvice: 0,
-        totalChoice: 0,
+        totalAdviceComment: 0,
+        totalChoicePick: 0,
       };
     }
     const user = await this.userRepository.findUser(userKey);
@@ -161,8 +168,8 @@ class UserService {
       userKey: userKey,
       nickname: user.nickname,
       userImage: user.userImage,
-      totalAdvice: user.Comments.length,
-      totalChoice: user.isChoices.length,
+      totalAdviceComment: user.Comments.length,
+      totalChoicePick: user.isChoices.length,
     };
 
     return result;
@@ -258,16 +265,24 @@ class UserService {
     });
 
     /** 내가 조언해준 횟수*/
-    const totalAdvice = totalReword[0].Comments.length;
+    const totalAdviceComment = totalReword[0].Comments.length;
 
     /**내가 투표한횟수 */
-    const totalChoice = totalReword[0].isChoices.length;
+    const totalChoicePick = totalReword[0].isChoices.length;
 
     /**내가 쓴 조언게시글 수 */
-    const totalPost = totalReword[0].Advice.length;
+    const totalAdvice = totalReword[0].Advice.length;
+
+    /**투표 게시글 작성 수 */
+    const totalChoice = totalReword[0].Choices.length;
+
+    /**총게시글 작성 수 */
+    const totalPost = totalAdvice + totalChoice;
+
+    /**행운의 편지 열기 횟수 */
 
     console.log(
-      `totalAdvice:${totalAdvice}, totalChoice:${totalChoice}, totalPost:${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
+      `totalAdviceComment:${totalAdviceComment}, totalChoicePick:${totalChoicePick}, totalAdvice:${totalAdvice},totalChoice${totalChoice},totalPost${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
     );
     /**모든 미션Id */
     const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -294,17 +309,17 @@ class UserService {
     mission.forEach((x) => {
       x.missionId;
       if (x.AdviceMission) {
-        x.AdviceMission.adviceMission <= totalAdvice
+        x.AdviceMission.adviceMission <= totalAdviceComment
           ? newCompleteMissionId.push(x.missionId)
           : false;
       }
       if (x.ChoiceMission) {
-        x.ChoiceMission.choiceMission <= totalChoice
+        x.ChoiceMission.choiceMission <= totalChoicePick
           ? newCompleteMissionId.push(x.missionId)
           : false;
       }
       if (x.PostMission) {
-        x.PostMission.postMission <= totalPost
+        x.PostMission.postMission <= totalAdvice
           ? newCompleteMissionId.push(x.missionId)
           : false;
       }
@@ -344,6 +359,15 @@ class UserService {
         mission: i,
         isComplete: isComplete,
         isGet: isGet,
+        missonCount: {
+          totalAdviceComment: totalAdviceComment,
+          totalChoicePick: totalChoicePick,
+          totalAdvice: totalAdvice,
+          totalChoice: totalChoice,
+          totalPost: totalPost,
+          viewCount: viewCount,
+          likeTotal: likeTotal,
+        },
       });
     }
 
