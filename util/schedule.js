@@ -4,7 +4,7 @@ const { User, DailyMessage } = require("../models");
 
 const rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0, 6)];
-//rule.hour = 24;
+rule.hour = 24;
 // rule.minute = 7;
 // rule.second = 0;
 rule.tz = "Asia/Seoul";
