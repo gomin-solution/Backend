@@ -81,6 +81,7 @@ class AdviceService {
       userImage: findOneAdvice.User.userImg,
       nickname: findOneAdvice.User.nickname,
       adviceImage: findAdviceImageArray,
+      viewCount: findOneAdvice.viewCount,
       isBookMark: boolean,
       commentcount: findOneAdvice.Comments.length,
     };
@@ -139,8 +140,26 @@ class AdviceService {
         viewCount: post.viewCount,
       };
     });
-    
-  }
+  };
+
+  reportAdvice = async (userKey, adviceId) => {
+    //작성자 확인
+    let type = "advice"
+    const writer = await this.adviceRepository.findAdvice(adviceId)
+    const writerHost = writer.userKey
+    console.log(writerHost)
+
+    if (userKey === writerHost) {
+      return;
+    }
+    const reportAdvice = await this.adviceRepository.reportAdvice(
+      userKey,
+      adviceId,
+      writerHost,
+      type
+    );
+    return reportAdvice;
+  };
 }
 
 module.exports = AdviceService;
