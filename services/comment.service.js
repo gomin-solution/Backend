@@ -60,7 +60,7 @@ class CommentService {
   };
 
   //덧글 신고하기
-  reportComment = async (userKey, commentId) => {
+  reportComment = async (userKey, commentId, why) => {
     //코멘트 아이디를 기반으로 작성자 아이디를 가져오고
     //신고자 ID, 작성자 ID, 신고게시글유형(덧글인지 뭔지), 신고 대상 ID를 저장
     let type = "comment";
@@ -69,6 +69,7 @@ class CommentService {
       return;
     }
 
+    //중복 확인
     const redup = await this.commentRepository.reportRedup(
       userKey,
       author,
@@ -76,13 +77,18 @@ class CommentService {
       type
     );
 
-    console.log(redup);
+    if (redup[0]) {
+      const dupmes = false;
+      return dupmes;
+    }
 
+    //신고 됌
     const report = await this.commentRepository.reportComment(
       userKey,
       author,
       commentId,
-      type
+      type,
+      why
     );
 
     return report;

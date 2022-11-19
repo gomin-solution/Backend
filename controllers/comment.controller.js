@@ -107,6 +107,7 @@ class CommentController {
     try {
       const { commentId } = req.params;
       const { userKey } = res.locals.user;
+      const { why } = req.body;
 
       if (userKey == 0) {
         return res.status(400).send({ message: "로그인 하시기 바랍니다." });
@@ -114,12 +115,18 @@ class CommentController {
 
       const updateComment = await this.commentService.reportComment(
         userKey,
-        commentId
+        commentId,
+        why
       );
+
+      if (updateComment === false) {
+        return res.status(400).json({ Message: "중복된 신고 입니다." });
+      }
 
       let mes;
       if (!updateComment) {
         mes = "뭐하자는 겁니까?"; //본인이 쓴 덧글 본인이 신고한 경우
+        return res.status(400).json({ Message: mes });
       } else {
         mes = "신고 성공";
       }
