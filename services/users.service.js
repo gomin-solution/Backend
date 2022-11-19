@@ -36,7 +36,8 @@ class UserService {
     const msgArray = DailyArray.map((x) => x.msg);
     const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
 
-    await redisCli.set(`${createUser.userKey}`, msg);
+    // await redisCli.set(`${createUser.userKey}`, msg);
+    return;
   };
 
   //유저 검증

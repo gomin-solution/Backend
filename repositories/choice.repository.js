@@ -13,6 +13,7 @@ class ChoiceRepository {
       endTime,
       choice1Per: 0,
       choice2Per: 0,
+      isEnd: false,
     });
     return createData;
   };
