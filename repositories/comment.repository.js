@@ -102,7 +102,6 @@ class CommentRepository {
     const reportId = date.valueOf();
     const commentId = targetId;
     const data = await Comment.findByPk(commentId);
-    console.log(data);
     const content = data.comment;
     const createdAt = date;
     const updatedAt = date;
@@ -116,7 +115,9 @@ class CommentRepository {
         targetName: targetName,
       },
       why,
-      content,
+      content: {
+        content: content,
+      },
       createdAt,
       updatedAt,
     });
