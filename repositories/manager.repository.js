@@ -5,10 +5,16 @@ const Report = require("../schemas/report");
 class ManagerRepository {
   //관리자 권한 부여
   newManager = async (targetUser, grade) => {
+    const dup = await User.findOne({ where: { userKey: targetUser } });
+    if (dup.grade == 1) {
+      return;
+    }
+
     const newManager = await User.update(
       { grade },
       { where: { userKey: targetUser } }
     );
+    console.log(newManager);
     return newManager;
   };
 
@@ -37,6 +43,12 @@ class ManagerRepository {
       { $set: { processing } }
     );
     return data;
+  };
+
+  //이미 신고된 게시글인가?
+  check = async (reportId) => {
+    const check = await Report.find({ reportId: reportId });
+    return check;
   };
 }
 

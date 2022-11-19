@@ -50,7 +50,7 @@ class ChoiceController {
         a++;
       }
       a = 0;
-      res.status(200).json({ choice });
+      res.status(200).json({ data: choice });
     } catch (err) {
       next(err);
     }

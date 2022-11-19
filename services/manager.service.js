@@ -30,6 +30,15 @@ class ManagerService {
     const forgive = await this.managerRepository.forgive(reportId);
     return forgive;
   };
+
+  //이미 신고 처리가 완료된 것인가???
+  check = async (reportId) => {
+    const check = await this.managerRepository.check(reportId);
+    if (check[0].processing == false) {
+      return;
+    }
+    return check;
+  };
 }
 
 module.exports = ManagerService;
