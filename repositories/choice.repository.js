@@ -21,9 +21,14 @@ class ChoiceRepository {
     await Choice.update({ isEnd: false }, { where: { choiceId: choiceId } });
   };
 
-  findAllchoice = async () => {
+  findAllchoice = async (userKey) => {
     const findAllchoice = await Choice.findAll({
       order: [["createdAt", "DESC"]],
+      include: [
+        { model: User },
+        { model: isChoice, where: { userKey: userKey }, required: false },
+        { model: ChoiceBM, where: { userKey: userKey }, required: false },
+      ],
     });
     return findAllchoice;
   };

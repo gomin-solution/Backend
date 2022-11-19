@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
 
 require("dotenv").config();
+
 const aws = require("aws-sdk");
 
 const redisCli = require("../util/redis");
@@ -200,6 +201,7 @@ class UserController {
       if (!image && !nickname) {
         return res.status(200).json({ msg: "변경할 내용이 없습니다" });
       }
+
       res.status(200).json({ msg: "프로필 수정 완료!" });
     } catch (error) {
       next(error);
