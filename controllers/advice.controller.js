@@ -245,6 +245,34 @@ class AdviceController {
       next(err);
     }
   };
+
+  reportAdvice = async (req, res, next) => {
+    const { userKey } = res.locals.user;
+    const { adviceId } = req.params;
+    
+
+    try {
+      if (userKey == 0) {
+        return res.status(400).send({message: "로그인이 필요합니다."})
+      }
+      const adviceUpdate = await this.adviceService.reportAdvice(
+        userKey,
+        adviceId
+      );
+
+      let mes;
+      if (!adviceUpdate) {
+        mes = "지금 자신의 글을 신고한다고??"
+      } else {
+        mes = "신고"
+      }
+
+      res.status(200).json({message: mes, adviceUpdate})
+
+    } catch(err) {
+      next(err);
+    };
+  };
 }
 
 module.exports = AdviceController;
