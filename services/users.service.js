@@ -81,24 +81,23 @@ class UserService {
   mainPage = async (userKey) => {
     const getAdvice = await this.adviceRepository.getAdvice();
     const msg = await redisCli.get(`${userKey}`);
-    let adviceData = [];
-    getAdvice.forEach((post) => {
-      post.Comments.length < 2
-        ? adviceData.push({
-            adviceId: post.adviceId,
-            categoryId: post.categoryId,
-            title: post.title,
-            viewCount: post.viewCount,
-            commentCount: post.Comments.length,
-          })
-        : null;
+
+    const adviceData = getAdvice.map((post) => {
+      return {
+        adviceId: post.adviceId,
+        categoryId: post.categoryId,
+        title: post.title,
+        viewCount: post.viewCount,
+        commentCount: post.Comments.length,
+      };
     });
     adviceData.sort((a, b) => a.commentCount - b.commentCount);
+    const lowAdviceData = adviceData.slice(0, 10);
     const getChoice = await this.choiceRepository.findAllchoice();
     const totalCount = getAdvice.length + getChoice.length;
     const { nickname } = await this.userRepository.findUser(userKey);
     return {
-      advice: adviceData.slice(0, 5),
+      advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],
       totalCount: totalCount,
       nickname: nickname,
       dailyMsg: msg,

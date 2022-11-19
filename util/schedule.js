@@ -6,7 +6,7 @@ const rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0, 6)];
 rule.hour = 0;
 rule.minute = 0;
-// rule.second = 30;
+// rule.second = 0;
 rule.tz = "Asia/Seoul";
 
 module.exports = async () => {
