@@ -5,19 +5,14 @@ const missionSchema = new Schema({
     type: Number,
     unique: true,
   },
-  reporterId: {
-    type: Number,
+  ids: {
+    type: Object,
     required: true,
   },
-  suspectId: {
-    type: Number,
-    required: true,
+  why: {
+    type: String,
   },
-  targetId: {
-    type: Number,
-    required: true,
-  },
-  targetName: {
+  content: {
     type: String,
     required: true,
   },
@@ -28,6 +23,14 @@ const missionSchema = new Schema({
   processing: {
     type: Boolean,
     default: false,
+  },
+  createdAt: {
+    type: Date,
+    required: true,
+  },
+  updatedAt: {
+    type: Date,
+    required: true,
   },
 });
 
