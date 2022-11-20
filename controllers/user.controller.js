@@ -94,6 +94,24 @@ class UserController {
     }
   };
 
+  dailyMessage = async (req, res, next) => {
+    try {
+      const { userKey } = req.params;
+      const { userKey: loginUserKey } = res.locals.user;
+      if (loginUserKey == 0) {
+        return res.status(401).json({ message: "로그인이 필요한 기능입니다." });
+      }
+      const getDailyMessage = await this.userService.getDailymessage(
+        userKey,
+        loginUserKey
+      );
+
+      return res.status(200).json({ dailyMessage: getDailyMessage });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   mypage = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;

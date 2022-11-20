@@ -107,6 +107,17 @@ class UserService {
     };
   };
 
+  getDailymessage = async (userKey, loginUserKey) => {
+    console.log(userKey, loginUserKey);
+    // if (userKey !== loginUserKey)
+    //   throw new ErrorCustom(401, "잘못된 요청입니다");
+    await redisCli.hSet(`${userKey}`, {
+      isOpen: 1,
+    });
+    const dailyData = await redisCli.hGetAll(`${userKey}`);
+    return dailyData.msg;
+  };
+
   //마이페이지 데이터 가져오기
   mypage = async (userKey) => {
     /**익명 유저인경우 기본 데이터 전송 */
