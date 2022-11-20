@@ -39,6 +39,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
+      msgOpenCount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

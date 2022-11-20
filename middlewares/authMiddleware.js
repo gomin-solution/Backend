@@ -33,7 +33,7 @@ module.exports = async (req, res, next) => {
     }
 
     /**RefreshToken검증 */
-    const validateRefreshToken = async (refreshToken) => {
+    async function validateRefreshToken(refreshToken) {
       try {
         const decoded = jwt.decode(accessToken);
         const token = await redisCli.get(`${decoded.userId}`);
@@ -47,7 +47,7 @@ module.exports = async (req, res, next) => {
       } catch (error) {
         return false;
       }
-    };
+    }
 
     /**검증결과에 따라 true,false가 담김 (type: blooean)*/
     const isAccessTokenValidate = validateAccessToken(accessToken);

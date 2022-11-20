@@ -1,4 +1,5 @@
 const ChoiceRepository = require("../repositories/choice.repository");
+const schedule = require("node-schedule");
 
 class ChoiceService {
   choiceRepository = new ChoiceRepository();
@@ -11,7 +12,7 @@ class ChoiceService {
       choice2Name,
       endTime
     );
-
+    console.log(endTime);
     schedule.scheduleJob(endTime, async () => {
       await this.choiceRepository.updateEnd(createchoice.choiceId);
     });

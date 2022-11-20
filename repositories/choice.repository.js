@@ -19,7 +19,7 @@ class ChoiceRepository {
   };
 
   updateEnd = async (choiceId) => {
-    await Choice.update({ isEnd: false }, { where: { choiceId: choiceId } });
+    await Choice.update({ isEnd: true }, { where: { choiceId: choiceId } });
   };
 
   findAllchoice = async (userKey) => {
