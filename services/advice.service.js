@@ -22,7 +22,7 @@ class AdviceService {
   findAllAdvice = async (adviceSort) => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
-    return findAllAdvice.map((post) => {
+    const data = findAllAdvice.map((post) => {
       const date = dayjs(post.createdAt)
         .subtract(3, "h")
         .format("YYYY.MM.DD HH:mm");
@@ -41,15 +41,18 @@ class AdviceService {
         commentCount: post.Comments.length,
       };
     });
+
     if (adviceSort == "최신순") {
-      return data.sort((a,b) => b.createdAt - a.createdAt)
+      data.sort((a, b) => b.createdAt - a.createdAt);
     }
     if (adviceSort == "조회순") {
-      return data.sort((a,b) => b.viewCount - a.viewCount)
+      data.sort((a, b) => b.viewCount - a.viewCount);
     }
     if (adviceSort == "댓글순") {
-      return data.sort((a,b) => b.commentCount - a.commentCount)
+      data.sort((a, b) => b.commentCount - a.commentCount);
     }
+
+    return data;
   };
 
   // 조언 게시물 카테고리별 조회
@@ -76,15 +79,15 @@ class AdviceService {
       };
     });
     if (adviceSort == "최신순") {
-      data.sort((a,b) => b.createdAt - a.createdAt)
+      data.sort((a, b) => b.createdAt - a.createdAt);
     }
     if (adviceSort == "조회순") {
-      data.sort((a,b) => b.viewCount - a.viewCount)
+      data.sort((a, b) => b.viewCount - a.viewCount);
     }
     if (adviceSort == "댓글순") {
-      data.sort((a,b) => b.commentCount - a.commentCount)
+      data.sort((a, b) => b.commentCount - a.commentCount);
     }
-    return data
+    return data;
   };
 
   //  조언 게시물 상세페이지 조회
@@ -98,7 +101,6 @@ class AdviceService {
       return [post.dataValues.adviceImageId, post.adviceImage];
     });
 
-    
     const comment = findOneAdvice.Comments.map((comment) => {
       const isLike = comment.CommentLikes.filter(
         (like) => like.userKey === userKey
@@ -122,10 +124,10 @@ class AdviceService {
     // commentSort
     /*등록순, 좋아요순*/
     if (commentSort == "등록순") {
-      comment.sort((a,b) => b.createdAt - a.createdAt)
+      comment.sort((a, b) => b.createdAt - a.createdAt);
     }
     if (commentSort == "좋아요순") {
-      comment.sort((a,b) => b.likeCount - a.likeCount)
+      comment.sort((a, b) => b.likeCount - a.likeCount);
     }
 
     let boolean;
