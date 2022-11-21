@@ -125,7 +125,7 @@ class AdviceController {
       if (userKey !== findAdvice[0].userKey) {
         return res.status(400).json({ errorMessage: "권한이 없습니다." });
       }
-      
+
       const AdviceImageArray = [];
       const AdviceResizeImageArray = [];
       if (images) {
@@ -219,7 +219,7 @@ class AdviceController {
           "adviceimage/" + findDeleteImages[i].split("/")[4]
         );
         AdviceResizeDeleteImageArray.push(
-          "thumb/" + findDeleteImages[i].adviceImage.split("/")[4]
+          "thumb/" + findDeleteImages[i].split("/")[4]
         );
         const totalAdviceDeleteImageArray = findDeleteImagesArray.concat(AdviceResizeDeleteImageArray)
         console.log(totalAdviceDeleteImageArray);
