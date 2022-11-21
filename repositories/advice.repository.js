@@ -8,25 +8,23 @@ const {
 } = require("../models");
 const { Op } = require("sequelize");
 const AdviceReport = require("../schemas/adviceReport");
-const dayjs = require("dayjs");
-const timezone = require("dayjs/plugin/timezone");
-const utc = require("dayjs/plugin/utc");
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault("Asia/Seoul");
+// const dayjs = require("dayjs");
+// const timezone = require("dayjs/plugin/timezone");
+// const utc = require("dayjs/plugin/utc");
+// dayjs.extend(utc);
+// dayjs.extend(timezone);
+// dayjs.tz.setDefault("Asia/Seoul");
 
 class AdviceRepository {
   //조언 게시글 업로드
   createAdvice = async (userKey, title, categoryId, content) => {
-    const createdAt = dayjs().tz().format();
-    console.log(createdAt);
+    // const createdAt = dayjs().tz().format();
     const createAdvice = await Advice.create({
       userKey: userKey,
       title: title,
       categoryId: categoryId,
       content: content,
       viewCount: 0,
-      createdAt: createdAt,
     });
     return createAdvice;
   };
