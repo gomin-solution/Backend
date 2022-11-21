@@ -41,7 +41,7 @@ class AdviceService {
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         viewCount: post.viewCount,
-        //category: post.Category.name,
+        category: post.Category.name,
         commentCount: post.Comments.length,
       };
     });
