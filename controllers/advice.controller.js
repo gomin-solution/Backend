@@ -49,20 +49,23 @@ class AdviceController {
 
   //조언 게시글조회
   allAdvice = async (req, res, next) => {
-    const { categoryId, sortKeyword } = req.params;
+  
+    const { categoryId, adviceSort } = req.params;
+
     const { page } = req.query;
 
-    let arr = [];
-    let advice;
-    if (categoryId == 0) {
-      const allAdvice = await this.adviceService.findAllAdvice();
+    const allAdvice = await this.adviceService.findAllAdvice(adviceSort);
+    
+    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(categoryId, adviceSort);
 
-      advice = chunk(allAdvice, 10)[Number(page)];
+    let advice;
+    let arr = [];
+    if (categoryId == 0) {
+
+        advice = chunk(allAdvice, 10)[Number(page)];  
+
     } else {
-      const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
-        categoryId
-      );
-      advice = chunk(allCategoryAdvice, 10)[Number(page)];
+        advice = chunk(allCategoryAdvice, 10)[Number(page)];
     }
 
     function chunk(data = [], size = 1) {
@@ -70,7 +73,6 @@ class AdviceController {
       for (let i = 0; i < data.length; i += size) {
         arr.push(data.slice(i, i + size));
       }
-      console.log("함수", arr);
       return arr;
     }
 
@@ -78,7 +80,6 @@ class AdviceController {
       if (!advice) {
         advice = [];
       }
-
       //카테고리별 조회
       return res.status(200).json({ advice });
     } catch (err) {
@@ -87,17 +88,20 @@ class AdviceController {
   };
 
   //상세페이지 조회
+  /*등록순, 좋아요순*/
   findOneAdvice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      const { adviceId } = req.params;
+      const { adviceId, commentSort } = req.params;
       const findAdvice = await this.adviceService.findOneAdvice(
         userKey,
-        adviceId
+        adviceId,
+        commentSort
       );
+      //console.log(findAdvice.comment)
 
       await this.adviceService.upCountView(adviceId, userKey);
-      res.status(200).json({ data: findAdvice });
+      res.status(200).json({ findAdvice });
     } catch (err) {
       next(err);
     }

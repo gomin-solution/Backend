@@ -22,7 +22,7 @@ class ChoiceService {
     return createchoice;
   };
 
-  findAllchoice = async (userKey) => {
+  findAllchoice = async (userKey, sort) => {
     try {
       console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       const findAllChoice = await this.choiceRepository.findAllchoice(userKey);
@@ -34,6 +34,11 @@ class ChoiceService {
       //로그인 한 사람은 그 게시글에 북마크를 했는지 표시한다.
       //로그인 한 사람은 그 게시글에 투표를 했는지 표시한다.
       //해당 choice의 작성자의 프로필 사진을 가져온다.
+
+      //============================================================================
+      //가져온 sort의 값이 최신순, 참여순, 마감순에 따라
+      //정렬을 할 수 있어야 한다.
+
       const allChoice = findAllChoice.map((choice) => {
         let isBookMark;
         let isChoice;
@@ -62,13 +67,17 @@ class ChoiceService {
         };
       });
 
-      allChoice.sort(function (a, b) {
-        a.isEnd ? 1 : -1;
+      //참여순
+      if (sort === "참여순") {
+        const parti = allChoice.sort((a, b) => b.choiceCount - a.choiceCount);
+        return parti;
+      } else if (sort === "마감순") {
+        //마감순
+        const deadline = allChoice.sort((a, b) => a.endTime - b.endTime);
+        const deadline_1 = deadline.sort((a, b) => a.isEnd - b.isEnd);
 
-        // 스코어 오름차순 정렬된 상태에서 우선순위별로 오름차순 정렬
-        if (a.endTime > b.endTime) return 1;
-        if (a.endTime < b.endTime) return -1;
-      });
+        return deadline_1;
+      }
 
       // let data = new Array();
       // for (let i = 0; i < findAllChoice.length; i++) {
@@ -200,6 +209,11 @@ class ChoiceService {
         count,
       };
     }
+  };
+
+  early = async (choiceId, userKey) => {
+    const early = await this.choiceRepository.early(choiceId, userKey);
+    return early;
   };
 }
 
