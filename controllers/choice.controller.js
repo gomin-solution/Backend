@@ -35,8 +35,7 @@ class ChoiceController {
     try {
       const { userKey } = res.locals.user;
       const { page } = req.query;
-      const allchoice = await this.choiceService.findAllchoice(userKey);
-
+      const allchoice = await this.choiceService.findAllchoice(userKey, sort);
       const low = page * 10;
       const high = low + 9;
 

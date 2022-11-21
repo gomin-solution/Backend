@@ -10,7 +10,7 @@ const choiceController = new ChoiceController();
 router.post("/choice", authMiddleware, choiceController.createchoice);
 
 //모든 투표 게시글 가져오기
-router.get("/choice/:sortKeyword", authMiddleware, choiceController.allchoice);
+router.get("/choice", authMiddleware, choiceController.allchoice);
 
 //투표 선택
 router.put("/choice/:choiceId", authMiddleware, choiceController.choice);
