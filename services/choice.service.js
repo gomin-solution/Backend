@@ -71,11 +71,6 @@ class ChoiceService {
       } else if (sort === "마감순") {
         //마감순
         const deadline = allChoice.sort((a, b) => a.endTime - b.endTime);
-
-        // const today = new Date();
-        // const notEnd = deadline.filter((a) => a.endTime > today);
-        // const end = deadline.filter((a) => a.endTime <= today);
-
         const deadline_1 = deadline.sort((a, b) => a.isEnd - b.isEnd);
 
         return deadline_1;
