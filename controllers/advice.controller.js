@@ -51,13 +51,13 @@ class AdviceController {
 
   //조언 게시글조회
   allAdvice = async (req, res, next) => {
-    const { categoryId, adviceSort } = req.params;
+    const { categoryId, sort } = req.params;
     const { page } = req.query;
 
-    const allAdvice = await this.adviceService.findAllAdvice(adviceSort);
+    const allAdvice = await this.adviceService.findAllAdvice(sort);
     const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
       categoryId,
-      adviceSort
+      sort
     );
 
     let advice;
