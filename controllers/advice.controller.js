@@ -17,6 +17,7 @@ class AdviceController {
 
     const { title, categoryId, content } = req.body;
     const images = req.files;
+    // console.log(images, "pppppppppppppp")
 
     try {
       const creatAdvice = await this.adviceService.createAdvice(
@@ -26,16 +27,17 @@ class AdviceController {
         content
       );
 
-      // 조언 게시물 이미지 업로드
-      let imageUrl = [];
-
       if (images) {
         const adviceId = creatAdvice.adviceId;
-        const values = Object.values({ images });
-        for (let i = 0; i < values[0].length; i++) {
-          imageUrl.push(values[0][i].transforms[0].location);
+        const imageUrl = images.map((url) => url.location);
+        const resizeUrl = [];
+        for (let i = 0; i < images.length; i++) {
+          resizeUrl.push(
+            images[i].location.replace(/\/adviceimage\//, "/thumb/")
+          );
         }
-        await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
+
+        await this.adviceImageService.createAdviceImage(adviceId, imageUrl, resizeUrl);
       }
 
       res.status(200).json({
@@ -53,14 +55,17 @@ class AdviceController {
     const { page } = req.query;
 
     const allAdvice = await this.adviceService.findAllAdvice(adviceSort);
-    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(categoryId, adviceSort);
+    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
+      categoryId,
+      adviceSort
+    );
 
     let advice;
     let arr = [];
     if (categoryId == 0) {
-        advice = chunk(allAdvice, 10)[Number(page)];  
+      advice = chunk(allAdvice, 10)[Number(page)];
     } else {
-        advice = chunk(allCategoryAdvice, 10)[Number(page)];
+      advice = chunk(allCategoryAdvice, 10)[Number(page)];
     }
 
     function chunk(data = [], size = 1) {

@@ -12,9 +12,9 @@ module.exports = {
     // await queryInterface.createTable("Category", {
     //   Id: Sequelize.INTEGER,
     // });
-    return queryInterface.addColumn("Users", "msgOpenCount", {
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
+    return queryInterface.addColumn("AdviceImages", "resizeImage", {
+      type: Sequelize.STRING,
+      allowNull: true,
     });
   },
 
@@ -26,6 +26,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     // return await queryInterface.dropTable("Category");
-    // return queryInterface.removeColumn("Categories", "updatedAt");
+    //return queryInterface.removeColumn("AdviceImages", "resizeImageUrl");
   },
 };
