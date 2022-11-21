@@ -22,6 +22,7 @@ class ChoiceService {
 
   findAllchoice = async (userKey) => {
     try {
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       const findAllChoice = await this.choiceRepository.findAllchoice(userKey);
       //바로 위에서, 모든 choice데이터를 최신순으로 가져왔다.
       //이제 이 밑으로 해줘야 할 일은 다음과 같다.
@@ -57,6 +58,14 @@ class ChoiceService {
           isChoice: isChoice,
           isEnd: choice.isEnd,
         };
+      });
+
+      allChoice.sort(function (a, b) {
+        a.isEnd ? 1 : -1;
+
+        // 스코어 오름차순 정렬된 상태에서 우선순위별로 오름차순 정렬
+        if (a.endTime > b.endTime) return 1;
+        if (a.endTime < b.endTime) return -1;
       });
 
       // let data = new Array();
@@ -99,6 +108,8 @@ class ChoiceService {
       //     isChoice: Boolean(isChoice),
       //   };
       // }
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      console.log(allChoice);
       return allChoice;
     } catch (error) {
       console.log(error);
