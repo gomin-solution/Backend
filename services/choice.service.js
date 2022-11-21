@@ -67,10 +67,17 @@ class ChoiceService {
       });
 
       //참여순
+<<<<<<< Updated upstream
       if (sort === 1) {
         const parti = allChoice.sort((a, b) => b.choiceCount - a.choiceCount);
         return parti;
       } else if (sort === 2) {
+=======
+      if (sort === "1") {
+        const parti = allChoice.sort((a, b) => b.choiceCount - a.choiceCount);
+        return parti;
+      } else if (sort === "2") {
+>>>>>>> Stashed changes
         //마감순
         const deadline = allChoice.sort((a, b) => a.endTime - b.endTime);
         const deadline_1 = deadline.sort((a, b) => a.isEnd - b.isEnd);

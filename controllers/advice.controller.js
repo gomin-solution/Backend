@@ -31,13 +31,27 @@ class AdviceController {
         const adviceId = creatAdvice.adviceId;
         const imageUrl = images.map((url) => url.location);
         const resizeUrl = [];
+<<<<<<< Updated upstream
+=======
+        console.log(imageUrl);
+
+>>>>>>> Stashed changes
         for (let i = 0; i < images.length; i++) {
           resizeUrl.push(
             images[i].location.replace(/\/adviceimage\//, "/thumb/")
           );
         }
+<<<<<<< Updated upstream
 
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl, resizeUrl);
+=======
+        console.log(resizeUrl);
+        await this.adviceImageService.createAdviceImage(
+          adviceId,
+          imageUrl,
+          resizeUrl
+        );
+>>>>>>> Stashed changes
       }
 
       res.status(200).json({
@@ -59,7 +73,10 @@ class AdviceController {
       categoryId,
       sort
     );
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
     let advice;
     let arr = [];

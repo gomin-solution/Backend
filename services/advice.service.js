@@ -42,13 +42,13 @@ class AdviceService {
     });
 <<<<<<< HEAD
 
-    if (adviceSort == "recent") {
+    if (adviceSort == "0") {
       data.sort((a, b) => b.createdAt - a.createdAt);
     }
-    if (adviceSort == "조회순") {
+    if (adviceSort == "1") {
       data.sort((a, b) => b.viewCount - a.viewCount);
     }
-    if (adviceSort == "댓글순") {
+    if (adviceSort == "2") {
       data.sort((a, b) => b.commentCount - a.commentCount);
 =======
     if (sort == "최신순") {
@@ -88,14 +88,18 @@ class AdviceService {
         commentCount: post.Comments.length,
       };
     });
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     if (adviceSort == "recent") {
+=======
+    if (adviceSort == "0") {
+>>>>>>> Stashed changes
       data.sort((a, b) => b.createdAt - a.createdAt);
     }
-    if (adviceSort == "조회순") {
+    if (adviceSort == "1") {
       data.sort((a, b) => b.viewCount - a.viewCount);
     }
-    if (adviceSort == "댓글순") {
+    if (adviceSort == "2") {
       data.sort((a, b) => b.commentCount - a.commentCount);
 =======
     if (sort == "최신순") {
@@ -144,11 +148,15 @@ class AdviceService {
     });
     // sort
     /*등록순, 좋아요순*/
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     if (commentSort == "등록순") {
+=======
+    if (sort == "0") {
+>>>>>>> Stashed changes
       comment.sort((a, b) => b.createdAt - a.createdAt);
     }
-    if (commentSort == "좋아요순") {
+    if (sort == "1") {
       comment.sort((a, b) => b.likeCount - a.likeCount);
 =======
     if (sort == "등록순") {
