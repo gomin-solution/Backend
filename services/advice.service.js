@@ -19,14 +19,13 @@ class AdviceService {
   };
 
   // 조언 게시물 전체 조회
-  findAllAdvice = async (adviceSort) => {
+  findAllAdvice = async (sort) => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
-    return findAllAdvice.map((post) => {
+    const data = findAllAdvice.map((post) => {
       const date = dayjs(post.createdAt)
         .subtract(3, "h")
         .format("YYYY.MM.DD HH:mm");
-
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
@@ -41,19 +40,19 @@ class AdviceService {
         commentCount: post.Comments.length,
       };
     });
-    if (adviceSort == "최신순") {
+    if (sort == "최신순") {
       return data.sort((a,b) => b.createdAt - a.createdAt)
     }
-    if (adviceSort == "조회순") {
+    if (sort == "조회순") {
       return data.sort((a,b) => b.viewCount - a.viewCount)
     }
-    if (adviceSort == "댓글순") {
+    if (sort == "댓글순") {
       return data.sort((a,b) => b.commentCount - a.commentCount)
     }
   };
 
   // 조언 게시물 카테고리별 조회
-  findCategoryAdvice = async (categoryId, adviceSort) => {
+  findCategoryAdvice = async (categoryId, sort) => {
     const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
       categoryId
     );
@@ -75,27 +74,27 @@ class AdviceService {
         commentCount: post.Comments.length,
       };
     });
-    if (adviceSort == "최신순") {
+    if (sort == "최신순") {
       data.sort((a,b) => b.createdAt - a.createdAt)
     }
-    if (adviceSort == "조회순") {
+    if (sort == "조회순") {
       data.sort((a,b) => b.viewCount - a.viewCount)
     }
-    if (adviceSort == "댓글순") {
+    if (sort == "댓글순") {
       data.sort((a,b) => b.commentCount - a.commentCount)
     }
     return data
   };
 
   //  조언 게시물 상세페이지 조회
-  findOneAdvice = async (userKey, adviceId, commentSort) => {
+  findOneAdvice = async (userKey, adviceId, sort) => {
     const findOneAdvice = await this.adviceRepository.findOneAdvice(
       userKey,
       adviceId
     );
 
     const findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-      return [post.dataValues.adviceImageId, post.adviceImage];
+      return [post.dataValues.adviceImageId, post.resizeImage];
     });
 
     
@@ -119,12 +118,12 @@ class AdviceService {
         isLike: boolean,
       };
     });
-    // commentSort
+    // sort
     /*등록순, 좋아요순*/
-    if (commentSort == "등록순") {
+    if (sort == "등록순") {
       comment.sort((a,b) => b.createdAt - a.createdAt)
     }
-    if (commentSort == "좋아요순") {
+    if (sort == "좋아요순") {
       comment.sort((a,b) => b.likeCount - a.likeCount)
     }
 
