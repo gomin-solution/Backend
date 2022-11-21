@@ -42,7 +42,7 @@ class AdviceService {
       };
     });
 
-    if (adviceSort == "최신순") {
+    if (adviceSort == "recent") {
       data.sort((a, b) => b.createdAt - a.createdAt);
     }
     if (adviceSort == "조회순") {
@@ -78,7 +78,7 @@ class AdviceService {
         commentCount: post.Comments.length,
       };
     });
-    if (adviceSort == "최신순") {
+    if (adviceSort == "recent") {
       data.sort((a, b) => b.createdAt - a.createdAt);
     }
     if (adviceSort == "조회순") {
@@ -211,6 +211,7 @@ class AdviceService {
       };
     });
   };
+
   reportAdvice = async (userKey, adviceId) => {
     //작성자 확인
     let type = "advice";
