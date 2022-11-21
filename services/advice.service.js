@@ -55,6 +55,7 @@ class AdviceService {
       data.sort((a,b) => b.commentCount - a.commentCount)
     }
     return data
+
   };
 
   // 조언 게시물 카테고리별 조회
@@ -89,7 +90,7 @@ class AdviceService {
     if (filterId == "2") {
       data.sort((a,b) => b.commentCount - a.commentCount)
     }
-    return data
+    return data;
   };
 
   //  조언 게시물 상세페이지 조회
@@ -103,7 +104,6 @@ class AdviceService {
       return [post.dataValues.adviceImageId, post.resizeImage];
     });
 
-    
     const comment = findOneAdvice.Comments.map((comment) => {
       const isLike = comment.CommentLikes.filter(
         (like) => like.userKey === userKey
@@ -214,6 +214,7 @@ class AdviceService {
       };
     });
   };
+
   reportAdvice = async (userKey, adviceId) => {
     //작성자 확인
     let type = "advice";
