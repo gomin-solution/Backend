@@ -18,7 +18,8 @@ dayjs.tz.setDefault("Asia/Seoul");
 class AdviceRepository {
   //조언 게시글 업로드
   createAdvice = async (userKey, title, categoryId, content) => {
-    const createdAt = dayjs().tz();
+    const createdAt = dayjs().tz().format();
+    console.log(createdAt);
     const createAdvice = await Advice.create({
       userKey: userKey,
       title: title,

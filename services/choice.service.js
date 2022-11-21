@@ -20,13 +20,12 @@ class ChoiceService {
     return createchoice;
   };
 
-  findAllchoice = async (userKey, sort) => {
+  findAllchoice = async (userKey) => {
     try {
       const findAllChoice = await this.choiceRepository.findAllchoice(userKey);
       //바로 위에서, 모든 choice데이터를 최신순으로 가져왔다.
       //이제 이 밑으로 해줘야 할 일은 다음과 같다.
 
-      findAllChoice.sort((a, b) => a[sort] - b[sort]);
       //choiceper 값들을 횟수에서 비율로 바꾼다.
       //choiceCount 값을 추가한다.
       //로그인 한 사람은 그 게시글에 북마크를 했는지 표시한다.
