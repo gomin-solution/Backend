@@ -17,14 +17,16 @@ adviceRouter.post(
 
 //조언 게시글 조회
 adviceRouter.get(
-  "/category/:categoryId/:sortKeyword",
+  "/category/:categoryId/:adviceSort",
+  //"/category/:categoryId",
   authMiddleware,
   adviceController.allAdvice
 );
 
 //조언 게시글 상세조회
 adviceRouter.get(
-  "/:adviceId/:sortKeyword",
+  //"/:adviceId/:commentSort",
+  "/:adviceId",
   authMiddleware,
   adviceController.findOneAdvice
 );
