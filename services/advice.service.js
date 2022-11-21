@@ -32,6 +32,8 @@ class AdviceService {
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         viewCount: post.viewCount,
+        commentCount: post.Comments.length,
+
       };
     });
   };
@@ -44,14 +46,15 @@ class AdviceService {
     const data = findCategoryAdvice.map((post) => {
       return {
         adviceId: post.adviceId,
+        userKey: post.userKey,
         categoryId: post.categoryId,
         title: post.title,
         content: post.content,
         createdAt: post.createdAt,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
-
         viewCount: post.viewCount,
+        commentCount: post.Comments.length,
       };
     });
     return data;

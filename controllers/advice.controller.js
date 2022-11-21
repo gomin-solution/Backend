@@ -49,19 +49,42 @@ class AdviceController {
 
   //조언 게시글조회
   allAdvice = async (req, res, next) => {
-    const { categoryId } = req.params;
+    const { categoryId, adviceSort } = req.params;
     const { page } = req.query;
 
-    let arr = [];
+    const allAdvice = await this.adviceService.findAllAdvice();
+    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(categoryId);
+    
+    //const findAdviceView = allAdvice.sort((a, b) => b.viewCount - a.viewCount);
+    //const findAdviceLiked = allAdvice.sort((a,b) => )
+    //console.log(findAdviceNewest, "lllllllllllllllll");
+    //console.log(findAdviceView, "kkkkkkkkkkkkkkkkkkk");
+
     let advice;
+    let arr = [];    // 조회순, 댓글순
+
     if (categoryId == 0) {
-      const allAdvice = await this.adviceService.findAllAdvice();
-      advice = chunk(allAdvice, 10)[Number(page)];
+      if (adviceSort == "최신순") {
+        const allAdviceNewest = allAdvice.sort((a, b) => b.createdAt - a.createdAt);
+        advice = chunk(allAdviceNewest, 10)[Number(page)];
+      } else if(adviceSort == "조회순") {
+        const allAdviceView = allAdvice.sort((a, b) => b.viewCount - a.viewCount);
+        advice = chunk(allAdviceView, 10)[Number(page)];
+      } else if(adviceSort == "댓글순") {
+        const allAdviceComment = allAdvice.sort((a, b) => b.commentCount - a.commentCount);
+        advice = chunk(allAdviceComment, 10)[Number(page)];
+      }      
     } else {
-      const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
-        categoryId
-      );
-      advice = chunk(allCategoryAdvice, 10)[Number(page)];
+      if (adviceSort == "최신순") {
+        const categoryAdviceNewest = allCategoryAdvice.sort((a, b) => b.createdAt - a.createdAt);
+        advice = chunk(categoryAdviceNewest, 10)[Number(page)];
+      } else if(adviceSort == "조회순") {
+        const categoryAdviceView = allCategoryAdvice.sort((a, b) => b.viewCount - a.viewCount);
+        advice = chunk(categoryAdviceView, 10)[Number(page)];
+      } else if(adviceSort == "댓글순") {
+        const categoryAdviceComment = allCategoryAdvice.sort((a, b) => b.commentCount - a.commentCount);
+        advice = chunk(categoryAdviceComment, 10)[Number(page)];
+      }      
     }
 
     function chunk(data = [], size = 1) {
@@ -69,7 +92,7 @@ class AdviceController {
       for (let i = 0; i < data.length; i += size) {
         arr.push(data.slice(i, i + size));
       }
-      console.log("함수", arr);
+      //console.log("함수", arr);
       return arr;
     }
 
@@ -77,7 +100,6 @@ class AdviceController {
       if (!advice) {
         advice = [];
       }
-
       //카테고리별 조회
       return res.status(200).json({ advice });
     } catch (err) {
