@@ -24,6 +24,7 @@ module.exports = {
           model: "Choices",
           key: "choiceId",
         },
+        onDelete: "cascade",
       },
       choiceNum: {
         type: Sequelize.INTEGER,

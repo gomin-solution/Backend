@@ -10,7 +10,9 @@ const choiceController = new ChoiceController();
 router.post("/choice", authMiddleware, choiceController.createchoice);
 
 //모든 투표 게시글 가져오기
+
 router.get("/choice/:sort", authMiddleware, choiceController.allchoice);
+
 
 //투표 선택
 router.put("/choice/:choiceId", authMiddleware, choiceController.choice);
@@ -27,5 +29,7 @@ router.delete(
   authMiddleware,
   choiceController.deletechoice
 );
+
+// router.put("/choice/:choiceId", authMiddleware, choiceController.endChoice);
 
 module.exports = router;

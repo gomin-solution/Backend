@@ -8,16 +8,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-        this.belongsTo(models.User, {
-          foreignKey: "userKey",
-          targetKey: "userKey",
-        });
+      this.belongsTo(models.User, {
+        foreignKey: "userKey",
+        targetKey: "userKey",
+      });
 
-        this.belongsTo(models.Choice, {
-            foreignKey: "choiceId",
-            targetKey: "choiceId",
-        });
-
+      this.belongsTo(models.Choice, {
+        foreignKey: "choiceId",
+        targetKey: "choiceId",
+      });
     }
   }
   isChoice.init(
@@ -32,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-            model: "User",
-            key: "userKey",
+          model: "User",
+          key: "userKey",
         },
       },
       choiceId: {
@@ -43,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
           model: "Choice",
           key: "choiceId",
         },
+        onDelete: "cascade",
       },
       choiceNum: {
         type: DataTypes.INTEGER,

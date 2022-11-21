@@ -62,8 +62,8 @@ class ChoiceRepository {
     return data;
   };
 
-  deletechoice = async (userKey, choiceId) => {
-    return await Choice.destroy({ where: { choiceId, userKey } });
+  deletechoice = async (choiceId) => {
+    return await Choice.destroy({ where: { choiceId: choiceId } });
   };
 
   isChoiceForAll = async (userKey, choiceId) => {

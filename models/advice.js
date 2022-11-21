@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         targetKey: "userKey",
       });
+      this.belongsTo(models.Category, {
+        foreignKey: "categoryId",
+        targetKey: "categoryId",
+      });
       this.hasMany(models.AdviceImage, {
         foreignKey: "adviceId",
         sourceKey: "adviceId",
@@ -38,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "Users",
+          model: "User",
           key: "userKey",
         },
       },
@@ -49,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
       categoryId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+          model: "Category",
+          key: "categoryId",
+        },
       },
       content: {
         type: DataTypes.STRING,

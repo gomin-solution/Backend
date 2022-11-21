@@ -35,6 +35,7 @@ class ChoiceController {
     try {
       const { userKey } = res.locals.user;
       const { page } = req.query;
+
       const { sort } = req.params;
 
       const allchoice = await this.choiceService.findAllchoice(userKey, sort);
@@ -80,10 +81,7 @@ class ChoiceController {
       if (userKey == 0) {
         return res.status(400).send({ message: "권한이 없습니다." });
       }
-      const deletechoice = await this.choiceService.deletechoice(
-        userKey,
-        choiceId
-      );
+      const deletechoice = await this.choiceService.deletechoice(choiceId);
 
       let msg;
       if (deletechoice) {

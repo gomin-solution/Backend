@@ -13,7 +13,9 @@ class ChoiceService {
       endTime
     );
     console.log(endTime);
-    schedule.scheduleJob(endTime, async () => {
+    const date = new Date(`${endTime}`);
+    schedule.scheduleJob(date, async () => {
+      console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
     });
 
@@ -22,6 +24,7 @@ class ChoiceService {
 
   findAllchoice = async (userKey, sort) => {
     try {
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       const findAllChoice = await this.choiceRepository.findAllchoice(userKey);
       //바로 위에서, 모든 choice데이터를 최신순으로 가져왔다.
       //이제 이 밑으로 해줘야 할 일은 다음과 같다.
@@ -116,6 +119,8 @@ class ChoiceService {
       //     isChoice: Boolean(isChoice),
       //   };
       // }
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      console.log(allChoice);
       return allChoice;
     } catch (error) {
       console.log(error);
@@ -166,11 +171,8 @@ class ChoiceService {
     }
   };
 
-  deletechoice = async (userKey, choiceId) => {
-    const deletechoice = await this.choiceRepository.deletechoice(
-      userKey,
-      choiceId
-    );
+  deletechoice = async (choiceId) => {
+    const deletechoice = await this.choiceRepository.deletechoice(choiceId);
     return deletechoice;
   };
 

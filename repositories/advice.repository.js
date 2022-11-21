@@ -5,13 +5,21 @@ const {
   AdviceImage,
   Comment,
   CommentLike,
+  Category,
 } = require("../models");
 const { Op } = require("sequelize");
 const AdviceReport = require("../schemas/adviceReport");
+// const dayjs = require("dayjs");
+// const timezone = require("dayjs/plugin/timezone");
+// const utc = require("dayjs/plugin/utc");
+// dayjs.extend(utc);
+// dayjs.extend(timezone);
+// dayjs.tz.setDefault("Asia/Seoul");
 
 class AdviceRepository {
   //조언 게시글 업로드
   createAdvice = async (userKey, title, categoryId, content) => {
+    // const createdAt = dayjs().tz().format();
     const createAdvice = await Advice.create({
       userKey: userKey,
       title: title,
@@ -25,7 +33,7 @@ class AdviceRepository {
   // 조언 게시물(메인페이지 용)
   getAdvice = async () => {
     const getAdvice = await Advice.findAll({
-      include: [{ model: Comment }],
+      include: [{ model: Comment }, { model: Category }],
     });
     return getAdvice;
   };
@@ -48,10 +56,12 @@ class AdviceRepository {
     const findAllAdvice = await Advice.findAll({ // 오름차순: ASC, 내림차순 : DESC
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
+        { model: Category },
         {
           model: Comment,
           include: [{ model: CommentLike }, { model: User }],
         },
+
         //{ model: AdviceBM, where: { userKey: userKey }}, // 북마크를 받아와야하면 쓰자
       ],
     });
@@ -64,6 +74,7 @@ class AdviceRepository {
       where: { categoryId: categoryId },
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
+        { model: Category },
         {
           model: Comment,
           include: [{ model: CommentLike }, { model: User }],
@@ -86,6 +97,7 @@ class AdviceRepository {
           model: Comment,
           include: [{ model: CommentLike }, { model: User }],
         },
+        { model: Category },
       ],
     });
     return AdviceOne;
@@ -145,10 +157,14 @@ class AdviceRepository {
     const date = new Date();
     const adviceReportId = date.valueOf();
     const reportAdvice = await AdviceReport.create({
-      adviceReportId, reporterId, suspectId, targetId, targetName
+      adviceReportId,
+      reporterId,
+      suspectId,
+      targetId,
+      targetName,
     });
     return reportAdvice;
-  }
+  };
 }
 
 module.exports = AdviceRepository;
