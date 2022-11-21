@@ -25,4 +25,6 @@ router.delete(
   choiceController.deletechoice
 );
 
+// router.put("/choice/:choiceId", authMiddleware, choiceController.endChoice);
+
 module.exports = router;

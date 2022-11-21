@@ -55,6 +55,7 @@ class ChoiceService {
           choiceCount: choice.choiceCount,
           isBookMark: isBookMark,
           isChoice: isChoice,
+          isEnd: choice.isEnd,
         };
       });
 
@@ -148,11 +149,8 @@ class ChoiceService {
     }
   };
 
-  deletechoice = async (userKey, choiceId) => {
-    const deletechoice = await this.choiceRepository.deletechoice(
-      userKey,
-      choiceId
-    );
+  deletechoice = async (choiceId) => {
+    const deletechoice = await this.choiceRepository.deletechoice(choiceId);
     return deletechoice;
   };
 

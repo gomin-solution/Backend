@@ -77,10 +77,7 @@ class ChoiceController {
       if (userKey == 0) {
         return res.status(400).send({ message: "권한이 없습니다." });
       }
-      const deletechoice = await this.choiceService.deletechoice(
-        userKey,
-        choiceId
-      );
+      const deletechoice = await this.choiceService.deletechoice(choiceId);
 
       let msg;
       if (deletechoice) {
