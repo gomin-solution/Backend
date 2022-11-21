@@ -41,7 +41,6 @@ class UserService {
       msg: msg,
       isOpen: 0,
     });
-    console.log(await redisCli.hGetAll(`${createUser.userKey}`));
     return;
   };
 
@@ -86,7 +85,7 @@ class UserService {
   //메인페이지 데이터 가공해서 보내주기
   mainPage = async (userKey) => {
     const getAdvice = await this.adviceRepository.getAdvice();
-    const msg = await redisCli.get(`${userKey}`);
+    const dailyData = await redisCli.hGet(`${userKey}`);
 
     const adviceData = getAdvice.map((post) => {
       return {
@@ -103,7 +102,7 @@ class UserService {
     return {
       advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],
       totalCount: totalCount,
-      dailyMsg: msg,
+      isOpen: dailyData.isOpen,
     };
   };
 
