@@ -19,14 +19,13 @@ class AdviceService {
   };
 
   // 조언 게시물 전체 조회
-  findAllAdvice = async (adviceSort) => {
+  findAllAdvice = async (sort) => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
     const data = findAllAdvice.map((post) => {
       const date = dayjs(post.createdAt)
         .subtract(3, "h")
         .format("YYYY.MM.DD HH:mm");
-
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
@@ -41,6 +40,7 @@ class AdviceService {
         commentCount: post.Comments.length,
       };
     });
+<<<<<<< HEAD
 
     if (adviceSort == "recent") {
       data.sort((a, b) => b.createdAt - a.createdAt);
@@ -50,13 +50,23 @@ class AdviceService {
     }
     if (adviceSort == "댓글순") {
       data.sort((a, b) => b.commentCount - a.commentCount);
+=======
+    if (sort == "최신순") {
+      return data.sort((a,b) => b.createdAt - a.createdAt)
+    }
+    if (sort == "조회순") {
+      return data.sort((a,b) => b.viewCount - a.viewCount)
+    }
+    if (sort == "댓글순") {
+      return data.sort((a,b) => b.commentCount - a.commentCount)
+>>>>>>> 329dd00432db951620b35c5fab438a81c1969a94
     }
 
     return data;
   };
 
   // 조언 게시물 카테고리별 조회
-  findCategoryAdvice = async (categoryId, adviceSort) => {
+  findCategoryAdvice = async (categoryId, sort) => {
     const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
       categoryId
     );
@@ -78,6 +88,7 @@ class AdviceService {
         commentCount: post.Comments.length,
       };
     });
+<<<<<<< HEAD
     if (adviceSort == "recent") {
       data.sort((a, b) => b.createdAt - a.createdAt);
     }
@@ -86,19 +97,29 @@ class AdviceService {
     }
     if (adviceSort == "댓글순") {
       data.sort((a, b) => b.commentCount - a.commentCount);
+=======
+    if (sort == "최신순") {
+      data.sort((a,b) => b.createdAt - a.createdAt)
+    }
+    if (sort == "조회순") {
+      data.sort((a,b) => b.viewCount - a.viewCount)
+    }
+    if (sort == "댓글순") {
+      data.sort((a,b) => b.commentCount - a.commentCount)
+>>>>>>> 329dd00432db951620b35c5fab438a81c1969a94
     }
     return data;
   };
 
   //  조언 게시물 상세페이지 조회
-  findOneAdvice = async (userKey, adviceId, commentSort) => {
+  findOneAdvice = async (userKey, adviceId, sort) => {
     const findOneAdvice = await this.adviceRepository.findOneAdvice(
       userKey,
       adviceId
     );
 
     const findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-      return [post.dataValues.adviceImageId, post.adviceImage];
+      return [post.dataValues.adviceImageId, post.resizeImage];
     });
 
     const comment = findOneAdvice.Comments.map((comment) => {
@@ -121,13 +142,21 @@ class AdviceService {
         isLike: boolean,
       };
     });
-    // commentSort
+    // sort
     /*등록순, 좋아요순*/
+<<<<<<< HEAD
     if (commentSort == "등록순") {
       comment.sort((a, b) => b.createdAt - a.createdAt);
     }
     if (commentSort == "좋아요순") {
       comment.sort((a, b) => b.likeCount - a.likeCount);
+=======
+    if (sort == "등록순") {
+      comment.sort((a,b) => b.createdAt - a.createdAt)
+    }
+    if (sort == "좋아요순") {
+      comment.sort((a,b) => b.likeCount - a.likeCount)
+>>>>>>> 329dd00432db951620b35c5fab438a81c1969a94
     }
 
     let boolean;

@@ -13,9 +13,10 @@ module.exports = {
     // await queryInterface.createTable("Category", {
     //   Id: Sequelize.INTEGER,
     // });
-    return queryInterface.addColumn("Users", "msgOpenCount", {
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
+
+    return queryInterface.addColumn("AdviceImages", "resizeImage", {
+      type: Sequelize.STRING,
+      allowNull: true,
 
     });
     // return queryInterface.changeColumn("isChoices", "choiceId", {

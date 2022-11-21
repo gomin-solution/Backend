@@ -6,9 +6,9 @@ class AdviceImageService {
   userRepository = new UserRepository();
 
   // 조언 게시물 이미지 생성
-  createAdviceImage = async (adviceId, imageUrl) => {
+  createAdviceImage = async (adviceId, imageUrl, resizeUrl) => {
     const createAdviceImageData =
-      await this.adviceImageRepository.createAdviceImage(adviceId, imageUrl);
+      await this.adviceImageRepository.createAdviceImage(adviceId, imageUrl, resizeUrl);
     return createAdviceImageData;
   };
 
