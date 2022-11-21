@@ -40,6 +40,17 @@ class AdviceService {
         commentCount: post.Comments.length,
       };
     });
+<<<<<<< HEAD
+
+    if (adviceSort == "recent") {
+      data.sort((a, b) => b.createdAt - a.createdAt);
+    }
+    if (adviceSort == "조회순") {
+      data.sort((a, b) => b.viewCount - a.viewCount);
+    }
+    if (adviceSort == "댓글순") {
+      data.sort((a, b) => b.commentCount - a.commentCount);
+=======
     if (sort == "최신순") {
       return data.sort((a,b) => b.createdAt - a.createdAt)
     }
@@ -48,7 +59,10 @@ class AdviceService {
     }
     if (sort == "댓글순") {
       return data.sort((a,b) => b.commentCount - a.commentCount)
+>>>>>>> 329dd00432db951620b35c5fab438a81c1969a94
     }
+
+    return data;
   };
 
   // 조언 게시물 카테고리별 조회
@@ -74,6 +88,16 @@ class AdviceService {
         commentCount: post.Comments.length,
       };
     });
+<<<<<<< HEAD
+    if (adviceSort == "recent") {
+      data.sort((a, b) => b.createdAt - a.createdAt);
+    }
+    if (adviceSort == "조회순") {
+      data.sort((a, b) => b.viewCount - a.viewCount);
+    }
+    if (adviceSort == "댓글순") {
+      data.sort((a, b) => b.commentCount - a.commentCount);
+=======
     if (sort == "최신순") {
       data.sort((a,b) => b.createdAt - a.createdAt)
     }
@@ -82,8 +106,9 @@ class AdviceService {
     }
     if (sort == "댓글순") {
       data.sort((a,b) => b.commentCount - a.commentCount)
+>>>>>>> 329dd00432db951620b35c5fab438a81c1969a94
     }
-    return data
+    return data;
   };
 
   //  조언 게시물 상세페이지 조회
@@ -97,7 +122,6 @@ class AdviceService {
       return [post.dataValues.adviceImageId, post.resizeImage];
     });
 
-    
     const comment = findOneAdvice.Comments.map((comment) => {
       const isLike = comment.CommentLikes.filter(
         (like) => like.userKey === userKey
@@ -120,11 +144,19 @@ class AdviceService {
     });
     // sort
     /*등록순, 좋아요순*/
+<<<<<<< HEAD
+    if (commentSort == "등록순") {
+      comment.sort((a, b) => b.createdAt - a.createdAt);
+    }
+    if (commentSort == "좋아요순") {
+      comment.sort((a, b) => b.likeCount - a.likeCount);
+=======
     if (sort == "등록순") {
       comment.sort((a,b) => b.createdAt - a.createdAt)
     }
     if (sort == "좋아요순") {
       comment.sort((a,b) => b.likeCount - a.likeCount)
+>>>>>>> 329dd00432db951620b35c5fab438a81c1969a94
     }
 
     let boolean;
@@ -208,6 +240,7 @@ class AdviceService {
       };
     });
   };
+
   reportAdvice = async (userKey, adviceId) => {
     //작성자 확인
     let type = "advice";
