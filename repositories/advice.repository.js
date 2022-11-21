@@ -33,7 +33,7 @@ class AdviceRepository {
   // 조언 게시물(메인페이지 용)
   getAdvice = async () => {
     const getAdvice = await Advice.findAll({
-      include: [{ model: Comment }],
+      include: [{ model: Comment }, { model: Category }],
     });
     return getAdvice;
   };

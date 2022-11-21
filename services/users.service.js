@@ -91,7 +91,7 @@ class UserService {
     const adviceData = getAdvice.map((post) => {
       return {
         adviceId: post.adviceId,
-        categoryId: post.categoryId,
+        category: post.Category.name,
         title: post.title,
       };
     });
