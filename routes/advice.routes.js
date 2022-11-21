@@ -17,17 +17,13 @@ adviceRouter.post(
 
 //조언 게시글 조회
 adviceRouter.get(
-  "/category/:categoryId/:sortKeyword",
+  "/category/:categoryId",
   authMiddleware,
   adviceController.allAdvice
 );
 
 //조언 게시글 상세조회
-adviceRouter.get(
-  "/:adviceId/:sortKeyword",
-  authMiddleware,
-  adviceController.findOneAdvice
-);
+adviceRouter.get("/:adviceId", authMiddleware, adviceController.findOneAdvice);
 
 //내가 쓴 조언글 조회
 adviceRouter.get("/mypage/advice", authMiddleware, adviceController.myadvice);
