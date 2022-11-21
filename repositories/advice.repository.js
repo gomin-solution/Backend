@@ -51,6 +51,11 @@ class AdviceRepository {
     return searchResult;
   };
 
+  findAllAdviceOne = async(adviceId) => {
+    const findAllAdvice = await Advice.findAll({where: { adviceId: adviceId }})
+    return findAllAdvice
+  }
+
   // 조언 게시물 전체 조회
   findAllAdvice = async () => {
     const findAllAdvice = await Advice.findAll({ // 오름차순: ASC, 내림차순 : DESC
