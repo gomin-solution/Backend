@@ -35,8 +35,13 @@ class UserService {
     const DailyArray = await this.dailyMsgRepository.allMsg();
     const msgArray = DailyArray.map((x) => x.msg);
     const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
-
-    await redisCli.set(`${createUser.userKey}`, msg);
+    console.log(createUser.userKey);
+    console.log(msg);
+    await redisCli.hSet(`${createUser.userKey}`, {
+      msg: msg,
+      isOpen: 0,
+    });
+    return;
   };
 
   //유저 검증
@@ -58,8 +63,8 @@ class UserService {
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "1h",
     });
-
-    return { accessToken, refreshToken };
+    const nickname = user.nickname;
+    return { accessToken, refreshToken, nickname };
   };
 
   //닉네임 중복검사
@@ -80,73 +85,36 @@ class UserService {
   //메인페이지 데이터 가공해서 보내주기
   mainPage = async (userKey) => {
     const getAdvice = await this.adviceRepository.getAdvice();
-    const msg = await redisCli.get(`${userKey}`);
-    let adviceData = [];
-    getAdvice.forEach((post) => {
-      post.Comments.length < 2
-        ? adviceData.push({
-            adviceId: post.adviceId,
-            categoryId: post.categoryId,
-            title: post.title,
-            viewCount: post.viewCount,
-            commentCount: post.Comments.length,
-          })
-        : null;
+    const dailyData = await redisCli.hGet(`${userKey}`);
+
+    const adviceData = getAdvice.map((post) => {
+      return {
+        adviceId: post.adviceId,
+        categoryId: post.categoryId,
+        title: post.title,
+      };
     });
     adviceData.sort((a, b) => a.commentCount - b.commentCount);
-    const getChoice = await this.choiceRepository.findAllchoice();
+    const lowAdviceData = adviceData.slice(0, 10);
+    const getChoice = await this.choiceRepository.findUserChoice(userKey);
     const totalCount = getAdvice.length + getChoice.length;
-    const { nickname } = await this.userRepository.findUser(userKey);
+
     return {
-      advice: adviceData.slice(0, 5),
+      advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],
       totalCount: totalCount,
-      nickname: nickname,
-      dailyMsg: msg,
+      isOpen: dailyData.isOpen,
     };
-    // const getChoice = await this.choiceRepository.choiceHot(userKey);
+  };
 
-    // const choiceData = getChoice.map((post) => {
-    //   let boolean;
-    //   let isChoice;
-    //   let absolute_a = post.choice1Per;
-    //   let absolute_b = post.choice2Per;
-    //   let choice1Per;
-    //   let choice2Per;
-    //   if (absolute_a + absolute_b > 0) {
-    //     choice1Per = Math.round((absolute_a / (absolute_a + absolute_b)) * 100);
-    //     choice2Per = 100 - choice1Per;
-    //   }
-    //   post.isChoices.length ? (isChoice = true) : (isChoice = false);
-    //   post.ChoiceBMs.length ? (boolean = true) : (boolean = false);
-    //   return {
-    //     choiceId: post.choiceId,
-    //     title: post.title,
-    //     choice1Name: post.choice1Name,
-    //     choice2Name: post.choice2Name,
-    //     choice1Per: choice1Per,
-    //     choice2Per: choice2Per,
-    //     userImage: post.User.userImg,
-    //     nickname: post.User.nickname,
-    //     createdAt: post.createdAt,
-    //     endTime: post.endTime,
-    //     choiceCount: post.choiceCount,
-    //     isBookMark: boolean,
-    //     isChoice: isChoice,
-    //     userKey: post.userKey,
-    //   };
-    // });
-
-    // const adviceData = getAdvice.map((post) => {
-    //   return {
-    //     adviceId: post.adviceId,
-    //     title: post.title,
-    //     content: post.content,
-    //     createdAt: post.createdAt,
-    //     viewCount: post.viewCount,
-    //     commentCount: post.Comments.length,
-    //     userKey: post.userKey,
-    //   };
-    // });
+  getDailymessage = async (userKey, loginUserKey) => {
+    console.log(userKey, loginUserKey);
+    // if (userKey !== loginUserKey)
+    //   throw new ErrorCustom(401, "잘못된 요청입니다");
+    await redisCli.hSet(`${userKey}`, {
+      isOpen: 1,
+    });
+    const dailyData = await redisCli.hGetAll(`${userKey}`);
+    return dailyData.msg;
   };
 
   //마이페이지 데이터 가져오기

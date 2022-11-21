@@ -1,4 +1,5 @@
 const ChoiceRepository = require("../repositories/choice.repository");
+const schedule = require("node-schedule");
 
 class ChoiceService {
   choiceRepository = new ChoiceRepository();
@@ -11,12 +12,17 @@ class ChoiceService {
       choice2Name,
       endTime
     );
+    console.log(endTime);
+    schedule.scheduleJob(endTime, async () => {
+      await this.choiceRepository.updateEnd(createchoice.choiceId);
+    });
+
     return createchoice;
   };
 
-  findAllchoice = async (Key) => {
+  findAllchoice = async (userKey) => {
     try {
-      const findAllChoice = await this.choiceRepository.findAllchoice();
+      const findAllChoice = await this.choiceRepository.findAllchoice(userKey);
       //바로 위에서, 모든 choice데이터를 최신순으로 가져왔다.
       //이제 이 밑으로 해줘야 할 일은 다음과 같다.
 
@@ -25,51 +31,74 @@ class ChoiceService {
       //로그인 한 사람은 그 게시글에 북마크를 했는지 표시한다.
       //로그인 한 사람은 그 게시글에 투표를 했는지 표시한다.
       //해당 choice의 작성자의 프로필 사진을 가져온다.
-
-      const author = findAllChoice;
-      let data = new Array();
-
-      for (let i = 0; i < findAllChoice.length; i++) {
-        const allData = findAllChoice[i];
-        const authorKey = findAllChoice[i].userKey;
-
-        const findAuthorData = await this.choiceRepository.findUserData(
-          authorKey
-        );
-        const choiceIdforRepo = findAllChoice[i].choiceId;
-        const isChoice = await this.choiceRepository.isChoiceForAll(
-          Key,
-          choiceIdforRepo
-        );
-        const isBookMark = await this.choiceRepository.isBookMark(
-          Key,
-          choiceIdforRepo
-        );
-
-        const a = findAllChoice[i].choice1Per;
-        const b = findAllChoice[i].choice2Per;
+      const allChoice = findAllChoice.map((choice) => {
+        let isBookMark;
+        let isChoice;
+        choice.ChoiceBMs.length ? (isBookMark = true) : (isBookMark = false);
+        choice.isChoices.length ? (isChoice = true) : (isChoice = false);
+        const a = choice.choice1Per;
+        const b = choice.choice2Per;
         const sum = a + b;
         const res_a = (a / sum) * 100;
-        const res_b = (b / sum) * 100;
-
-        data[i] = {
-          choiceId: allData.choiceId,
-          userKey: allData.userKey,
-          title: allData.title,
-          choice1Name: allData.choice1Name,
-          choice2Name: allData.choice2Name,
+        return {
+          choiceId: choice.choiceId,
+          userKey: choice.userKey,
+          title: choice.title,
+          choice1Name: choice.choice1Name,
+          choice2Name: choice.choice2Name,
           choice1Per: Math.round(res_a),
           choice2Per: 100 - Math.round(res_a),
-          userImage: findAuthorData.userImg, //
-          nickname: findAuthorData.nickname, //
-          createdAt: allData.createdAt,
-          endTime: allData.endTime,
-          choiceCount: sum,
-          isBookMark: Boolean(isBookMark), //
-          isChoice: Boolean(isChoice), //
+          userImage: choice.User.userImg,
+          nickname: choice.User.nickname,
+          createdAt: choice.createdAt,
+          endTime: choice.endTime,
+          choiceCount: choice.choiceCount,
+          isBookMark: isBookMark,
+          isChoice: isChoice,
         };
-      }
-      return data;
+      });
+
+      // let data = new Array();
+      // for (let i = 0; i < findAllChoice.length; i++) {
+      //   const allData = findAllChoice[i];
+      //   const authorKey = findAllChoice[i].userKey;
+
+      //   const findAuthorData = await this.choiceRepository.findUserData(
+      //     authorKey
+      //   );
+      //   const choiceIdforRepo = findAllChoice[i].choiceId;
+      //   const isChoice = await this.choiceRepository.isChoiceForAll(
+      //     Key,
+      //     choiceIdforRepo
+      //   );
+      //   const isBookMark = await this.choiceRepository.isBookMark(
+      //     Key,
+      //     choiceIdforRepo
+      //   );
+
+      //   const a = findAllChoice[i].choice1Per;
+      //   const b = findAllChoice[i].choice2Per;
+      //   const sum = a + b;
+      //   const res_a = (a / sum) * 100;
+
+      //   data[i] = {
+      //     choiceId: allData.choiceId,
+      //     userKey: allData.userKey,
+      //     title: allData.title,
+      //     choice1Name: allData.choice1Name,
+      //     choice2Name: allData.choice2Name,
+      //     choice1Per: Math.round(res_a),
+      //     choice2Per: 100 - Math.round(res_a),
+      //     userImage: findAuthorData.userImg,
+      //     nickname: findAuthorData.nickname,
+      //     createdAt: allData.createdAt,
+      //     endTime: allData.endTime,
+      //     choiceCount: sum,
+      //     isBookMark: Boolean(isBookMark),
+      //     isChoice: Boolean(isChoice),
+      //   };
+      // }
+      return allChoice;
     } catch (error) {
       console.log(error);
     }
@@ -95,7 +124,6 @@ class ChoiceService {
         let absolute_b = findMychoice[i].choice2Per;
         let sum = absolute_a + absolute_b;
         let result_a = (absolute_a / sum) * 100;
-        let result_b = (absolute_b / sum) * 100;
 
         data[i] = {
           choiceId: findMychoice[i].choiceId,

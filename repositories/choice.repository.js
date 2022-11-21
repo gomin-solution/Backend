@@ -13,20 +13,30 @@ class ChoiceRepository {
       endTime,
       choice1Per: 0,
       choice2Per: 0,
+      isEnd: false,
     });
     return createData;
   };
 
-  findAllchoice = async () => {
+  updateEnd = async (choiceId) => {
+    await Choice.update({ isEnd: true }, { where: { choiceId: choiceId } });
+  };
+
+  findAllchoice = async (userKey) => {
     const findAllchoice = await Choice.findAll({
       order: [["createdAt", "DESC"]],
+      include: [
+        { model: User },
+        { model: isChoice, where: { userKey: userKey }, required: false },
+        { model: ChoiceBM, where: { userKey: userKey }, required: false },
+      ],
     });
     return findAllchoice;
   };
 
-  findOneData = async (i) => {
-    const findOnechoice = await Choice.findAll();
-    return findOnechoice[i];
+  findUserChoice = async (userKey) => {
+    const findOnechoice = await Choice.findAll({ where: { userKey: userKey } });
+    return findOnechoice;
   };
 
   findUserData = async (userKey) => {

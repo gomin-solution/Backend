@@ -18,7 +18,11 @@ module.exports = async () => {
     for (const item of allUser) {
       const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
       console.log(msg);
-      // await redisCli.set(`${item.userKey}`, { msg: msg, isOpen: false });
+      console.log(item.userKey);
+      await redisCli.hSet(`${item.userKey}`, {
+        msg: msg,
+        isOpen: 0,
+      });
     }
   });
 };

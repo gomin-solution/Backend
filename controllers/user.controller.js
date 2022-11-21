@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
 
 require("dotenv").config();
+
 const aws = require("aws-sdk");
 
 const redisCli = require("../util/redis");
@@ -38,10 +39,8 @@ class UserController {
       const { userId, password } = req.body;
       console.log(userId, password);
 
-      const { accessToken, refreshToken } = await this.userService.verifyUser(
-        userId,
-        password
-      );
+      const { accessToken, refreshToken, nickname } =
+        await this.userService.verifyUser(userId, password);
 
       //refreshtoken을 userId키로 redis에 저장
       await redisCli.set(userId, refreshToken);
@@ -51,7 +50,7 @@ class UserController {
 
       return res
         .status(200)
-        .json({ accessToken, refreshToken, message: "로그인 성공." });
+        .json({ accessToken, refreshToken, message: "로그인 성공.", nickname });
     } catch (error) {
       next(error);
     }
@@ -90,6 +89,24 @@ class UserController {
       const mainpage = await this.userService.mainPage(userKey);
 
       return res.status(200).json(mainpage);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  dailyMessage = async (req, res, next) => {
+    try {
+      const { userKey } = req.params;
+      const { userKey: loginUserKey } = res.locals.user;
+      if (loginUserKey == 0) {
+        return res.status(401).json({ message: "로그인이 필요한 기능입니다." });
+      }
+      const getDailyMessage = await this.userService.getDailymessage(
+        userKey,
+        loginUserKey
+      );
+
+      return res.status(200).json({ dailyMessage: getDailyMessage });
     } catch (error) {
       next(error);
     }
@@ -202,6 +219,7 @@ class UserController {
       if (!image && !nickname) {
         return res.status(200).json({ msg: "변경할 내용이 없습니다" });
       }
+
       res.status(200).json({ msg: "프로필 수정 완료!" });
     } catch (error) {
       next(error);

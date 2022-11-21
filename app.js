@@ -14,7 +14,7 @@ const app = express();
 const port = process.env.EXPRESS_PORT || 3000;
 
 connect();
-//schedule();
+schedule();
 
 app.use(
   cors({

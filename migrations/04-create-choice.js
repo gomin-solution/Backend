@@ -45,6 +45,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      isEnd: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -12,6 +12,9 @@ const adviceController = new AdviceController();
 //메인페이지
 router.get("/", authMiddleware, userController.mainPage);
 
+//메인페이지 메세지 열기
+router.put("/:userKey", authMiddleware, userController.dailyMessage);
+
 //회원가입
 router.post("/signup", LoginMiddleware, userController.signup);
 
@@ -46,7 +49,7 @@ router.get("/reword", authMiddleware, userController.reword);
 
 //조언 게시글 삭제
 router.delete(
-  "/mypage/advice/:adviceId",
+  "/advice/:adviceId",
   authMiddleware,
   adviceController.deleteAdvice
 );
