@@ -92,11 +92,11 @@ class AdviceController {
   findOneAdvice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      const { adviceId, commentSort } = req.params;
+      const { adviceId, sort } = req.params;
       const findAdvice = await this.adviceService.findOneAdvice(
         userKey,
         adviceId,
-        commentSort
+        sort
       );
       //console.log(findAdvice.comment)
 
