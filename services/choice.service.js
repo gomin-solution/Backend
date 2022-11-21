@@ -13,7 +13,9 @@ class ChoiceService {
       endTime
     );
     console.log(endTime);
-    schedule.scheduleJob(endTime, async () => {
+    const date = new Date(`${endTime}`);
+    schedule.scheduleJob(date, async () => {
+      console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
     });
 
