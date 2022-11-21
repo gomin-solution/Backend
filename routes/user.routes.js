@@ -13,7 +13,7 @@ const adviceController = new AdviceController();
 router.get("/", authMiddleware, userController.mainPage);
 
 //메인페이지 메세지 열기
-router.put("/:userKey", authMiddleware, userController.dailyMessage);
+router.get("/msg", authMiddleware, userController.dailyMessage);
 
 //회원가입
 router.post("/signup", LoginMiddleware, userController.signup);

@@ -85,12 +85,13 @@ class UserService {
   //메인페이지 데이터 가공해서 보내주기
   mainPage = async (userKey) => {
     const getAdvice = await this.adviceRepository.getAdvice();
-    const dailyData = await redisCli.hGet(`${userKey}`);
-
+    const dailyData = await redisCli.hGetAll(`${userKey}`);
+    let isOpen;
+    dailyData.isOpen == "0" ? (isOpen = false) : (isOpen = true);
     const adviceData = getAdvice.map((post) => {
       return {
         adviceId: post.adviceId,
-        categoryId: post.categoryId,
+        category: post.Category.name,
         title: post.title,
       };
     });
@@ -102,14 +103,12 @@ class UserService {
     return {
       advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],
       totalCount: totalCount,
-      isOpen: dailyData.isOpen,
+      isOpen: isOpen,
     };
   };
 
-  getDailymessage = async (userKey, loginUserKey) => {
-    console.log(userKey, loginUserKey);
-    // if (userKey !== loginUserKey)
-    //   throw new ErrorCustom(401, "잘못된 요청입니다");
+  getDailymessage = async (userKey) => {
+    console.log(userKey);
     await redisCli.hSet(`${userKey}`, {
       isOpen: 1,
     });

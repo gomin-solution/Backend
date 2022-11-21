@@ -62,8 +62,8 @@ class ChoiceRepository {
     return data;
   };
 
-  deletechoice = async (userKey, choiceId) => {
-    return await Choice.destroy({ where: { choiceId, userKey } });
+  deletechoice = async (choiceId) => {
+    return await Choice.destroy({ where: { choiceId: choiceId } });
   };
 
   isChoiceForAll = async (userKey, choiceId) => {
@@ -197,6 +197,42 @@ class ChoiceRepository {
       ],
     });
     return seachResult;
+  };
+
+  early = async (choiceId, userKey) => {
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = ("0" + (today.getMonth() + 1)).slice(-2);
+    const day = ("0" + today.getDate()).slice(-2);
+
+    const dateString = year + "-" + month + "-" + day;
+
+    const hours = ("0" + today.getHours()).slice(-2);
+    const minutes = ("0" + today.getMinutes()).slice(-2);
+    const seconds = ("0" + today.getSeconds()).slice(-2);
+
+    const timeString = hours + ":" + minutes + ":" + seconds;
+
+    const deadline = dateString + " " + timeString;
+
+    const findMyChoice = await Choice.findOne({
+      where: { choiceId: choiceId },
+    });
+
+    if (findMyChoice.userKey !== userKey) {
+      return true;
+    }
+
+    if (today > findMyChoice.endTime) {
+      return;
+    }
+
+    const early = await Choice.update(
+      { endTime: deadline },
+      { where: { choiceId: choiceId } }
+    );
+    return early;
   };
 }
 

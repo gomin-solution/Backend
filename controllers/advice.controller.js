@@ -60,6 +60,7 @@ class AdviceController {
       sort
     );
 
+
     let advice;
     let arr = [];
     if (categoryId == 0) {

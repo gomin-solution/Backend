@@ -1,6 +1,7 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const { ValidationError } = require("sequelize");
 const AdviceRepository = require("../repositories/advice.repository");
+const dayjs = require("dayjs");
 
 class AdviceService {
   adviceRepository = new AdviceRepository();
@@ -20,20 +21,23 @@ class AdviceService {
   // 조언 게시물 전체 조회
   findAllAdvice = async (sort) => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
-    console.log(sort)
+
     const data = findAllAdvice.map((post) => {
+      const date = dayjs(post.createdAt)
+        .subtract(3, "h")
+        .format("YYYY.MM.DD HH:mm");
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
         categoryId: post.categoryId,
         title: post.title,
         content: post.content,
-        createdAt: post.createdAt,
+        createdAt: date,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         viewCount: post.viewCount,
+        category: post.Category.name,
         commentCount: post.Comments.length,
-
       };
     });
     if (sort == "최신순") {
@@ -53,16 +57,20 @@ class AdviceService {
       categoryId
     );
     const data = findCategoryAdvice.map((post) => {
+      const date = dayjs(post.createdAt)
+        .subtract(3, "h")
+        .format("YYYY.MM.DD HH:mm");
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
         categoryId: post.categoryId,
         title: post.title,
         content: post.content,
-        createdAt: post.createdAt,
+        createdAt: date,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         viewCount: post.viewCount,
+        category: post.Category.name,
         commentCount: post.Comments.length,
       };
     });
@@ -96,6 +104,9 @@ class AdviceService {
       );
       let boolean;
       isLike.length ? (boolean = true) : (boolean = false);
+      const date = dayjs(comment.createdAt)
+        .subtract(3, "h")
+        .format("YYYY.MM.DD HH:mm");
       return {
         commentId: comment.commentId,
         userKey: comment.userKey,
@@ -103,7 +114,7 @@ class AdviceService {
         userImg: comment.User.userImg,
         comment: comment.comment,
         likeCount: comment.CommentLikes.length,
-        createdAt: comment.createdAt,
+        createdAt: date,
         isLike: boolean,
       };
     });
@@ -118,14 +129,21 @@ class AdviceService {
 
     let boolean;
     findOneAdvice.AdviceBMs.length ? (boolean = true) : (boolean = false);
+    const createdAt = dayjs(findOneAdvice.createdAt)
+      .subtract(3, "h")
+      .format("YYYY.MM.DD HH:mm");
+    const updatedAt = dayjs(findOneAdvice.updatedAt)
+      .subtract(3, "h")
+      .format("YYYY.MM.DD HH:mm");
     return {
       adviceId: findOneAdvice.adviceId,
       categoryId: findOneAdvice.categoryId,
+      category: findOneAdvice.Category.name,
       userKey: findOneAdvice.User.userKey,
       title: findOneAdvice.title,
       content: findOneAdvice.content,
-      createdAt: findOneAdvice.createdAt,
-      updatedAt: findOneAdvice.updatedAt,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
       userImage: findOneAdvice.User.userImg,
       nickname: findOneAdvice.User.nickname,
       adviceImage: findAdviceImageArray,
@@ -192,10 +210,10 @@ class AdviceService {
   };
   reportAdvice = async (userKey, adviceId) => {
     //작성자 확인
-    let type = "advice"
-    const writer = await this.adviceRepository.findAdvice(adviceId)
-    const writerHost = writer.userKey
-    console.log(writerHost)
+    let type = "advice";
+    const writer = await this.adviceRepository.findAdvice(adviceId);
+    const writerHost = writer.userKey;
+    console.log(writerHost);
 
     if (userKey === writerHost) {
       return;
@@ -208,7 +226,6 @@ class AdviceService {
     );
     return reportAdvice;
   };
-
 }
 
 module.exports = AdviceService;

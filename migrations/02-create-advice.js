@@ -24,6 +24,10 @@ module.exports = {
       categoryId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "Category",
+          key: "categoryId",
+        },
       },
       isAdult: {
         type: Sequelize.BOOLEAN,
