@@ -23,7 +23,9 @@ class AdviceService {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
     return findAllAdvice.map((post) => {
-      const date = dayjs(post.createdAt).format("YYYY.MM.DD HH:mm");
+      const date = dayjs(post.createdAt)
+        .subtract(3, "h")
+        .format("YYYY.MM.DD HH:mm");
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
@@ -45,12 +47,15 @@ class AdviceService {
       categoryId
     );
     const data = findCategoryAdvice.map((post) => {
+      const date = dayjs(post.createdAt)
+        .subtract(3, "h")
+        .format("YYYY.MM.DD HH:mm");
       return {
         adviceId: post.adviceId,
         categoryId: post.categoryId,
         title: post.title,
         content: post.content,
-        createdAt: post.createdAt,
+        createdAt: date,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         viewCount: post.viewCount,
@@ -77,7 +82,9 @@ class AdviceService {
       );
       let boolean;
       isLike.length ? (boolean = true) : (boolean = false);
-      const date = dayjs(comment.createdAt).format("YYYY.MM.DD HH:mm");
+      const date = dayjs(comment.createdAt)
+        .subtract(3, "h")
+        .format("YYYY.MM.DD HH:mm");
       return {
         commentId: comment.commentId,
         userKey: comment.userKey,
@@ -92,8 +99,12 @@ class AdviceService {
 
     let boolean;
     findOneAdvice.AdviceBMs.length ? (boolean = true) : (boolean = false);
-    const createdAt = dayjs(findOneAdvice.createdAt).format("YYYY.MM.DD HH:mm");
-    const updatedAt = dayjs(findOneAdvice.updatedAt).format("YYYY.MM.DD HH:mm");
+    const createdAt = dayjs(findOneAdvice.createdAt)
+      .subtract(3, "h")
+      .format("YYYY.MM.DD HH:mm");
+    const updatedAt = dayjs(findOneAdvice.updatedAt)
+      .subtract(3, "h")
+      .format("YYYY.MM.DD HH:mm");
     return {
       adviceId: findOneAdvice.adviceId,
       categoryId: findOneAdvice.categoryId,
