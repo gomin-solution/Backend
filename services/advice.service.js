@@ -34,6 +34,7 @@ class AdviceService {
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         viewCount: post.viewCount,
+        category: post.Category.name,
       };
     });
   };
@@ -52,8 +53,8 @@ class AdviceService {
         createdAt: post.createdAt,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
-
         viewCount: post.viewCount,
+        category: post.Category.name,
       };
     });
     return data;
@@ -96,6 +97,7 @@ class AdviceService {
     return {
       adviceId: findOneAdvice.adviceId,
       categoryId: findOneAdvice.categoryId,
+      category: findOneAdvice.Category.name,
       userKey: findOneAdvice.User.userKey,
       title: findOneAdvice.title,
       content: findOneAdvice.content,

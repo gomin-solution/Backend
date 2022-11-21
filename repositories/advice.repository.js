@@ -5,6 +5,7 @@ const {
   AdviceImage,
   Comment,
   CommentLike,
+  Category,
 } = require("../models");
 const { Op } = require("sequelize");
 const AdviceReport = require("../schemas/adviceReport");
@@ -56,6 +57,7 @@ class AdviceRepository {
       order: [["createdAt", "DESC"]], // 오름차순: ASC, 내림차순 : DESC
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
+        { model: Category },
         //{ model: AdviceBM, where: { userKey: userKey }}, // 북마크를 받아와야하면 쓰자
       ],
     });
@@ -68,6 +70,7 @@ class AdviceRepository {
       where: { categoryId: categoryId },
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
+        { model: Category },
         //{ model: AdviceBM, where: { userKey: userKey } }, // 북마크를 받아와야하면 쓰자
       ],
     });
@@ -86,6 +89,7 @@ class AdviceRepository {
           model: Comment,
           include: [{ model: CommentLike }, { model: User }],
         },
+        { model: Category },
       ],
     });
     return AdviceOne;
