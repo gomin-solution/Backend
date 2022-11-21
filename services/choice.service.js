@@ -24,7 +24,6 @@ class ChoiceService {
 
   findAllchoice = async (userKey, sort) => {
     try {
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       const findAllChoice = await this.choiceRepository.findAllchoice(userKey);
       //바로 위에서, 모든 choice데이터를 최신순으로 가져왔다.
       //이제 이 밑으로 해줘야 할 일은 다음과 같다.
@@ -68,10 +67,10 @@ class ChoiceService {
       });
 
       //참여순
-      if (sort === "참여순") {
+      if (sort === 1) {
         const parti = allChoice.sort((a, b) => b.choiceCount - a.choiceCount);
         return parti;
-      } else if (sort === "마감순") {
+      } else if (sort === 2) {
         //마감순
         const deadline = allChoice.sort((a, b) => a.endTime - b.endTime);
         const deadline_1 = deadline.sort((a, b) => a.isEnd - b.isEnd);
@@ -119,8 +118,6 @@ class ChoiceService {
       //     isChoice: Boolean(isChoice),
       //   };
       // }
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-      console.log(allChoice);
       return allChoice;
     } catch (error) {
       console.log(error);

@@ -31,6 +31,10 @@ class ChoiceController {
   };
 
   //모든 게시글 조회(1~10)//localhost:3000/choice/등록순?page=0
+  // params 값
+  //0: 최신순
+  //1: 참여자순
+  //2: 마감순
   allchoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
