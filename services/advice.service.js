@@ -107,7 +107,7 @@ class AdviceService {
     );
 
     const findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-      return [post.dataValues.adviceImageId, post.resizeImage];
+      return [post.dataValues.adviceImageId, post.adviceImage];
     });
 
     const comment = findOneAdvice.Comments.map((comment) => {
