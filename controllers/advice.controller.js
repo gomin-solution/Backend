@@ -30,7 +30,6 @@ class AdviceController {
         const adviceId = creatAdvice.adviceId;
         const imageUrl = images.map((url) => url.location);
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
-
       }
 
       res.status(200).json({

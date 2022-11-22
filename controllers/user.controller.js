@@ -100,9 +100,12 @@ class UserController {
       if (userKey == 0) {
         return res.status(401).json({ message: "로그인이 필요한 기능입니다." });
       }
-      const getDailyMessage = await this.userService.getDailymessage(userKey);
+      const getDailyData = await this.userService.getDailymessage(userKey);
 
-      return res.status(200).json({ dailyMessage: getDailyMessage });
+      console.log(getDailyData.isOpen);
+      if (!getDailyData.isOpen) await this.userService.messageCountUp(userKey);
+
+      return res.status(200).json({ dailyMessage: getDailyData.msg });
     } catch (error) {
       next(error);
     }
@@ -172,7 +175,7 @@ class UserController {
     const image = req.file;
     const { nickname } = req.body;
 
-    const findUser = await this.userService.mypage(userKey)
+    const findUser = await this.userService.mypage(userKey);
 
     try {
       //이미지 수정

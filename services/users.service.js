@@ -113,7 +113,12 @@ class UserService {
       isOpen: 1,
     });
     const dailyData = await redisCli.hGetAll(`${userKey}`);
-    return dailyData.msg;
+    return dailyData;
+  };
+
+  messageCountUp = async (userKey) => {
+    console.log("service", userKey);
+    return await this.userRepository.messageCountUp(userKey);
   };
 
   //마이페이지 데이터 가져오기
@@ -196,7 +201,7 @@ class UserService {
 
   uploadUserImage = async (imageUrl, resizeUrl, userKey) => {
     const foundData = await this.userRepository.findUser(userKey);
-    
+
     if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
 
     const uploadImagesData = await this.userRepository.uploadUserImage(
