@@ -18,7 +18,7 @@ const AdviceReport = require("../schemas/adviceReport");
 
 class AdviceRepository {
   //조언 게시글 업로드
-  createAdvice = async (userKey, title, categoryId, content) => {
+  createAdvice = async (userKey, title, categoryId, content, isAdult) => {
     // const createdAt = dayjs().tz().format();
     const createAdvice = await Advice.create({
       userKey: userKey,
@@ -26,6 +26,7 @@ class AdviceRepository {
       categoryId: categoryId,
       content: content,
       viewCount: 0,
+      isAdult: isAdult,
     });
     return createAdvice;
   };
@@ -51,10 +52,13 @@ class AdviceRepository {
     return searchResult;
   };
 
-  findAllAdviceOne = async(adviceId) => {
-    const findAllAdvice = await Advice.findAll({where: { adviceId: adviceId }})
-    return findAllAdvice
-  }
+  findAllAdviceOne = async (adviceId) => {
+    const findAllAdvice = await Advice.findOne({
+      where: { adviceId: adviceId },
+      include: { model: AdviceImage },
+    });
+    return findAllAdvice;
+  };
 
   // 조언 게시물 전체 조회
   findAllAdvice = async () => {

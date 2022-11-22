@@ -15,15 +15,16 @@ class AdviceController {
       return res.status(400).send({ message: "로그인이 필요합니다." });
     }
 
-    const { title, categoryId, content } = req.body;
+    const { title, categoryId, content, isAdult } = req.body;
     const images = req.files;
-
+    console.log(isAdult);
     try {
       const creatAdvice = await this.adviceService.createAdvice(
         userKey,
         title,
         categoryId,
-        content
+        content,
+        isAdult
       );
 
       if (images) {
@@ -114,7 +115,7 @@ class AdviceController {
     const findAdvice = await this.adviceService.findAllAdviceOne(adviceId);
 
     try {
-      if (userKey !== findAdvice[0].userKey) {
+      if (userKey !== findAdvice.userKey) {
         return res.status(400).json({ errorMessage: "권한이 없습니다." });
       }
 
@@ -124,11 +125,12 @@ class AdviceController {
       const AdviceImageArray = [];
       if (images) {
 
+      if (findAdvice.adviceImage) {
+
         for (let i = 0; i < findImageAdvice.length; i++) {
           AdviceImageArray.push(
             "adviceimage/" + findImageAdvice[i].split("/")[4]
           );
-
 
           try {
             const s3 = new aws.S3({
@@ -159,6 +161,7 @@ class AdviceController {
         const imageUrl = images.map((url) => url.location);
 
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
+
       }
 
       // 타이틀 수정

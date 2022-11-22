@@ -12,8 +12,9 @@ class ChoiceService {
   choiceRepository = new ChoiceRepository();
 
   createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
-    const date = dayjs(endTime).format("YYYY.MM.DD HH:mm");
-    console.log("dayjs로 변환", date);
+    const date = dayjs(endTime);
+    const scheduleDate = date.subtract(9, "hour").format();
+    console.log("scheduleDate", scheduleDate);
     const createchoice = await this.choiceRepository.createchoice(
       userKey,
       title,
@@ -21,10 +22,7 @@ class ChoiceService {
       choice2Name,
       date
     );
-    const rule = new schedule.RecurrenceRule();
-    rule.date = date;
-    rule.tz = "Asia/Seoul";
-    schedule.scheduleJob(rule, async () => {
+    schedule.scheduleJob(scheduleDate, async () => {
       console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
     });
@@ -52,7 +50,6 @@ class ChoiceService {
           .tz()
           .format("YYYY.MM.DD HH:mm");
         const endTime = dayjs(choice.endTime).format("YYYY.MM.DD HH:mm");
-        console.log(dayjs(endTime).valueOf());
         return {
           choiceId: choice.choiceId,
           userKey: choice.userKey,
