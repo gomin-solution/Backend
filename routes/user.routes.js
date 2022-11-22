@@ -31,7 +31,7 @@ router.post("/test", authMiddleware);
 router.put(
   "/mypage",
   authMiddleware,
-  uploaduser.array("image", 1),
+  uploaduser.single("image"),
   userController.profileUpdate
 );
 
@@ -49,7 +49,7 @@ router.get("/reword", authMiddleware, userController.reword);
 
 //조언 게시글 삭제
 router.delete(
-  "/advice/:adviceId",
+  "/mypage/advice/:adviceId",
   authMiddleware,
   adviceController.deleteAdvice
 );

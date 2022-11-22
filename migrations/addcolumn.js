@@ -12,10 +12,12 @@ module.exports = {
     // await queryInterface.createTable("Category", {
     //   Id: Sequelize.INTEGER,
     // });
+
     // return await queryInterface.addColumn("AdviceImages", "resizeImage", {
     //   type: Sequelize.STRING,
     //   allowNull: true,
     // });
+
     // return queryInterface.changeColumn("isChoices", "choiceId", {
     //   allowNull: false,
     //   type: Sequelize.INTEGER,

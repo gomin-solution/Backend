@@ -134,7 +134,7 @@ class UserService {
     const result = {
       userKey: userKey,
       nickname: user.nickname,
-      userImage: user.userImage,
+      userImage: user.resizeImg,
       totalAdviceComment: user.Comments.length,
       totalChoicePick: user.isChoices.length,
     };
@@ -194,18 +194,14 @@ class UserService {
     return { choice: choiceData, advice: adviceData };
   };
 
-  uploadUserImage = async (imageUrl, userKey) => {
+  uploadUserImage = async (imageUrl, resizeUrl, userKey) => {
     const foundData = await this.userRepository.findUser(userKey);
-    const userIdData = foundData.userKey;
-
-    console.log("유저:", userIdData, "잘 받아오나 보자");
+    
     if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
 
-    const uploadImage = imageUrl;
-    console.log(uploadImage, "아무거나");
-
     const uploadImagesData = await this.userRepository.uploadUserImage(
-      uploadImage,
+      imageUrl,
+      resizeUrl,
       userKey
     );
     return uploadImagesData;

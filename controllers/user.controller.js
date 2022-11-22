@@ -169,43 +169,44 @@ class UserController {
     if (userKey == 0) {
       return res.status(400).send({ message: "로그인이 필요합니다." });
     }
-    const image = req.files;
+    const image = req.file;
     const { nickname } = req.body;
-    const findUser = await this.userService.mypage(userKey);
 
-    if (userKey !== findUser.userKey) {
-      return res.status(400).json({ errorMessage: "권한이 없습니다." });
-    }
+    const findUser = await this.userService.mypage(userKey)
+
     try {
       //이미지 수정
       if (image) {
-        const findUserImage = findUser.userImage;
+        const findUserImage = findUser.userImage.split("/")[4];
         const findUserLastImage = `profileimage/${findUserImage}`;
+        const findUserLastResizeImage = `thumb/${findUserImage}`;
+        const userImageArray = [findUserLastImage, findUserLastResizeImage];
 
-        const s3 = new aws.S3({
-          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-          region: process.env.AWS_REGION,
-        });
+        for (let i = 0; i < userImageArray.length; i++) {
+          const s3 = new aws.S3({
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            region: process.env.AWS_REGION,
+          });
 
-        const params = {
-          Bucket: process.env.AWS_BUCKET_NAME,
-          Key: findUserLastImage,
-        };
+          const params = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: userImageArray[i],
+          };
 
-        s3.deleteObject(params, function (err, data) {
-          if (err) {
-            console.log(err, err.stack);
-          } else {
-            res.status(200);
-            next();
-          }
-        });
+          s3.deleteObject(params, function (err, data) {
+            if (err) {
+              console.log(err, err.stack);
+            } else {
+              res.status(200);
+              next();
+            }
+          });
+        }
 
-        const value = Object.values({ image });
-        const imageUrl = value[0][0].transforms[0].location;
-        await this.userService.uploadUserImage(imageUrl, userKey);
-        //console.log(imageUrl);
+        const imageUrl = image.location;
+        const resizeUrl = imageUrl.replace(/\/profileimage\//, "/thumb/");
+        await this.userService.uploadUserImage(imageUrl, resizeUrl, userKey);
       }
 
       if (nickname) {

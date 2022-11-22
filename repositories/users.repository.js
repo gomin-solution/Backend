@@ -22,6 +22,8 @@ class UserRepository {
       isAdult: isAdult,
       userImg:
         "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
+      resizeImg:
+        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
     });
   };
 
@@ -40,9 +42,9 @@ class UserRepository {
     return await User.findOne({ where: { userId: userId } });
   };
 
-  uploadUserImage = async (uploadedImage, userKey) => {
+  uploadUserImage = async (imageUrl, resizeUrl, userKey) => {
     const updateImageUrl = await User.update(
-      { userImg: uploadedImage },
+      { userImg: imageUrl, resizeImg: resizeUrl },
       { where: { userKey } }
     );
     return updateImageUrl;

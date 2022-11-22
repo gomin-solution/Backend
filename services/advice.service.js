@@ -23,8 +23,13 @@ class AdviceService {
     return createAdviceData;
   };
 
+  findAllAdviceOne = async (adviceId) => {
+    const findAllAdvice = await this.adviceRepository.findAllAdviceOne(adviceId);
+    return findAllAdvice
+  }
+
   // 조언 게시물 전체 조회
-  findAllAdvice = async (sort) => {
+  findAllAdvice = async (filterId) => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
     const data = findAllAdvice.map((post) => {
@@ -45,21 +50,21 @@ class AdviceService {
       };
     });
 
-    if (sort == "0") {
-      data.sort((a, b) => b.adviceId - a.adviceId);
+    if (filterId == "0") {
+      data.sort((a,b) => b.adviceId - a.adviceId)
     }
-    if (sort == "1") {
-      data.sort((a, b) => b.viewCount - a.viewCount);
+    if (filterId == "1") {
+      data.sort((a,b) => b.viewCount - a.viewCount)
     }
-    if (sort == "2") {
-      data.sort((a, b) => b.commentCount - a.commentCount);
+    if (filterId == "2") {
+      data.sort((a,b) => b.commentCount - a.commentCount)
     }
+    return data
 
-    return data;
   };
 
   // 조언 게시물 카테고리별 조회
-  findCategoryAdvice = async (categoryId, sort) => {
+  findCategoryAdvice = async (categoryId, filterId) => {
     const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
       categoryId
     );
@@ -81,20 +86,21 @@ class AdviceService {
       };
     });
 
-    if (sort == "0") {
-      data.sort((a, b) => b.createdAt - a.createdAt);
+    if (filterId == "0") {
+      data.sort((a,b) => b.adviceId - a.adviceId)
     }
-    if (sort == "1") {
-      data.sort((a, b) => b.viewCount - a.viewCount);
+    if (filterId == "1") {
+      data.sort((a,b) => b.viewCount - a.viewCount)
     }
-    if (sort == "2") {
-      data.sort((a, b) => b.commentCount - a.commentCount);
+    if (filterId == "2") {
+      data.sort((a,b) => b.commentCount - a.commentCount)
+
     }
     return data;
   };
 
   //  조언 게시물 상세페이지 조회
-  findOneAdvice = async (userKey, adviceId, sort) => {
+  findOneAdvice = async (userKey, adviceId, filterId) => {
     const findOneAdvice = await this.adviceRepository.findOneAdvice(
       userKey,
       adviceId
@@ -122,14 +128,14 @@ class AdviceService {
         isLike: boolean,
       };
     });
-    // sort
+    // filterId
     /*등록순, 좋아요순*/
 
-    if (sort == "0") {
-      comment.sort((a, b) => b.createdAt - a.createdAt);
+    if (filterId == "0") {
+      comment.sort((a,b) => b.commentId - a.commentId)
     }
-    if (sort == "1") {
-      comment.sort((a, b) => b.likeCount - a.likeCount);
+    if (filterId == "1") {
+      comment.sort((a,b) => b.likeCount - a.likeCount)
     }
 
     let boolean;
