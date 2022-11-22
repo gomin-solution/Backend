@@ -15,25 +15,22 @@ class AdviceController {
       return res.status(400).send({ message: "로그인이 필요합니다." });
     }
 
-    const { title, categoryId, content, isAdult } = req.body;
+    const { title, categoryId, content } = req.body;
     const images = req.files;
-    console.log(isAdult);
+
     try {
       const creatAdvice = await this.adviceService.createAdvice(
         userKey,
         title,
         categoryId,
-        content,
-        isAdult
+        content
       );
 
       if (images) {
         const adviceId = creatAdvice.adviceId;
         const imageUrl = images.map((url) => url.location);
-        await this.adviceImageService.createAdviceImage(
-          adviceId,
-          imageUrl
-        );
+        await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
+
       }
 
       res.status(200).json({
@@ -105,16 +102,16 @@ class AdviceController {
 
   // 조언 게시글 수정
   updateAdvice = async (req, res, next) => {
-    const { userKey } = res.locals.user;
-    const { adviceId } = req.params;
-    const { title, content } = req.body;
-    if (userKey == 0) {
-      return res.status(400).send({ message: "권한이 없습니다." });
-    }
-    const images = req.files;
-    const findAdvice = await this.adviceService.findAllAdviceOne(adviceId);
-
     try {
+      const { userKey } = res.locals.user;
+      const { adviceId } = req.params;
+      const { title, content } = req.body;
+      if (userKey == 0) {
+        return res.status(400).send({ message: "권한이 없습니다." });
+      }
+      const images = req.files;
+      const findAdvice = await this.adviceService.findAllAdviceOne(adviceId);
+
       if (userKey !== findAdvice.userKey) {
         return res.status(400).json({ errorMessage: "권한이 없습니다." });
       }
@@ -123,45 +120,37 @@ class AdviceController {
         adviceId
       );
       const AdviceImageArray = [];
-      if (images) {
 
-      if (findAdvice.adviceImage) {
+      for (let i = 0; i < findImageAdvice.length; i++) {
+        AdviceImageArray.push(
+          "adviceimage/" + findImageAdvice[i].split("/")[4]
+        );
 
-        for (let i = 0; i < findImageAdvice.length; i++) {
-          AdviceImageArray.push(
-            "adviceimage/" + findImageAdvice[i].split("/")[4]
-          );
+        const s3 = new aws.S3({
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+          region: process.env.AWS_REGION,
+        });
 
-          try {
-            const s3 = new aws.S3({
-              accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-              secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-              region: process.env.AWS_REGION,
-            });
+        const params = {
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: AdviceImageArray[i],
+        };
 
-            const params = {
-              Bucket: process.env.AWS_BUCKET_NAME,
-              Key: AdviceImageArray[i],
-            };
-
-            s3.deleteObject(params, function (err, data) {
-              if (err) {
-                console.log(err, err.stack);
-              } else {
-                res.status(200);
-                next();
-              }
-            });
-          } catch (error) {
-            next(error);
+        s3.deleteObject(params, function (err, data) {
+          if (err) {
+            console.log(err, err.stack);
+          } else {
+            // res.status(200);
+            // next(err);
           }
-        }
-        await this.adviceImageService.imageDelete(adviceId);
+        });
+      }
+      await this.adviceImageService.imageDelete(adviceId);
 
+      if (images) {
         const imageUrl = images.map((url) => url.location);
-
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
-
       }
 
       // 타이틀 수정
