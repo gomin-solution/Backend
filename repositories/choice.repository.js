@@ -229,7 +229,7 @@ class ChoiceRepository {
     }
 
     const early = await Choice.update(
-      { endTime: deadline },
+      { endTime: deadline, isEnd: true },
       { where: { choiceId: choiceId } }
     );
     return early;

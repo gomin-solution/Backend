@@ -49,11 +49,12 @@ router.get("/reword", authMiddleware, userController.reword);
 
 //조언 게시글 삭제
 router.delete(
-  "/mypage/advice/:adviceId",
+  "/advice/:adviceId",
   authMiddleware,
   adviceController.deleteAdvice
 );
 
+//리워드
 router.put(
   "/mypage/reword/:missionId",
   authMiddleware,
