@@ -21,8 +21,8 @@ class AdviceImageService {
   // };
   
   // 조언 게시글 이미지 삭제(이미지 아이디 기준)
-  imageDelete = async (imageId) => {
-    const deleteImage = await this.adviceImageRepository.imageDelete(imageId);
+  imageDelete = async (adviceId) => {
+    const deleteImage = await this.adviceImageRepository.imageDelete(adviceId);
     return deleteImage
   };
 
