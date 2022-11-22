@@ -30,16 +30,18 @@ class AdviceController {
         const adviceId = creatAdvice.adviceId;
         const imageUrl = images.map((url) => url.location);
         const resizeUrl = [];
-
+        console.log(imageUrl);
         for (let i = 0; i < images.length; i++) {
           resizeUrl.push(
             images[i].location.replace(/\/adviceimage\//, "/thumb/")
           );
         }
-
-
-        await this.adviceImageService.createAdviceImage(adviceId, imageUrl, resizeUrl);
-
+        console.log(resizeUrl);
+        await this.adviceImageService.createAdviceImage(
+          adviceId,
+          imageUrl,
+          resizeUrl
+        );
       }
 
       res.status(200).json({
@@ -61,7 +63,6 @@ class AdviceController {
       categoryId,
       filterId
     );
-
 
     let advice;
     let arr = [];

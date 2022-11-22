@@ -15,6 +15,8 @@ class ChoiceController {
         res.status(400).send({ errorMessage: "입력 내용을 확인해 주십시오" });
         return;
       }
+      console.log("받아온 endTime");
+      console.log(endTime);
       const createchoice = await this.choiceService.createchoice(
         userKey,
         title,
