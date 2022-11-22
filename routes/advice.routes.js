@@ -17,7 +17,7 @@ adviceRouter.post(
 
 //조언 게시글 조회
 adviceRouter.get(
-  "/category/:categoryId/:sort",
+  "/category/:categoryId/:filterId",
   authMiddleware,
   adviceController.allAdvice
 );
@@ -25,7 +25,7 @@ adviceRouter.get(
 //조언 게시글 상세조회
 
 adviceRouter.get(
-  "/:adviceId/:sort",
+  "/:adviceId/:filterId",
   authMiddleware,
   adviceController.findOneAdvice
 );

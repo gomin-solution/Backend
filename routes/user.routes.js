@@ -31,7 +31,7 @@ router.post("/test", authMiddleware);
 router.put(
   "/mypage",
   authMiddleware,
-  uploaduser.array("image", 1),
+  uploaduser.single("image"),
   userController.profileUpdate
 );
 
