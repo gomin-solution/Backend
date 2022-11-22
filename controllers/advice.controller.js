@@ -30,18 +30,9 @@ class AdviceController {
       if (images) {
         const adviceId = creatAdvice.adviceId;
         const imageUrl = images.map((url) => url.location);
-        const resizeUrl = [];
-        console.log(imageUrl);
-        for (let i = 0; i < images.length; i++) {
-          resizeUrl.push(
-            images[i].location.replace(/\/adviceimage\//, "/thumb/")
-          );
-        }
-        console.log(resizeUrl);
         await this.adviceImageService.createAdviceImage(
           adviceId,
-          imageUrl,
-          resizeUrl
+          imageUrl
         );
       }
 
@@ -122,7 +113,6 @@ class AdviceController {
     }
     const images = req.files;
     const findAdvice = await this.adviceService.findAllAdviceOne(adviceId);
-    //console.log(findAdvice, "만들어")
 
     try {
       if (userKey !== findAdvice.userKey) {
@@ -133,22 +123,14 @@ class AdviceController {
         adviceId
       );
       const AdviceImageArray = [];
-      const AdviceResizeImageArray = [];
+      if (images) {
 
       if (findAdvice.adviceImage) {
-        // const findImageAdvice = await this.adviceService.findImages(imageId);
-        const findImageAdvice = findAdvice.adviceImage;
+
         for (let i = 0; i < findImageAdvice.length; i++) {
           AdviceImageArray.push(
             "adviceimage/" + findImageAdvice[i].split("/")[4]
           );
-          AdviceResizeImageArray.push(
-            "thumb/" + findImageAdvice[i].split("/")[4]
-          );
-          const totalAdviceImageArray = AdviceImageArray.concat(
-            AdviceResizeImageArray
-          );
-
 
           try {
             const s3 = new aws.S3({
@@ -159,7 +141,7 @@ class AdviceController {
 
             const params = {
               Bucket: process.env.AWS_BUCKET_NAME,
-              Key: totalAdviceImageArray[i],
+              Key: AdviceImageArray[i],
             };
 
             s3.deleteObject(params, function (err, data) {
@@ -177,17 +159,9 @@ class AdviceController {
         await this.adviceImageService.imageDelete(adviceId);
 
         const imageUrl = images.map((url) => url.location);
-        const resizeUrl = [];
-        for (let i = 0; i < images.length; i++) {
-          resizeUrl.push(
-            images[i].location.replace(/\/adviceimage\//, "/thumb/")
-          );
-        }
-        await this.adviceImageService.createAdviceImage(
-          adviceId,
-          imageUrl,
-          resizeUrl
-        );
+
+        await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
+
       }
 
       // 타이틀 수정
@@ -227,18 +201,12 @@ class AdviceController {
         adviceId
       );
       const findDeleteImagesArray = [];
-      const AdviceResizeDeleteImageArray = [];
+
       for (let i = 0; i < findDeleteImages.length; i++) {
         findDeleteImagesArray.push(
           "adviceimage/" + findDeleteImages[i].split("/")[4]
         );
-        AdviceResizeDeleteImageArray.push(
-          "thumb/" + findDeleteImages[i].split("/")[4]
-        );
-        const totalAdviceDeleteImageArray = findDeleteImagesArray.concat(
-          AdviceResizeDeleteImageArray
-        );
-        console.log(totalAdviceDeleteImageArray);
+
         const s3 = new aws.S3({
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -247,7 +215,7 @@ class AdviceController {
 
         const params = {
           Bucket: process.env.AWS_BUCKET_NAME,
-          Key: totalAdviceDeleteImageArray[i],
+          Key: findDeleteImagesArray[i],
         };
 
         s3.deleteObject(params, function (err, data) {
