@@ -12,21 +12,24 @@ class AdviceService {
   adviceRepository = new AdviceRepository();
 
   // 게시물 생성
-  createAdvice = async (userKey, title, categoryId, content) => {
+  createAdvice = async (userKey, title, categoryId, content, isAdult) => {
     const createAdviceData = await this.adviceRepository.createAdvice(
       userKey,
       title,
       categoryId,
-      content
+      content,
+      isAdult
     );
 
     return createAdviceData;
   };
 
   findAllAdviceOne = async (adviceId) => {
-    const findAllAdvice = await this.adviceRepository.findAllAdviceOne(adviceId);
-    return findAllAdvice
-  }
+    const findAllAdvice = await this.adviceRepository.findAllAdviceOne(
+      adviceId
+    );
+    return findAllAdvice;
+  };
 
   // 조언 게시물 전체 조회
   findAllAdvice = async (filterId) => {
@@ -47,20 +50,20 @@ class AdviceService {
         viewCount: post.viewCount,
         category: post.Category.name,
         commentCount: post.Comments.length,
+        isAdult: post.isAdult,
       };
     });
 
     if (filterId == "0") {
-      data.sort((a,b) => b.adviceId - a.adviceId)
+      data.sort((a, b) => b.adviceId - a.adviceId);
     }
     if (filterId == "1") {
-      data.sort((a,b) => b.viewCount - a.viewCount)
+      data.sort((a, b) => b.viewCount - a.viewCount);
     }
     if (filterId == "2") {
-      data.sort((a,b) => b.commentCount - a.commentCount)
+      data.sort((a, b) => b.commentCount - a.commentCount);
     }
-    return data
-
+    return data;
   };
 
   // 조언 게시물 카테고리별 조회
@@ -83,18 +86,18 @@ class AdviceService {
         viewCount: post.viewCount,
         category: post.Category.name,
         commentCount: post.Comments.length,
+        isAdult: post.isAdult,
       };
     });
 
     if (filterId == "0") {
-      data.sort((a,b) => b.adviceId - a.adviceId)
+      data.sort((a, b) => b.adviceId - a.adviceId);
     }
     if (filterId == "1") {
-      data.sort((a,b) => b.viewCount - a.viewCount)
+      data.sort((a, b) => b.viewCount - a.viewCount);
     }
     if (filterId == "2") {
-      data.sort((a,b) => b.commentCount - a.commentCount)
-
+      data.sort((a, b) => b.commentCount - a.commentCount);
     }
     return data;
   };
@@ -132,10 +135,10 @@ class AdviceService {
     /*등록순, 좋아요순*/
 
     if (filterId == "0") {
-      comment.sort((a,b) => b.commentId - a.commentId)
+      comment.sort((a, b) => b.commentId - a.commentId);
     }
     if (filterId == "1") {
-      comment.sort((a,b) => b.likeCount - a.likeCount)
+      comment.sort((a, b) => b.likeCount - a.likeCount);
     }
 
     let boolean;
@@ -162,6 +165,7 @@ class AdviceService {
       isBookMark: boolean,
       commentCount: findOneAdvice.Comments.length,
       comment: comment,
+      isAdult: findOneAdvice.isAdult,
     };
   };
 
