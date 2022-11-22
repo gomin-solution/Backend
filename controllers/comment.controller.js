@@ -76,7 +76,7 @@ class CommentController {
     }
   };
 
-  //좋아요를 하면 해당 데이터와 해당 덧글의 좋아요의 수를 반환한다.
+  //좋아요를 하면 해당 데이터와 해당 덧글의 좋아요의 수를 반환한다. 단, 자신의 덧글에는 좋아요를 할 수 없다.
   likeComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
@@ -91,6 +91,13 @@ class CommentController {
         commentId
       );
       const count = await this.commentService.countComment(commentId);
+
+      if (Likes === -1) {
+        return res
+          .status(400)
+          .send({ message: "자신의 덧글에는 좋아요를 할 수 없습니다." });
+      }
+
       let mes = "";
       if (Likes) {
         mes = "좋아요 성공";
