@@ -54,6 +54,7 @@ router.delete(
   adviceController.deleteAdvice
 );
 
+//리워드
 router.put(
   "/mypage/reword/:missionId",
   authMiddleware,
