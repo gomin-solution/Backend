@@ -14,7 +14,7 @@ module.exports = {
     //   Id: Sequelize.INTEGER,
     // });
 
-    return queryInterface.addColumn("AdviceImages", "resizeImage", {
+    return queryInterface.addColumn("Users", "resizeImg", {
       type: Sequelize.STRING,
       allowNull: true,
 
