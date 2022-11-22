@@ -193,6 +193,7 @@ class UserService {
         viewCount: post.viewCount,
         commentCount: post.Comments.length,
         userKey: post.userKey,
+        category: post.Category.name,
       };
     });
 
@@ -248,9 +249,17 @@ class UserService {
     const totalPost = totalAdvice + totalChoice;
 
     /**행운의 편지 열기 횟수 */
+    const totalOpen = totalReword[0].msgOpenCount;
 
     console.log(
-      `totalAdviceComment:${totalAdviceComment}, totalChoicePick:${totalChoicePick}, totalAdvice:${totalAdvice},totalChoice${totalChoice},totalPost${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
+      `totalAdviceComment:${totalAdviceComment}, 
+      totalChoicePick:${totalChoicePick}, 
+      totalAdvice:${totalAdvice},
+      totalChoice${totalChoice},
+      totalPost${totalPost},
+      viewCount:${viewCount},
+      likeTotal:${likeTotal},
+      totalOpen:${totalOpen}`
     );
     /**모든 미션Id */
     const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -335,6 +344,7 @@ class UserService {
           totalPost: totalPost,
           viewCount: viewCount,
           likeTotal: likeTotal,
+          msgOpen: totalOpen,
         },
       });
     }
@@ -343,9 +353,17 @@ class UserService {
   };
 
   getReword = async (userKey, missionId) => {
-    await this.missionRepository.getReword(userKey, missionId);
+    const isGet = await this.missionRepository.getReword(userKey, missionId);
+    return isGet;
   };
 
+  isComplete = async (userKey, missionId) => {
+    const getComplete = await this.missionRepository.isComplete(
+      userKey,
+      missionId
+    );
+    return getComplete;
+  };
   updateUserNickname = async (userKey, nickname) => {
     const findUser = await this.userRepository.findUser(userKey);
     if (!findUser) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");

@@ -47,7 +47,7 @@ class AdviceRepository {
           [Op.like]: "%" + keyword + "%",
         },
       },
-      include: [{ model: Comment }],
+      include: [{ model: Comment }, { model: Category }],
     });
     return searchResult;
   };

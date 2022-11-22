@@ -102,7 +102,6 @@ class UserController {
       }
       const getDailyData = await this.userService.getDailymessage(userKey);
 
-      console.log(getDailyData.isOpen);
       if (!getDailyData.isOpen) await this.userService.messageCountUp(userKey);
 
       return res.status(200).json({ dailyMessage: getDailyData.msg });
@@ -158,9 +157,18 @@ class UserController {
       if (userKey == 0) {
         return res.status(400).send({ message: "로그인이 필요합니다." });
       }
-      await this.userService.getReword(userKey, missionId);
+      const isComplete = await this.userService.isComplete(userKey, missionId);
+      if (!isComplete) {
+        return res.status(400).json({ message: "미션을 완료해 주세요" });
+      }
 
-      return res.status(200).json({ message: "리워드 휙득완료!" });
+      const [isGet] = await this.userService.getReword(userKey, missionId);
+
+      if (isGet) {
+        return res.status(200).json({ message: "리워드 휙득완료!" });
+      } else {
+        return res.status(400).json({ message: "이미 휙득 했습니다" });
+      }
     } catch (error) {
       next(error);
     }

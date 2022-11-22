@@ -34,11 +34,19 @@ class MissionRepository {
     });
   };
 
+  isComplete = async (userKey, missionId) => {
+    const getComplete = await MissionComplete.findOne({
+      where: { userKey: userKey, missionId: missionId },
+    });
+    return getComplete;
+  };
+
   getReword = async (userKey, missionId) => {
-    await MissionComplete.update(
+    const isGet = await MissionComplete.update(
       { isGet: 1 },
       { where: { userKey: userKey, missionId: missionId } }
     );
+    return isGet;
   };
 }
 
