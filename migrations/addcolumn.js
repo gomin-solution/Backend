@@ -9,16 +9,13 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-
     // await queryInterface.createTable("Category", {
     //   Id: Sequelize.INTEGER,
     // });
-
-    return queryInterface.addColumn("AdviceImages", "resizeImage", {
-      type: Sequelize.STRING,
-      allowNull: true,
-
-    });
+    // return await queryInterface.addColumn("AdviceImages", "resizeImage", {
+    //   type: Sequelize.STRING,
+    //   allowNull: true,
+    // });
     // return queryInterface.changeColumn("isChoices", "choiceId", {
     //   allowNull: false,
     //   type: Sequelize.INTEGER,
@@ -38,6 +35,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     // return await queryInterface.dropTable("isChoices");
-    // return queryInterface.removeColumn("Categories", "updatedAt");
+    // return queryInterface.dropTable("adviceImages");
   },
 };

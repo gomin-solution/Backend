@@ -4,13 +4,13 @@ const { Op } = require("sequelize");
 class ChoiceRepository {
   choice = new Choice();
 
-  createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
+  createchoice = async (userKey, title, choice1Name, choice2Name, date) => {
     const createData = await Choice.create({
       userKey,
       title,
       choice1Name,
       choice2Name,
-      endTime,
+      endTime: date,
       choice1Per: 0,
       choice2Per: 0,
       isEnd: false,

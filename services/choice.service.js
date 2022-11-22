@@ -1,20 +1,30 @@
 const ChoiceRepository = require("../repositories/choice.repository");
 const schedule = require("node-schedule");
+const { DataExchange } = require("aws-sdk");
+const dayjs = require("dayjs");
+const timezone = require("dayjs/plugin/timezone");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
 
 class ChoiceService {
   choiceRepository = new ChoiceRepository();
 
   createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
+    const date = dayjs(endTime).format("YYYY.MM.DD HH:mm");
+    console.log("dayjs로 변환", date);
     const createchoice = await this.choiceRepository.createchoice(
       userKey,
       title,
       choice1Name,
       choice2Name,
-      endTime
+      date
     );
-    console.log(endTime);
-    const date = new Date(`${endTime}`);
-    schedule.scheduleJob(date, async () => {
+    const rule = new schedule.RecurrenceRule();
+    rule.date = date;
+    rule.tz = "Asia/Seoul";
+    schedule.scheduleJob(rule, async () => {
       console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
     });
@@ -47,6 +57,11 @@ class ChoiceService {
         const b = choice.choice2Per;
         const sum = a + b;
         const res_a = (a / sum) * 100;
+        const createdAt = dayjs(choice.createdAt)
+          .tz()
+          .format("YYYY.MM.DD HH:mm");
+        const endTime = dayjs(choice.endTime).format("YYYY.MM.DD HH:mm");
+        console.log(dayjs(endTime).valueOf());
         return {
           choiceId: choice.choiceId,
           userKey: choice.userKey,
@@ -57,8 +72,8 @@ class ChoiceService {
           choice2Per: 100 - Math.round(res_a),
           userImage: choice.User.userImg,
           nickname: choice.User.nickname,
-          createdAt: choice.createdAt,
-          endTime: choice.endTime,
+          createdAt: createdAt,
+          endTime: endTime,
           choiceCount: choice.choiceCount,
           isBookMark: isBookMark,
           isChoice: isChoice,
@@ -66,15 +81,16 @@ class ChoiceService {
         };
       });
 
-
-
       if (sort === "1") {
         const parti = allChoice.sort((a, b) => b.choiceCount - a.choiceCount);
         return parti;
       } else if (sort === "2") {
-
         //마감순
-        const deadline = allChoice.sort((a, b) => a.endTime - b.endTime);
+        const deadline = allChoice.sort((a, b) => {
+          const endTimeA = dayjs(a.endTime).valueOf();
+          const endTimeB = dayjs(b.endTime).valueOf();
+          return endTimeA - endTimeB;
+        });
         const deadline_1 = deadline.sort((a, b) => a.isEnd - b.isEnd);
 
         return deadline_1;
@@ -146,7 +162,9 @@ class ChoiceService {
         let absolute_b = findMychoice[i].choice2Per;
         let sum = absolute_a + absolute_b;
         let result_a = (absolute_a / sum) * 100;
-
+        const date = dayjs(findMychoice[i].createdAt)
+          .tz()
+          .format("YYYY.MM.DD HH:mm");
         data[i] = {
           choiceId: findMychoice[i].choiceId,
           userKey: findMychoice[i].userKey,
@@ -157,7 +175,7 @@ class ChoiceService {
           choice2Per: 100 - Math.round(result_a),
           userImage: myData.userImg,
           nickname: myData.nickname,
-          createdAt: findMychoice[i].createdAt,
+          createdAt: date,
           endTime: findMychoice[i].endTime,
           choiceCount: findMychoice[i].choiceCount,
           isBookMark: Boolean(isBookMark),

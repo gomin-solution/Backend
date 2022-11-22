@@ -2,6 +2,11 @@ const ErrorCustom = require("../exceptions/error-custom");
 const { ValidationError } = require("sequelize");
 const AdviceRepository = require("../repositories/advice.repository");
 const dayjs = require("dayjs");
+const timezone = require("dayjs/plugin/timezone");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
 
 class AdviceService {
   adviceRepository = new AdviceRepository();
@@ -23,9 +28,8 @@ class AdviceService {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
     const data = findAllAdvice.map((post) => {
-      const date = dayjs(post.createdAt)
-        .subtract(3, "h")
-        .format("YYYY.MM.DD HH:mm");
+      const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      console.log(post.Category);
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
@@ -41,15 +45,14 @@ class AdviceService {
       };
     });
 
-    if (adviceSort == "0") {
-      data.sort((a, b) => b.createdAt - a.createdAt);
+    if (sort == "0") {
+      data.sort((a, b) => b.adviceId - a.adviceId);
     }
-    if (adviceSort == "1") {
+    if (sort == "1") {
       data.sort((a, b) => b.viewCount - a.viewCount);
     }
-    if (adviceSort == "2") {
+    if (sort == "2") {
       data.sort((a, b) => b.commentCount - a.commentCount);
-
     }
 
     return data;
@@ -61,9 +64,8 @@ class AdviceService {
       categoryId
     );
     const data = findCategoryAdvice.map((post) => {
-      const date = dayjs(post.createdAt)
-        .subtract(3, "h")
-        .format("YYYY.MM.DD HH:mm");
+      const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      console.log(post.Category);
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
@@ -79,16 +81,14 @@ class AdviceService {
       };
     });
 
-
-    if (adviceSort == "0") {
+    if (sort == "0") {
       data.sort((a, b) => b.createdAt - a.createdAt);
     }
-    if (adviceSort == "1") {
+    if (sort == "1") {
       data.sort((a, b) => b.viewCount - a.viewCount);
     }
-    if (adviceSort == "2") {
+    if (sort == "2") {
       data.sort((a, b) => b.commentCount - a.commentCount);
-
     }
     return data;
   };
@@ -110,9 +110,7 @@ class AdviceService {
       );
       let boolean;
       isLike.length ? (boolean = true) : (boolean = false);
-      const date = dayjs(comment.createdAt)
-        .subtract(3, "h")
-        .format("YYYY.MM.DD HH:mm");
+      const date = dayjs(comment.createdAt).tz().format("YYYY.MM.DD HH:mm");
       return {
         commentId: comment.commentId,
         userKey: comment.userKey,
@@ -127,7 +125,6 @@ class AdviceService {
     // sort
     /*등록순, 좋아요순*/
 
-
     if (sort == "0") {
       comment.sort((a, b) => b.createdAt - a.createdAt);
     }
@@ -138,10 +135,10 @@ class AdviceService {
     let boolean;
     findOneAdvice.AdviceBMs.length ? (boolean = true) : (boolean = false);
     const createdAt = dayjs(findOneAdvice.createdAt)
-      .subtract(3, "h")
+      .tz()
       .format("YYYY.MM.DD HH:mm");
     const updatedAt = dayjs(findOneAdvice.updatedAt)
-      .subtract(3, "h")
+      .tz()
       .format("YYYY.MM.DD HH:mm");
     return {
       adviceId: findOneAdvice.adviceId,
@@ -203,13 +200,14 @@ class AdviceService {
     const myadvice = await this.adviceRepository.myadvice(userKey);
 
     return myadvice.map((post) => {
+      const createdAt = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
         categoryId: post.categoryId,
         title: post.title,
         content: post.content,
-        createdAt: post.createdAt,
+        createdAt: createdAt,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         viewCount: post.viewCount,
