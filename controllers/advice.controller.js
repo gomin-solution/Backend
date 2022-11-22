@@ -115,31 +115,35 @@ class AdviceController {
   updateAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { adviceId } = req.params;
-    const { title, content, imageId } = req.body;
+    const { title, content } = req.body;
     if (userKey == 0) {
       return res.status(400).send({ message: "권한이 없습니다." });
     }
     const images = req.files;
     const findAdvice = await this.adviceService.findAllAdviceOne(adviceId);
+    //console.log(findAdvice, "만들어")
 
     try {
       if (userKey !== findAdvice[0].userKey) {
         return res.status(400).json({ errorMessage: "권한이 없습니다." });
       }
 
+      const findImageAdvice = await this.adviceImageService.adviceImageFind(
+        adviceId
+      );
       const AdviceImageArray = [];
       const AdviceResizeImageArray = [];
       if (images) {
-        const findImageAdvice = await this.adviceService.findImages(imageId);
 
         for (let i = 0; i < findImageAdvice.length; i++) {
           AdviceImageArray.push(
-            "adviceimage/" + findImageAdvice[i].adviceImage.split("/")[4]
+            "adviceimage/" + findImageAdvice[i].split("/")[4]
           );
           AdviceResizeImageArray.push(
-            "thumb/" + findImageAdvice[i].adviceImage.split("/")[4]
+            "thumb/" + findImageAdvice[i].split("/")[4]
           );
           const totalAdviceImageArray = AdviceImageArray.concat(AdviceResizeImageArray)
+
 
           try {
             const s3 = new aws.S3({
@@ -165,7 +169,7 @@ class AdviceController {
             next(error);
           }
         }
-        await this.adviceImageService.imageDelete(imageId);
+        await this.adviceImageService.imageDelete(adviceId);
 
         const imageUrl = images.map((url) => url.location);
         const resizeUrl = [];

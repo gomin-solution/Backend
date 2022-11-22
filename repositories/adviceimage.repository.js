@@ -26,15 +26,9 @@ class AdviceImageRepository {
   // };
 
   // 조언 게시글 이미지 삭제(수정용)
-  imageDelete = async (imageId) => {
-    const imageIds = imageId.split(",");
-    for (let i = 0; i < imageIds.length; i++) {
-      await AdviceImage.destroy({
-        where: { adviceImageId: imageIds[i] },
-      });
-    }
-    return;
-  };
+  imageDelete = async (adviceId) => {
+    return await AdviceImage.destroy({ where: { adviceId: adviceId }});
+  }
 
   adviceImageFind = async (adviceId) => {
     const findAdviceImage = await AdviceImage.findAll({
