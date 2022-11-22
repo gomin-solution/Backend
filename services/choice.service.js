@@ -35,18 +35,9 @@ class ChoiceService {
   findAllchoice = async (userKey, sort) => {
     try {
       const findAllChoice = await this.choiceRepository.findAllchoice(userKey);
-      //바로 위에서, 모든 choice데이터를 최신순으로 가져왔다.
-      //이제 이 밑으로 해줘야 할 일은 다음과 같다.
-
-      //choiceper 값들을 횟수에서 비율로 바꾼다.
-      //choiceCount 값을 추가한다.
-      //로그인 한 사람은 그 게시글에 북마크를 했는지 표시한다.
-      //로그인 한 사람은 그 게시글에 투표를 했는지 표시한다.
-      //해당 choice의 작성자의 프로필 사진을 가져온다.
-
-      //============================================================================
-      //가져온 sort의 값이 최신순, 참여순, 마감순에 따라
-      //정렬을 할 수 있어야 한다.
+      //데이터를 최신순으로 로드하여 choiceper값을 변환하고 count값을 추가하고
+      //북마크, 투표여부를 표시하고, 작성장의 프로필 사진을 가져온다.
+      //이 데이터들은 최신순, 참여순, 마감순에 따라 정렬이 가능하다.
 
       const allChoice = findAllChoice.map((choice) => {
         let isBookMark;
@@ -96,46 +87,6 @@ class ChoiceService {
         return deadline_1;
       }
 
-      // let data = new Array();
-      // for (let i = 0; i < findAllChoice.length; i++) {
-      //   const allData = findAllChoice[i];
-      //   const authorKey = findAllChoice[i].userKey;
-
-      //   const findAuthorData = await this.choiceRepository.findUserData(
-      //     authorKey
-      //   );
-      //   const choiceIdforRepo = findAllChoice[i].choiceId;
-      //   const isChoice = await this.choiceRepository.isChoiceForAll(
-      //     Key,
-      //     choiceIdforRepo
-      //   );
-      //   const isBookMark = await this.choiceRepository.isBookMark(
-      //     Key,
-      //     choiceIdforRepo
-      //   );
-
-      //   const a = findAllChoice[i].choice1Per;
-      //   const b = findAllChoice[i].choice2Per;
-      //   const sum = a + b;
-      //   const res_a = (a / sum) * 100;
-
-      //   data[i] = {
-      //     choiceId: allData.choiceId,
-      //     userKey: allData.userKey,
-      //     title: allData.title,
-      //     choice1Name: allData.choice1Name,
-      //     choice2Name: allData.choice2Name,
-      //     choice1Per: Math.round(res_a),
-      //     choice2Per: 100 - Math.round(res_a),
-      //     userImage: findAuthorData.userImg,
-      //     nickname: findAuthorData.nickname,
-      //     createdAt: allData.createdAt,
-      //     endTime: allData.endTime,
-      //     choiceCount: sum,
-      //     isBookMark: Boolean(isBookMark),
-      //     isChoice: Boolean(isChoice),
-      //   };
-      // }
       return allChoice;
     } catch (error) {
       console.log(error);

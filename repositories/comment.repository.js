@@ -78,7 +78,7 @@ class CommentRepository {
     return data_length;
   };
 
-  //덧글 신고하기, 이 덧글 누가 썻나?
+  //덧글 신고하기, 이 덧글 누가 썻나? 단, 좋아요 할 때 자신에게 방지하는 용고로도 사용 가능
   reportCommentAuthor = async (commentId) => {
     const data = await Comment.findByPk(commentId);
     const dataId = data.userKey;
@@ -97,13 +97,6 @@ class CommentRepository {
     const result = await Report.find({
       ids: data,
     });
-
-    // const result = await Report.find({
-    //   "ids.reportId": Number(reporterId),
-    //   "ids.suspectId": Number(suspectId),
-    //   "ids.targetId": Number(targetId),
-    //   "ids.targetName": targetName,
-    // });
 
     return result;
   };
