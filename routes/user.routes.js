@@ -55,10 +55,6 @@ router.delete(
 );
 
 //리워드
-router.put(
-  "/mypage/reword/:missionId",
-  authMiddleware,
-  userController.getReword
-);
+router.put("/reword/:missionId", authMiddleware, userController.getReword);
 
 module.exports = router;

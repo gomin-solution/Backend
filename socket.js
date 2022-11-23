@@ -1,4 +1,11 @@
 const SocketIO = require("socket.io");
+const { Note, NoteRoom } = require("./models");
+const dayjs = require("dayjs");
+const timezone = require("dayjs/plugin/timezone");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
 
 module.exports = (server) => {
   // 서버 연결, path는 프론트와 일치시켜준다.
@@ -23,12 +30,33 @@ module.exports = (server) => {
     socket.on("error", (error) => {
       console.error(error);
     });
+    let RoomId;
+    //* 룸 입장
+    socket.on("enter_room", (data) => {
+      console.log(data);
+      console.log(socket.rooms);
+      socket.join(data.roomId);
+      console.log(socket.rooms);
+      console.log(data.roomId);
+      RoomId = data.roomId;
+    });
 
-    //* 클라이언트로부터 메시지
-    socket.on("enter_room", (roomName, done) => {
-      socket.join(`${roomName}`);
-      console.log(roomName);
-      done("안녕하세요");
+    /**메세지 저장후 전달 */
+    socket.on("chat_message", async (data) => {
+      let { note, roomId, userKey } = data;
+      console.log(data);
+
+      const date = dayjs().tz().format("YYYY-MM-DD 00:00:00");
+      // const chatTime = new Date(today).setHours(new Date(today).getHours() - 9);
+
+      await Note.create({
+        roomId: roomId,
+        tUser: userKey,
+        note: note,
+        createdAt: date,
+      });
+
+      io.to(data.roomId).emit("message", note);
     });
 
     // socket.emit("enter_room", { roomName: "room1" });

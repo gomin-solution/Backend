@@ -280,8 +280,10 @@ class UserService {
     console.log(unCompleteMission);
     console.log(CompleteMission);
 
-    /**미완료 미션을 가져와 기준에 충족하면 */
+    /**미완료 미션을 가져와 기준에 충족하면 newCompleteMissonId 배열에 추가*/
     const mission = await this.missionRepository.mission(unCompleteMission);
+
+    /**새로 완료한 미션이 담긴 배열 */
     const newCompleteMissionId = [];
     mission.forEach((x) => {
       x.missionId;

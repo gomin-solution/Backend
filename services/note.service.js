@@ -62,17 +62,17 @@ class NoteService {
     return myNotePage;
   };
 
-  findNoteOne = async (noteId, userKey) => {
-    const findNoteOne = await this.noteRepository.findNoteOne(noteId, userKey);
+  roadNotes = async (roomId, userKey) => {
+    const roadNotes = await this.noteRepository.roadNotes(roomId, userKey);
     return {
-      noteId: findNoteOne.noteId,
-      fUser: findNoteOne.fUser,
-      fUserNickname: findNoteOne.fUserData.nickname,
-      fUserImg: findNoteOne.fUserData.userImg,
-      tUser: findNoteOne.tUser,
-      tUserNickname: findNoteOne.tUserData.nickname,
-      tUserImg: findNoteOne.tUserData.userImg,
-      note: findNoteOne.note,
+      noteId: roadNotes.noteId,
+      fUser: roadNotes.fUser,
+      fUserNickname: roadNotes.fUserData.nickname,
+      fUserImg: roadNotes.fUserData.userImg,
+      tUser: roadNotes.tUser,
+      tUserNickname: roadNotes.tUserData.nickname,
+      tUserImg: roadNotes.tUserData.userImg,
+      note: roadNotes.note,
     };
   };
 
