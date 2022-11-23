@@ -13,6 +13,22 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      user1: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "userKey",
+        },
+      },
+      user2: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "userKey",
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

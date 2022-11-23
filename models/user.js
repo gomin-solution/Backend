@@ -57,6 +57,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "tUser",
         sourceKey: "userKey",
       });
+      this.hasMany(models.NoteRoom, {
+        foreignKey: "user1",
+        sourceKey: "userKey",
+      });
+      this.hasMany(models.NoteRoom, {
+        foreignKey: "user2",
+        sourceKey: "userKey",
+      });
     }
   }
   User.init(

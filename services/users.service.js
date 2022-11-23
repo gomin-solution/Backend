@@ -113,7 +113,12 @@ class UserService {
       isOpen: 1,
     });
     const dailyData = await redisCli.hGetAll(`${userKey}`);
-    return dailyData.msg;
+    return dailyData;
+  };
+
+  messageCountUp = async (userKey) => {
+    console.log("service", userKey);
+    return await this.userRepository.messageCountUp(userKey);
   };
 
   //마이페이지 데이터 가져오기
@@ -188,6 +193,7 @@ class UserService {
         viewCount: post.viewCount,
         commentCount: post.Comments.length,
         userKey: post.userKey,
+        category: post.Category.name,
       };
     });
 
@@ -196,7 +202,7 @@ class UserService {
 
   uploadUserImage = async (imageUrl, resizeUrl, userKey) => {
     const foundData = await this.userRepository.findUser(userKey);
-    
+
     if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
 
     const uploadImagesData = await this.userRepository.uploadUserImage(
@@ -243,9 +249,17 @@ class UserService {
     const totalPost = totalAdvice + totalChoice;
 
     /**행운의 편지 열기 횟수 */
+    const totalOpen = totalReword[0].msgOpenCount;
 
     console.log(
-      `totalAdviceComment:${totalAdviceComment}, totalChoicePick:${totalChoicePick}, totalAdvice:${totalAdvice},totalChoice${totalChoice},totalPost${totalPost},viewCount:${viewCount},likeTotal:${likeTotal}`
+      `totalAdviceComment:${totalAdviceComment}, 
+      totalChoicePick:${totalChoicePick}, 
+      totalAdvice:${totalAdvice},
+      totalChoice${totalChoice},
+      totalPost${totalPost},
+      viewCount:${viewCount},
+      likeTotal:${likeTotal},
+      totalOpen:${totalOpen}`
     );
     /**모든 미션Id */
     const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -322,25 +336,37 @@ class UserService {
         mission: i,
         isComplete: isComplete,
         isGet: isGet,
-        missonCount: {
-          totalAdviceComment: totalAdviceComment,
-          totalChoicePick: totalChoicePick,
-          totalAdvice: totalAdvice,
-          totalChoice: totalChoice,
-          totalPost: totalPost,
-          viewCount: viewCount,
-          likeTotal: likeTotal,
-        },
       });
     }
+    const data = {
+      result: result,
+      missionCount: {
+        totalAdviceComment: totalAdviceComment,
+        totalChoicePick: totalChoicePick,
+        totalAdvice: totalAdvice,
+        totalChoice: totalChoice,
+        totalPost: totalPost,
+        viewCount: viewCount,
+        likeTotal: likeTotal,
+        msgOpen: totalOpen,
+      },
+    };
 
-    return result;
+    return data;
   };
 
   getReword = async (userKey, missionId) => {
-    await this.missionRepository.getReword(userKey, missionId);
+    const isGet = await this.missionRepository.getReword(userKey, missionId);
+    return isGet;
   };
 
+  isComplete = async (userKey, missionId) => {
+    const getComplete = await this.missionRepository.isComplete(
+      userKey,
+      missionId
+    );
+    return getComplete;
+  };
   updateUserNickname = async (userKey, nickname) => {
     const findUser = await this.userRepository.findUser(userKey);
     if (!findUser) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");

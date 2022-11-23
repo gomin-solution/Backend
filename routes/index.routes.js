@@ -31,7 +31,7 @@ router.use("/advice/comment", commentRouter);
 router.use("/", kakaoRouter);
 
 // 쪽지 관련
-router.use("/note", noteRouter);
+router.use("/", noteRouter);
 
 // 관리자 관련
 router.use("/", managerRouter);
