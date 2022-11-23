@@ -1,15 +1,36 @@
-const { Note, User } = require("../models");
+const { Note, User, NoteRoom } = require("../models");
 const { Op } = require("sequelize");
 
 class NoteRepository {
-  createNote = async (tUser, fUser, note) => {
-    const createNoteData = await Note.create({
-      tUser,
-      fUser,
-      note,
+  createNote = async (tUser, fUser, title, category) => {
+    const Title = `[${category}]${title}`;
+    const [createNoteRoom, create] = await NoteRoom.findOrCreate({
+      where: {
+        user1: tUser,
+        user2: fUser,
+        title: Title,
+      },
+      defaults: {
+        user1: tUser,
+        user2: fUser,
+        title: Title,
+      },
     });
-    console.log(createNoteData);
-    return createNoteData;
+    console.log(createNoteRoom.roomId);
+    return createNoteRoom;
+  };
+
+  allRooms = async (userKey) => {
+    const allRooms = await NoteRoom.findAll({
+      where: { [Op.or]: [{ user1: userKey }, { user2: userKey }] },
+      include: [
+        { model: User, as: "User1", attributes: ["nickname", "userKey"] },
+        { model: User, as: "User2", attributes: ["nickname", "userKey"] },
+        { model: Note, order: [["createdAt", "DESC"]], limit: 1 },
+      ],
+    });
+
+    return allRooms;
   };
 
   allMyNote = async (userKey) => {
@@ -40,8 +61,8 @@ class NoteRepository {
   };
 
   deleteNote = async (noteId, userKey) => {
-   return await Note.destroy({ where: { noteId, fUser:userKey } });
-  }
+    return await Note.destroy({ where: { noteId, fUser: userKey } });
+  };
 }
 
 module.exports = NoteRepository;

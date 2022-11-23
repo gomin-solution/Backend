@@ -12,6 +12,7 @@ const { errorLogger, errorHandler } = require("./exceptions/error-handler");
 
 const app = express();
 const port = process.env.EXPRESS_PORT || 3000;
+const soket = require("./socket");
 
 connect();
 schedule();
@@ -38,8 +39,10 @@ if (process.env.NODE_ENV == "production") {
       key: fs.readFileSync(`${process.env.KEY}`),
       cert: fs.readFileSync(`${process.env.CERT}`),
     };
-    HTTPS.createServer(option, app).listen(port, () => {
+    const server = HTTPS.createServer(option, app);
+    server.listen(port, () => {
       console.log("HTTPS 서버가 실행되었습니다. 포트 :: " + port);
+      soket(server);
     });
   } catch (error) {
     console.log("HTTPS 서버가 실행되지 않습니다.");

@@ -336,20 +336,23 @@ class UserService {
         mission: i,
         isComplete: isComplete,
         isGet: isGet,
-        missonCount: {
-          totalAdviceComment: totalAdviceComment,
-          totalChoicePick: totalChoicePick,
-          totalAdvice: totalAdvice,
-          totalChoice: totalChoice,
-          totalPost: totalPost,
-          viewCount: viewCount,
-          likeTotal: likeTotal,
-          msgOpen: totalOpen,
-        },
       });
     }
+    const data = {
+      result: result,
+      missionCount: {
+        totalAdviceComment: totalAdviceComment,
+        totalChoicePick: totalChoicePick,
+        totalAdvice: totalAdvice,
+        totalChoice: totalChoice,
+        totalPost: totalPost,
+        viewCount: viewCount,
+        likeTotal: likeTotal,
+        msgOpen: totalOpen,
+      },
+    };
 
-    return result;
+    return data;
   };
 
   getReword = async (userKey, missionId) => {

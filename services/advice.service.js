@@ -135,7 +135,7 @@ class AdviceService {
     /*등록순, 좋아요순*/
 
     if (filterId == "0") {
-      comment.sort((a, b) => b.commentId - a.commentId);
+      comment.sort((a, b) => a.commentId - b.commentId);
     }
     if (filterId == "1") {
       comment.sort((a, b) => b.likeCount - a.likeCount);
