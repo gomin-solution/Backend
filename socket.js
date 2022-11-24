@@ -22,7 +22,6 @@ module.exports = (server) => {
 
     //* 연결 종료 시
     socket.on("disconnect", () => {
-      console.log("클라이언트 접속 해제", ip, socket.id);
       clearInterval(socket.interval);
     });
 
@@ -31,14 +30,16 @@ module.exports = (server) => {
       console.error(error);
     });
     let RoomId;
+
     //* 룸 입장
     socket.on("enter_room", (data) => {
-      console.log(data);
-      console.log(socket.rooms);
       socket.join(data.roomId);
-      console.log(socket.rooms);
-      console.log(data.roomId);
       RoomId = data.roomId;
+    });
+
+    //룸 떠나기
+    socket.on("leave_room", (roomId) => {
+      socket.leave(roomId);
     });
 
     /**메세지 저장후 전달 */
@@ -60,8 +61,7 @@ module.exports = (server) => {
         note: note,
         date: date,
       };
-
-      io.to(data.roomId).emit("message", msg);
+      io.to(roomId).emit("message", msg);
     });
 
     // socket.emit("enter_room", { roomName: "room1" });

@@ -53,6 +53,7 @@ class NoteController {
     try {
       const { userKey } = res.locals.user;
       const { roomId } = req.params;
+      console.log("컨트롤러 유저키", userKey);
 
       const { notes, nickname } = await this.noteService.roadNotes(
         roomId,

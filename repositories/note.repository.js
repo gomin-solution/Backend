@@ -49,6 +49,7 @@ class NoteRepository {
 
   roadNotes = async (roomId) => {
     const findallNote = await Note.findAll({
+      order: [["createdAt", "ASC"]],
       where: { roomId: roomId },
       include: [{ model: User, attributes: ["nickname", "userImg"] }],
     });
