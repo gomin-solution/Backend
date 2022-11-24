@@ -187,7 +187,7 @@ class UserController {
     const image = req.file;
     const { nickname } = req.body;
 
-    const findUser = await this.userService.mypage(userKey);
+    const findUser = await this.userService.findUserImage(userKey);
     const findUserImage = findUser.userImage
 
     try {
@@ -205,14 +205,7 @@ class UserController {
             Key: findUserImage[i],
           };
   
-          s3.deleteObject(params, function (err, data) {
-            if (err) {
-              console.log(err, err.stack);
-            } else {
-              res.status(200);
-              next();
-            }
-          });
+          s3.deleteObject(params, function (err, data) { });
         }        
 
         const imageUrl = image.location;

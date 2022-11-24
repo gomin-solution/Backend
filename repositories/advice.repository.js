@@ -174,6 +174,21 @@ class AdviceRepository {
     });
     return reportAdvice;
   };
+
+  // 중복신고 방지
+  reportRedup = async (reporterId, suspectId, targetId, targetName) => {
+    const data = {
+      reporterId: Number(reporterId),
+      suspectId: Number(suspectId),
+      targetId: Number(targetId),
+      targetName: targetName,
+    };
+
+    const result = await AdviceReport.find({
+      ids: data,
+    });
+    return result;
+  }
 }
 
 module.exports = AdviceRepository;

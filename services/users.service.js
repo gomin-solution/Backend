@@ -136,10 +136,10 @@ class UserService {
     }
     const user = await this.userRepository.findUser(userKey);
     
-    const userImage = ["profileimage/"+user.userImg];
-    const userResizeImage = ["profileimage-resize/"+user.userImg];
-    const totalUserImage = userImage.concat(userResizeImage)
-    console.log(totalUserImage)
+    const userImage = ["https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/"+user.userImg];
+    const userResizeImage = ["https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/"+user.userImg];
+    const totalUserImage = userImage.concat(userResizeImage);
+    console.log(totalUserImage);
 
     const result = {
       userKey: userKey,
@@ -151,6 +151,18 @@ class UserService {
 
     return result;
   };
+
+  findUserImage = async (userKey) => {
+    const user = await this.userRepository.findUserImage(userKey);
+    const userImage = ["profileimage/"+user.userImg]
+    const userResizeImage = ["profileimage-resize/"+user.userImg];
+    const totalUserImage = userImage.concat(userResizeImage);
+    console.log(totalUserImage)
+    const result = {
+      userImage: totalUserImage
+    }
+    return result;
+  }
 
   //검색 가져오기
   search = async (userKey, keyword) => {
