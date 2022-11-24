@@ -66,9 +66,10 @@ class NoteService {
     const roadNotes = await this.noteRepository.roadNotes(roomId);
     //대화상대 닉네임
     let nickname;
+    roadNotes[0].user1 !== userKey
+      ? (nickname = roadNotes[0].NoteRoom.User2.nickname)
+      : (nickname = roadNotes[0].NoteRoom.User1.nickname);
     const notes = roadNotes.map((note) => {
-      console.log(note.userKey);
-      if (note.userKey !== userKey) nickname = note.User.nickname;
       const date = dayjs(note.createdAt).tz().format("YYYY.MM.DD HH:mm");
       return {
         userKey: note.userKey,
@@ -76,7 +77,6 @@ class NoteService {
         date: date,
       };
     });
-    console.log("서비스", nickname);
 
     return { notes, nickname };
   };

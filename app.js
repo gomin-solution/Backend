@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const fs = require("fs");
 const HTTPS = require("https");
+const HTTP = require("http");
 
 const connect = require("./schemas/index");
 const cors = require("cors");
@@ -12,7 +13,7 @@ const { errorLogger, errorHandler } = require("./exceptions/error-handler");
 
 const app = express();
 const port = process.env.EXPRESS_PORT || 3000;
-const soket = require("./socket");
+const socket = require("./socket");
 
 connect();
 schedule();
@@ -42,14 +43,16 @@ if (process.env.NODE_ENV == "production") {
     const server = HTTPS.createServer(option, app);
     server.listen(port, () => {
       console.log("HTTPS 서버가 실행되었습니다. 포트 :: " + port);
-      soket(server);
+      socket(server);
     });
   } catch (error) {
     console.log("HTTPS 서버가 실행되지 않습니다.");
     console.log(error);
   }
 } else if (process.env.NODE_ENV !== "test") {
-  app.listen(port, () => {
+  const server = HTTP.createServer(app);
+  server.listen(port, () => {
     console.log("HTTP 서버가 실행되었습니다. 포트 :: " + port);
+    socket(server);
   });
 }

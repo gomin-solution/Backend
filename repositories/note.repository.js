@@ -51,7 +51,15 @@ class NoteRepository {
     const findallNote = await Note.findAll({
       order: [["createdAt", "ASC"]],
       where: { roomId: roomId },
-      include: [{ model: User, attributes: ["nickname", "userImg"] }],
+      include: [
+        {
+          model: NoteRoom,
+          include: [
+            { model: User, as: "User1" },
+            { model: User, as: "User2" },
+          ],
+        },
+      ],
     });
     //console.log(findNoteOne, "이건 안나오나?");
 
