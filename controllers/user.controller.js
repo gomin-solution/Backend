@@ -94,6 +94,7 @@ class UserController {
     }
   };
 
+  //행운메세지 가져오기
   dailyMessage = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -110,6 +111,7 @@ class UserController {
     }
   };
 
+  //마이페이지 조회
   mypage = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -122,6 +124,7 @@ class UserController {
     }
   };
 
+  //검색 조회
   search = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -150,6 +153,7 @@ class UserController {
     }
   };
 
+  //리워드 휙득요청
   getReword = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;

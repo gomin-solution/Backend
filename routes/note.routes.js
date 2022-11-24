@@ -17,7 +17,7 @@ noteRouter.get("/rooms", authMiddleware, noteController.roomlist);
 // noteRouter.get("/", authMiddleware, noteController.allMyNote);
 
 //쪽지 상세페이지
-noteRouter.get("/:noteId", authMiddleware, noteController.findNoteOne);
+noteRouter.get("/rooms/:roomId", authMiddleware, noteController.roadNotes);
 
 // 쪽지 삭제
 noteRouter.delete("/:noteId", authMiddleware, noteController.deleteNote);

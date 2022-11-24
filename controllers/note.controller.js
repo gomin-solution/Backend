@@ -27,9 +27,9 @@ class NoteController {
   roomlist = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      const allRooms = await this.noteService.allRooms(userKey);
+      const roomlist = await this.noteService.allRooms(userKey);
 
-      return res.status(200).json(allRooms);
+      return res.status(200).json(roomlist);
     } catch (error) {
       next(error);
     }
@@ -49,13 +49,13 @@ class NoteController {
   };
 
   // 보낸 쪽지 상세 페이지
-  findNoteOne = async (req, res, next) => {
-    const { userKey } = res.locals.user;
-    const { noteId } = req.params;
-
+  roadNotes = async (req, res, next) => {
     try {
-      const findNoteOne = await this.noteService.findNoteOne(noteId, userKey);
-      return res.status(200).json({ findNoteOne });
+      const { userKey } = res.locals.user;
+      const { roomId } = req.params;
+
+      const roadNotes = await this.noteService.roadNotes(roomId, userKey);
+      return res.status(200).json({ roadNotes });
     } catch (err) {
       next(err);
     }
