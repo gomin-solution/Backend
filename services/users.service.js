@@ -135,11 +135,16 @@ class UserService {
       };
     }
     const user = await this.userRepository.findUser(userKey);
+    
+    const userImage = ["profileimage/"+user.userImg];
+    const userResizeImage = ["profileimage-resize/"+user.userImg];
+    const totalUserImage = userImage.concat(userResizeImage)
+    console.log(totalUserImage)
 
     const result = {
       userKey: userKey,
       nickname: user.nickname,
-      userImage: user.resizeImg,
+      userImage: totalUserImage,
       totalAdviceComment: user.Comments.length,
       totalChoicePick: user.isChoices.length,
     };
@@ -200,14 +205,13 @@ class UserService {
     return { choice: choiceData, advice: adviceData };
   };
 
-  uploadUserImage = async (imageUrl, resizeUrl, userKey) => {
+  uploadUserImage = async (imageUrl, userKey) => {
     const foundData = await this.userRepository.findUser(userKey);
-
     if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
+    const findUserImage = imageUrl.split('/')[4]
 
     const uploadImagesData = await this.userRepository.uploadUserImage(
-      imageUrl,
-      resizeUrl,
+      findUserImage,
       userKey
     );
     return uploadImagesData;

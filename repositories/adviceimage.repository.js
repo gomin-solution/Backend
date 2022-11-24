@@ -2,12 +2,11 @@ const { AdviceImage } = require("../models");
 
 class AdviceImageRepository {
   //조언 게시글 업로드
-  createAdviceImage = async (adviceId, imageUrl, resizeUrl) => {
-    for (let i = 0; i < imageUrl.length; i++) {
+  createAdviceImage = async (adviceId, imageFilename) => {
+    for (let i = 0; i < imageFilename.length; i++) {
       await AdviceImage.create({
         adviceId: adviceId,
-        adviceImage: imageUrl[i],
-        resizeImage: resizeUrl[i]
+        adviceImage: imageFilename[i]
       });
     }
     return;
@@ -34,11 +33,12 @@ class AdviceImageRepository {
     const findAdviceImage = await AdviceImage.findAll({
       where: {adviceId: adviceId}
     })
-    const adviceFindAllImage = [];
-    for (let i=0; i<findAdviceImage.length; i++){
-      adviceFindAllImage.push(findAdviceImage[i].adviceImage)
-    }
-    return adviceFindAllImage;
+    return findAdviceImage
+    // const adviceFindAllImage = [];
+    // for (let i=0; i<findAdviceImage.length; i++){
+    //   adviceFindAllImage.push(findAdviceImage[i].adviceImage)
+    // }
+    // return adviceFindAllImage;
   }  
 
 }

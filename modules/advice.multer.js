@@ -10,13 +10,15 @@ const s3 = new aws.S3({
   region: process.env.AWS_KEY_REGION,
 });
 
+
 const upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: process.env.AWS_BUCKET_NAME,
     key: function (req, file, cb) {
       const ext = path.extname(file.originalname);
-      cb(null, `adviceimage/${Date.now()}${ext}`);
+      const randomNumber = Math.floor(Math.random()*10000)
+      cb(null, `adviceimage/${Date.now()}_${randomNumber}${ext}`);
     },
     acl: "public-read",
     contentType: multerS3.AUTO_CONTENT_TYPE,

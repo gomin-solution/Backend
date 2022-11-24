@@ -16,7 +16,8 @@ const upload = multer({
     bucket: process.env.AWS_BUCKET_NAME,
     key: function (req, file, cb) {
       const ext = path.extname(file.originalname);
-      cb(null, `profileimage/${Date.now()}${ext}`);
+      const randomNumber = Math.floor(Math.random()*10000)
+      cb(null, `profileimage/${Date.now()}_${randomNumber}${ext}`);
     },
     acl: "public-read",
     contentType: multerS3.AUTO_CONTENT_TYPE,
