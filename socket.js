@@ -22,7 +22,6 @@ module.exports = (server) => {
 
     //* 연결 종료 시
     socket.on("disconnect", () => {
-      console.log("클라이언트 접속 해제", ip, socket.id);
       clearInterval(socket.interval);
     });
 
@@ -31,14 +30,16 @@ module.exports = (server) => {
       console.error(error);
     });
     let RoomId;
+
     //* 룸 입장
     socket.on("enter_room", (data) => {
-      console.log(data);
-      console.log(socket.rooms);
       socket.join(data.roomId);
-      console.log(socket.rooms);
-      console.log(data.roomId);
       RoomId = data.roomId;
+    });
+
+    //룸 떠나기
+    socket.on("leave_room", (roomId) => {
+      socket.leave(roomId);
     });
 
     /**메세지 저장후 전달 */
@@ -46,17 +47,21 @@ module.exports = (server) => {
       let { note, roomId, userKey } = data;
       console.log(data);
 
-      const date = dayjs().tz().format("YYYY-MM-DD 00:00:00");
+      const date = dayjs().tz().format("YYYY-MM-DD HH:mm");
       // const chatTime = new Date(today).setHours(new Date(today).getHours() - 9);
 
       await Note.create({
         roomId: roomId,
-        tUser: userKey,
+        userKey: userKey,
         note: note,
-        createdAt: date,
       });
 
-      io.to(data.roomId).emit("message", note);
+      const msg = {
+        userKey: userKey,
+        note: note,
+        date: date,
+      };
+      io.to(roomId).emit("message", msg);
     });
 
     // socket.emit("enter_room", { roomName: "room1" });

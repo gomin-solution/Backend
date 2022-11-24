@@ -63,17 +63,22 @@ class NoteService {
   };
 
   roadNotes = async (roomId, userKey) => {
-    const roadNotes = await this.noteRepository.roadNotes(roomId, userKey);
-    return {
-      noteId: roadNotes.noteId,
-      fUser: roadNotes.fUser,
-      fUserNickname: roadNotes.fUserData.nickname,
-      fUserImg: roadNotes.fUserData.userImg,
-      tUser: roadNotes.tUser,
-      tUserNickname: roadNotes.tUserData.nickname,
-      tUserImg: roadNotes.tUserData.userImg,
-      note: roadNotes.note,
-    };
+    const roadNotes = await this.noteRepository.roadNotes(roomId);
+    //대화상대 닉네임
+    let nickname;
+    const notes = roadNotes.map((note) => {
+      console.log(note.userKey);
+      if (note.userKey !== userKey) nickname = note.User.nickname;
+      const date = dayjs(note.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      return {
+        userKey: note.userKey,
+        note: note.note,
+        date: date,
+      };
+    });
+    console.log("서비스", nickname);
+
+    return { notes, nickname };
   };
 
   deleteNote = async (noteId, userKey) => {
