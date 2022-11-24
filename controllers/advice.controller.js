@@ -46,34 +46,18 @@ class AdviceController {
     const { categoryId, filterId } = req.params;
     const { page } = req.query;
 
-    const allAdvice = await this.adviceService.findAllAdvice(filterId);
+    const allAdvice = await this.adviceService.findAllAdvice(filterId, page);
     const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
       categoryId,
-      filterId
+      filterId,
+      page
     );
 
-    let advice;
-    let arr = [];
-    if (categoryId == 0) {
-      advice = chunk(allAdvice, 10)[Number(page)];
-    } else {
-      advice = chunk(allCategoryAdvice, 10)[Number(page)];
-    }
-
-    function chunk(data = [], size = 1) {
-      arr = [];
-      for (let i = 0; i < data.length; i += size) {
-        arr.push(data.slice(i, i + size));
-      }
-      return arr;
-    }
-
     try {
-      if (!advice) {
-        advice = [];
+      if (categoryId == 0 ) {
+        return res.status(200).json({ allAdvice });
       }
-      //카테고리별 조회
-      return res.status(200).json({ advice });
+      return res.status(200).json({ allCategoryAdvice });
     } catch (err) {
       next(err);
     }
