@@ -12,14 +12,14 @@ module.exports = {
     // await queryInterface.createTable("NoteRoom", {
     //   Id: Sequelize.INTEGER,
     // });
-    return await queryInterface.changeColumn("Notes", "userKey", {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      references: {
-        model: "Users",
-        key: "userKey",
-      },
-    });
+    // return await queryInterface.changeColumn("Notes", "userKey", {
+    //   allowNull: false,
+    //   type: Sequelize.INTEGER,
+    //   references: {
+    //     model: "Users",
+    //     key: "userKey",
+    //   },
+    // });
     // return queryInterface.changeColumn("isChoices", "choiceId", {
     //   allowNull: false,
     //   type: Sequelize.INTEGER,
@@ -39,6 +39,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     // return await queryInterface.dropTable("isChoices");
-    // return queryInterface.removeColumn("Notes", "tUser");
+    return queryInterface.removeColumn("Notes", "tUser");
   },
 };

@@ -47,17 +47,14 @@ class NoteRepository {
     return allMyNote;
   };
 
-  roadNotes = async (noteId, userKey) => {
-    const findNoteOne = await Note.findAll({
-      where: { noteId, [Op.or]: [{ tUser: userKey }, { fUser: userKey }] },
-      include: [
-        { model: User, as: "fUserData", attributes: ["nickname", "userImg"] },
-        { model: User, as: "tUserData", attributes: ["nickname", "userImg"] },
-      ],
+  roadNotes = async (roomId) => {
+    const findallNote = await Note.findAll({
+      where: { roomId: roomId },
+      include: [{ model: User, attributes: ["nickname", "userImg"] }],
     });
     //console.log(findNoteOne, "이건 안나오나?");
 
-    return findNoteOne;
+    return findallNote;
   };
 
   deleteNote = async (noteId, userKey) => {

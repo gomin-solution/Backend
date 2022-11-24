@@ -46,17 +46,22 @@ module.exports = (server) => {
       let { note, roomId, userKey } = data;
       console.log(data);
 
-      const date = dayjs().tz().format("YYYY-MM-DD 00:00:00");
+      const date = dayjs().tz().format("YYYY-MM-DD HH:mm");
       // const chatTime = new Date(today).setHours(new Date(today).getHours() - 9);
 
       await Note.create({
         roomId: roomId,
-        tUser: userKey,
+        userKey: userKey,
         note: note,
-        createdAt: date,
       });
 
-      io.to(data.roomId).emit("message", note);
+      const msg = {
+        userKey: userKey,
+        note: note,
+        date: date,
+      };
+
+      io.to(data.roomId).emit("message", msg);
     });
 
     // socket.emit("enter_room", { roomName: "room1" });
