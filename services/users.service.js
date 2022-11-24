@@ -87,7 +87,9 @@ class UserService {
     const getAdvice = await this.adviceRepository.getAdvice();
     const dailyData = await redisCli.hGetAll(`${userKey}`);
     let isOpen;
-    dailyData.isOpen == "0" ? (isOpen = false) : (isOpen = true);
+    dailyData.isOpen == "0" || userKey == 0
+      ? (isOpen = false)
+      : (isOpen = true);
     const adviceData = getAdvice.map((post) => {
       return {
         adviceId: post.adviceId,
@@ -108,17 +110,17 @@ class UserService {
   };
 
   getDailymessage = async (userKey) => {
-    console.log(userKey);
+    const dailyData = await redisCli.hGetAll(`${userKey}`);
+    let isOpen;
+    dailyData.isOpen == "0" ? (isOpen = false) : (isOpen = true);
+    return { isOpen, dailyData };
+  };
+
+  updateMessageOpen = async (userKey) => {
     await redisCli.hSet(`${userKey}`, {
       isOpen: 1,
     });
-    const dailyData = await redisCli.hGetAll(`${userKey}`);
-    return dailyData;
-  };
-
-  messageCountUp = async (userKey) => {
-    console.log("service", userKey);
-    return await this.userRepository.messageCountUp(userKey);
+    await this.userRepository.messageCountUp(userKey);
   };
 
   //마이페이지 데이터 가져오기
@@ -135,11 +137,11 @@ class UserService {
       };
     }
     const user = await this.userRepository.findUser(userKey);
-    
-    const userImage = ["profileimage/"+user.userImg];
-    const userResizeImage = ["profileimage-resize/"+user.userImg];
-    const totalUserImage = userImage.concat(userResizeImage)
-    console.log(totalUserImage)
+
+    const userImage = ["profileimage/" + user.userImg];
+    const userResizeImage = ["profileimage-resize/" + user.userImg];
+    const totalUserImage = userImage.concat(userResizeImage);
+    console.log(totalUserImage);
 
     const result = {
       userKey: userKey,
@@ -208,7 +210,7 @@ class UserService {
   uploadUserImage = async (imageUrl, userKey) => {
     const foundData = await this.userRepository.findUser(userKey);
     if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
-    const findUserImage = imageUrl.split('/')[4]
+    const findUserImage = imageUrl.split("/")[4];
 
     const uploadImagesData = await this.userRepository.uploadUserImage(
       findUserImage,
