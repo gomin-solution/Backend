@@ -65,9 +65,5 @@ module.exports = (server) => {
     });
 
     // socket.emit("enter_room", { roomName: "room1" });
-
-    socket
-      .to("room1")
-      .emit("room1", { roomName: "room1", userKey: 1, msg: "hi" });
   });
 };

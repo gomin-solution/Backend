@@ -32,12 +32,11 @@ class AdviceService {
   };
 
   // 조언 게시물 전체 조회
-  findAllAdvice = async (filterId) => {
+  findAllAdvice = async (filterId, page) => {
     const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
     const data = findAllAdvice.map((post) => {
       const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
-      console.log(post.Category);
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
@@ -63,17 +62,30 @@ class AdviceService {
     if (filterId == "2") {
       data.sort((a, b) => b.commentCount - a.commentCount);
     }
-    return data;
+
+    let advice;
+    let arr = [];
+    function chunk(data = [], size = 1) {
+      arr = [];
+      for (let i = 0; i < data.length; i += size) {
+        arr.push(data.slice(i, i + size));
+      }
+      return arr;
+    }
+    advice = chunk(data, 10)[Number(page)];
+
+    return advice;
+
+    // return data;
   };
 
   // 조언 게시물 카테고리별 조회
-  findCategoryAdvice = async (categoryId, filterId) => {
+  findCategoryAdvice = async (categoryId, filterId, page) => {
     const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
       categoryId
     );
     const data = findCategoryAdvice.map((post) => {
       const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
-      console.log(post.Category);
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
@@ -99,7 +111,19 @@ class AdviceService {
     if (filterId == "2") {
       data.sort((a, b) => b.commentCount - a.commentCount);
     }
-    return data;
+
+    let advice;
+    let arr = [];
+    function chunk(data = [], size = 1) {
+      arr = [];
+      for (let i = 0; i < data.length; i += size) {
+        arr.push(data.slice(i, i + size));
+      }
+      return arr;
+    }
+    advice = chunk(data, 10)[Number(page)];
+
+    return advice;
   };
 
   //  조언 게시물 상세페이지 조회
