@@ -43,10 +43,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      resizeImage: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

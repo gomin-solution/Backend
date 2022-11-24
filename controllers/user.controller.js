@@ -188,27 +188,23 @@ class UserController {
     const { nickname } = req.body;
 
     const findUser = await this.userService.mypage(userKey);
+    const findUserImage = findUser.userImage
 
     try {
       //이미지 수정
       if (image) {
-        const findUserImage = findUser.userImage.split("/")[4];
-        const findUserLastImage = `profileimage/${findUserImage}`;
-        const findUserLastResizeImage = `thumb/${findUserImage}`;
-        const userImageArray = [findUserLastImage, findUserLastResizeImage];
-
-        for (let i = 0; i < userImageArray.length; i++) {
+        for (let i=0; i<findUserImage.length; i++) {
           const s3 = new aws.S3({
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
             region: process.env.AWS_REGION,
           });
-
+  
           const params = {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: userImageArray[i],
+            Key: findUserImage[i],
           };
-
+  
           s3.deleteObject(params, function (err, data) {
             if (err) {
               console.log(err, err.stack);
@@ -217,11 +213,10 @@ class UserController {
               next();
             }
           });
-        }
+        }        
 
         const imageUrl = image.location;
-        const resizeUrl = imageUrl.replace(/\/profileimage\//, "/thumb/");
-        await this.userService.uploadUserImage(imageUrl, resizeUrl, userKey);
+        await this.userService.uploadUserImage(imageUrl, userKey);
       }
 
       if (nickname) {
