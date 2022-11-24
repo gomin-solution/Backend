@@ -93,10 +93,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      resizeImg: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       level: {
         type: DataTypes.INTEGER,
         allowNull: true,

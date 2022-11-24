@@ -31,10 +31,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      resizeImg: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
       level: {
         type: Sequelize.INTEGER,
         allowNull: true,

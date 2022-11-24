@@ -29,19 +29,7 @@ class AdviceController {
       if (images) {
         const adviceId = creatAdvice.adviceId;
         const imageUrl = images.map((url) => url.location);
-        console.log(imageUrl)
-        const resizeUrl = [];
-        for (let i = 0; i < images.length; i++) {
-          resizeUrl.push(
-            images[i].location.replace(/\/adviceimage\//, "/adviceimage-resize/")
-          );
-        }
-        console.log(resizeUrl);
-        await this.adviceImageService.createAdviceImage(
-          adviceId,
-          imageUrl,
-          resizeUrl
-        );
+        await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
       }
 
       res.status(200).json({
@@ -121,64 +109,43 @@ class AdviceController {
     }
     const images = req.files;
     const findAdvice = await this.adviceService.findAllAdviceOne(adviceId);
-    //console.log(findAdvice, "만들어")
 
     try {
-      if (userKey !== findAdvice[0].userKey) {
+      if (userKey !== findAdvice.userKey) {
         return res.status(400).json({ errorMessage: "권한이 없습니다." });
       }
 
       const findImageAdvice = await this.adviceImageService.adviceImageFind(
         adviceId
       );
-      const AdviceImageArray = [];
-      const AdviceResizeImageArray = [];
+
       if (images) {
-
         for (let i = 0; i < findImageAdvice.length; i++) {
-          AdviceImageArray.push(
-            "adviceimage/" + findImageAdvice[i].split("/")[4]
-          );
-          AdviceResizeImageArray.push(
-            "adviceimage-resize/" + findImageAdvice[i].split("/")[4]
-          );
-          const totalAdviceImageArray = AdviceImageArray.concat(AdviceResizeImageArray)
+          const s3 = new aws.S3({
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            region: process.env.AWS_REGION,
+          });
 
+          const params = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: findImageAdvice[i],
+          };
 
-          try {
-            const s3 = new aws.S3({
-              accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-              secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-              region: process.env.AWS_REGION,
-            });
-
-            const params = {
-              Bucket: process.env.AWS_BUCKET_NAME,
-              Key: totalAdviceImageArray[i],
-            };
-
-            s3.deleteObject(params, function (err, data) {
-              if (err) {
-                console.log(err, err.stack);
-              } else {
-                res.status(200);
-                next();
-              }
-            });
-          } catch (error) {
-            next(error);
-          }
+          s3.deleteObject(params, function (err, data) {
+            if (err) {
+              console.log(err, err.stack);
+            } else {
+              res.status(200);
+              next();
+            }
+          });
         }
         await this.adviceImageService.imageDelete(adviceId);
 
         const imageUrl = images.map((url) => url.location);
-        const resizeUrl = [];
-        for (let i = 0; i < images.length; i++) {
-          resizeUrl.push(
-            images[i].location.replace(/\/adviceimage\//, "/adviceimage-resize/")
-          );
-        }
-        await this.adviceImageService.createAdviceImage(adviceId, imageUrl, resizeUrl);
+
+        await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
       }
 
       // 타이틀 수정
@@ -217,17 +184,8 @@ class AdviceController {
       const findDeleteImages = await this.adviceImageService.adviceImageFind(
         adviceId
       );
-      const findDeleteImagesArray = [];
-      const AdviceResizeDeleteImageArray = [];
+
       for (let i = 0; i < findDeleteImages.length; i++) {
-        findDeleteImagesArray.push(
-          "adviceimage/" + findDeleteImages[i].split("/")[4]
-        );
-        AdviceResizeDeleteImageArray.push(
-          "adviceimage-resize/" + findDeleteImages[i].split("/")[4]
-        );
-        const totalAdviceDeleteImageArray = findDeleteImagesArray.concat(AdviceResizeDeleteImageArray)
-        console.log(totalAdviceDeleteImageArray);
         const s3 = new aws.S3({
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -236,7 +194,7 @@ class AdviceController {
 
         const params = {
           Bucket: process.env.AWS_BUCKET_NAME,
-          Key: totalAdviceDeleteImageArray[i],
+          Key: findDeleteImages[i],
         };
 
         s3.deleteObject(params, function (err, data) {

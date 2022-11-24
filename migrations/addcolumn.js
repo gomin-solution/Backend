@@ -39,6 +39,8 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     // return await queryInterface.dropTable("isChoices");
+    // return queryInterface.dropTable("Notes");
+    // return queryInterface.removeColumn("AdviceImages", "resizeImage");
     // return queryInterface.removeColumn("Notes", "tUser");
   },
 };
