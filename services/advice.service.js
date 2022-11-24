@@ -135,9 +135,9 @@ class AdviceService {
 
     const findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
       return [
-        "https://hh99projectimage.s3.ap-northeast-2.amazonaws.com/adviceimage/" +
+        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage/" +
           post.adviceImage,
-        "https://hh99projectimage.s3.ap-northeast-2.amazonaws.com/adviceimage-resize/" +
+        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage-resize/" +
           post.adviceImage,
       ];
     });
@@ -254,7 +254,7 @@ class AdviceService {
     });
   };
 
-  reportAdvice = async (userKey, adviceId) => {
+  reportAdvice = async (userKey, adviceId, why) => {
     //작성자 확인
     let type = "advice";
     const writer = await this.adviceRepository.findAdvice(adviceId);
@@ -264,6 +264,20 @@ class AdviceService {
     if (userKey === writerHost) {
       return;
     }
+
+    const redup = await this.adviceRepository.reportRedup(
+      userKey,
+      writerHost,
+      adviceId,
+      type
+    );
+
+    if (redup[0]) {
+      const dupmes = false;
+      return dupmes;
+    }
+
+
     const reportAdvice = await this.adviceRepository.reportAdvice(
       userKey,
       adviceId,
