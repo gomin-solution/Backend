@@ -9,13 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: "fUser",
-        as: "fUserData",
-        targetKey: "userKey",
-      });
-      this.belongsTo(models.User, {
-        foreignKey: "tUser",
-        as: "tUserData",
+        foreignKey: "userKey",
         targetKey: "userKey",
       });
       this.belongsTo(models.NoteRoom, {
@@ -40,17 +34,11 @@ module.exports = (sequelize, DataTypes) => {
           key: "roomId",
         },
       },
-      fUser: {
+      userKey: {
+        allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "User",
-          key: "userKey",
-        },
-      },
-      tUser: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "User",
+          model: "Users",
           key: "userKey",
         },
       },

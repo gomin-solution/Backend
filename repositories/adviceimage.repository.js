@@ -12,18 +12,6 @@ class AdviceImageRepository {
     return;
   };
 
-  // updateAdviceImage = async (imageUrl, imageId) => {
-  //   const imageIds = imageId.split(",");
-
-  //   for (let i = 0; i < imageIds.length; i++) {
-  //     await AdviceImage.update(
-  //       { adviceImage: imageUrl[i] },
-  //       { where: { adviceImageId: imageIds[i] } }
-  //     );
-  //   }
-  //   return;
-  // };
-
   // 조언 게시글 이미지 삭제(수정용)
   imageDelete = async (adviceId) => {
     return await AdviceImage.destroy({ where: { adviceId: adviceId }});
@@ -34,11 +22,6 @@ class AdviceImageRepository {
       where: {adviceId: adviceId}
     })
     return findAdviceImage
-    // const adviceFindAllImage = [];
-    // for (let i=0; i<findAdviceImage.length; i++){
-    //   adviceFindAllImage.push(findAdviceImage[i].adviceImage)
-    // }
-    // return adviceFindAllImage;
   }  
 
 }

@@ -47,8 +47,8 @@ class NoteRepository {
     return allMyNote;
   };
 
-  findNoteOne = async (noteId, userKey) => {
-    const findNoteOne = await Note.findOne({
+  roadNotes = async (noteId, userKey) => {
+    const findNoteOne = await Note.findAll({
       where: { noteId, [Op.or]: [{ tUser: userKey }, { fUser: userKey }] },
       include: [
         { model: User, as: "fUserData", attributes: ["nickname", "userImg"] },

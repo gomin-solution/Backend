@@ -17,14 +17,8 @@ module.exports = {
           key: "roomId",
         },
       },
-      fUser: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Users",
-          key: "userKey",
-        },
-      },
-      tUser: {
+      userKey: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: "Users",

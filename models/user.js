@@ -50,11 +50,7 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: "userKey",
       });
       this.hasMany(models.Note, {
-        foreignKey: "fUser",
-        sourceKey: "userKey",
-      });
-      this.hasMany(models.Note, {
-        foreignKey: "tUser",
+        foreignKey: "userKey",
         sourceKey: "userKey",
       });
       this.hasMany(models.NoteRoom, {
