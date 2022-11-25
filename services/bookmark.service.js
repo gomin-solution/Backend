@@ -73,6 +73,7 @@ class BookMarkService {
         userKey: post.Choice.userKey,
         isBookMark: true,
         isChoice: isChoice,
+        isEnd: post.Choice.isEnd,
       };
     });
 
