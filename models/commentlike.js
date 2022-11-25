@@ -13,11 +13,6 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "userKey",
       });
 
-      // this.belongsTo(models.Choice, {
-      //     foreignKey: "choiceId",
-      //     targetKey: "choiceId",
-      // });
-
       this.belongsTo(models.Comment, {
         foreignKey: "commentId",
         targetKey: "commentId",

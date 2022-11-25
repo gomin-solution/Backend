@@ -70,7 +70,6 @@ class AdviceController {
         adviceId,
         filterId
       );
-      //console.log(findAdvice.comment)
 
       await this.adviceService.upCountView(adviceId, userKey);
       res.status(200).json({ findAdvice });
