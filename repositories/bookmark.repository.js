@@ -6,6 +6,7 @@ const {
   User,
   Comment,
   isChoice,
+  Category,
 } = require("../models");
 
 class BookMarkRepository {
@@ -65,7 +66,7 @@ class BookMarkRepository {
       where: { userKey: userKey },
       include: {
         model: Advice,
-        include: { model: Comment },
+        include: [{ model: Comment }, { model: Category }],
       },
     });
 
