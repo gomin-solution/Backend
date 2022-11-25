@@ -88,24 +88,33 @@ class UserController {
       const { userKey } = res.locals.user;
       const mainpage = await this.userService.mainPage(userKey);
 
-      return res.status(200).json(mainpage);
+      const { dailyData } = await this.userService.getDailymessage(userKey);
+
+      return res
+        .status(200)
+        .json({ mainpage: mainpage, dailyMessage: dailyData.msg });
     } catch (error) {
       next(error);
     }
   };
 
-  //행운메세지 가져오기
+  //행운메세지 open 업데이트
   dailyMessage = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
       if (userKey == 0) {
         return res.status(401).json({ message: "로그인이 필요한 기능입니다." });
       }
-      const getDailyData = await this.userService.getDailymessage(userKey);
+      const { isOpen } = await this.userService.getDailymessage(userKey);
 
-      if (!getDailyData.isOpen) await this.userService.messageCountUp(userKey);
+      if (!isOpen) {
+        await this.userService.updateMessageOpen(userKey);
+        return res
+          .status(200)
+          .json({ message: "오늘 처음 메세지를 열었습니다!" });
+      }
 
-      return res.status(200).json({ dailyMessage: getDailyData.msg });
+      return res.status(401).json({ message: "잘못된 요청입니다" });
     } catch (error) {
       next(error);
     }
@@ -187,19 +196,21 @@ class UserController {
     const image = req.file;
     const { nickname } = req.body;
 
+
     const findUser = await this.userService.findUserImage(userKey);
     const findUserImage = findUser.userImage
+
 
     try {
       //이미지 수정
       if (image) {
-        for (let i=0; i<findUserImage.length; i++) {
+        for (let i = 0; i < findUserImage.length; i++) {
           const s3 = new aws.S3({
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
             region: process.env.AWS_REGION,
           });
-  
+
           const params = {
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: findUserImage[i],
@@ -207,6 +218,7 @@ class UserController {
   
           s3.deleteObject(params, function (err, data) { });
         }        
+
 
         const imageUrl = image.location;
         await this.userService.uploadUserImage(imageUrl, userKey);

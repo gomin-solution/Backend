@@ -53,13 +53,11 @@ class NoteController {
     try {
       const { userKey } = res.locals.user;
       const { roomId } = req.params;
-      console.log("컨트롤러 유저키", userKey);
 
       const { notes, nickname } = await this.noteService.roadNotes(
         roomId,
         userKey
       );
-      console.log(nickname, "/////////here///////////");
       return res.status(200).json({ notes: notes, nickname: nickname });
     } catch (err) {
       next(err);

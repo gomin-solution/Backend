@@ -29,7 +29,6 @@ module.exports = (server) => {
     socket.on("error", (error) => {
       console.error(error);
     });
-    let RoomId;
 
     //* 룸 입장
     socket.on("enter_room", (data) => {
@@ -45,11 +44,11 @@ module.exports = (server) => {
     /**메세지 저장후 전달 */
     socket.on("chat_message", async (data) => {
       let { note, roomId, userKey } = data;
-      console.log(data);
 
       const date = dayjs().tz().format("YYYY-MM-DD HH:mm");
       // const chatTime = new Date(today).setHours(new Date(today).getHours() - 9);
 
+      //DB에 메세지 저장
       await Note.create({
         roomId: roomId,
         userKey: userKey,
@@ -64,6 +63,6 @@ module.exports = (server) => {
       io.to(roomId).emit("message", msg);
     });
 
-    // socket.emit("enter_room", { roomName: "room1" });
+
   });
 };
