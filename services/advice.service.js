@@ -32,92 +32,96 @@ class AdviceService {
   };
 
   // 조언 게시물 전체 조회
-  findAllAdvice = async (categoryId, filterId, page) => {
-    if (categoryId == 0) {
-      const findAllAdvice = await this.adviceRepository.findAllAdvice();
-      const data = findAllAdvice.map((post) => {
-        const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
-        return {
-          adviceId: post.adviceId,
-          userKey: post.userKey,
-          categoryId: post.categoryId,
-          title: post.title,
-          content: post.content,
-          createdAt: date,
-          userImage: post.User.userImg,
-          nickname: post.User.nickname,
-          viewCount: post.viewCount,
-          category: post.Category.name,
-          commentCount: post.Comments.length,
-        };
-      });
-      if (filterId == "0") {
-        data.sort((a, b) => b.adviceId - a.adviceId);
-      }
-      if (filterId == "1") {
-        data.sort((a, b) => b.viewCount - a.viewCount);
-      }
-      if (filterId == "2") {
-        data.sort((a, b) => b.commentCount - a.commentCount);
-      }
-  
-      let advice;
-      let arr = [];
-      function chunk(data = [], size = 1) {
-        arr = [];
-        for (let i = 0; i < data.length; i += size) {
-          arr.push(data.slice(i, i + size));
-        }
-        return arr;
-      }
-      advice = chunk(data, 10)[Number(page)];
-  
-      if (!advice) {advice = [] }
-      return advice;
-    } else {
-      const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
-        categoryId
-      );
-      const data = findCategoryAdvice.map((post) => {
-        const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
-        return {
-          adviceId: post.adviceId,
-          userKey: post.userKey,
-          categoryId: post.categoryId,
-          title: post.title,
-          content: post.content,
-          createdAt: date,
-          userImage: post.User.userImg,
-          nickname: post.User.nickname,
-          viewCount: post.viewCount,
-          category: post.Category.name,
-          commentCount: post.Comments.length,
-        };
-      });
-      if (filterId == "0") {
-        data.sort((a, b) => b.adviceId - a.adviceId);
-      }
-      if (filterId == "1") {
-        data.sort((a, b) => b.viewCount - a.viewCount);
-      }
-      if (filterId == "2") {
-        data.sort((a, b) => b.commentCount - a.commentCount);
-      }
-  
-      let advice;
-      let arr = [];
-      function chunk(data = [], size = 1) {
-        arr = [];
-        for (let i = 0; i < data.length; i += size) {
-          arr.push(data.slice(i, i + size));
-        }
-        return arr;
-      }
-      advice = chunk(data, 10)[Number(page)];
-  
-      if (!advice) {advice = [] }
-      return advice;
+  findAllAdvice = async (filterId, page) => {
+    const findAllAdvice = await this.adviceRepository.findAllAdvice();
+
+    const data = findAllAdvice.map((post) => {
+      const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      return {
+        adviceId: post.adviceId,
+        userKey: post.userKey,
+        categoryId: post.categoryId,
+        title: post.title,
+        content: post.content,
+        createdAt: date,
+        userImage: post.User.userImg,
+        nickname: post.User.nickname,
+        viewCount: post.viewCount,
+        category: post.Category.name,
+        commentCount: post.Comments.length,
+      };
+    });
+
+    if (filterId == "0") {
+      data.sort((a, b) => b.adviceId - a.adviceId);
     }
+    if (filterId == "1") {
+      data.sort((a, b) => b.viewCount - a.viewCount);
+    }
+    if (filterId == "2") {
+      data.sort((a, b) => b.commentCount - a.commentCount);
+    }
+
+    let advice;
+    let arr = [];
+    function chunk(data = [], size = 1) {
+      arr = [];
+      for (let i = 0; i < data.length; i += size) {
+        arr.push(data.slice(i, i + size));
+      }
+      return arr;
+    }
+    advice = chunk(data, 10)[Number(page)];
+
+    return advice;
+
+    // return data;
+  };
+
+  // 조언 게시물 카테고리별 조회
+  findCategoryAdvice = async (categoryId, filterId, page) => {
+    const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
+      categoryId
+    );
+    const data = findCategoryAdvice.map((post) => {
+      const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      return {
+        adviceId: post.adviceId,
+        userKey: post.userKey,
+        categoryId: post.categoryId,
+        title: post.title,
+        content: post.content,
+        createdAt: date,
+        userImage: post.User.userImg,
+        nickname: post.User.nickname,
+        viewCount: post.viewCount,
+        category: post.Category.name,
+        commentCount: post.Comments.length,
+      };
+    });
+
+    if (filterId == "0") {
+      data.sort((a, b) => b.adviceId - a.adviceId);
+    }
+    if (filterId == "1") {
+      data.sort((a, b) => b.viewCount - a.viewCount);
+    }
+    if (filterId == "2") {
+      data.sort((a, b) => b.commentCount - a.commentCount);
+    }
+
+    let advice;
+    let arr = [];
+    function chunk(data = [], size = 1) {
+      arr = [];
+      for (let i = 0; i < data.length; i += size) {
+        arr.push(data.slice(i, i + size));
+      }
+      return arr;
+    }
+    advice = chunk(data, 10)[Number(page)];
+
+    return advice;
   };
 
   //  조언 게시물 상세페이지 조회
@@ -127,15 +131,25 @@ class AdviceService {
       adviceId
     );
 
-    const findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-      return [
-        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage/" +
-          post.adviceImage,
-        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage-resize/" +
-          post.adviceImage,
-      ];
-    });
+    const findCreatedAt = dayjs(findOneAdvice.createdAt).tz();
+    const plusTwoSec = findCreatedAt.add(3, "s");
 
+    let findAdviceImageArray = [];
+    if (dayjs().tz() <= plusTwoSec) {
+      findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
+        return [
+          "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage/" +
+            post.adviceImage,
+        ];
+      });
+    } else {
+      findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
+        return [
+          "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage-resize/" +
+            post.adviceImage,
+        ];
+      });
+    }
     const comment = findOneAdvice.Comments.map((comment) => {
       const isLike = comment.CommentLikes.filter(
         (like) => like.userKey === userKey
@@ -237,7 +251,6 @@ class AdviceService {
         adviceId: post.adviceId,
         userKey: post.userKey,
         categoryId: post.categoryId,
-        category: post.Category.name,
         title: post.title,
         content: post.content,
         createdAt: createdAt,
@@ -253,7 +266,6 @@ class AdviceService {
     let type = "advice";
     const writer = await this.adviceRepository.findAdvice(adviceId);
     const writerHost = writer.userKey;
-    console.log(writerHost);
 
     if (userKey === writerHost) {
       return;
