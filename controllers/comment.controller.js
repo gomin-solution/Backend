@@ -143,5 +143,29 @@ class CommentController {
       next(error);
     }
   };
+
+  //대댓글 기능
+  reComment = async (req, res, next) => {
+    try {
+      const { commentId } = req.params;
+      const { userKey } = res.locals.user;
+      const { re, route } = req.body;
+      //re는 대댓글 내용, route는 무엇의 대댓글인지를 나타낸다.
+      //만약 주 덧글의 대댓글이라면 route는 이 될 것이다.
+      //참고로 route는 배열모양을 한 스트링이다. 이부분은 프론트와 조율이 필요하다.
+      //우선 받아온 데이터를 서비스로 보낸다.
+
+      const reply = await this.commentService.reComment(
+        userKey,
+        commentId,
+        re,
+        route
+      );
+
+      res.status(200).json({ data: reply });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 module.exports = CommentController;
