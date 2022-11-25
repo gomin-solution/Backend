@@ -16,9 +16,11 @@ const port = process.env.EXPRESS_PORT || 3000;
 const socket = require("./socket");
 
 connect();
-schedule();
+schedule().job;
 
-const whitelist = [process.env.CLIENT, "http://localhost:3000", undefined];
+
+const whitelist = [process.env.CLIENT, "http://localhost:3000", undefined]; //Thunder client 요청의 경우 undefined 허용
+
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -29,6 +31,7 @@ const corsOptions = {
       callback(new Error("Not Allowed Origin!")); // cors 비허용
     }
   },
+  credentials: true,
 };
 
 app.use(cors(corsOptions)); // 옵션을 추가한 CORS 미들웨어 추가

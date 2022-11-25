@@ -35,8 +35,6 @@ class UserService {
     const DailyArray = await this.dailyMsgRepository.allMsg();
     const msgArray = DailyArray.map((x) => x.msg);
     const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
-    console.log(createUser.userKey);
-    console.log(msg);
     await redisCli.hSet(`${createUser.userKey}`, {
       msg: msg,
       isOpen: 0,
@@ -56,12 +54,12 @@ class UserService {
       { userId: user.userId, userKey: user.userKey },
       process.env.SECRET_KEY
       // {
-      //   expiresIn: "5s",
+      //   expiresIn: "5h",
       // }
     );
 
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
     const nickname = user.nickname;
     return { accessToken, refreshToken, nickname };
@@ -138,9 +136,14 @@ class UserService {
     }
     const user = await this.userRepository.findUser(userKey);
 
-    
-    const userImage = ["https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/"+user.userImg];
-    const userResizeImage = ["https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/"+user.userImg];
+    const userImage = [
+      "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/" +
+        user.userImg,
+    ];
+    const userResizeImage = [
+      "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/" +
+        user.userImg,
+    ];
 
     const totalUserImage = userImage.concat(userResizeImage);
     console.log(totalUserImage);
@@ -158,15 +161,15 @@ class UserService {
 
   findUserImage = async (userKey) => {
     const user = await this.userRepository.findUserImage(userKey);
-    const userImage = ["profileimage/"+user.userImg]
-    const userResizeImage = ["profileimage-resize/"+user.userImg];
+    const userImage = ["profileimage/" + user.userImg];
+    const userResizeImage = ["profileimage-resize/" + user.userImg];
     const totalUserImage = userImage.concat(userResizeImage);
-    console.log(totalUserImage)
+    console.log(totalUserImage);
     const result = {
-      userImage: totalUserImage
-    }
+      userImage: totalUserImage,
+    };
     return result;
-  }
+  };
 
   //검색 가져오기
   search = async (userKey, keyword) => {

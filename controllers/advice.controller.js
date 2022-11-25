@@ -149,7 +149,7 @@ class AdviceController {
     const findAdvice = await this.adviceService.findAllAdviceOne(adviceId);
 
     try {
-      if (userKey !== findAdvice[0].userKey) {
+      if (userKey !== findAdvice.userKey) {
         return res.status(400).json({ errorMessage: "권한이 없습니다." });
       }
 

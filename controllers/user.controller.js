@@ -37,7 +37,6 @@ class UserController {
     try {
       // const { email, password } = await joi.loginSchema.validateAsync(req.body);
       const { userId, password } = req.body;
-      console.log(userId, password);
 
       const { accessToken, refreshToken, nickname } =
         await this.userService.verifyUser(userId, password);
@@ -46,7 +45,9 @@ class UserController {
       await redisCli.set(userId, refreshToken);
 
       res.cookie("accesstoken", accessToken);
-      res.cookie("refreshtoken", refreshToken);
+      res.cookie("refreshtoken", refreshToken, {
+        httpOnly: true,
+      });
 
       return res
         .status(200)
@@ -61,7 +62,6 @@ class UserController {
     try {
       const { nickname, userId } = req.body;
 
-      console.log(nickname, userId);
       if (!nickname && !userId) {
         return res.status(400).json({ message: "잘못된 요청입니다" });
       }
@@ -196,10 +196,8 @@ class UserController {
     const image = req.file;
     const { nickname } = req.body;
 
-
     const findUser = await this.userService.findUserImage(userKey);
-    const findUserImage = findUser.userImage
-
+    const findUserImage = findUser.userImage;
 
     try {
       //이미지 수정
@@ -215,10 +213,9 @@ class UserController {
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: findUserImage[i],
           };
-  
-          s3.deleteObject(params, function (err, data) { });
-        }        
 
+          s3.deleteObject(params, function (err, data) {});
+        }
 
         const imageUrl = image.location;
         await this.userService.uploadUserImage(imageUrl, userKey);

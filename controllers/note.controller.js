@@ -41,7 +41,6 @@ class NoteController {
     try {
       const myNotePage = await this.noteService.allMyNote(userKey);
       // const test = myNotePage.map((x) => x.recipient)
-      // console.log(test, "나오나")
       return res.status(200).json({ myNotePage });
     } catch (err) {
       next(err);
@@ -69,7 +68,6 @@ class NoteController {
     const { noteId } = req.params;
     try {
       const myNotePage = await this.noteService.findNoteOne(noteId, userKey);
-      //console.log(myNotePage.fUser, "쪽지 찾기")
 
       if (userKey !== myNotePage.fUser) {
         return res.status(400).send({ message: "권한이 없습니다." });
