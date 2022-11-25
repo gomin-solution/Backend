@@ -65,13 +65,13 @@ class BookMarkService {
         choice2Name: post.Choice.choice2Name,
         choice1Per: choice1Per,
         choice2Per: choice2Per,
-        userImage: post.Choice.User.userImage,
+        userImage: post.Choice.User.userImg,
         nickname: post.Choice.User.nickname,
         createdAt: createdAt,
         endTime: endTime,
         choiceCount: post.Choice.choiceCount,
         userKey: post.Choice.userKey,
-        isBookmark: true,
+        isBookMark: true,
         isChoice: isChoice,
       };
     });

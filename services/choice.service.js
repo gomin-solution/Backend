@@ -70,21 +70,21 @@ class ChoiceService {
       });
 
       if (sort === "1") {
-        const parti = allChoice.sort((a, b) => b.choiceCount - a.choiceCount);
+        const parti = allChoice.sort(
+          (a, b) => a.isEnd - b.isEnd || b.choiceCount - a.choiceCount
+        );
         return parti;
       } else if (sort === "2") {
         //마감순
-        const deadline = allChoice.sort((a, b) => {
-          const endTimeA = dayjs(a.endTime).valueOf();
-          const endTimeB = dayjs(b.endTime).valueOf();
-          return endTimeA - endTimeB;
-        });
-        const deadline_1 = deadline.sort((a, b) => a.isEnd - b.isEnd);
-
-        return deadline_1;
+        const deadline = allChoice.sort(
+          (a, b) =>
+            a.isEnd - b.isEnd ||
+            dayjs(a.endTime).valueOf() - dayjs(b.endTime).valueOf()
+        );
+        return deadline;
       }
-
-      return allChoice;
+      const Choices = allChoice.sort((a, b) => a.isEnd - b.isEnd);
+      return Choices;
     } catch (error) {
       console.log(error);
     }

@@ -29,6 +29,7 @@ const corsOptions = {
       callback(new Error("Not Allowed Origin!")); // cors 비허용
     }
   },
+  credentials: true,
 };
 
 app.use(cors(corsOptions)); // 옵션을 추가한 CORS 미들웨어 추가

@@ -46,7 +46,9 @@ class UserController {
       await redisCli.set(userId, refreshToken);
 
       res.cookie("accesstoken", accessToken);
-      res.cookie("refreshtoken", refreshToken);
+      res.cookie("refreshtoken", refreshToken, {
+        httpOnly: true,
+      });
 
       return res
         .status(200)
@@ -196,10 +198,8 @@ class UserController {
     const image = req.file;
     const { nickname } = req.body;
 
-
     const findUser = await this.userService.findUserImage(userKey);
-    const findUserImage = findUser.userImage
-
+    const findUserImage = findUser.userImage;
 
     try {
       //이미지 수정
@@ -215,10 +215,9 @@ class UserController {
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: findUserImage[i],
           };
-  
-          s3.deleteObject(params, function (err, data) { });
-        }        
 
+          s3.deleteObject(params, function (err, data) {});
+        }
 
         const imageUrl = image.location;
         await this.userService.uploadUserImage(imageUrl, userKey);
