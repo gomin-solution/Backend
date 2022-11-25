@@ -37,7 +37,6 @@ class UserController {
     try {
       // const { email, password } = await joi.loginSchema.validateAsync(req.body);
       const { userId, password } = req.body;
-      console.log(userId, password);
 
       const { accessToken, refreshToken, nickname } =
         await this.userService.verifyUser(userId, password);
@@ -63,7 +62,6 @@ class UserController {
     try {
       const { nickname, userId } = req.body;
 
-      console.log(nickname, userId);
       if (!nickname && !userId) {
         return res.status(400).json({ message: "잘못된 요청입니다" });
       }

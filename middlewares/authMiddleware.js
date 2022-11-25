@@ -37,7 +37,6 @@ module.exports = async (req, res, next) => {
       try {
         const decoded = jwt.decode(accessToken);
         const token = await redisCli.get(`${decoded.userId}`);
-        console.log(token);
         if (refreshToken === token) {
           jwt.verify(refreshToken, process.env.SECRET_KEY);
           return true;
@@ -83,8 +82,7 @@ module.exports = async (req, res, next) => {
     } else if (accessToken !== "undefined") {
       /**토큰이 유효한 경우 */
       const { userId } = jwt.verify(accessToken, process.env.SECRET_KEY);
-      console.log("유저아이디");
-      console.log(userId);
+
       const user = await User.findOne({ where: { userId: userId } }); //
       res.locals.user = user;
     } else {

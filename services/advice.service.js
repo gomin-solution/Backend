@@ -60,7 +60,7 @@ class AdviceService {
       if (filterId == "2") {
         data.sort((a, b) => b.commentCount - a.commentCount);
       }
-  
+
       let advice;
       let arr = [];
       function chunk(data = [], size = 1) {
@@ -71,8 +71,10 @@ class AdviceService {
         return arr;
       }
       advice = chunk(data, 10)[Number(page)];
-  
-      if (!advice) {advice = [] }
+
+      if (!advice) {
+        advice = [];
+      }
       return advice;
     } else {
       const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
@@ -103,7 +105,7 @@ class AdviceService {
       if (filterId == "2") {
         data.sort((a, b) => b.commentCount - a.commentCount);
       }
-  
+
       let advice;
       let arr = [];
       function chunk(data = [], size = 1) {
@@ -114,8 +116,10 @@ class AdviceService {
         return arr;
       }
       advice = chunk(data, 10)[Number(page)];
-  
-      if (!advice) {advice = [] }
+
+      if (!advice) {
+        advice = [];
+      }
       return advice;
     }
   };
@@ -126,15 +130,6 @@ class AdviceService {
       userKey,
       adviceId
     );
-
-    const findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-      return [
-        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage/" +
-          post.adviceImage,
-        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage-resize/" +
-          post.adviceImage,
-      ];
-    });
 
     const comment = findOneAdvice.Comments.map((comment) => {
       const isLike = comment.CommentLikes.filter(
@@ -172,6 +167,15 @@ class AdviceService {
     const updatedAt = dayjs(findOneAdvice.updatedAt)
       .tz()
       .format("YYYY.MM.DD HH:mm");
+
+    const findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
+      return [
+        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage/" +
+          post.adviceImage,
+        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage-resize/" +
+          post.adviceImage,
+      ];
+    });
     return {
       adviceId: findOneAdvice.adviceId,
       categoryId: findOneAdvice.categoryId,
@@ -253,7 +257,6 @@ class AdviceService {
     let type = "advice";
     const writer = await this.adviceRepository.findAdvice(adviceId);
     const writerHost = writer.userKey;
-    console.log(writerHost);
 
     if (userKey === writerHost) {
       return;

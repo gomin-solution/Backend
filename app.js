@@ -16,7 +16,7 @@ const port = process.env.EXPRESS_PORT || 3000;
 const socket = require("./socket");
 
 connect();
-schedule();
+schedule().job;
 
 const whitelist = [process.env.CLIENT, "http://localhost:3000", undefined]; //Thunder client 요청의 경우 undefined 허용
 

@@ -14,7 +14,6 @@ class ChoiceService {
   createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
     const date = dayjs(endTime);
     const scheduleDate = date.subtract(9, "hour").format();
-    console.log("scheduleDate", scheduleDate);
     const createchoice = await this.choiceRepository.createchoice(
       userKey,
       title,

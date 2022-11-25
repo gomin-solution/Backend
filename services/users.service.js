@@ -35,8 +35,6 @@ class UserService {
     const DailyArray = await this.dailyMsgRepository.allMsg();
     const msgArray = DailyArray.map((x) => x.msg);
     const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
-    console.log(createUser.userKey);
-    console.log(msg);
     await redisCli.hSet(`${createUser.userKey}`, {
       msg: msg,
       isOpen: 0,

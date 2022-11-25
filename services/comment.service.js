@@ -36,9 +36,6 @@ class CommentService {
   updateCommentLike = async (userKey, commentId) => {
     const dup = await this.commentRepository.reportCommentAuthor(commentId);
 
-    console.log(dup);
-    console.log(userKey);
-
     if (dup === userKey) return -1;
 
     const isCommentLike = await this.commentRepository.isCommentLike(
