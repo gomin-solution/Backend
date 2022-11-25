@@ -53,7 +53,7 @@ class BookMarkRepository {
         model: Choice,
         include: [
           { model: User, attributes: ["nickname", "userImg"] },
-          { model: isChoice, where: { userKey: userKey } },
+          { model: isChoice, where: { userKey: userKey }, required: false },
         ],
       },
     });

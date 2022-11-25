@@ -244,6 +244,7 @@ class AdviceService {
         adviceId: post.adviceId,
         userKey: post.userKey,
         categoryId: post.categoryId,
+        category: post.Category.name,
         title: post.title,
         content: post.content,
         createdAt: createdAt,
@@ -276,7 +277,6 @@ class AdviceService {
       const dupmes = false;
       return dupmes;
     }
-
 
     const reportAdvice = await this.adviceRepository.reportAdvice(
       userKey,
