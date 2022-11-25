@@ -46,18 +46,14 @@ class AdviceController {
     const { categoryId, filterId } = req.params;
     const { page } = req.query;
 
-    const allAdvice = await this.adviceService.findAllAdvice(filterId, page);
-    const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
+    const allAdvice = await this.adviceService.findAllAdvice(
       categoryId,
       filterId,
       page
     );
 
     try {
-      if (categoryId == 0 ) {
-        return res.status(200).json({ allAdvice });
-      }
-      return res.status(200).json({ allCategoryAdvice });
+      return res.status(200).json({ allAdvice });
     } catch (err) {
       next(err);
     }
@@ -116,7 +112,7 @@ class AdviceController {
             Key: findImageAdvice[i],
           };
 
-          s3.deleteObject(params, function (err, data) { });
+          s3.deleteObject(params, function (err, data) {});
         }
         await this.adviceImageService.imageDelete(adviceId);
 
@@ -174,7 +170,7 @@ class AdviceController {
           Key: findDeleteImages[i],
         };
 
-        s3.deleteObject(params, function (err, data) { });
+        s3.deleteObject(params, function (err, data) {});
       }
 
       //게시물 삭제

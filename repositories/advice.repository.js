@@ -100,7 +100,7 @@ class AdviceRepository {
       include: [
         { model: User, attributes: ["userKey", "nickname", "userImg"] },
         { model: AdviceBM, where: { userKey: userKey }, required: false },
-        { model: AdviceImage, attributes: ["adviceImageId", "adviceImage", "resizeImage"] },
+        { model: AdviceImage, attributes: ["adviceImageId", "adviceImage"] },
         {
           model: Comment,
           order: [["commentId", "DESC"]],
