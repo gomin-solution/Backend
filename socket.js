@@ -48,6 +48,7 @@ module.exports = (server) => {
       const date = dayjs().tz().format("YYYY-MM-DD HH:mm");
       // const chatTime = new Date(today).setHours(new Date(today).getHours() - 9);
 
+      //DB에 메세지 저장
       await Note.create({
         roomId: roomId,
         userKey: userKey,

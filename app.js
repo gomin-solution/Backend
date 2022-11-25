@@ -20,7 +20,7 @@ schedule();
 
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.CLIENT,
     credential: "true",
   })
 );
