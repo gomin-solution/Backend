@@ -118,7 +118,6 @@ class AdviceService {
         arr.push(data.slice(i, i + size));
       }
       return arr;
-
     }
     advice = chunk(data, 10)[Number(page)];
 
@@ -131,7 +130,6 @@ class AdviceService {
       userKey,
       adviceId
     );
-
 
     const findCreatedAt = dayjs(findOneAdvice.createdAt).tz();
     const plusTwoSec = findCreatedAt.add(3, "s");
@@ -190,14 +188,6 @@ class AdviceService {
       .tz()
       .format("YYYY.MM.DD HH:mm");
 
-    const findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-      return [
-        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage/" +
-          post.adviceImage,
-        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage-resize/" +
-          post.adviceImage,
-      ];
-    });
     return {
       adviceId: findOneAdvice.adviceId,
       categoryId: findOneAdvice.categoryId,
