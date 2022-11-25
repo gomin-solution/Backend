@@ -14,6 +14,9 @@ router.delete("/:commentId", authMiddleware, commentController.deleteComment);
 
 router.put("/like/:commentId", authMiddleware, commentController.likeComment);
 
+//대댓글 기능
+router.post("/re/:commentId", authMiddleware, commentController.reComment);
+
 //댓글 신고하기
 router.put(
   "/report/:commentId",
