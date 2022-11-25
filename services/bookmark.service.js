@@ -93,6 +93,9 @@ class BookMarkService {
         createdAt: createdAt,
         userKey: post.Advice.userKey,
         CommentCount: post.Advice.Comments.length,
+        viewCount: post.Advice.viewCount,
+        catrgoryId: post.Advice.catrgoryId,
+        category: post.Advice.Category.name,
       };
     });
 

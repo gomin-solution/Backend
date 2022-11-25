@@ -158,7 +158,10 @@ class AdviceRepository {
 
   //내가 쓴 조언글 조회
   myadvice = async (userKey) => {
-    return await Advice.findAll({ where: { userKey: userKey } });
+    return await Advice.findAll({
+      where: { userKey: userKey },
+      include: { model: Category },
+    });
   };
 
   // 조언 게시글 신고하기
@@ -188,7 +191,7 @@ class AdviceRepository {
       ids: data,
     });
     return result;
-  }
+  };
 }
 
 module.exports = AdviceRepository;

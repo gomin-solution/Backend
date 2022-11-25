@@ -237,6 +237,7 @@ class AdviceService {
         adviceId: post.adviceId,
         userKey: post.userKey,
         categoryId: post.categoryId,
+        category: post.Category.name,
         title: post.title,
         content: post.content,
         createdAt: createdAt,
