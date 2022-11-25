@@ -1,4 +1,4 @@
-const { Users, Posts, Comment, CommentLike } = require("../models"); //모델 데이터를 가져오고
+const { Comment, CommentLike, Reply } = require("../models"); //모델 데이터를 가져오고
 const { Op } = require("sequelize");
 const Report = require("../schemas/report");
 
@@ -127,6 +127,67 @@ class CommentRepository {
       updatedAt,
     });
     return result;
+  };
+  //여기서부터 대댓글 기능===============
+  //덧글 데이터 가져오기
+  infoComment = async (commentId) => {
+    const data = await Comment.findOne({
+      where: {
+        [Op.and]: [{ commentId }],
+      },
+    });
+    return data;
+  };
+
+  //대댓글 데이터 가져오기
+  //라우트값이 없다면 주 댓글에 대댓글이 달린다.
+  infoReply = async (commentId, route) => {
+    if (route) {
+      const data = await Reply.findAll({
+        where: {
+          [Op.and]: [{ commentId }, { route }],
+        },
+      });
+      return data;
+    } else {
+      const data = await Reply.findAll({
+        where: {
+          [Op.and]: [{ commentId }],
+        },
+      });
+      return data;
+    }
+  };
+
+  //특정 배열 길이의 대댓글을 가져오기
+  replyByLength = async (commentId, count) => {
+    const data = await Reply.findAll({
+      where: {
+        [Op.and]: [{ commentId }, { count: count }],
+      },
+    });
+    return data;
+  };
+
+  //대댓글 생성하기
+  createReply = async (commentId, route, count, comment) => {
+    const data = await Reply.create({
+      commentId,
+      route,
+      count,
+      comment,
+    });
+    return data;
+  };
+
+  //길이가 하나일때, 데이터 가져오기
+  topReply = async (commentId) => {
+    const data = await Reply.findAll({
+      where: {
+        [Op.and]: [{ commentId }, { count: 1 }],
+      },
+    });
+    return data;
   };
 }
 

@@ -97,6 +97,102 @@ class CommentService {
 
     return report;
   };
+
+  //대댓글 기능
+  reComment = async (userKey, commentId, re, route) => {
+    //해당commentId와 route를 가진 대댓글 데이터를 가져오자
+    const reInfo = await this.commentRepository.infoReply(commentId, route);
+
+    //대댓글이 아예 없는 경우
+    if (!reInfo) {
+      route = "[0]";
+      let count = 1;
+      const fin = await this.commentRepository.createReply(
+        commentId,
+        route,
+        count,
+        re
+      );
+      return fin;
+    }
+    if (!route) {
+      console.log(reInfo);
+      let temp = reInfo.length;
+      route = "[" + temp + "]";
+      let count = 1;
+      const fin = await this.commentRepository.createReply(
+        commentId,
+        route,
+        count,
+        re
+      );
+      return fin;
+    }
+
+    //스트링으로 가져온 route를 배열로 변환하자
+    let route_Array = JSON.parse(route); //입력한 값
+    //그렇게 변환된 배열의 길이를 따로 저장한다.
+    //이때, 만약 route가 null이면 length는 0 으로 한다.
+    let leng = route ? route_Array.length : 0; //입력한 값의 길이
+    let targetLength = leng + 1;
+    //그리고 leng와 동일한 길이를 가진 데이터를 리포로부터 가져온다.
+    //단, 리포에 저장된건 배열 형태를한 스트링이다.
+    let target = await this.commentRepository.replyByLength(
+      commentId,
+      targetLength
+    );
+
+    //그래서, 그렇게 가져온 데이터를 나열했을 때,
+    //각 배열들을 for문을 돌려서 검증하자
+    let array = new Array();
+    let result = new Array();
+    if (route_Array) {
+      for (let k = 0; k < target.length; k++) {
+        let a = JSON.parse(target[k].route);
+        for (let i = 0; i < route_Array.length; i++) {
+          if (route_Array[i] === a[i]) {
+            array.push(a[i]);
+          } else {
+            array = [];
+            continue;
+          }
+        }
+
+        if (array[0] || array[0] === 0) {
+          result.push(array);
+        }
+
+        array = [];
+      }
+    }
+
+    //자, 그렇가 완성된 배열의 마지막 값을 가져오자.
+    //그리고 그 값에 +1을 한 것이, 이번에 새로 완성된 마지막 배열의 숫자다.
+    //let temp = new Array();
+
+    if (route_Array) {
+      route_Array.push(result.length);
+    } else {
+      const topReply = await this.commentRepository.topReply(commentId);
+
+      route_Array = [topReply.length];
+    }
+
+    let data = JSON.stringify(route_Array);
+    //자, 그 배열을 택스트로 변환하고
+    //리플을 새로 만든다.
+    //참고로 카운트에 들어갈 값도 만든다.
+    let newCount = route_Array.length;
+
+    const newReply = await this.commentRepository.createReply(
+      commentId,
+      data,
+      newCount,
+      re
+    );
+
+    return newReply;
+  };
 }
 
 module.exports = CommentService;

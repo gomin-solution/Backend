@@ -28,14 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         sourceKey: "userKey",
       });
-      // this.hasMany(models.Choice, {
-      //   foreignKey: "userKey",
-      //   sourceKey: "userKey",
-      // });
-      // this.hasMany(models.Comment, {
-      //   foreignKey: "userKey",
-      //   sourceKey: "userKey",
-      // });
       this.hasMany(models.AdviceBM, {
         foreignKey: "userKey",
         sourceKey: "userKey",

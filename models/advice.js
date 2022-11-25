@@ -62,10 +62,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      //   isSave: {
-      //     type: DataTypes.BOOLEAN,
-      //     allowNull: true,
-      //   },
       viewCount: {
         type: DataTypes.INTEGER,
         allowNull: true,
