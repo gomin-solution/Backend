@@ -46,34 +46,18 @@ class AdviceController {
     const { categoryId, filterId } = req.params;
     const { page } = req.query;
 
-    const allAdvice = await this.adviceService.findAllAdvice(filterId);
+    const allAdvice = await this.adviceService.findAllAdvice(filterId, page);
     const allCategoryAdvice = await this.adviceService.findCategoryAdvice(
       categoryId,
-      filterId
+      filterId,
+      page
     );
 
-    let advice;
-    let arr = [];
-    if (categoryId == 0) {
-      advice = chunk(allAdvice, 10)[Number(page)];
-    } else {
-      advice = chunk(allCategoryAdvice, 10)[Number(page)];
-    }
-
-    function chunk(data = [], size = 1) {
-      arr = [];
-      for (let i = 0; i < data.length; i += size) {
-        arr.push(data.slice(i, i + size));
-      }
-      return arr;
-    }
-
     try {
-      if (!advice) {
-        advice = [];
+      if (categoryId == 0 ) {
+        return res.status(200).json({ allAdvice });
       }
-      //카테고리별 조회
-      return res.status(200).json({ advice });
+      return res.status(200).json({ allCategoryAdvice });
     } catch (err) {
       next(err);
     }
@@ -132,14 +116,7 @@ class AdviceController {
             Key: findImageAdvice[i],
           };
 
-          s3.deleteObject(params, function (err, data) {
-            if (err) {
-              console.log(err, err.stack);
-            } else {
-              res.status(200);
-              next();
-            }
-          });
+          s3.deleteObject(params, function (err, data) { });
         }
         await this.adviceImageService.imageDelete(adviceId);
 
@@ -197,14 +174,7 @@ class AdviceController {
           Key: findDeleteImages[i],
         };
 
-        s3.deleteObject(params, function (err, data) {
-          if (err) {
-            console.log(err, err.stack);
-          } else {
-            res.status(200);
-            next();
-          }
-        });
+        s3.deleteObject(params, function (err, data) { });
       }
 
       //게시물 삭제
@@ -232,6 +202,7 @@ class AdviceController {
   reportAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { adviceId } = req.params;
+    const { why } = req.body;
 
     try {
       if (userKey == 0) {
@@ -239,12 +210,18 @@ class AdviceController {
       }
       const adviceUpdate = await this.adviceService.reportAdvice(
         userKey,
-        adviceId
+        adviceId,
+        why
       );
+
+      if (adviceUpdate === false) {
+        return res.status(400).json({ Message: "중복된 신고 입니다." });
+      }
 
       let mes;
       if (!adviceUpdate) {
         mes = "지금 자신의 글을 신고한다고??";
+        return res.status(400).json({ Message: mes });
       } else {
         mes = "신고";
       }

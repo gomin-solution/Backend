@@ -63,7 +63,7 @@ class AdviceRepository {
   // 조언 게시물 전체 조회
   findAllAdvice = async () => {
     const findAllAdvice = await Advice.findAll({
-      // 오름차순: ASC, 내림차순 : DESC
+      order: [["adviceId", "DESC"]], // 오름차순: ASC, 내림차순 : DESC
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
         { model: Category },
@@ -71,8 +71,6 @@ class AdviceRepository {
           model: Comment,
           include: [{ model: CommentLike }, { model: User }],
         },
-
-        //{ model: AdviceBM, where: { userKey: userKey }}, // 북마크를 받아와야하면 쓰자
       ],
     });
     return findAllAdvice;
@@ -81,6 +79,7 @@ class AdviceRepository {
   // 조언 게시물 카테고리별 조회
   findCategoryAdvice = async (categoryId) => {
     const findCategiryAdvice = await Advice.findAll({
+      order: [["adviceId", "DESC"]],
       where: { categoryId: categoryId },
       include: [
         { model: User, attributes: ["nickname", "userImg"] },
@@ -89,7 +88,6 @@ class AdviceRepository {
           model: Comment,
           include: [{ model: CommentLike }, { model: User }],
         },
-        //{ model: AdviceBM, where: { userKey: userKey } }, // 북마크를 받아와야하면 쓰자
       ],
     });
     return findCategiryAdvice;
@@ -105,6 +103,7 @@ class AdviceRepository {
         { model: AdviceImage, attributes: ["adviceImageId", "adviceImage", "resizeImage"] },
         {
           model: Comment,
+          order: [["commentId", "DESC"]],
           include: [{ model: CommentLike }, { model: User }],
         },
         { model: Category },
@@ -175,6 +174,21 @@ class AdviceRepository {
     });
     return reportAdvice;
   };
+
+  // 중복신고 방지
+  reportRedup = async (reporterId, suspectId, targetId, targetName) => {
+    const data = {
+      reporterId: Number(reporterId),
+      suspectId: Number(suspectId),
+      targetId: Number(targetId),
+      targetName: targetName,
+    };
+
+    const result = await AdviceReport.find({
+      ids: data,
+    });
+    return result;
+  }
 }
 
 module.exports = AdviceRepository;

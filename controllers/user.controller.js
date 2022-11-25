@@ -196,8 +196,10 @@ class UserController {
     const image = req.file;
     const { nickname } = req.body;
 
-    const findUser = await this.userService.mypage(userKey);
-    const findUserImage = findUser.userImage;
+
+    const findUser = await this.userService.findUserImage(userKey);
+    const findUserImage = findUser.userImage
+
 
     try {
       //이미지 수정
@@ -213,16 +215,10 @@ class UserController {
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: findUserImage[i],
           };
+  
+          s3.deleteObject(params, function (err, data) { });
+        }        
 
-          s3.deleteObject(params, function (err, data) {
-            if (err) {
-              console.log(err, err.stack);
-            } else {
-              res.status(200);
-              next();
-            }
-          });
-        }
 
         const imageUrl = image.location;
         await this.userService.uploadUserImage(imageUrl, userKey);
