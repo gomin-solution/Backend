@@ -132,10 +132,12 @@ class AdviceService {
     );
 
     const findCreatedAt = dayjs(findOneAdvice.createdAt).tz();
-    const plusTwoSec = findCreatedAt.add(3, "s");
+    const plusThreeSec = findCreatedAt.add(3, "s");
+    const findUpdatedAt = dayjs(findOneAdvice.updatedAt).tz();
+    const plusUpdateThreeSec = findUpdatedAt.add(3, "s");
 
     let findAdviceImageArray = [];
-    if (dayjs().tz() <= plusTwoSec) {
+    if (dayjs().tz() <= plusThreeSec || dayjs().tz() <= plusUpdateThreeSec) {
       findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
         return [
           "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage/" +
@@ -182,7 +184,7 @@ class AdviceService {
     findOneAdvice.AdviceBMs.length ? (boolean = true) : (boolean = false);
     const createdAt = dayjs(findOneAdvice.createdAt)
       .tz()
-      .format("YYYY.MM.DD HH:mm");
+      .format("YYYY/MM/DD HH:mm");
     const updatedAt = dayjs(findOneAdvice.updatedAt)
       .tz()
       .format("YYYY.MM.DD HH:mm");
