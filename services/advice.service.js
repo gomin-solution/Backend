@@ -80,7 +80,7 @@ class AdviceService {
 
       return advice;
     }
-    
+
     const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
       categoryId
     );
@@ -121,7 +121,7 @@ class AdviceService {
       return arr;
     }
     advice = chunk(data, 10)[Number(page)];
-    
+
     if (!advice) {
       advice = [];
     }
@@ -256,6 +256,7 @@ class AdviceService {
         adviceId: post.adviceId,
         userKey: post.userKey,
         categoryId: post.categoryId,
+        category: post.Category.name,
         title: post.title,
         content: post.content,
         createdAt: createdAt,

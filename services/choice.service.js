@@ -127,6 +127,7 @@ class ChoiceService {
           choiceCount: findMychoice[i].choiceCount,
           isBookMark: Boolean(isBookMark),
           isChoice: Boolean(isChoice),
+          isEnd: findMychoice[i].isEnd,
         };
       }
       return data;
