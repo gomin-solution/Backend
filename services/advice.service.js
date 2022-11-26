@@ -37,7 +37,7 @@ class AdviceService {
       const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
       const data = findAllAdvice.map((post) => {
-        const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+        const date = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
         return {
           adviceId: post.adviceId,
           userKey: post.userKey,
@@ -85,7 +85,7 @@ class AdviceService {
       categoryId
     );
     const data = findCategoryAdvice.map((post) => {
-      const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      const date = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
@@ -164,7 +164,7 @@ class AdviceService {
       );
       let boolean;
       isLike.length ? (boolean = true) : (boolean = false);
-      const date = dayjs(comment.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      const date = dayjs(comment.createdAt).tz().format("YYYY/MM/DD HH:mm");
       return {
         commentId: comment.commentId,
         userKey: comment.userKey,
@@ -195,7 +195,7 @@ class AdviceService {
 
     const updatedAt = dayjs(findOneAdvice.updatedAt)
       .tz()
-      .format("YYYY.MM.DD HH:mm");
+      .format("YYYY/MM/DD HH:mm");
 
     return {
       adviceId: findOneAdvice.adviceId,
@@ -251,7 +251,7 @@ class AdviceService {
     const myadvice = await this.adviceRepository.myadvice(userKey);
 
     return myadvice.map((post) => {
-      const createdAt = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      const createdAt = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,

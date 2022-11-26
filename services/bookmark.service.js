@@ -56,8 +56,8 @@ class BookMarkService {
       }
       const createdAt = dayjs(post.Choice.createdAt)
         .tz()
-        .format("YYYY.MM.DD HH:mm");
-      const endTime = dayjs(post.Choice.endTime).format("YYYY.MM.DD HH:mm");
+        .format("YYYY/MM/DD HH:mm");
+      const endTime = dayjs(post.Choice.endTime).format("YYYY/MM/DD HH:mm");
       return {
         choiceId: post.Choice.choiceId,
         title: post.Choice.title,
@@ -86,7 +86,7 @@ class BookMarkService {
     const result = findBmAdvice.map((post) => {
       const createdAt = dayjs(post.Advice.createdAt)
         .tz()
-        .format("YYYY.MM.DD HH:mm");
+        .format("YYYY/MM/DD HH:mm");
       return {
         adviceId: post.Advice.adviceId,
         title: post.Advice.title,
