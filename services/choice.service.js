@@ -47,8 +47,8 @@ class ChoiceService {
         const res_a = (a / sum) * 100;
         const createdAt = dayjs(choice.createdAt)
           .tz()
-          .format("YYYY.MM.DD HH:mm");
-        const endTime = dayjs(choice.endTime).format("YYYY.MM.DD HH:mm");
+          .format("YYYY/MM/DD HH:mm");
+        const endTime = dayjs(choice.endTime).format("YYYY/MM/DD HH:mm");
         return {
           choiceId: choice.choiceId,
           userKey: choice.userKey,
@@ -111,7 +111,7 @@ class ChoiceService {
         let result_a = (absolute_a / sum) * 100;
         const date = dayjs(findMychoice[i].createdAt)
           .tz()
-          .format("YYYY.MM.DD HH:mm");
+          .format("YYYY/MM/DD HH:mm");
         data[i] = {
           choiceId: findMychoice[i].choiceId,
           userKey: findMychoice[i].userKey,

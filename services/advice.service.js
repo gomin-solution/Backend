@@ -37,7 +37,9 @@ class AdviceService {
       const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
       const data = findAllAdvice.map((post) => {
-        const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+
+        const date = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
+
         let userImage = "";
         if (
           post.User.userImg ==
@@ -99,7 +101,9 @@ class AdviceService {
     );
 
     const data = findCategoryAdvice.map((post) => {
-      const date = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+
+      const date = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
+      
       let userImage = "";
       if (
         post.User.userImg ==
@@ -112,6 +116,7 @@ class AdviceService {
           "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/" +
           post.User.userImg;
       }
+
 
       return {
         adviceId: post.adviceId,
@@ -191,7 +196,7 @@ class AdviceService {
       );
       let boolean;
       isLike.length ? (boolean = true) : (boolean = false);
-      const date = dayjs(comment.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      const date = dayjs(comment.createdAt).tz().format("YYYY/MM/DD HH:mm");
       return {
         commentId: comment.commentId,
         userKey: comment.userKey,
@@ -222,7 +227,7 @@ class AdviceService {
 
     const updatedAt = dayjs(findOneAdvice.updatedAt)
       .tz()
-      .format("YYYY.MM.DD HH:mm");
+      .format("YYYY/MM/DD HH:mm");
 
     return {
       adviceId: findOneAdvice.adviceId,
@@ -278,7 +283,7 @@ class AdviceService {
     const myadvice = await this.adviceRepository.myadvice(userKey);
 
     return myadvice.map((post) => {
-      const createdAt = dayjs(post.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      const createdAt = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,

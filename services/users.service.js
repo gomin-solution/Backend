@@ -130,11 +130,10 @@ class UserService {
         nickname: "로그인이 필요합니다.",
         userImage:
           "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
-        totalAdviceComment: 0,
-        totalChoicePick: 0,
       };
     }
     const user = await this.userRepository.findUser(userKey);
+
 
     let userImage = "";
     if (
@@ -149,12 +148,14 @@ class UserService {
         user.userImg;
     }
 
+
     const result = {
-      userKey: userKey,
       nickname: user.nickname,
+
       userImage: userImage,
       totalAdviceComment: user.Comments.length,
       totalChoicePick: user.isChoices.length,
+
     };
 
     return result;

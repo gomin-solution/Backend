@@ -8,9 +8,9 @@ class NoteController {
   createroom = async (req, res, next) => {
     try {
       const { userKey: fUser } = res.locals.user;
-      const { userKey: tUser, title, category } = req.body;
+      const { userKey: tUser, title, category, note } = req.body;
 
-      const creatRoom = await this.noteService.createNote(
+      const creatRoom = await this.noteService.createNoteRoom(
         tUser,
         fUser,
         title,

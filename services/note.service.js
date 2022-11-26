@@ -10,8 +10,8 @@ dayjs.tz.setDefault("Asia/Seoul");
 class NoteService {
   noteRepository = new NoteRepository();
 
-  createNote = async (tUser, fUser, title, category) => {
-    const createNote = await this.noteRepository.createNote(
+  createNoteRoom = async (tUser, fUser, title, category) => {
+    const createNote = await this.noteRepository.createNoteRoom(
       tUser,
       fUser,
       title,
@@ -33,7 +33,7 @@ class NoteService {
       room.Notes.length
         ? (recentDate = room.Notes.createdAt)
         : (recentDate = room.createdAt);
-      const date = dayjs(recentDate).tz().format("YYYY.MM.DD HH:mm");
+      const date = dayjs(recentDate).tz().format("YYYY/MM/DD HH:mm");
       return {
         roomId: room.roomId,
         title: room.title,
@@ -70,7 +70,7 @@ class NoteService {
       ? (nickname = roadNotes[0].NoteRoom.User2.nickname)
       : (nickname = roadNotes[0].NoteRoom.User1.nickname);
     const notes = roadNotes.map((note) => {
-      const date = dayjs(note.createdAt).tz().format("YYYY.MM.DD HH:mm");
+      const date = dayjs(note.createdAt).tz().format("YYYY/MM/DD HH:mm");
       return {
         userKey: note.userKey,
         note: note.note,

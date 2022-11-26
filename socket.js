@@ -45,7 +45,7 @@ module.exports = (server) => {
     socket.on("chat_message", async (data) => {
       let { note, roomId, userKey } = data;
 
-      const date = dayjs().tz().format("YYYY-MM-DD HH:mm");
+      const date = dayjs().tz().format("YYYY/MM/DD HH:mm");
       // const chatTime = new Date(today).setHours(new Date(today).getHours() - 9);
 
       //DB에 메세지 저장
@@ -62,7 +62,5 @@ module.exports = (server) => {
       };
       io.to(roomId).emit("message", msg);
     });
-
-
   });
 };
