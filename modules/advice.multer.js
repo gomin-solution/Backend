@@ -18,7 +18,7 @@ const upload = multer({
     key: function (req, file, cb) {
       const ext = path.extname(file.originalname);
       const randomNumber = Math.floor(Math.random()*10000)
-      cb(null, `adviceimage/${Date.now()}_${randomNumber}${ext}`);
+      cb(null, `adviceimage-a/${Date.now()}_${randomNumber}${ext}`);
     },
     acl: "public-read",
     contentType: multerS3.AUTO_CONTENT_TYPE,
