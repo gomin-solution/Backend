@@ -12,7 +12,7 @@ class AdviceImageRepository {
     return;
   };
 
-  // 조언 게시글 이미지 삭제(수정용)
+  // 조언 게시글 이미지 삭제
   imageDelete = async (adviceId) => {
     return await AdviceImage.destroy({ where: { adviceId: adviceId }});
   }
