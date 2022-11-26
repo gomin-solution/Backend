@@ -130,30 +130,17 @@ class UserService {
         nickname: "로그인이 필요합니다.",
         userImage:
           "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
-        totalAdviceComment: 0,
-        totalChoicePick: 0,
       };
     }
     const user = await this.userRepository.findUser(userKey);
 
-    const userImage = [
-      "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/" +
-        user.userImg,
-    ];
-    const userResizeImage = [
+    const userResizeImage =
       "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/" +
-        user.userImg,
-    ];
-
-    const totalUserImage = userImage.concat(userResizeImage);
-    console.log(totalUserImage);
+      user.userImg;
 
     const result = {
-      userKey: userKey,
       nickname: user.nickname,
-      userImage: totalUserImage,
-      totalAdviceComment: user.Comments.length,
-      totalChoicePick: user.isChoices.length,
+      userImage: userResizeImage,
     };
 
     return result;

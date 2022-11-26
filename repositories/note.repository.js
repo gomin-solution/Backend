@@ -2,7 +2,7 @@ const { Note, User, NoteRoom } = require("../models");
 const { Op } = require("sequelize");
 
 class NoteRepository {
-  createNote = async (tUser, fUser, title, category) => {
+  createNoteRoom = async (tUser, fUser, title, category) => {
     const Title = `[${category}]${title}`;
     const [createNoteRoom, create] = await NoteRoom.findOrCreate({
       where: {

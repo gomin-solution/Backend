@@ -10,8 +10,8 @@ dayjs.tz.setDefault("Asia/Seoul");
 class NoteService {
   noteRepository = new NoteRepository();
 
-  createNote = async (tUser, fUser, title, category) => {
-    const createNote = await this.noteRepository.createNote(
+  createNoteRoom = async (tUser, fUser, title, category) => {
+    const createNote = await this.noteRepository.createNoteRoom(
       tUser,
       fUser,
       title,
