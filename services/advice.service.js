@@ -37,7 +37,22 @@ class AdviceService {
       const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
       const data = findAllAdvice.map((post) => {
+
         const date = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
+
+        let userImage = "";
+        if (
+          post.User.userImg ==
+          "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4"
+        ) {
+          userImage =
+            "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4";
+        } else {
+          userImage =
+            "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/" +
+            post.User.userImg;
+        }
+
         return {
           adviceId: post.adviceId,
           userKey: post.userKey,
@@ -45,7 +60,7 @@ class AdviceService {
           title: post.title,
           content: post.content,
           createdAt: date,
-          userImage: post.User.userImg,
+          userImage: userImage,
           nickname: post.User.nickname,
           viewCount: post.viewCount,
           category: post.Category.name,
@@ -84,8 +99,25 @@ class AdviceService {
     const findCategoryAdvice = await this.adviceRepository.findCategoryAdvice(
       categoryId
     );
+
     const data = findCategoryAdvice.map((post) => {
+
       const date = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
+      
+      let userImage = "";
+      if (
+        post.User.userImg ==
+        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4"
+      ) {
+        userImage =
+          "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4";
+      } else {
+        userImage =
+          "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/" +
+          post.User.userImg;
+      }
+
+
       return {
         adviceId: post.adviceId,
         userKey: post.userKey,
