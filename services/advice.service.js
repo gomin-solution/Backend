@@ -74,6 +74,10 @@ class AdviceService {
       }
       advice = chunk(data, 10)[Number(page)];
 
+      if (!advice) {
+        advice = [];
+      }
+
       return advice;
     }
     
@@ -117,6 +121,10 @@ class AdviceService {
       return arr;
     }
     advice = chunk(data, 10)[Number(page)];
+    
+    if (!advice) {
+      advice = [];
+    }
 
     return advice;
   };
