@@ -150,6 +150,8 @@ class CommentController {
       const { commentId } = req.params;
       const { userKey } = res.locals.user;
       const { re, route } = req.body;
+      //유저키, 유저닉네임
+
       //re는 대댓글 내용, route는 무엇의 대댓글인지를 나타낸다.
       //만약 주 덧글의 대댓글이라면 route는 이 될 것이다.
       //참고로 route는 배열모양을 한 스트링이다. 이부분은 프론트와 조율이 필요하다.
@@ -161,6 +163,18 @@ class CommentController {
         re,
         route
       );
+
+      res.status(200).json({ data: reply });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getReComment = async (req, res, next) => {
+    try {
+      const { commentId } = req.params;
+
+      const reply = await this.commentService.getReComment(commentId);
 
       res.status(200).json({ data: reply });
     } catch (error) {

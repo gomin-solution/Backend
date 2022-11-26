@@ -170,8 +170,9 @@ class CommentRepository {
   };
 
   //대댓글 생성하기
-  createReply = async (commentId, route, count, comment) => {
+  createReply = async (userKey, commentId, route, count, comment) => {
     const data = await Reply.create({
+      userKey,
       commentId,
       route,
       count,
@@ -185,6 +186,16 @@ class CommentRepository {
     const data = await Reply.findAll({
       where: {
         [Op.and]: [{ commentId }, { count: 1 }],
+      },
+    });
+    return data;
+  };
+
+  //해당 코멘트의 전체 대댓글 가져오기
+  getReComment = async (commentId) => {
+    const data = await Reply.findAll({
+      where: {
+        [Op.and]: [{ commentId }],
       },
     });
     return data;

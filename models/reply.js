@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "commentId",
         sourceKey: "commentId",
       });
+      this.belongsTo(models.User, {
+        foreignKey: "userKey",
+        sourceKey: "userKey",
+      });
     }
   }
   Reply.init(
@@ -21,6 +25,14 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
+      },
+      userKey: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        references: {
+          model: "User",
+          key: "userKey",
+        },
       },
       commentId: {
         allowNull: false,

@@ -108,6 +108,7 @@ class CommentService {
       route = "[0]";
       let count = 1;
       const fin = await this.commentRepository.createReply(
+        userKey,
         commentId,
         route,
         count,
@@ -121,6 +122,7 @@ class CommentService {
       route = "[" + temp + "]";
       let count = 1;
       const fin = await this.commentRepository.createReply(
+        userKey,
         commentId,
         route,
         count,
@@ -129,6 +131,7 @@ class CommentService {
       return fin;
     }
 
+    //대댓글이 꼬리를 물고 계속 생겨야하는 경우, 아래의 코드를 실행한다.
     //스트링으로 가져온 route를 배열로 변환하자
     let route_Array = JSON.parse(route); //입력한 값
     //그렇게 변환된 배열의 길이를 따로 저장한다.
@@ -157,16 +160,14 @@ class CommentService {
             continue;
           }
         }
-
         if (array[0] || array[0] === 0) {
           result.push(array);
         }
-
         array = [];
       }
     }
 
-    //자, 그렇가 완성된 배열의 마지막 값을 가져오자.
+    //자, 그렇게 완성된 배열의 마지막 값을 가져오자.
     //그리고 그 값에 +1을 한 것이, 이번에 새로 완성된 마지막 배열의 숫자다.
     //let temp = new Array();
 
@@ -185,6 +186,7 @@ class CommentService {
     let newCount = route_Array.length;
 
     const newReply = await this.commentRepository.createReply(
+      userKey,
       commentId,
       data,
       newCount,
@@ -192,6 +194,24 @@ class CommentService {
     );
 
     return newReply;
+  };
+
+  getReComment = async (commentId) => {
+    const data = await this.commentRepository.getReComment(commentId);
+
+    for (let i = 0; i < data.length; i++) {
+      data[i].route = JSON.parse(data[i].route);
+    }
+
+    data.sort(function compare(a, b) {
+      if (a.route > b.route) return 1;
+      else if (a.route < b.route) return -1;
+      else return 0;
+    });
+
+    let final = data.sort();
+
+    return final;
   };
 }
 
