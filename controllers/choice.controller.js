@@ -60,20 +60,6 @@ class ChoiceController {
     }
   };
 
-  //마이페이지 게시글 조회
-  mychoice = async (req, res, next) => {
-    try {
-      const { userKey } = res.locals.user;
-      if (userKey == 0) {
-        return res.status(400).send({ message: "로그인이 필요합니다." });
-      }
-      const mychoice = await this.choiceService.findMychoice(userKey);
-      res.status(200).json({ data: mychoice });
-    } catch (err) {
-      next(err);
-    }
-  };
-
   deletechoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
