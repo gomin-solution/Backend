@@ -153,6 +153,7 @@ class AdviceRepository {
   //내가 쓴 조언글 조회
   myadvice = async (userKey) => {
     return await Advice.findAll({
+      order: [["adviceId", "DESC"]],
       where: { userKey: userKey },
       include: [{ model: Category }, { model: User }],
     });
