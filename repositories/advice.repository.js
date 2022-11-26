@@ -154,7 +154,7 @@ class AdviceRepository {
   myadvice = async (userKey) => {
     return await Advice.findAll({
       where: { userKey: userKey },
-      include: { model: Category },
+      include: [{ model: Category }, { model: User }],
     });
   };
 

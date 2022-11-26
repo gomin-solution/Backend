@@ -180,20 +180,6 @@ class AdviceController {
     }
   };
 
-  /**내가쓴 조언글 가져오기 */
-  myadvice = async (req, res, next) => {
-    try {
-      const { userKey } = res.locals.user;
-      if (userKey == 0) {
-        return res.status(400).send({ message: "로그인이 필요합니다." });
-      }
-      const myadvice = await this.adviceService.myadvice(userKey);
-      return res.status(200).json(myadvice);
-    } catch (err) {
-      next(err);
-    }
-  };
-
   reportAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { adviceId } = req.params;

@@ -38,6 +38,9 @@ router.put(
 //마이페이지
 router.get("/mypage", authMiddleware, userController.mypage);
 
+//내가 쓴 글 조회
+router.get("/mypost", authMiddleware, userController.myPost);
+
 //검색
 router.get("/search/:keyword", authMiddleware, userController.search);
 

@@ -15,9 +15,6 @@ router.get("/choice/:sort", authMiddleware, choiceController.allchoice);
 //투표 선택
 router.put("/choice/:choiceId", authMiddleware, choiceController.choice);
 
-//마이페이지에서 내가 작성한 투표 게시글 가져오기
-router.get("/mypage/choice", authMiddleware, choiceController.mychoice);
-
 //조기마감
 router.put("/choice/early/:choiceId", authMiddleware, choiceController.early);
 

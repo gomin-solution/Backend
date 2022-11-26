@@ -7,18 +7,20 @@ module.exports = {
      * Add altering commands here.
      *
      * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
+    //  * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    // await queryInterface.createTable("NoteRoom", {
+    // await queryInterface.createTable("DailyUpdate", {
     //   Id: Sequelize.INTEGER,
+    //   userKey: Sequelize.INTEGER,
+    //   msg: Sequelize.STRING,
     // });
     // return await queryInterface.changeColumn("Notes", "userKey", {
-    //   allowNull: false,
-    //   type: Sequelize.INTEGER,
-    //   references: {
-    //     model: "Users",
-    //     key: "userKey",
-    //   },
+    // allowNull: false,
+    // type: Sequelize.INTEGER,
+    // references: {
+    //   model: "Users",
+    //   key: "userKey",
+    // },
     // });
     // return queryInterface.changeColumn("isChoices", "choiceId", {
     //   allowNull: false,
@@ -39,7 +41,7 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     // return await queryInterface.dropTable("isChoices");
-    // return queryInterface.dropTable("Notes");
+    return queryInterface.dropTable("DailyUpdate");
     // return queryInterface.removeColumn("AdviceImages", "resizeImage");
     // return queryInterface.removeColumn("Users", "resizeImg");
   },

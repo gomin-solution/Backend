@@ -30,10 +30,6 @@ adviceRouter.get(
   adviceController.findOneAdvice
 );
 
-
-//내가 쓴 조언글 조회
-adviceRouter.get("/mypage/advice", authMiddleware, adviceController.myadvice);
-
 //조언 게시글 수정
 adviceRouter.put(
   "/:adviceId",

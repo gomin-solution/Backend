@@ -1,4 +1,6 @@
 const UserService = require("../services/users.service");
+const AdviceService = require("../services/advice.service");
+const ChoiceService = require("../services/choice.service");
 const joi = require("../util/joi");
 const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
@@ -11,6 +13,8 @@ const redisCli = require("../util/redis");
 
 class UserController {
   userService = new UserService();
+  adviceService = new AdviceService();
+  choiceService = new ChoiceService();
 
   /**회원가입 컨트롤러 */
   signup = async (req, res, next) => {
@@ -95,6 +99,21 @@ class UserController {
         .json({ mainpage: mainpage, dailyMessage: dailyData.msg });
     } catch (error) {
       next(error);
+    }
+  };
+
+  /**내가쓴 글 가져오기 */
+  myPost = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+      if (userKey == 0) {
+        return res.status(400).send({ message: "로그인이 필요합니다." });
+      }
+      const myadvice = await this.adviceService.myadvice(userKey);
+      const mychoice = await this.choiceService.findMychoice(userKey);
+      return res.status(200).json({ mychoice: mychoice, myadvice: myadvice });
+    } catch (err) {
+      next(err);
     }
   };
 
