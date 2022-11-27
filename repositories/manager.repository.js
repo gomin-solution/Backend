@@ -24,6 +24,12 @@ class ManagerRepository {
     return allReports;
   };
 
+  //이건 임시용, 유저 아이디 가져오기
+  userReport = async (userKey) => {
+    const userReport = await User.findOne({ where: { userKey: userKey } });
+    return userReport;
+  };
+
   //신고게시글 제재 먹이기
   education = async (reportId) => {
     const guilty = true;
