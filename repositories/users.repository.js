@@ -5,6 +5,7 @@ const {
   CommentLike,
   Advice,
   Choice,
+  CommentSelect,
 } = require("../models");
 
 class UserRepository {
@@ -21,7 +22,7 @@ class UserRepository {
       password: hashed,
       isAdult: isAdult,
       userImg:
-        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4"
+        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
     });
   };
 
@@ -36,7 +37,7 @@ class UserRepository {
     return await User.findOne({
       where: { userKey: userKey },
     });
-  };  
+  };
 
   findNickname = async (nickname) => {
     return await User.findOne({ where: { nickname: nickname } });
@@ -48,7 +49,7 @@ class UserRepository {
 
   uploadUserImage = async (findUserImage, userKey) => {
     const updateImageUrl = await User.update(
-      { userImg: findUserImage},
+      { userImg: findUserImage },
       { where: { userKey } }
     );
     return updateImageUrl;
@@ -67,13 +68,17 @@ class UserRepository {
   };
 
   totalReword = async (userKey) => {
-    return await User.findAll({
+    return await User.findOne({
       where: { userKey: userKey },
       include: [
-        { model: Comment, include: { model: CommentLike } },
+        {
+          model: Comment,
+          include: [{ model: CommentLike }, { model: CommentSelect }],
+        },
         { model: isChoice },
         { model: Advice },
         { model: Choice },
+        { model: CommentSelect },
       ],
     });
   };

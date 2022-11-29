@@ -9,14 +9,14 @@ class MissionService {
     /**유저의 활동 정보를 모두 가져옴 */
     const totalReword = await this.userRepository.totalReword(userKey);
 
-    const likeArray = totalReword[0].Comments.map((x) => x.CommentLikes.length);
+    const likeArray = totalReword.Comments.map((x) => x.CommentLikes.length);
     /**내가 받은 총 좋아요수 */
     let likeTotal = 0;
     likeArray.forEach((x) => {
       likeTotal += x;
     });
 
-    const viewCountArray = totalReword[0].Advice.map((x) => x.viewCount);
+    const viewCountArray = totalReword.Advice.map((x) => x.viewCount);
 
     /**내 게시글의 총 조회수 */
     let viewCount = 0;
@@ -26,23 +26,38 @@ class MissionService {
     });
 
     /** 내가 조언해준 횟수*/
-    const totalAdviceComment = totalReword[0].Comments.length;
+    const totalAdviceComment = totalReword.Comments.length;
 
     /**내가 투표한횟수 */
-    const totalChoicePick = totalReword[0].isChoices.length;
+    const totalChoicePick = totalReword.isChoices.length;
 
     /**내가 쓴 조언게시글 수 */
-    const totalAdvice = totalReword[0].Advice.length;
+    const totalAdvice = totalReword.Advice.length;
 
     /**투표 게시글 작성 수 */
-    const totalChoice = totalReword[0].Choices.length;
+    const totalChoice = totalReword.Choices.length;
+
+    /**마감된 투표 게시글 수 */
+    const totalEndChoice = totalReword.Choices.filter(
+      (choice) => choice.isEnd == true
+    ).length;
 
     /**총게시글 작성 수 */
     const totalPost = totalAdvice + totalChoice;
 
     /**행운의 편지 열기 횟수 */
-    const totalOpen = totalReword[0].msgOpenCount;
+    const totalOpen = totalReword.msgOpenCount;
 
+    /**채택받은 횟수 */
+    const totalSelected = totalReword.CommentSelects.length;
+
+    /**채택한 횟수 */
+    const totalSelect = totalReword.Comments.filter(
+      (x) => x.CommentSelects.length
+    ).length;
+
+    /**고민 마감 횟수 */
+    const totalSolution = totalSelect + totalEndChoice;
     console.log(
       `totalAdviceComment:${totalAdviceComment}, 
       totalChoicePick:${totalChoicePick}, 
@@ -51,7 +66,9 @@ class MissionService {
       totalPost${totalPost},
       viewCount:${viewCount},
       likeTotal:${likeTotal},
-      totalOpen:${totalOpen}`
+      totalOpen:${totalOpen},
+      totalSelected:${totalSelected},
+      totalSolution${totalSolution}`
     );
     /**모든 미션Id */
     const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -93,7 +110,7 @@ class MissionService {
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
-      if (mission.missionId == 5) {
+      if (mission.missionId == 5 || mission.missionId == 11) {
         mission.LikeMission.likeMission <= likeTotal
           ? newCompleteMissionId.push(mission.missionId)
           : false;
@@ -105,34 +122,27 @@ class MissionService {
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
-      if (mission.AdviceMission) {
-        mission.AdviceMission.adviceMission <= totalAdviceComment
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
-      }
-      if (mission.ChoiceMission) {
-        mission.ChoiceMission.choiceMission <= totalChoicePick
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
-      }
-      if (mission.PostMission) {
-        mission.PostMission.postMission <= totalAdvice
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
-      }
-      if (mission.LikeMission) {
-        mission.LikeMission.likeMission <= likeTotal
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
-      }
-      if (mission.MsgMission) {
+      if (mission.missionId == 7) {
         mission.MsgMission.msgMission <= totalOpen
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
+      if (mission.missionId == 8 || mission.missionId == 10) {
+        mission.SelectMission.selectMission <= totalSelected
+          ? newCompleteMissionId.push(mission.missionId)
+          : false;
+      }
+      if (mission.missionId == 9) {
+        mission.SolutionMission.solutionMission <= totalSolution
+          ? newCompleteMissionId.push(mission.missionId)
+          : false;
+      }
+      if (mission.missionId == 12) {
+        mission.MissionCompleteMission.completeMission <= CompleteMission.length
+          ? newCompleteMissionId.push(mission.missionId)
+          : false;
+      }
     });
-
-    //미션1
 
     for (const missionId of newCompleteMissionId) {
       await this.missionRepository.createCompleteMission(userKey, missionId);
@@ -176,6 +186,9 @@ class MissionService {
         viewCount: viewCount,
         likeTotal: likeTotal,
         msgOpen: totalOpen,
+        Selected: totalSelected,
+        totalSolution: totalSolution,
+        missionComplete: CompleteMission.length + newCompleteMissionId.length,
       },
     };
 
