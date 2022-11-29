@@ -63,41 +63,6 @@ class CommentService {
     return count;
   };
 
-  //덧글 신고하기
-  reportComment = async (userKey, commentId, why) => {
-    //코멘트 아이디를 기반으로 작성자 아이디를 가져오고
-    //신고자 ID, 작성자 ID, 신고게시글유형(덧글인지 뭔지), 신고 대상 ID를 저장
-    let type = "comment";
-    const author = await this.commentRepository.reportCommentAuthor(commentId);
-    if (author === userKey) {
-      return;
-    }
-
-    //중복 확인
-    const redup = await this.commentRepository.reportRedup(
-      userKey,
-      author,
-      commentId,
-      type
-    );
-
-    if (redup[0]) {
-      const dupmes = false;
-      return dupmes;
-    }
-
-    //신고 됌
-    const report = await this.commentRepository.reportComment(
-      userKey,
-      author,
-      commentId,
-      type,
-      why
-    );
-
-    return report;
-  };
-
   //대댓글 기능
   reComment = async (userKey, commentId, re, route) => {
     //해당commentId와 route를 가진 대댓글 데이터를 가져오자
@@ -214,14 +179,13 @@ class CommentService {
     return final;
   };
 
-
   selectComment = async (userKey, commentId) => {
     const select = await this.commentRepository.selectComment(
       userKey,
       commentId
     );
     return select;
-  }
+  };
 
   putRe = async (replyId, userKey, re) => {
     const check = await this.commentRepository.checkRe(replyId);
@@ -240,7 +204,6 @@ class CommentService {
     const data = await this.commentRepository.deleteRe(replyId, userKey);
     return data;
   };
-
 }
 
 module.exports = CommentService;
