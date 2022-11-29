@@ -172,6 +172,7 @@ class CommentController {
     }
   };
 
+  //대댓글 가져오기
   getReComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
@@ -203,6 +204,51 @@ class CommentController {
       res.status(200).json({ Message: "채택되었습니다." });
     } catch (err) {
       next(err);
+
+  //대댓글 수정
+  putRe = async (req, res, next) => {
+    try {
+      const { replyId } = req.params;
+      const { userKey } = res.locals.user;
+      const { re } = req.body;
+
+      if (userKey == 0) {
+        return res.status(400).send({ message: "로그인이 필요합니다." });
+      }
+
+      const reply = await this.commentService.putRe(replyId, userKey, re);
+
+      if (!reply) {
+        res.status(400).json({ mes: "삭제된 덧글 입니다." });
+      }
+
+      res.status(200).json({ mes: "대댓글 수정 완료", data: reply });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  //대댓글 삭제, 실제로 지우진 않고 삭제된 덧글입니다로 변경
+  //삭제된 대댓글에 대댓글이 달린 경우를 대비하여 이런식으로 처리함
+  deleteRe = async (req, res, next) => {
+    try {
+      const { replyId } = req.params;
+      const { userKey } = res.locals.user;
+
+      if (userKey == 0) {
+        return res.status(400).send({ message: "로그인이 필요합니다." });
+      }
+
+      const reply = await this.commentService.deleteRe(replyId, userKey);
+
+      if (!reply) {
+        res.status(400).json({ mes: "이미 삭제된 덧글 입니다." });
+      }
+
+      res.status(200).json({ mes: "대댓글 삭제 완료", data: reply });
+    } catch (error) {
+      next(error);
+
     }
   };
 }

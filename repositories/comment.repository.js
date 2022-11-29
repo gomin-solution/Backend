@@ -201,10 +201,32 @@ class CommentRepository {
     return data;
   };
 
+
   selectComment = async (userKey, commentId) => {
     const data = await CommentSelect.create({ userKey, commentId });
     return data;
   }
+
+  checkRe = async (replyId) => {
+    const data = await Reply.findOne({
+      where: {
+        [Op.and]: [{ replyId }],
+      },
+    });
+    return data;
+  };
+
+  putRe = async (replyId, userKey, re) => {
+    const putRe = await Reply.update({ comment: re }, { where: { replyId } });
+    return putRe;
+  };
+
+  deleteRe = async (replyId, userKey) => {
+    const comment = "삭제된 덧글입니다.";
+    const deleteRe = await Reply.update({ comment }, { where: { replyId } });
+    return deleteRe;
+  };
+
 }
 
 module.exports = CommentRepository;

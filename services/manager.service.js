@@ -15,8 +15,24 @@ class ManagerService {
 
   //신고게시글 목록 가져오기, 이중 처리가 완료된 데이터는 가져오지 않음
   allReport = async () => {
-    const allReport = await this.managerRepository.allReport();
-    return allReport;
+    const allReport = await this.managerRepository.allReport(); //이것은 몽고디비서 가져옴
+    // const userReport = await this.managerRepository.userReport();//이것은 MYSQL에서 가져옴
+    let array = new Array();
+    for (let i = 0; i < allReport.length; i++) {
+      let a = new Array();
+      let key = allReport[i].ids.reporterId;
+
+      const userReport = await this.managerRepository.userReport(key); //이것은 MYSQL에서 가져옴
+      console.log("----------------------------------------");
+
+      a.push(allReport[i]);
+      a.push(userReport);
+      console.log(a);
+      array.push(a);
+      a = [];
+    }
+    return array;
+    //return allReport;
   };
 
   //신고게시글 제재 먹이기
