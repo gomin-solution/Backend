@@ -19,23 +19,26 @@ class AdviceController {
     const images = req.files;
 
     try {
-      const creatAdvice = await this.adviceService.createAdvice(
-        userKey,
-        title,
-        categoryId,
-        content
-      );
+      const { createAdviceData, mission } =
+        await this.adviceService.createAdvice(
+          userKey,
+          title,
+          categoryId,
+          content
+        );
 
       if (images) {
-        const adviceId = creatAdvice.adviceId;
+        const adviceId = createAdviceData.adviceId;
         const imageUrl = images.map((url) => url.location);
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
       }
 
-      res.status(200).json({
-        msg: "게시글 업로드 완료!!",
-        adviceId: creatAdvice.adviceId,
-      });
+      res.status(200).json({ mission });
+
+      // res.status(200).json({
+      //   msg: "게시글 업로드 완료!!",
+      //   adviceId: creatAdvice.adviceId,
+      // });
     } catch (error) {
       next(error);
     }

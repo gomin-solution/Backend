@@ -1,6 +1,7 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const { ValidationError } = require("sequelize");
 const AdviceRepository = require("../repositories/advice.repository");
+const MissionRepository = require("../repositories/mission.repository");
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
@@ -10,6 +11,7 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 class AdviceService {
   adviceRepository = new AdviceRepository();
+  missionRepository = new MissionRepository();
 
   // 게시물 생성
   createAdvice = async (userKey, title, categoryId, content, isAdult) => {
@@ -20,8 +22,11 @@ class AdviceService {
       content,
       isAdult
     );
+    const mission = await this.missionRepository.Postmission(userKey);
 
-    return createAdviceData;
+    console.log(mission.map((mission) => mission.missionId));
+
+    return { createAdviceData, mission };
   };
 
   findAllAdviceOne = async (adviceId) => {
@@ -37,7 +42,6 @@ class AdviceService {
       const findAllAdvice = await this.adviceRepository.findAllAdvice();
 
       const data = findAllAdvice.map((post) => {
-
         const date = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
 
         let userImage = "";
@@ -101,9 +105,8 @@ class AdviceService {
     );
 
     const data = findCategoryAdvice.map((post) => {
-
       const date = dayjs(post.createdAt).tz().format("YYYY/MM/DD HH:mm");
-      
+
       let userImage = "";
       if (
         post.User.userImg ==
@@ -116,7 +119,6 @@ class AdviceService {
           "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/" +
           post.User.userImg;
       }
-
 
       return {
         adviceId: post.adviceId,
@@ -191,8 +193,10 @@ class AdviceService {
     }
 
     const comment = findOneAdvice.Comments.map((comment) => {
-      const isSelect = comment.CommentSelects.filter((select)=>select.commentId)
-      console.log(isSelect)
+      const isSelect = comment.CommentSelects.filter(
+        (select) => select.commentId
+      );
+      console.log(isSelect);
       let select;
       isSelect.length ? (select = true) : (select = false);
 
@@ -302,7 +306,7 @@ class AdviceService {
         viewCount: post.viewCount,
       };
     });
-  };  
+  };
 }
 
 module.exports = AdviceService;
