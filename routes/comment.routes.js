@@ -33,4 +33,7 @@ router.put(
   commentController.reportComment
 );
 
+//조언 댓글 채택
+router.put("/select/:commentId", authMiddleware, commentController.selectComment)
+
 module.exports = router;

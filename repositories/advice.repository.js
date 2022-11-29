@@ -5,10 +5,12 @@ const {
   AdviceImage,
   Comment,
   CommentLike,
+  CommentSelect,
   Category,
 } = require("../models");
 const { Op } = require("sequelize");
 const AdviceReport = require("../schemas/adviceReport");
+
 
 class AdviceRepository {
   //조언 게시글 업로드
@@ -98,9 +100,10 @@ class AdviceRepository {
         {
           model: Comment,
           order: [["commentId", "DESC"]],
-          include: [{ model: CommentLike }, { model: User }],
+          include: [{ model: CommentLike }, { model : CommentSelect }, { model: User }],
         },
         { model: Category },
+        
       ],
     });
     return AdviceOne;
@@ -160,17 +163,29 @@ class AdviceRepository {
   };
 
   // 조언 게시글 신고하기
-  reportAdvice = async (reporterId, suspectId, targetId, targetName) => {
+  reportAdvice = async (reporterId, suspectId, targetId, targetName, why) => {
     const date = new Date();
     const adviceReportId = date.valueOf();
-    const reportAdvice = await AdviceReport.create({
+    const adviceId = targetId;
+    const adviceData = await Advice.findByPk(adviceId)
+    const content = adviceData.content
+
+    const result = await Report.create({
       adviceReportId,
-      reporterId,
-      suspectId,
-      targetId,
-      targetName,
+      ids: {
+        reporterId: Number(reporterId),
+        suspectId: Number(suspectId),
+        targetId: Number(targetId),
+        targetName: targetName,
+      },
+      why,
+      content: {
+        content: content,
+      },
+      createdAt,
+      updatedAt,
     });
-    return reportAdvice;
+    return result;
   };
 
   // 중복신고 방지
@@ -187,6 +202,8 @@ class AdviceRepository {
     });
     return result;
   };
+
+  
 }
 
 module.exports = AdviceRepository;

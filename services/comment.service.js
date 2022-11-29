@@ -214,6 +214,15 @@ class CommentService {
     return final;
   };
 
+
+  selectComment = async (userKey, commentId) => {
+    const select = await this.commentRepository.selectComment(
+      userKey,
+      commentId
+    );
+    return select;
+  }
+
   putRe = async (replyId, userKey, re) => {
     const check = await this.commentRepository.checkRe(replyId);
     if (check.comment === "삭제된 덧글입니다.") {
@@ -231,6 +240,7 @@ class CommentService {
     const data = await this.commentRepository.deleteRe(replyId, userKey);
     return data;
   };
+
 }
 
 module.exports = CommentService;
