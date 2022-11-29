@@ -48,8 +48,15 @@ class UserController {
       //refreshtoken을 userId키로 redis에 저장
       await redisCli.set(userId, refreshToken);
 
-      res.cookie("accesstoken", accessToken);
+      res.cookie("accesstoken", accessToken, {
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+      });
+
       res.cookie("refreshtoken", refreshToken, {
+        sameSite: "none",
+        secure: true,
         httpOnly: true,
       });
 

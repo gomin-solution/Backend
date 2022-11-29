@@ -18,7 +18,25 @@ rule.minute = 0;
 rule.tz = "Asia/Seoul";
 
 module.exports = async () => {
-  schedule.scheduleJob(rule, async () => {
+  // schedule.scheduleJob(rule, async () => {
+  //   console.log("메세지 업데이트 스케줄 실행됨");
+  //   const DailyArray = await DailyMessage.findAll({});
+  //   const msgArray = DailyArray.map((x) => x.msg);
+  //   const allUser = await User.findAll({ attributes: ["userKey"] });
+  //   for (const item of allUser) {
+  //     const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
+  //     console.log(msg);
+  //     console.log(item.userKey);
+  //     await redisCli.hSet(`${item.userKey}`, {
+  //       msg: msg,
+  //       isOpen: 0,
+  //     });
+  //   }
+  //   console.log(dayjs().format("YYYY-MM-DD HH:mm:ss"));
+  // });
+  const date = "2022-11-27 01:19";
+
+  schedule.scheduleJob(date, async () => {
     console.log("메세지 업데이트 스케줄 실행됨");
     const DailyArray = await DailyMessage.findAll({});
     const msgArray = DailyArray.map((x) => x.msg);
@@ -27,12 +45,24 @@ module.exports = async () => {
       const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
       console.log(msg);
       console.log(item.userKey);
-      await redisCli.hSet(`${item.userKey}`, {
-        msg: msg,
-        isOpen: 0,
+
+      const foundItem = await DailyMessage.findOne({
+        where: { userKey: item.userKey },
       });
+      if (!foundItem) {
+        // Item not found, create a new one
+        await DailyMessage.create({
+          userKey: item.userKey,
+          msg: msg,
+          isOpen: 0,
+        });
+      }
+      // Found an item, update it
+      await DailyMessage.update(
+        { msg: msg, isOpen: 0 },
+        { where: { userKey: item.userKey } }
+      );
     }
-    console.log(dayjs().format("YYYY-MM-DD HH:mm:ss"));
   });
 
   const findAllChoice = await Choice.findAll({

@@ -52,14 +52,14 @@ class UserService {
     if (!passwordVerify) throw new ErrorCustom(400, "비밀번호 오류");
     const accessToken = jwt.sign(
       { userId: user.userId, userKey: user.userKey },
-      process.env.SECRET_KEY
-      // {
-      //   expiresIn: "5h",
-      // }
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "60s",
+      }
     );
 
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-      expiresIn: "7d",
+      expiresIn: "15d",
     });
     const nickname = user.nickname;
     return { accessToken, refreshToken, nickname };
@@ -134,20 +134,18 @@ class UserService {
     }
     const user = await this.userRepository.findUser(userKey);
 
-
     let userImage = "";
     if (
       user.userImg ==
       "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4"
     ) {
       userImage =
-        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4"
+        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4";
     } else {
       userImage =
         "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/" +
         user.userImg;
     }
-
 
     const result = {
       nickname: user.nickname,
@@ -155,7 +153,6 @@ class UserService {
       userImage: userImage,
       totalAdviceComment: user.Comments.length,
       totalChoicePick: user.isChoices.length,
-
     };
 
     return result;
