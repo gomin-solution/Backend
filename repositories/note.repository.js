@@ -65,6 +65,9 @@ class NoteRepository {
 
     return findallNote;
   };
+  sendNote = async (note, roomId, userKey) => {
+    await Note.create({ note: note, roomId: roomId, userKey: userKey });
+  };
 
   deleteNote = async (noteId, userKey) => {
     return await Note.destroy({ where: { noteId, fUser: userKey } });

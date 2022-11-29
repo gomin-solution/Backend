@@ -10,15 +10,15 @@ class NoteController {
       const { userKey: fUser } = res.locals.user;
       const { userKey: tUser, title, category, note } = req.body;
 
-      const creatRoom = await this.noteService.createNoteRoom(
+      //쪽지 생성하고 방만들기
+      await this.noteService.createNoteRoom(
         tUser,
         fUser,
         title,
-        category
+        category,
+        note
       );
-
-      const roomId = creatRoom.roomId;
-      res.status(200).json({ roomId });
+      res.status(200).json({ message: "쪽지 전송 완료" });
     } catch (error) {
       next(error);
     }

@@ -10,13 +10,16 @@ dayjs.tz.setDefault("Asia/Seoul");
 class NoteService {
   noteRepository = new NoteRepository();
 
-  createNoteRoom = async (tUser, fUser, title, category) => {
+  //방 생성
+  createNoteRoom = async (tUser, fUser, title, category, note) => {
     const createNote = await this.noteRepository.createNoteRoom(
       tUser,
       fUser,
       title,
       category
     );
+    //쪽지 생성
+    await this.noteRepository.sendNote(note, createNote.roomId, fUser);
     return createNote;
   };
 
