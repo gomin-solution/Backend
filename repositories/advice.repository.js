@@ -161,48 +161,6 @@ class AdviceRepository {
       include: [{ model: Category }, { model: User }],
     });
   };
-
-  // 조언 게시글 신고하기
-  reportAdvice = async (reporterId, suspectId, targetId, targetName, why) => {
-    const date = new Date();
-    const adviceReportId = date.valueOf();
-    const adviceId = targetId;
-    const adviceData = await Advice.findByPk(adviceId)
-    const content = adviceData.content
-
-    const result = await Report.create({
-      adviceReportId,
-      ids: {
-        reporterId: Number(reporterId),
-        suspectId: Number(suspectId),
-        targetId: Number(targetId),
-        targetName: targetName,
-      },
-      why,
-      content: {
-        content: content,
-      },
-      createdAt,
-      updatedAt,
-    });
-    return result;
-  };
-
-  // 중복신고 방지
-  reportRedup = async (reporterId, suspectId, targetId, targetName) => {
-    const data = {
-      reporterId: Number(reporterId),
-      suspectId: Number(suspectId),
-      targetId: Number(targetId),
-      targetName: targetName,
-    };
-
-    const result = await AdviceReport.find({
-      ids: data,
-    });
-    return result;
-  };
-
   
 }
 

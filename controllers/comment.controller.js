@@ -204,6 +204,8 @@ class CommentController {
       res.status(200).json({ Message: "채택되었습니다." });
     } catch (err) {
       next(err);
+    }
+  }
 
   //대댓글 수정
   putRe = async (req, res, next) => {

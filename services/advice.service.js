@@ -302,40 +302,7 @@ class AdviceService {
         viewCount: post.viewCount,
       };
     });
-  };
-
-  reportAdvice = async (userKey, adviceId, why) => {
-    //작성자 확인
-    let type = "advice";
-    const writer = await this.adviceRepository.findAdvice(adviceId);
-    const writerHost = writer.userKey;
-
-    if (userKey === writerHost) {
-      return;
-    }
-
-    const redup = await this.adviceRepository.reportRedup(
-      userKey,
-      writerHost,
-      adviceId,
-      type
-    );
-
-    if (redup[0]) {
-      const dupmes = false;
-      return dupmes;
-    }
-
-    const reportAdvice = await this.adviceRepository.reportAdvice(
-      userKey,
-      adviceId,
-      writerHost,
-      type
-    );
-    return reportAdvice;
-  };
-
-  
+  };  
 }
 
 module.exports = AdviceService;
