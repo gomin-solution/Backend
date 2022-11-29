@@ -2,6 +2,7 @@ const ErrorCustom = require("../exceptions/error-custom");
 const { ValidationError } = require("sequelize");
 const AdviceRepository = require("../repositories/advice.repository");
 const MissionRepository = require("../repositories/mission.repository");
+const MissionService = require("../services/mission.service");
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
@@ -11,7 +12,7 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 class AdviceService {
   adviceRepository = new AdviceRepository();
-  missionRepository = new MissionRepository();
+  missionService = new MissionService();
 
   // 게시물 생성
   createAdvice = async (userKey, title, categoryId, content, isAdult) => {
@@ -22,7 +23,7 @@ class AdviceService {
       content,
       isAdult
     );
-    const mission = await this.missionRepository.Postmission(userKey);
+    const missionComplete = await this.missionService.NewComplete(userKey);
 
     console.log(mission.map((mission) => mission.missionId));
 

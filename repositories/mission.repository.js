@@ -6,6 +6,7 @@ const {
   PostMission,
   LikeMission,
   MissionComplete,
+  MsgMission,
 } = require("../models");
 const { Op } = require("sequelize");
 
@@ -24,6 +25,7 @@ class MissionRepository {
         { model: ChoiceMission },
         { model: PostMission },
         { model: LikeMission },
+        { model: MsgMission },
       ],
     });
   };
