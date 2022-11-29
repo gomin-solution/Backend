@@ -1,4 +1,4 @@
-const { Comment, CommentLike, Reply } = require("../models"); //모델 데이터를 가져오고
+const { Comment, CommentLike, Reply, CommentSelect } = require("../models"); //모델 데이터를 가져오고
 const { Op } = require("sequelize");
 const Report = require("../schemas/report");
 
@@ -200,6 +200,11 @@ class CommentRepository {
     });
     return data;
   };
+
+  selectComment = async (userKey, commentId) => {
+    const data = await CommentSelect.create({ userKey, commentId });
+    return data;
+  }
 }
 
 module.exports = CommentRepository;

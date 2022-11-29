@@ -213,6 +213,14 @@ class CommentService {
 
     return final;
   };
+
+  selectComment = async (userKey, commentId) => {
+    const select = await this.commentRepository.selectComment(
+      userKey,
+      commentId
+    );
+    return select;
+  }
 }
 
 module.exports = CommentService;

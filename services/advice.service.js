@@ -191,6 +191,11 @@ class AdviceService {
     }
 
     const comment = findOneAdvice.Comments.map((comment) => {
+      const isSelect = comment.CommentSelects.filter((select)=>select.commentId)
+      console.log(isSelect)
+      let select;
+      isSelect.length ? (select = true) : (select = false);
+
       const isLike = comment.CommentLikes.filter(
         (like) => like.userKey === userKey
       );
@@ -206,6 +211,7 @@ class AdviceService {
         likeCount: comment.CommentLikes.length,
         createdAt: date,
         isLike: boolean,
+        isSelect: select,
       };
     });
     // filterId
@@ -223,7 +229,6 @@ class AdviceService {
     const createdAt = dayjs(findOneAdvice.createdAt)
       .tz()
       .format("YYYY/MM/DD HH:mm");
-    console.log(createdAt.replace(/\./gi, "/"));
 
     const updatedAt = dayjs(findOneAdvice.updatedAt)
       .tz()
@@ -329,6 +334,8 @@ class AdviceService {
     );
     return reportAdvice;
   };
+
+  
 }
 
 module.exports = AdviceService;

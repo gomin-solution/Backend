@@ -1,7 +1,9 @@
 const CommentService = require("../services/comment.service");
+const AdviceService = require("../services/advice.service");
 
 class CommentController {
   commentService = new CommentService();
+  adviceService = new AdviceService();
 
   createComment = async (req, res, next) => {
     try {
@@ -179,6 +181,28 @@ class CommentController {
       res.status(200).json({ data: reply });
     } catch (error) {
       next(error);
+    }
+  };
+
+  //댓글 채택
+  selectComment = async (req, res, next) => {
+    const { userKey } = res.locals.user;
+    const { commentId } = req.params;
+
+    try {
+      await this.commentService.selectComment(
+        userKey,
+        commentId
+      );
+      // let message = "";
+      // if (selectComment) {
+      //   message = "채택 성공";
+      // } else {
+      //   message = "채택 취소";
+      // }
+      res.status(200).json({ Message: "채택되었습니다." });
+    } catch (err) {
+      next(err);
     }
   };
 }

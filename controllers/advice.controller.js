@@ -111,12 +111,10 @@ class AdviceController {
             Key: findImageAdvice[i],
           };
 
-          s3.deleteObject(params, function (err, data) {});
+          s3.deleteObject(params);
         }
         await this.adviceImageService.imageDelete(adviceId);
-
         const imageUrl = images.map((url) => url.location);
-
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
       }
 
@@ -169,7 +167,7 @@ class AdviceController {
           Key: findDeleteImages[i],
         };
 
-        s3.deleteObject(params, function (err, data) {});
+        s3.deleteObject(params);
       }
 
       //게시물 삭제
@@ -212,6 +210,8 @@ class AdviceController {
       next(err);
     }
   };
+
+
 }
 
 module.exports = AdviceController;

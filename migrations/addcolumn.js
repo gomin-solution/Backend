@@ -22,6 +22,14 @@ module.exports = {
     //   key: "userKey",
     // },
     // });
+    return await queryInterface.addeColumn("Replies", "userKey", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      references: {
+        model: "Users",
+        key: "userKey",
+      },
+    });
     // return queryInterface.changeColumn("isChoices", "choiceId", {
     //   allowNull: false,
     //   type: Sequelize.INTEGER,
