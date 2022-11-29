@@ -112,40 +112,6 @@ class CommentController {
     }
   };
 
-  reportComment = async (req, res, next) => {
-    try {
-      const { commentId } = req.params;
-      const { userKey } = res.locals.user;
-      const { why } = req.body;
-
-      if (userKey == 0) {
-        return res.status(400).send({ message: "로그인 하시기 바랍니다." });
-      }
-
-      const updateComment = await this.commentService.reportComment(
-        userKey,
-        commentId,
-        why
-      );
-
-      if (updateComment === false) {
-        return res.status(400).json({ Message: "중복된 신고 입니다." });
-      }
-
-      let mes;
-      if (!updateComment) {
-        mes = "뭐하자는 겁니까?"; //본인이 쓴 덧글 본인이 신고한 경우
-        return res.status(400).json({ Message: mes });
-      } else {
-        mes = "신고 성공";
-      }
-
-      res.status(200).json({ Message: mes });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   //대댓글 기능
   reComment = async (req, res, next) => {
     try {
@@ -191,10 +157,7 @@ class CommentController {
     const { commentId } = req.params;
 
     try {
-      await this.commentService.selectComment(
-        userKey,
-        commentId
-      );
+      await this.commentService.selectComment(userKey, commentId);
       // let message = "";
       // if (selectComment) {
       //   message = "채택 성공";
@@ -205,7 +168,7 @@ class CommentController {
     } catch (err) {
       next(err);
     }
-  }
+  };
 
   //대댓글 수정
   putRe = async (req, res, next) => {
@@ -250,7 +213,6 @@ class CommentController {
       res.status(200).json({ mes: "대댓글 삭제 완료", data: reply });
     } catch (error) {
       next(error);
-
     }
   };
 }
