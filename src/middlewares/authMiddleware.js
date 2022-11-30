@@ -73,7 +73,7 @@ module.exports = async (req, res, next) => {
         { userId: decoded.userId, userKey: decoded.userKey },
         process.env.SECRET_KEY,
         {
-          expiresIn: "60s",
+          expiresIn: "10m",
         }
       );
       console.log("accessToken재발급");
