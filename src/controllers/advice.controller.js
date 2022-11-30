@@ -34,7 +34,7 @@ class AdviceController {
 
       res.status(200).json({
         msg: "게시글 업로드 완료!!",
-        adviceId: creatAdvice.adviceId,
+        adviceId: createAdviceData.adviceId,
       });
     } catch (error) {
       next(error);
