@@ -112,29 +112,28 @@ class CommentController {
     }
   };
 
-  //대댓글 기능
+  //대댓글 기능===========================================================
+  //대댓글 생성 기능
   reComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
       const { userKey } = res.locals.user;
-      const { re, route } = req.body;
-      //유저키, 유저닉네임
-
-      //re는 대댓글 내용, route는 무엇의 대댓글인지를 나타낸다.
-      //만약 주 덧글의 대댓글이라면 route는 이 될 것이다.
-      //참고로 route는 배열모양을 한 스트링이다. 이부분은 프론트와 조율이 필요하다.
-      //우선 받아온 데이터를 서비스로 보낸다.
+      const { re, targetUser } = req.body;
+      //re: 대댓글 내용
+      //targetUser: 만약 대댓글 중에서 해당 대댓글에 답글을 달고 싶다면 그 대상의 userKey
+      //targetUser는 null이 가능하다.
 
       const reply = await this.commentService.reComment(
         userKey,
         commentId,
         re,
-        route
+        targetUser
       );
 
+      console.log(reply);
       res.status(200).json({ data: reply });
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   };
 
@@ -142,10 +141,60 @@ class CommentController {
   getReComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
+      const { userKey } = res.locals.user;
+      //re: 대댓글 내용
+      //targetUser: 만약 대댓글 중에서 해당 대댓글에 답글을 달고 싶다면 그 대상의 userKey
+      //targetUser는 null이 가능하다.
 
       const reply = await this.commentService.getReComment(commentId);
 
       res.status(200).json({ data: reply });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  //대댓글 수정 기능
+  putRe = async (req, res, next) => {
+    const { replyId } = req.params;
+    const { userKey } = res.locals.user;
+    const { re } = req.body;
+
+    if (userKey == 0) {
+      return res.status(400).send({ message: "로그인이 필요합니다." });
+    }
+
+    const reply = await this.commentService.putRe(replyId, userKey, re);
+
+    if (!reply) {
+      res.status(400).json({ mes: "삭제된 덧글 입니다." });
+    }
+
+    res.status(200).json({ data: reply });
+    try {
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  //대댓글 삭제 기능
+  //실제로 삭제하진 않고 내용을 "삭제된 덧글입니다."로 바꾼다.
+  deleteRe = async (req, res, next) => {
+    try {
+      const { replyId } = req.params;
+      const { userKey } = res.locals.user;
+
+      if (userKey == 0) {
+        return res.status(400).send({ message: "로그인이 필요합니다." });
+      }
+
+      const reply = await this.commentService.deleteRe(replyId, userKey);
+
+      if (!reply) {
+        res.status(400).json({ mes: "이미 삭제된 덧글 입니다." });
+      }
+
+      res.status(200).json({ mes: "대댓글 삭제 완료", data: reply });
     } catch (error) {
       next(error);
     }
@@ -167,52 +216,6 @@ class CommentController {
       res.status(200).json({ Message: "채택되었습니다." });
     } catch (err) {
       next(err);
-    }
-  };
-
-  //대댓글 수정
-  putRe = async (req, res, next) => {
-    try {
-      const { replyId } = req.params;
-      const { userKey } = res.locals.user;
-      const { re } = req.body;
-
-      if (userKey == 0) {
-        return res.status(400).send({ message: "로그인이 필요합니다." });
-      }
-
-      const reply = await this.commentService.putRe(replyId, userKey, re);
-
-      if (!reply) {
-        res.status(400).json({ mes: "삭제된 덧글 입니다." });
-      }
-
-      res.status(200).json({ mes: "대댓글 수정 완료", data: reply });
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  //대댓글 삭제, 실제로 지우진 않고 삭제된 덧글입니다로 변경
-  //삭제된 대댓글에 대댓글이 달린 경우를 대비하여 이런식으로 처리함
-  deleteRe = async (req, res, next) => {
-    try {
-      const { replyId } = req.params;
-      const { userKey } = res.locals.user;
-
-      if (userKey == 0) {
-        return res.status(400).send({ message: "로그인이 필요합니다." });
-      }
-
-      const reply = await this.commentService.deleteRe(replyId, userKey);
-
-      if (!reply) {
-        res.status(400).json({ mes: "이미 삭제된 덧글 입니다." });
-      }
-
-      res.status(200).json({ mes: "대댓글 삭제 완료", data: reply });
-    } catch (error) {
-      next(error);
     }
   };
 }

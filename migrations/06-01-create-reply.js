@@ -26,13 +26,9 @@ module.exports = {
         },
         onDelete: "cascade",
       },
-      route: {
-        allowNull: false,
+      targetUser: {
+        allowNull: true,
         type: Sequelize.STRING,
-      },
-      count: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
       },
       comment: {
         type: Sequelize.STRING,

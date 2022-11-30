@@ -78,70 +78,18 @@ class CommentRepository {
     return data_length;
   };
 
-  //여기서부터 대댓글 기능===============
-  //덧글 데이터 가져오기
-  infoComment = async (commentId) => {
-    const data = await Comment.findOne({
-      where: {
-        [Op.and]: [{ commentId }],
-      },
-    });
-    return data;
-  };
-
-  //대댓글 데이터 가져오기
-  //라우트값이 없다면 주 댓글에 대댓글이 달린다.
-  infoReply = async (commentId, route) => {
-    if (route) {
-      const data = await Reply.findAll({
-        where: {
-          [Op.and]: [{ commentId }, { route }],
-        },
-      });
-      return data;
-    } else {
-      const data = await Reply.findAll({
-        where: {
-          [Op.and]: [{ commentId }],
-        },
-      });
-      return data;
-    }
-  };
-
-  //특정 배열 길이의 대댓글을 가져오기
-  replyByLength = async (commentId, count) => {
-    const data = await Reply.findAll({
-      where: {
-        [Op.and]: [{ commentId }, { count: count }],
-      },
-    });
-    return data;
-  };
-
-  //대댓글 생성하기
-  createReply = async (userKey, commentId, route, count, comment) => {
+  //대댓글 생성
+  createReply = async (userKey, commentId, comment, targetUser) => {
     const data = await Reply.create({
       userKey,
       commentId,
-      route,
-      count,
       comment,
+      targetUser,
     });
     return data;
   };
 
-  //길이가 하나일때, 데이터 가져오기
-  topReply = async (commentId) => {
-    const data = await Reply.findAll({
-      where: {
-        [Op.and]: [{ commentId }, { count: 1 }],
-      },
-    });
-    return data;
-  };
-
-  //해당 코멘트의 전체 대댓글 가져오기
+  //대댓글 가져오기
   getReComment = async (commentId) => {
     const data = await Reply.findAll({
       where: {
@@ -151,9 +99,10 @@ class CommentRepository {
     return data;
   };
 
-  selectComment = async (userKey, commentId) => {
-    const data = await CommentSelect.create({ userKey, commentId });
-    return data;
+  //대댓글 수정하기
+  putRe = async (replyId, userKey, re) => {
+    const putRe = await Reply.update({ comment: re }, { where: { replyId } });
+    return putRe;
   };
 
   checkRe = async (replyId) => {
@@ -165,15 +114,20 @@ class CommentRepository {
     return data;
   };
 
-  putRe = async (replyId, userKey, re) => {
-    const putRe = await Reply.update({ comment: re }, { where: { replyId } });
-    return putRe;
-  };
-
+  //대댓글 삭제하기
   deleteRe = async (replyId, userKey) => {
     const comment = "삭제된 덧글입니다.";
-    const deleteRe = await Reply.update({ comment }, { where: { replyId } });
+    const targetUser = "삭제";
+    const deleteRe = await Reply.update(
+      { comment, targetUser },
+      { where: { replyId } }
+    );
     return deleteRe;
+  };
+
+  selectComment = async (userKey, commentId) => {
+    const data = await CommentSelect.create({ userKey, commentId });
+    return data;
   };
 }
 
