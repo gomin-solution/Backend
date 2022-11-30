@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/sparta/
+    destination: /home/ubuntu/sparta/project
     overwrite: yes
     file_exists_behavior: OVERWRITE
 
@@ -15,7 +15,6 @@ permissions:
 hooks:
   BeforeInstall:
     - location: scripts/before-deploy.sh
-      timeout: 180
       runas: ubuntu
 
   AfterInstall:
