@@ -1,6 +1,7 @@
 #!/bin/bash
 REPOSITORY=/home/ubuntu/sparta/project
 
+
 cd $REPOSITORY
 
 npm install
