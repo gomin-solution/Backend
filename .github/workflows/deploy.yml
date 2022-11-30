@@ -57,5 +57,5 @@ jobs:
         run: aws deploy create-deployment
           --application-name auto-build-gomin
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name GROUP
+          --deployment-group-name auto-build-gomin
           --s3-location bucket=build-bucket,bundleType=zip,key=public/cicdtest.zip
