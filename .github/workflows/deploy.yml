@@ -49,11 +49,11 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./cicdtest.zip s3://cicdtest-jun/public/
+        run: aws s3 cp --region ap-northeast-2 ./cicdtest.zip s3://build-bucket/public/
 
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
-          --application-name cicd-depoly-jun
+          --application-name auto-build-gomin
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name GROUP
-          --s3-location bucket=cicdtest-jun,bundleType=zip,key=public/cicdtest.zip
+          --deployment-group-name auto-build-gomin
+          --s3-location bucket=build-bucket,bundleType=zip,key=public/cicdtest.zip
