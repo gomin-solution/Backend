@@ -200,7 +200,7 @@ class AdviceService {
       });
     }
     let selectComment;
-    const comment = [];
+    const commentArray = [];
     findOneAdvice.Comments.forEach((comment) => {
       const isLike = comment.CommentLikes.filter(
         (like) => like.userKey === userKey
@@ -220,7 +220,8 @@ class AdviceService {
           isLike: boolean,
         };
       } else {
-        comment.push({
+        console.log(typeof comment);
+        commentArray.push({
           commentId: comment.commentId,
           userKey: comment.userKey,
           nickname: comment.User.nickname,
@@ -236,10 +237,10 @@ class AdviceService {
     /*등록순, 좋아요순*/
 
     if (filterId == "0") {
-      comment.sort((a, b) => a.commentId - b.commentId);
+      commentArray.sort((a, b) => a.commentId - b.commentId);
     }
     if (filterId == "1") {
-      comment.sort((a, b) => b.likeCount - a.likeCount);
+      commentArray.sort((a, b) => b.likeCount - a.likeCount);
     }
 
     let boolean;
@@ -268,7 +269,7 @@ class AdviceService {
       isBookMark: boolean,
       commentCount: findOneAdvice.Comments.length,
       selectComment: selectComment,
-      comment: comment,
+      comment: commentArray,
     };
   };
 
