@@ -84,8 +84,15 @@ class NoteService {
     return { notes, nickname };
   };
 
-  deleteNote = async (noteId, userKey) => {
-    const deleteNote = await this.noteRepository.deleteNote(noteId, userKey);
+  //쪽지방 삭제
+  deleteRoom = async (roomId, userKey) => {
+    const findRoom = await this.noteRepository.findRoom(roomId, userKey);
+
+    if (!findRoom) {
+      return;
+    }
+
+    const deleteNote = await this.noteRepository.deleteRoom(roomId, userKey);
     return deleteNote;
   };
 }

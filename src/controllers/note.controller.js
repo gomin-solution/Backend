@@ -62,6 +62,28 @@ class NoteController {
       next(err);
     }
   };
+
+  //쪽지방 삭제
+  deleteRoom = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+      const { roomId } = req.params;
+      const deleteRoom = await this.noteService.deleteRoom(roomId, userKey);
+
+      if (!deleteRoom) {
+        return res.status(400).send({ message: "없는 방입니다." });
+      }
+
+      if (!deleteRoom) {
+        return res.status(400).send({ message: "권한없음" });
+      }
+
+      return res.status(200).send({ message: "삭제 완료" });
+    } catch (err) {
+      next(err);
+    }
+  };
+
 }
 
 module.exports = NoteController;
