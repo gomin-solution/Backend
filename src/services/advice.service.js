@@ -173,10 +173,13 @@ class AdviceService {
 
   //  조언 게시물 상세페이지 조회
   findOneAdvice = async (userKey, adviceId, filterId) => {
+    console.log(userKey, adviceId, filterId)
     const findOneAdvice = await this.adviceRepository.findOneAdvice(
       userKey,
       adviceId
     );
+
+    console.log(findOneAdvice)
 
     const findCreatedAt = dayjs(findOneAdvice.createdAt).tz();
     const plusThreeSec = findCreatedAt.add(3, "s");
@@ -199,6 +202,7 @@ class AdviceService {
         ];
       });
     }
+    
     let selectComment;
     const commentArray = [];
     findOneAdvice.Comments.forEach((comment) => {
