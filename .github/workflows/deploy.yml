@@ -5,7 +5,7 @@ name: gomin_solution_backend
 
 on:
   push:
-    branches: [Dev]
+    branches: [master]
 
 jobs:
   build:
