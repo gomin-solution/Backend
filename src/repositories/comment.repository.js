@@ -78,56 +78,6 @@ class CommentRepository {
     return data_length;
   };
 
-  //덧글 신고하기, 이 덧글 누가 썻나? 단, 좋아요 할 때 자신에게 방지하는 용고로도 사용 가능
-  reportCommentAuthor = async (commentId) => {
-    const data = await Comment.findByPk(commentId);
-    const dataId = data.userKey;
-    return dataId;
-  };
-
-  //덧글 신고하기, 신고가 중복되는가?
-  reportRedup = async (reporterId, suspectId, targetId, targetName) => {
-    const data = {
-      reporterId: Number(reporterId),
-      suspectId: Number(suspectId),
-      targetId: Number(targetId),
-      targetName: targetName,
-    };
-
-    const result = await Report.find({
-      ids: data,
-    });
-
-    return result;
-  };
-
-  //덧글 신고하기
-  reportComment = async (reporterId, suspectId, targetId, targetName, why) => {
-    const date = new Date();
-    const reportId = date.valueOf();
-    const commentId = targetId;
-    const data = await Comment.findByPk(commentId);
-    const content = data.comment;
-    const createdAt = date;
-    const updatedAt = date;
-
-    const result = await Report.create({
-      reportId,
-      ids: {
-        reporterId: Number(reporterId),
-        suspectId: Number(suspectId),
-        targetId: Number(targetId),
-        targetName: targetName,
-      },
-      why,
-      content: {
-        content: content,
-      },
-      createdAt,
-      updatedAt,
-    });
-    return result;
-  };
   //여기서부터 대댓글 기능===============
   //덧글 데이터 가져오기
   infoComment = async (commentId) => {
@@ -201,11 +151,10 @@ class CommentRepository {
     return data;
   };
 
-
   selectComment = async (userKey, commentId) => {
     const data = await CommentSelect.create({ userKey, commentId });
     return data;
-  }
+  };
 
   checkRe = async (replyId) => {
     const data = await Reply.findOne({
@@ -226,7 +175,6 @@ class CommentRepository {
     const deleteRe = await Reply.update({ comment }, { where: { replyId } });
     return deleteRe;
   };
-
 }
 
 module.exports = CommentRepository;
