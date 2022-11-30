@@ -21,7 +21,7 @@ noteRouter.get("/rooms", authMiddleware, noteController.roomlist);
 
 //쪽지 상세페이지
 
-// 쪽지 삭제
-noteRouter.delete("/:noteId", authMiddleware, noteController.deleteNote);
+//쪽지방 삭제=======
+noteRouter.delete("/rooms/:roomId", authMiddleware, noteController.deleteRoom);
 
 module.exports = noteRouter;

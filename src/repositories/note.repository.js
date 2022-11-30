@@ -69,8 +69,25 @@ class NoteRepository {
     await Note.create({ note: note, roomId: roomId, userKey: userKey });
   };
 
-  deleteNote = async (noteId, userKey) => {
-    return await Note.destroy({ where: { noteId, fUser: userKey } });
+  //쪽지방 삭제(찾기)
+  findRoom = async (roomId, user1) => {
+    const data = await NoteRoom.findOne({
+      where: {
+        [Op.and]: [{ roomId }, { user1 }],
+      },
+    });
+    return data;
+  };
+
+  //쪽지방 삭제
+  deleteRoom = async (roomId, userKey) => {
+    const data = await NoteRoom.destroy({
+      where: {
+        [Op.and]: [{ roomId }],
+      },
+    });
+
+    return data;
   };
 }
 
