@@ -1,0 +1,61 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: deploy
+
+on:
+  push:
+    branches: [Dev]
+  pull_request:
+    branches: [Dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - name: Checkout source code.
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: create env file
+        working-directory: ./src/
+        run: |
+          touch .env
+          cat << EOF >> .env
+          ${{ secrets.ENV }}
+
+      - name: build client files
+        working-directory: ./
+        run: |
+          npm install
+          npm build
+
+      - name: zip file
+        run: zip -r cicdtest.zip ./src ./scripts ./appspec.yml ./.env ./package.json
+
+      - name: AWS connect
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./cicdtest.zip s3://build-bucket/public/
+
+      - name: deploy with AWS codeDeploy
+        run: aws deploy create-deployment
+          --application-name auto-build-gomin
+          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-group-name auto-build-gomin
+          --s3-location bucket=build-bucket,bundleType=zip,key=public/cicdtest.zip
