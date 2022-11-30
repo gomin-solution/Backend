@@ -17,6 +17,7 @@ class ManagerService {
   allReport = async () => {
     const allReport = await this.managerRepository.allReport(); //이것은 몽고디비서 가져옴
     // const userReport = await this.managerRepository.userReport();//이것은 MYSQL에서 가져옴
+    console.log(allReport);
     let array = new Array();
     for (let i = 0; i < allReport.length; i++) {
       let a = new Array();

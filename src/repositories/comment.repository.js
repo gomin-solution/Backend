@@ -1,4 +1,10 @@
-const { Comment, CommentLike, Reply, CommentSelect } = require("../models"); //모델 데이터를 가져오고
+const {
+  Comment,
+  CommentLike,
+  Reply,
+  CommentSelect,
+  Advice,
+} = require("../models"); //모델 데이터를 가져오고
 const { Op } = require("sequelize");
 const Report = require("../schemas/report");
 
@@ -85,7 +91,10 @@ class CommentRepository {
 
   //특정 댓글 조회
   findComment = async (commentId) => {
-    return await Comment.findByPk(commentId);
+    return await Comment.findOne({
+      where: { commentId: commentId },
+      include: { model: Advice },
+    });
   };
 
   //대댓글 생성

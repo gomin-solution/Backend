@@ -136,7 +136,7 @@ class UserController {
         return res.status(401).json({ message: "로그인이 필요한 기능입니다." });
       }
       const { isOpen } = await this.userService.getDailymessage(userKey);
-
+      console.log(isOpen);
       if (!isOpen) {
         await this.userService.updateMessageOpen(userKey);
         return res
@@ -150,14 +150,15 @@ class UserController {
     }
   };
 
-  //마이페이지 조회
+  //설정페이지 조회
   setting = async (req, res, next) => {
     try {
       const { userKey, level } = res.locals.user;
       if (userKey == 0) {
         return res.status(400).send({ message: "로그인이 필요합니다." });
       }
-      if (level == false) {
+
+      if (!level) {
         const mypage = await this.userService.mypage(userKey);
         return res.status(200).json({ mypage: mypage, admin: false });
       } else {

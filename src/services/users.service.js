@@ -83,11 +83,11 @@ class UserService {
   //메인페이지 데이터 가공해서 보내주기
   mainPage = async (userKey) => {
     const getAdvice = await this.adviceRepository.getAdvice();
-    // const dailyData = await redisCli.hGetAll(`${userKey}`);
+    const dailyData = await redisCli.hGetAll(`${userKey}`);
     let isOpen;
-    // dailyData.isOpen == "0" || userKey == 0
-    //   ? (isOpen = false)
-    //   : (isOpen = true);
+    dailyData.isOpen == "0" || userKey == 0
+      ? (isOpen = false)
+      : (isOpen = true);
     const adviceData = getAdvice.map((post) => {
       return {
         adviceId: post.adviceId,
