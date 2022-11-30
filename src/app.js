@@ -42,6 +42,8 @@ app.use("/", indexRouter);
 app.use(errorLogger); // Error Logger
 app.use(errorHandler); // Error Handler
 
+let server;
+
 if (process.env.NODE_ENV == "production") {
   try {
     const option = {
@@ -49,7 +51,7 @@ if (process.env.NODE_ENV == "production") {
       key: fs.readFileSync(`${process.env.KEY}`),
       cert: fs.readFileSync(`${process.env.CERT}`),
     };
-    const server = HTTPS.createServer(option, app);
+    server = HTTPS.createServer(option, app);
     server.listen(port, () => {
       console.log("HTTPS 서버가 실행되었습니다. 포트 :: " + port);
       socket(server);
@@ -59,9 +61,11 @@ if (process.env.NODE_ENV == "production") {
     console.log(error);
   }
 } else if (process.env.NODE_ENV !== "test") {
-  const server = HTTP.createServer(app);
+  server = HTTP.createServer(app);
   server.listen(port, () => {
     console.log("HTTP 서버가 실행되었습니다. 포트 :: " + port);
     socket(server);
   });
 }
+
+module.exports = server;

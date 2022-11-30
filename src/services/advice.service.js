@@ -6,6 +6,10 @@ const MissionService = require("../services/mission.service");
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
+const SocketIO = require("socket.io");
+const server = require("../app");
+const io = SocketIO(server, { path: "/socket.io" });
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
@@ -24,6 +28,9 @@ class AdviceService {
       isAdult
     );
     const missionComplete = await this.missionService.NewComplete(userKey);
+
+    if (missionComplete.length) {
+    }
 
     console.log(mission.map((mission) => mission.missionId));
 
@@ -192,41 +199,48 @@ class AdviceService {
         ];
       });
     }
-
-    const comment = findOneAdvice.Comments.map((comment) => {
-      const isSelect = comment.CommentSelects.filter(
-        (select) => select.commentId
-      );
-      console.log(isSelect);
-      let select;
-      isSelect.length ? (select = true) : (select = false);
-
+    let selectComment;
+    const commentArray = [];
+    findOneAdvice.Comments.forEach((comment) => {
       const isLike = comment.CommentLikes.filter(
         (like) => like.userKey === userKey
       );
       let boolean;
       isLike.length ? (boolean = true) : (boolean = false);
-      const date = dayjs(comment.createdAt).tz().format("YYYY/MM/DD HH:mm");
-      return {
-        commentId: comment.commentId,
-        userKey: comment.userKey,
-        nickname: comment.User.nickname,
-        userImg: comment.User.userImg,
-        comment: comment.comment,
-        likeCount: comment.CommentLikes.length,
-        createdAt: date,
-        isLike: boolean,
-        isSelect: select,
-      };
+      const date = dayjs(comment.updatedAt).tz().format("YYYY/MM/DD HH:mm");
+      if (comment.CommentSelects.length) {
+        selectComment = {
+          commentId: comment.commentId,
+          userKey: comment.userKey,
+          nickname: comment.User.nickname,
+          userImg: comment.User.userImg,
+          comment: comment.comment,
+          likeCount: comment.CommentLikes.length,
+          updatedAt: date,
+          isLike: boolean,
+        };
+      } else {
+        console.log(typeof comment);
+        commentArray.push({
+          commentId: comment.commentId,
+          userKey: comment.userKey,
+          nickname: comment.User.nickname,
+          userImg: comment.User.userImg,
+          comment: comment.comment,
+          likeCount: comment.CommentLikes.length,
+          updatedAt: date,
+          isLike: boolean,
+        });
+      }
     });
     // filterId
     /*등록순, 좋아요순*/
 
     if (filterId == "0") {
-      comment.sort((a, b) => a.commentId - b.commentId);
+      commentArray.sort((a, b) => a.commentId - b.commentId);
     }
     if (filterId == "1") {
-      comment.sort((a, b) => b.likeCount - a.likeCount);
+      commentArray.sort((a, b) => b.likeCount - a.likeCount);
     }
 
     let boolean;
@@ -254,7 +268,8 @@ class AdviceService {
       viewCount: findOneAdvice.viewCount,
       isBookMark: boolean,
       commentCount: findOneAdvice.Comments.length,
-      comment: comment,
+      selectComment: selectComment,
+      comment: commentArray,
     };
   };
 

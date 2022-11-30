@@ -83,6 +83,7 @@ class NoteController {
       next(err);
     }
   };
+
 }
 
 module.exports = NoteController;
