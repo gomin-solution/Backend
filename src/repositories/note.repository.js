@@ -68,8 +68,7 @@ class NoteRepository {
   sendNote = async (note, roomId, userKey) => {
     await Note.create({ note: note, roomId: roomId, userKey: userKey });
   };
-
-  //쪽지방 삭제(찾기)
+  //쪽지방 삭제(찾기용)
   findRoom = async (roomId, user1) => {
     let data = await NoteRoom.findOne({
       where: {
