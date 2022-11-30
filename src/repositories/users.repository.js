@@ -33,10 +33,8 @@ class UserRepository {
     });
   };
 
-  findUserImage = async (userKey) => {
-    return await User.findOne({
-      where: { userKey: userKey },
-    });
+  findUserKey = async (userKey) => {
+    return await User.findByPk(userKey);
   };
 
   findNickname = async (nickname) => {

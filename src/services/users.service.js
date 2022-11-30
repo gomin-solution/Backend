@@ -159,7 +159,7 @@ class UserService {
   };
 
   findUserImage = async (userKey) => {
-    const user = await this.userRepository.findUserImage(userKey);
+    const user = await this.userRepository.findUserKey(userKey);
     const userImage = ["profileimage/" + user.userImg];
     const userResizeImage = ["profileimage-resize/" + user.userImg];
     const totalUserImage = userImage.concat(userResizeImage);
@@ -224,7 +224,7 @@ class UserService {
   };
 
   uploadUserImage = async (imageUrl, userKey) => {
-    const foundData = await this.userRepository.findUser(userKey);
+    const foundData = await this.userRepository.findUserKey(userKey);
     if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
     const findUserImage = imageUrl.split("/")[4];
 

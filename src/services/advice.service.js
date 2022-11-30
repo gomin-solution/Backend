@@ -1,7 +1,6 @@
 const ErrorCustom = require("../exceptions/error-custom");
-const { ValidationError } = require("sequelize");
 const AdviceRepository = require("../repositories/advice.repository");
-const MissionRepository = require("../repositories/mission.repository");
+const UserRepository = require("../repositories/users.repository");
 const MissionService = require("../services/mission.service");
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
@@ -16,6 +15,7 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 class AdviceService {
   adviceRepository = new AdviceRepository();
+  userRepository = new UserRepository();
   missionService = new MissionService();
 
   // 게시물 생성
@@ -177,9 +177,6 @@ class AdviceService {
       userKey,
       adviceId
     );
-
-    console.log(findOneAdvice);
-
     const findCreatedAt = dayjs(findOneAdvice.createdAt).tz();
     const plusThreeSec = findCreatedAt.add(3, "s");
     const findUpdatedAt = dayjs(findOneAdvice.updatedAt).tz();
@@ -255,6 +252,9 @@ class AdviceService {
       .tz()
       .format("YYYY/MM/DD HH:mm");
 
+    let admin;
+    const findUser = await this.userRepository.findUserKey(userKey);
+    findUser.level ? (admin = true) : (admin = false);
     return {
       adviceId: findOneAdvice.adviceId,
       categoryId: findOneAdvice.categoryId,
@@ -272,6 +272,7 @@ class AdviceService {
       commentCount: findOneAdvice.Comments.length,
       selectComment: selectComment,
       comment: commentArray,
+      admin: admin,
     };
   };
 
