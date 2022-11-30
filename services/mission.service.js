@@ -95,52 +95,71 @@ class MissionService {
     /**새로 완료한 미션이 담긴 배열 */
     const newCompleteMissionId = [];
     mission.forEach((mission) => {
+      console.log(mission);
+      //**게시글 작성 미션 */
+      const Postmission = mission.PostMission?.postMission <= totalPost;
+
+      /** 투표하기 미션 */
+      const Choicemission =
+        mission.ChoiceMission?.choiceMission <= totalChoicePick;
+
+      /**답해주기 게시글 미션 */
+      const Advicemission =
+        mission.AdviceMission?.adviceMission <= totalAdviceComment;
+
+      /**좋아요 받기 미션 */
+      const Likemission = mission.LikeMission?.likeMission <= likeTotal;
+
+      /**채택받기 미션 */
+      const Selectedmission =
+        mission.SelectMission?.selectMission <= totalSelected;
+
+      /**행운 메제시 열기 미션 */
+      const Msgmission = mission.MsgMission?.msgMission <= totalOpen;
+
+      /**해결한 고민 미션 */
+      const Solutionmission =
+        mission.SolutionMission?.solutionMission <= totalSolution;
+
+      /**완료한 미션 */
+      const MissionComplete =
+        mission.MissionCompleteMission?.completeMission <=
+        CompleteMission.length;
+
       if (mission.missionId == 1) {
-        mission.PostMission.postMission <= totalAdvice
+        Postmission ? newCompleteMissionId.push(mission.missionId) : false;
+      }
+      if (mission.missionId == 2 || mission.missionId == 3) {
+        Choicemission && Advicemission
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
-      if (
-        mission.missionId == 2 ||
-        mission.missionId == 3 ||
-        mission.missionId == 4
-      ) {
-        mission.ChoiceMission.choiceMission <= totalChoicePick &&
-        mission.AdviceMission.adviceMission <= totalAdviceComment
+      if (mission.missionId == 4) {
+        Choicemission && Advicemission && Postmission
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
       if (mission.missionId == 5 || mission.missionId == 11) {
-        mission.LikeMission.likeMission <= likeTotal
+        Likemission && Selectedmission
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
       if (mission.missionId == 6) {
-        mission.PostMission.postMission <= totalAdvice &&
-        mission.ChoiceMission.choiceMission <= totalChoicePick &&
-        mission.LikeMission.likeMission <= likeTotal
+        Postmission && Choicemission && Likemission
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
       if (mission.missionId == 7) {
-        mission.MsgMission.msgMission <= totalOpen
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
+        Msgmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
       if (mission.missionId == 8 || mission.missionId == 10) {
-        mission.SelectMission.selectMission <= totalSelected
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
+        Selectedmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
       if (mission.missionId == 9) {
-        mission.SolutionMission.solutionMission <= totalSolution
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
+        Solutionmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
       if (mission.missionId == 12) {
-        mission.MissionCompleteMission.completeMission <= CompleteMission.length
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
+        MissionComplete ? newCompleteMissionId.push(mission.missionId) : false;
       }
     });
 

@@ -8,9 +8,6 @@ module.exports = async (req, res, next) => {
   try {
     const { authorization, refreshtoken } = req.headers;
 
-    console.log("/////미들웨어 호출/////////");
-    console.log("authorization", authorization);
-    console.log("refreshtoken", refreshtoken);
     const refreshToken = refreshtoken;
     let accessToken;
     //로그인 안한경우 익명 정보로 저장
@@ -63,12 +60,6 @@ module.exports = async (req, res, next) => {
     /**검증결과에 따라 true,false가 담김 (type: blooean)*/
     const isAccessTokenValidate = validateAccessToken(accessToken);
     const isRefreshTokenValidate = await validateRefreshToken(refreshToken);
-
-    console.log("//////here///////");
-    console.log(isAccessTokenValidate);
-    console.log(isRefreshTokenValidate);
-    console.log(authorization);
-    console.log(refreshtoken);
 
     /**refreshToken 만료시 재로그인 */
     if (refreshToken && !isRefreshTokenValidate) {

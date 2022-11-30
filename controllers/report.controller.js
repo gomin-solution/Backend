@@ -8,7 +8,7 @@ class ReportCon {
       const { targetId } = req.params;
       const { userKey } = res.locals.user;
       const { why, targetName } = req.body;
-
+      console.log("why:" + why, "targetName:" + targetName);
       if (userKey == 0) {
         return res.status(400).send({ message: "로그인 하시기 바랍니다." });
       }

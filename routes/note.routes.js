@@ -7,7 +7,7 @@ const NoteController = require("../controllers/note.controller");
 
 const noteController = new NoteController();
 
-// 쪽지 보내기(룸 이동)
+// 쪽지 보내기
 noteRouter.post("/rooms", authMiddleware, noteController.createroom);
 
 //대화내용 불러오기

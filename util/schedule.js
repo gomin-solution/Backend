@@ -34,9 +34,8 @@ module.exports = async () => {
   //   }
   //   console.log(dayjs().format("YYYY-MM-DD HH:mm:ss"));
   // });
-  const date = "2022-11-27 01:19";
 
-  schedule.scheduleJob(date, async () => {
+  schedule.scheduleJob(rule, async () => {
     console.log("메세지 업데이트 스케줄 실행됨");
     const DailyArray = await DailyMessage.findAll({});
     const msgArray = DailyArray.map((x) => x.msg);
