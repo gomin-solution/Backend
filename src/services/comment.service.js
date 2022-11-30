@@ -63,6 +63,14 @@ class CommentService {
     return count;
   };
 
+  selectComment = async (userKey, commentId) => {
+    const select = await this.commentRepository.selectComment(
+      userKey,
+      commentId
+    );
+    return select;
+  };
+
   //대댓글 기능===========================================================
   //대댓글 생성 기능
   reComment = async (userKey, commentId, re, targetUser) => {
@@ -95,14 +103,6 @@ class CommentService {
     }
     const data = await this.commentRepository.deleteRe(replyId, userKey);
     return data;
-  };
-
-  selectComment = async (userKey, commentId) => {
-    const select = await this.commentRepository.selectComment(
-      userKey,
-      commentId
-    );
-    return select;
   };
 }
 

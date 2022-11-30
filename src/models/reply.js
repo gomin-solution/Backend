@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Reply.init(
+    //
     {
       replyId: {
         allowNull: false,

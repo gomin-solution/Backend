@@ -78,6 +78,11 @@ class CommentRepository {
     return data_length;
   };
 
+  selectComment = async (userKey, commentId) => {
+    const data = await CommentSelect.create({ userKey, commentId });
+    return data;
+  };
+
   //대댓글 생성
   createReply = async (userKey, commentId, comment, targetUser) => {
     const data = await Reply.create({
@@ -123,11 +128,6 @@ class CommentRepository {
       { where: { replyId } }
     );
     return deleteRe;
-  };
-
-  selectComment = async (userKey, commentId) => {
-    const data = await CommentSelect.create({ userKey, commentId });
-    return data;
   };
 }
 

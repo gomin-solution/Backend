@@ -112,6 +112,25 @@ class CommentController {
     }
   };
 
+  //댓글 채택
+  selectComment = async (req, res, next) => {
+    const { userKey } = res.locals.user;
+    const { commentId } = req.params;
+
+    try {
+      await this.commentService.selectComment(userKey, commentId);
+      // let message = "";
+      // if (selectComment) {
+      //   message = "채택 성공";
+      // } else {
+      //   message = "채택 취소";
+      // }
+      res.status(200).json({ Message: "채택되었습니다." });
+    } catch (err) {
+      next(err);
+    }
+  };
+
   //대댓글 기능===========================================================
   //대댓글 생성 기능
   reComment = async (req, res, next) => {
@@ -197,25 +216,6 @@ class CommentController {
       res.status(200).json({ mes: "대댓글 삭제 완료", data: reply });
     } catch (error) {
       next(error);
-    }
-  };
-
-  //댓글 채택
-  selectComment = async (req, res, next) => {
-    const { userKey } = res.locals.user;
-    const { commentId } = req.params;
-
-    try {
-      await this.commentService.selectComment(userKey, commentId);
-      // let message = "";
-      // if (selectComment) {
-      //   message = "채택 성공";
-      // } else {
-      //   message = "채택 취소";
-      // }
-      res.status(200).json({ Message: "채택되었습니다." });
-    } catch (err) {
-      next(err);
     }
   };
 }
