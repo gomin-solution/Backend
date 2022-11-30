@@ -19,8 +19,6 @@ noteRouter.get("/rooms", authMiddleware, noteController.roomlist);
 // // 쪽지함 조회
 // noteRouter.get("/", authMiddleware, noteController.allMyNote);
 
-//쪽지 상세페이지
-
 //쪽지방 삭제=======
 noteRouter.delete("/rooms/:roomId", authMiddleware, noteController.deleteRoom);
 
