@@ -2,11 +2,11 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/
+    destination: /home/ubuntu/sparta/
     overwrite: yes
 
 permissions:
-  - object: /home/ubuntu
+  - object: /home/ubuntu/sparta
     pattern: "**"
     owner: ubuntu
     group: ubuntu
@@ -14,5 +14,5 @@ permissions:
 hooks:
   AfterInstall:
     - location: scripts/after-deploy.sh
-      timeout: 60
+      timeout: 180
       runas: ubuntu
