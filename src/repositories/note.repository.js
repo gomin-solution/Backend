@@ -72,7 +72,7 @@ class NoteRepository {
   findRoom = async (roomId, user1) => {
     let data = await NoteRoom.findOne({
       where: {
-        [Op.and]: [{ roomId }, { user1 }],
+        [Op.and]: [{ roomId }, { user1: user1 }],
       },
     });
 

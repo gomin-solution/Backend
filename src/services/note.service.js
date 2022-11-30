@@ -1,4 +1,5 @@
 const NoteRepository = require("../repositories/note.repository");
+const ErrorCustom = require("../exceptions/error-custom");
 
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
@@ -89,7 +90,7 @@ class NoteService {
     const findRoom = await this.noteRepository.findRoom(roomId, userKey);
 
     if (!findRoom) {
-      return;
+      throw new ErrorCustom(400, "권한이 없습니다");
     }
 
     const deleteNote = await this.noteRepository.deleteRoom(roomId, userKey);

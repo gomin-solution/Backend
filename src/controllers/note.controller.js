@@ -1,4 +1,3 @@
-const { SchemaTextFieldPhonetics } = require("redis");
 const NoteService = require("../services/note.service");
 
 class NoteController {
@@ -83,7 +82,6 @@ class NoteController {
       next(err);
     }
   };
-
 }
 
 module.exports = NoteController;

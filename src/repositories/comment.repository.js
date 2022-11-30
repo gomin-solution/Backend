@@ -83,6 +83,11 @@ class CommentRepository {
     return data;
   };
 
+  //특정 댓글 조회
+  findComment = async (commentId) => {
+    return await Comment.findByPk(commentId);
+  };
+
   //대댓글 생성
   createReply = async (userKey, commentId, comment, targetUser) => {
     const data = await Reply.create({

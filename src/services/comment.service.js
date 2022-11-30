@@ -1,3 +1,4 @@
+const ErrorCustom = require("../exceptions/error-custom");
 const CommentRepository = require("../repositories/comment.repository"); //리포지토리의 내용을 가져와야한다.
 
 class CommentService {
@@ -64,6 +65,11 @@ class CommentService {
   };
 
   selectComment = async (userKey, commentId) => {
+    const findComment = await this.commentRepository.findComment(commentId);
+
+    if (findComment.userKey == userKey) {
+      throw new ErrorCustom(400, "본인 댓글을 채택할 수 없어요.");
+    }
     const select = await this.commentRepository.selectComment(
       userKey,
       commentId

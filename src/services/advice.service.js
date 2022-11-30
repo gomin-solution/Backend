@@ -30,6 +30,7 @@ class AdviceService {
     const missionComplete = await this.missionService.NewComplete(userKey);
 
     if (missionComplete.length) {
+      io.emit("complete_aram", "보상을 확인하세요");
     }
 
     console.log(mission.map((mission) => mission.missionId));
@@ -224,7 +225,6 @@ class AdviceService {
           isLike: boolean,
         };
       } else {
-        console.log(typeof comment);
         commentArray.push({
           commentId: comment.commentId,
           userKey: comment.userKey,
