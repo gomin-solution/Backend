@@ -16,6 +16,7 @@ module.exports = {
           model: "NoteRooms",
           key: "roomId",
         },
+        onDelete: "cascade",
       },
       userKey: {
         allowNull: false,

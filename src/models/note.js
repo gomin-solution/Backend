@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
           model: "NoteRooms",
           key: "roomId",
         },
+        onDelete: "cascade",
       },
       userKey: {
         allowNull: false,
