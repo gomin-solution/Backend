@@ -71,11 +71,20 @@ class NoteRepository {
 
   //쪽지방 삭제(찾기)
   findRoom = async (roomId, user1) => {
-    const data = await NoteRoom.findOne({
+    let data = await NoteRoom.findOne({
       where: {
         [Op.and]: [{ roomId }, { user1 }],
       },
     });
+
+    if (!data) {
+      data = await NoteRoom.findOne({
+        where: {
+          [Op.and]: [{ roomId }, { user2: user1 }],
+        },
+      });
+    }
+
     return data;
   };
 
