@@ -4,13 +4,13 @@ files:
   - source: /
     destination: /home/ubuntu/
     overwrite: yes
-​
+
 permissions:
   - object: /home/ubuntu
-    pattern: '**'
+    pattern: "**"
     owner: ubuntu
     group: ubuntu
-​
+
 hooks:
   AfterInstall:
     - location: scripts/after-deploy.sh
