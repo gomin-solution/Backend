@@ -9,16 +9,14 @@ module.exports = {
      * Example:
     //  * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable("DailyUpdate", {
-      Id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
+    await queryInterface.changeColumn("Notes", "roomId", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      references: {
+        model: "NoteRooms",
+        key: "roomId",
       },
-      userKey: Sequelize.INTEGER,
-      msg: Sequelize.STRING,
-      isOpen: Sequelize.BOOLEAN,
+      onDelete: "cascade",
     });
     // return await queryInterface.addColumn("Replies", "userKey", {
     //   allowNull: false,
@@ -28,14 +26,14 @@ module.exports = {
     //     key: "userKey",
     //   },
     // });
-    return await queryInterface.addeColumn("Replies", "userKey", {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      references: {
-        model: "Users",
-        key: "userKey",
-      },
-    });
+    // return await queryInterface.addeColumn("Replies", "userKey", {
+    //   allowNull: false,
+    //   type: Sequelize.INTEGER,
+    //   references: {
+    //     model: "Users",
+    //     key: "userKey",
+    //   },
+    // });
     // return queryInterface.changeColumn("isChoices", "choiceId", {
     //   allowNull: false,
     //   type: Sequelize.INTEGER,
