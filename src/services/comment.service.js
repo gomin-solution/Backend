@@ -1,11 +1,20 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const CommentRepository = require("../repositories/comment.repository"); //리포지토리의 내용을 가져와야한다.
+const AdviceRepository = require("../repositories/advice.repository");
 
 class CommentService {
   commentRepository = new CommentRepository();
+  adviceRepository = new AdviceRepository();
 
   //덧글 달기
   createComment = async (userKey, adviceId, comment) => {
+    const findAdvice = await this.adviceRepository.findAdvice(adviceId);
+    if (findAdvice.userKey == userKey) {
+      throw new ErrorCustom(
+        400,
+        "본인 게시글에는 대댓글만 작성 할 수 있습니다."
+      );
+    }
     const createComment = await this.commentRepository.createComment(
       userKey,
       adviceId,
