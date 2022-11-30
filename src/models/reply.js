@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Reply.init(
+    //
     {
       replyId: {
         allowNull: false,
@@ -43,13 +44,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         onDelete: "cascade",
       },
-      route: {
-        allowNull: false,
+      targetUser: {
+        allowNull: true,
         type: DataTypes.STRING,
-      },
-      count: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
       },
       comment: {
         type: DataTypes.STRING,
