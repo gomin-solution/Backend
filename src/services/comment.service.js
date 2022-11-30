@@ -79,8 +79,11 @@ class CommentService {
     if (findComment.userKey == userKey) {
       throw new ErrorCustom(400, "본인 댓글을 채택할 수 없어요.");
     }
-    if (findComment.Advice.userKey !== userKey)
+
+    if (findComment.Advice.userKey !== userKey) {
       throw new ErrorCustom(400, "게시글 작성자만 채택할 수 있습니다.");
+    }
+
     const select = await this.commentRepository.selectComment(
       userKey,
       commentId
