@@ -55,7 +55,6 @@ class UserController {
       res.cookie("accesstoken", accessToken, {
         sameSite: "none",
         secure: true,
-        httpOnly: true,
       });
 
       res.cookie("refreshtoken", refreshToken, {
@@ -64,9 +63,7 @@ class UserController {
         httpOnly: true,
       });
 
-      return res
-        .status(200)
-        .json({ accessToken, refreshToken, message: "로그인 성공.", nickname });
+      return res.status(200).json({ message: "로그인 성공.", nickname });
     } catch (error) {
       next(error);
     }

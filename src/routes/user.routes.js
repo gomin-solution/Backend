@@ -18,6 +18,9 @@ router.put("/msg", authMiddleware, userController.dailyMessage);
 //회원가입
 router.post("/signup", LoginMiddleware, userController.signup);
 
+//비밀번호 변경
+router.put("/password", authMiddleware, userController.passwordChange);
+
 //중복검사
 router.post("/signup/check", userController.check);
 
