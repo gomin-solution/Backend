@@ -68,7 +68,8 @@ class UserService {
       expiresIn: "15d",
     });
     const nickname = user.nickname;
-    return { accessToken, refreshToken, nickname };
+    const userKey = user.userKey;
+    return { accessToken, refreshToken, nickname, userKey };
   };
 
   //닉네임 중복검사

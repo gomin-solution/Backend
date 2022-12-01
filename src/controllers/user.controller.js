@@ -46,7 +46,7 @@ class UserController {
       // const { email, password } = await joi.loginSchema.validateAsync(req.body);
       const { userId, password } = req.body;
 
-      const { accessToken, refreshToken, nickname } =
+      const { accessToken, refreshToken, nickname, userKey } =
         await this.userService.verifyUser(userId, password);
 
       //refreshtoken을 userId키로 redis에 저장
@@ -67,7 +67,9 @@ class UserController {
         res.cookie("refreshtoken", refreshToken);
       }
 
-      return res.status(200).json({ message: "로그인 성공.", nickname });
+      return res
+        .status(200)
+        .json({ message: "로그인 성공.", nickname, userKey });
     } catch (error) {
       next(error);
     }
