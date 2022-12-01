@@ -74,8 +74,6 @@ module.exports = (server) => {
         note: note,
         date: date,
       };
-      console.log("/////알람을 보낼 유저//////");
-      console.log(sendUser);
       io.to(roomId).emit("message", msg);
       io.to(sendUser).emit("message_alarm");
     });
