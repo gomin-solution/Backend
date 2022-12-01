@@ -63,6 +63,7 @@ class CommentService {
       userKey,
       commentId
     );
+    //취소
     if (isCommentLike) {
       const cancel = await this.commentRepository.cancelCommentLike(
         userKey,
@@ -70,10 +71,21 @@ class CommentService {
       );
       return cancel;
     } else {
+      //등록
       const like = await this.commentRepository.createCommentLike(
         userKey,
         commentId
       );
+      const commentUser = await this.commentRepository.findComment(commentId);
+
+      //좋아요 받은 유저 미션 현황
+      const missionComplete = await this.missionService.MyNewComplete(
+        commentUser.userKey
+      );
+      if (missionComplete.length) {
+        io.emit("complete_aram", "보상을 확인하세요");
+      }
+
       return like;
     }
   };
@@ -84,6 +96,7 @@ class CommentService {
     return count;
   };
 
+  //댓글 채택하기
   selectComment = async (userKey, commentId) => {
     const findComment = await this.commentRepository.findComment(commentId);
 
@@ -99,6 +112,14 @@ class CommentService {
       userKey,
       commentId
     );
+
+    const missionComplete = await this.missionService.MyNewComplete(
+      findComment.userKey
+    );
+    if (missionComplete.length) {
+      io.emit("complete_aram", "보상을 확인하세요");
+    }
+
     return select;
   };
 
