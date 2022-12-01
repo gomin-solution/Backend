@@ -6,9 +6,13 @@ module.exports = (req, res, next) => {
 
     res.cookie("accesstoken", "expire", {
       maxAge: 0,
+      secure: true,
+      httpOnly: true,
     });
     res.cookie("refreshtoken", "expire", {
       maxAge: 0,
+      secure: true,
+      httpOnly: true,
     });
 
     return res.status(200).json({ message: "로그아웃 되었습니다" });
