@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "NoteRooms",
+          model: "NoteRoom",
           key: "roomId",
         },
         onDelete: "cascade",
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "Users",
+          model: "User",
           key: "userKey",
         },
       },
