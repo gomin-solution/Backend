@@ -57,6 +57,9 @@ router.delete(
   adviceController.deleteAdvice
 );
 
+//회원탈퇴
+router.put("/bye", authMiddleware, userController.bye);
+
 //리워드
 router.put("/reword/:missionId", authMiddleware, userController.getReword);
 

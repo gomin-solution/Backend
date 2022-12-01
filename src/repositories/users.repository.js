@@ -88,6 +88,16 @@ class UserRepository {
     );
     return updateAdviceContentData;
   };
+
+  //회원탈퇴
+  bye = async (userKey) => {
+    const nickname = "탈퇴한 회원입니다.";
+    const bye = await User.update(
+      { nickname: nickname },
+      { where: { userKey: userKey } }
+    );
+    return bye;
+  };
 }
 
 module.exports = UserRepository;
