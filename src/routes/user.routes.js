@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
 const LoginMiddleware = require("../middlewares/LoginMiddleware");
+const LogoutMiddleware = require("../middlewares/LogoutMiddleware");
 const uploaduser = require("../modules/user.multer");
 const UserController = require("../controllers/user.controller");
 const userController = new UserController();
@@ -26,6 +27,9 @@ router.post("/signup/check", userController.check);
 
 //로그인
 router.post("/login", LoginMiddleware, userController.login);
+
+//로그아웃
+router.delete("/logout", LogoutMiddleware);
 
 //로그인테스트
 router.post("/test", authMiddleware);

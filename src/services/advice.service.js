@@ -256,7 +256,7 @@ class AdviceService {
 
     let admin;
     const findUser = await this.userRepository.findUserKey(userKey);
-    findUser.level ? (admin = true) : (admin = false);
+    findUser?.level ? (admin = true) : (admin = false);
     return {
       adviceId: findOneAdvice.adviceId,
       categoryId: findOneAdvice.categoryId,
