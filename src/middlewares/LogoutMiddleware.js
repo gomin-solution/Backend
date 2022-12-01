@@ -4,15 +4,16 @@ module.exports = (req, res, next) => {
     console.log("accesstoken", accesstoken);
     console.log("refreshtoken", refreshtoken);
 
-    res.clearCookie("accesstoken");
-    res.clearCookie("refreshtoken");
     res.cookie("accesstoken", "expire", {
       maxAge: 0,
+      sameSite: "none",
       secure: true,
       httpOnly: true,
     });
+
     res.cookie("refreshtoken", "expire", {
       maxAge: 0,
+      sameSite: "none",
       secure: true,
       httpOnly: true,
     });
