@@ -86,6 +86,10 @@ class UserService {
     return;
   };
 
+  passwordChange = async (userKey, hashed) => {
+    return await this.userRepository.passwordChange(userKey, hashed);
+  };
+
   //메인페이지 데이터 가공해서 보내주기
   mainPage = async (userKey) => {
     const getAdvice = await this.adviceRepository.getAdvice();

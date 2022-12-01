@@ -55,7 +55,6 @@ class UserController {
       res.cookie("accesstoken", accessToken, {
         sameSite: "none",
         secure: true,
-        httpOnly: true,
       });
 
       res.cookie("refreshtoken", refreshToken, {
@@ -64,9 +63,7 @@ class UserController {
         httpOnly: true,
       });
 
-      return res
-        .status(200)
-        .json({ accessToken, refreshToken, message: "로그인 성공.", nickname });
+      return res.status(200).json({ message: "로그인 성공.", nickname });
     } catch (error) {
       next(error);
     }
@@ -92,6 +89,23 @@ class UserController {
         await this.userService.findUserId(userId);
         return res.status(200).json({ message: "사용 가능한 아이디 입니다" });
       }
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  //비밀번호 변경
+  passwordChange = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+
+      const { password } = await joi.passwordSchema.validateAsync(req.body);
+
+      const hashed = await bcrypt.hash(password, 12);
+
+      await this.userService.passwordChange(userKey, hashed);
+
+      return res.status(200).json({ message: "비밀번호 변경 완료" });
     } catch (error) {
       next(error);
     }

@@ -182,12 +182,72 @@ class MissionService {
   };
 
   reword = async (userKey) => {
+    const totalReword = await this.userRepository.totalReword(userKey);
+
+    const likeArray = totalReword.Comments.map((x) => x.CommentLikes.length);
+    /**내가 받은 총 좋아요수 */
+    let likeTotal = 0;
+    likeArray.forEach((x) => {
+      likeTotal += x;
+    });
+
+    const viewCountArray = totalReword.Advice.map((x) => x.viewCount);
+
+    /**내 게시글의 총 조회수 */
+    let viewCount = 0;
+
+    viewCountArray.forEach((x) => {
+      viewCount += x;
+    });
+
+    /** 내가 조언해준 횟수*/
+    const totalAdviceComment = totalReword.Comments.length;
+
+    /**내가 투표한횟수 */
+    const totalChoicePick = totalReword.isChoices.length;
+
+    /**내가 쓴 조언게시글 수 */
+    const totalAdvice = totalReword.Advice.length;
+
+    /**투표 게시글 작성 수 */
+    const totalChoice = totalReword.Choices.length;
+
+    /**마감된 투표 게시글 수 */
+    const totalEndChoice = totalReword.Choices.filter(
+      (choice) => choice.isEnd == true
+    ).length;
+
+    /**총게시글 작성 수 */
+    const totalPost = totalAdvice + totalChoice;
+
+    /**행운의 편지 열기 횟수 */
+    const totalOpen = totalReword.msgOpenCount;
+
+    /**채택받은 횟수 */
+    const totalSelected = totalReword.CommentSelects.length;
+
+    /**채택한 횟수 */
+    const totalSelect = totalReword.Comments.filter(
+      (x) => x.CommentSelects.length
+    ).length;
+
+    /**고민 마감 횟수 */
+    const totalSolution = totalSelect + totalEndChoice;
+
     const missionComplete = await this.missionRepository.completeMission(
       userKey
     );
     const missionCompleteId = missionComplete.map((mission) => {
       return [mission.missionId, mission.isGet];
     });
+
+    /**완료한 미션 */
+    const completedMission = await this.missionRepository.completeMission(
+      userKey
+    );
+
+    /**완료한 미션 ID */
+    const CompleteMission = completedMission.map((x) => x.missionId);
     console.log(missionCompleteId);
 
     let result = [];
@@ -209,6 +269,7 @@ class MissionService {
         isGet: isGet,
       });
     }
+
     const data = {
       result: result,
       missionCount: {
@@ -222,7 +283,7 @@ class MissionService {
         msgOpen: totalOpen,
         Selected: totalSelected,
         totalSolution: totalSolution,
-        missionComplete: CompleteMission.length + newCompleteMissionId.length,
+        missionComplete: CompleteMission.length,
       },
     };
     return data;
