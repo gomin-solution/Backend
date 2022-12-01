@@ -1,15 +1,21 @@
 const ChoiceRepository = require("../repositories/choice.repository");
+const MissionService = require("../services/mission.service");
 const schedule = require("node-schedule");
 const { DataExchange } = require("aws-sdk");
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
+const SocketIO = require("socket.io");
+const server = require("../app");
+const io = SocketIO(server, { path: "/socket.io" });
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
 class ChoiceService {
   choiceRepository = new ChoiceRepository();
+  missionService = new MissionService();
 
   createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
     const date = dayjs(endTime).tz();
@@ -27,6 +33,11 @@ class ChoiceService {
       console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
     });
+    const missionComplete = await this.missionService.MyNewComplete(userKey);
+
+    if (missionComplete.length) {
+      io.emit("complete_aram", "보상을 확인하세요");
+    }
 
     return createchoice;
   };
@@ -141,36 +152,20 @@ class ChoiceService {
 
   choice = async (userKey, choiceId, choiceNum) => {
     const isChoice = await this.choiceRepository.isChoice(userKey, choiceId);
-    let choice;
     if (isChoice) {
       choice = await this.choiceRepository.cancelChoice(userKey, choiceId);
-      return choice;
+      return false;
     } else {
       choice = await this.choiceRepository.doChoice(
         userKey,
         choiceId,
         choiceNum
       );
-      const result = await this.choiceRepository.resultChoice(choiceId);
-
-      let absolute_a = result.choice_1;
-      let absolute_b = result.choice_2;
-      let choice1Per;
-      let choice2Per;
-      let a;
-      let b;
-      if (absolute_a + absolute_b > 0) {
-        a = (absolute_a / (absolute_a + absolute_b)) * 100;
-        b = (absolute_b / (absolute_a + absolute_b)) * 100;
+      const missionComplete = await this.missionService.MyNewComplete(userKey);
+      if (missionComplete.length) {
+        io.emit("complete_aram", "보상을 확인하세요");
       }
-      let count = result.choiceCount;
-      choice1Per = Math.round(a);
-      choice2Per = 100 - Math.round(a);
-      return {
-        choice1Per,
-        choice2Per,
-        count,
-      };
+      return true;
     }
   };
 

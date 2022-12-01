@@ -152,24 +152,6 @@ class ChoiceRepository {
     return isChoiceData;
   };
 
-  //투표를 완료한 경우, 해당 choice테이블에서 투표 데이터를 가져온다.
-  resultChoice = async (choiceId) => {
-    const result = await Choice.findOne({
-      where: {
-        [Op.and]: [{ choiceId }],
-      },
-    });
-
-    const choice_1 = result.choice1Per;
-    const choice_2 = result.choice2Per;
-    const choiceCount = result.choiceCount;
-    return {
-      choice_1,
-      choice_2,
-      choiceCount,
-    };
-  };
-
   choiceSeach = async (userKey, keyword) => {
     const seachResult = await Choice.findAll({
       where: {

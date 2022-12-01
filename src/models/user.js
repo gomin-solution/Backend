@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         sourceKey: "userKey",
       });
-
       //투표여부
       this.hasMany(models.isChoice, {
         foreignKey: "userKey",
@@ -98,6 +97,31 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       msgOpenCount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      commentActivity: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      choiceActivity: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      choicePostActivity: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      advicePostActivity: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      receiveLikeActivity: {
+        allowNull: false,
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },

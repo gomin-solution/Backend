@@ -72,7 +72,7 @@ class AdviceController {
       );
 
       await this.adviceService.upCountView(adviceId, userKey);
-      res.status(200).json({ findAdvice });
+      res.status(200).json({ findAdvice, admin });
     } catch (err) {
       next(err);
     }

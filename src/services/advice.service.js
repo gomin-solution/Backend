@@ -27,10 +27,10 @@ class AdviceService {
       content,
       isAdult
     );
-    const missionComplete = await this.missionService.NewComplete(userKey);
+    const missionComplete = await this.missionService.MyNewComplete(userKey);
 
     if (missionComplete.length) {
-      io.emit("complete_aram", "보상을 확인하세요");
+      io.to(userKey).emit("mission_alarm", "보상을 확인하세요");
     }
 
     return createAdviceData;

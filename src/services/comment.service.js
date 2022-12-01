@@ -1,10 +1,16 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const CommentRepository = require("../repositories/comment.repository"); //리포지토리의 내용을 가져와야한다.
 const AdviceRepository = require("../repositories/advice.repository");
+const MissionService = require("../services/mission.service");
+
+const SocketIO = require("socket.io");
+const server = require("../app");
+const io = SocketIO(server, { path: "/socket.io" });
 
 class CommentService {
   commentRepository = new CommentRepository();
   adviceRepository = new AdviceRepository();
+  missionService = new MissionService();
 
   //덧글 달기
   createComment = async (userKey, adviceId, comment) => {
@@ -20,6 +26,11 @@ class CommentService {
       adviceId,
       comment
     );
+    const missionComplete = await this.missionService.MyNewComplete(userKey);
+    if (missionComplete.length) {
+      io.emit("complete_aram", "보상을 확인하세요");
+    }
+
     return createComment;
   };
 
@@ -52,6 +63,7 @@ class CommentService {
       userKey,
       commentId
     );
+    //취소
     if (isCommentLike) {
       const cancel = await this.commentRepository.cancelCommentLike(
         userKey,
@@ -59,10 +71,21 @@ class CommentService {
       );
       return cancel;
     } else {
+      //등록
       const like = await this.commentRepository.createCommentLike(
         userKey,
         commentId
       );
+      const commentUser = await this.commentRepository.findComment(commentId);
+
+      //좋아요 받은 유저 미션 현황
+      const missionComplete = await this.missionService.MyNewComplete(
+        commentUser.userKey
+      );
+      if (missionComplete.length) {
+        io.emit("complete_aram", "보상을 확인하세요");
+      }
+
       return like;
     }
   };
@@ -73,6 +96,7 @@ class CommentService {
     return count;
   };
 
+  //댓글 채택하기
   selectComment = async (userKey, commentId) => {
     const findComment = await this.commentRepository.findComment(commentId);
 
@@ -88,6 +112,14 @@ class CommentService {
       userKey,
       commentId
     );
+
+    const missionComplete = await this.missionService.MyNewComplete(
+      findComment.userKey
+    );
+    if (missionComplete.length) {
+      io.emit("complete_aram", "보상을 확인하세요");
+    }
+
     return select;
   };
 
