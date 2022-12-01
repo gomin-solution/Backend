@@ -32,7 +32,10 @@ module.exports = (server) => {
 
     //메인페이지 연결시
     socket.on("main_connect", (userKey) => {
+      console.log("//////메인페이지 연결됨/////////");
+      console.log(userKey);
       socket.join(userKey);
+      console.log(socket.rooms);
     });
 
     //* 룸 입장
@@ -59,13 +62,22 @@ module.exports = (server) => {
         userKey: userKey,
         note: note,
       });
-
+      const findRoom = await NoteRoom.findByPk(roomId);
+      let sendUser;
+      console.log("user1", findRoom.user1);
+      console.log("user2", findRoom.user2);
+      findRoom.user1 == userKey
+        ? (sendUser = findRoom.user2)
+        : (sendUser = findRoom.user1);
       const msg = {
         userKey: userKey,
         note: note,
         date: date,
       };
+      console.log("/////알람을 보낼 유저//////");
+      console.log(sendUser);
       io.to(roomId).emit("message", msg);
+      io.to(sendUser).emit("message_alarm");
     });
   });
 };

@@ -55,9 +55,9 @@ class CommentService {
 
   //덧글 좋아요 또는 취소
   updateCommentLike = async (userKey, commentId) => {
-    const dup = await this.commentRepository.reportCommentAuthor(commentId);
+    const dup = await this.commentRepository.findComment(commentId);
 
-    if (dup === userKey) return -1;
+    if (dup.userKey === userKey) return -1;
 
     const isCommentLike = await this.commentRepository.isCommentLike(
       userKey,
