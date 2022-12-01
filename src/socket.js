@@ -30,6 +30,11 @@ module.exports = (server) => {
       console.error(error);
     });
 
+    //메인페이지 연결시
+    socket.on("main_connect", (userKey) => {
+      socket.join(userKey);
+    });
+
     //* 룸 입장
     socket.on("enter_room", (data) => {
       socket.join(data.roomId);
