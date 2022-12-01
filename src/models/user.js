@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         sourceKey: "userKey",
       });
-
       //투표여부
       this.hasMany(models.isChoice, {
         foreignKey: "userKey",

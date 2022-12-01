@@ -5,7 +5,7 @@ class MissionService {
   missionRepository = new MissionRepository();
   userRepository = new UserRepository();
 
-  reword = async (userKey) => {
+  MyNewComplete = async (userKey) => {
     /**유저의 활동 정보를 모두 가져옴 */
     const totalReword = await this.userRepository.totalReword(userKey);
 
@@ -56,6 +56,8 @@ class MissionService {
       (x) => x.CommentSelects.length
     ).length;
 
+    /**고민 마감 횟수 */
+    const totalSolution = totalSelect + totalEndChoice;
     // totalAdviceComment: 댓글작성 횟수,
     // totalChoicePick: 투표 횟수,
     // totalAdvice: 답해주기글 횟수,
@@ -68,8 +70,6 @@ class MissionService {
     // totalSolution: 마감한 게시글수(채택마감+선택마감),
     // missionComplete: 미션 완료 수
 
-    /**고민 마감 횟수 */
-    const totalSolution = totalSelect + totalEndChoice;
     console.log(
       `totalAdviceComment:${totalAdviceComment}, 
       totalChoicePick:${totalChoicePick}, 
@@ -178,12 +178,15 @@ class MissionService {
     for (const missionId of newCompleteMissionId) {
       await this.missionRepository.createCompleteMission(userKey, missionId);
     }
+    return newCompleteMissionId;
+  };
 
+  reword = async (userKey) => {
     const missionComplete = await this.missionRepository.completeMission(
       userKey
     );
-    const missionCompleteId = missionComplete.map((x) => {
-      return [x.missionId, x.isGet];
+    const missionCompleteId = missionComplete.map((mission) => {
+      return [mission.missionId, mission.isGet];
     });
     console.log(missionCompleteId);
 
@@ -222,11 +225,10 @@ class MissionService {
         missionComplete: CompleteMission.length + newCompleteMissionId.length,
       },
     };
-
     return data;
   };
 
-  NewComplete = async (userKey) => {
+  MyNewComplete = async (userKey) => {
     const totalReword = await this.userRepository.totalReword(userKey);
 
     const likeArray = totalReword.Comments.map((x) => x.CommentLikes.length);
@@ -321,6 +323,89 @@ class MissionService {
       }
     });
 
+    return newCompleteMissionId;
+  };
+
+  //게시글 작성 미션
+  postMission = async (userKey) => {
+    const totalReword = await this.userRepository.totalReword(userKey);
+
+    const likeArray = totalReword.Comments.map((x) => x.CommentLikes.length);
+    /**내가 받은 총 좋아요수 */
+    let likeTotal = 0;
+    likeArray.forEach((x) => {
+      likeTotal += x;
+    });
+
+    /** 내가 조언해준 횟수*/
+    const totalAdviceComment = totalReword.Comments.length;
+
+    /**내가 투표한횟수 */
+    const totalChoicePick = totalReword.isChoices.length;
+
+    /**내가 쓴 조언게시글 수 */
+    const totalAdvice = totalReword.Advice.length;
+
+    /**투표 게시글 작성 수 */
+    const totalChoice = totalReword.Choices.length;
+
+    /**총게시글 작성 수 */
+    const totalPost = totalAdvice + totalChoice;
+
+    //postMision이 포함된 미션
+    const missionarray = [1, 4, 6];
+
+    /**완료한 미션 */
+    const completedMission = await this.missionRepository.completeMission(
+      userKey
+    );
+
+    /**완료한 미션 ID */
+    const CompleteMission = completedMission.map((x) => x.missionId);
+
+    /**미완료 미션ID */
+    const unCompleteMission = missionarray.filter(
+      (x) => !CompleteMission.includes(x)
+    );
+
+    const mission = await this.missionRepository.mission(unCompleteMission);
+
+    /**새로 완료한 미션이 담긴 배열 */
+    const newCompleteMissionId = [];
+
+    mission.forEach((mission) => {
+      //**게시글 작성 미션 */
+      const Postmission = mission.PostMission?.postMission <= totalPost;
+
+      /** 투표하기 미션 */
+      const Choicemission =
+        mission.ChoiceMission?.choiceMission <= totalChoicePick;
+
+      /**답해주기 게시글 미션 */
+      const Advicemission =
+        mission.AdviceMission?.adviceMission <= totalAdviceComment;
+
+      /**좋아요 받기 미션 */
+      const Likemission = mission.LikeMission?.likeMission <= likeTotal;
+
+      if (mission.missionId == 1) {
+        Postmission ? newCompleteMissionId.push(mission.missionId) : false;
+      }
+      if (mission.missionId == 4) {
+        Choicemission && Advicemission && Postmission
+          ? newCompleteMissionId.push(mission.missionId)
+          : false;
+      }
+      if (mission.missionId == 6) {
+        Postmission && Choicemission && Likemission
+          ? newCompleteMissionId.push(mission.missionId)
+          : false;
+      }
+    });
+
+    for (const missionId of newCompleteMissionId) {
+      await this.missionRepository.createCompleteMission(userKey, missionId);
+    }
     return newCompleteMissionId;
   };
 }

@@ -1,10 +1,12 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const CommentRepository = require("../repositories/comment.repository"); //리포지토리의 내용을 가져와야한다.
 const AdviceRepository = require("../repositories/advice.repository");
+const MissionService = require("../services/mission.service");
 
 class CommentService {
   commentRepository = new CommentRepository();
   adviceRepository = new AdviceRepository();
+  missionService = new MissionService();
 
   //덧글 달기
   createComment = async (userKey, adviceId, comment) => {
@@ -20,6 +22,9 @@ class CommentService {
       adviceId,
       comment
     );
+    const missionComplete = await this.missionService.MyNewComplete(userKey);
+    console.log(missionComplete);
+
     return createComment;
   };
 

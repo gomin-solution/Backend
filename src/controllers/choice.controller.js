@@ -98,12 +98,10 @@ class ChoiceController {
         throw new Error("잘못된 접근 입니다.");
       }
 
-      if (choice.count) {
-        res
-          .status(200)
-          .json({ message: choiceNum + "번에 투표 성공", data: choice });
+      if (choice) {
+        res.status(200).json({ message: choiceNum + "번에 투표 성공" });
       } else {
-        res.status(200).json({ message: "투표 취소", data: choice });
+        res.status(200).json({ message: "투표 취소" });
       }
       return choice;
     } catch (err) {
