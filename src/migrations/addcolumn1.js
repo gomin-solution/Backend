@@ -18,31 +18,6 @@ module.exports = {
     //   },
     //   onDelete: "cascade",
     // });
-    await queryInterface.addColumn("Users", "commentActivity", {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
-    });
-    await queryInterface.addColumn("Users", "choiceActivity", {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
-    });
-    await queryInterface.addColumn("Users", "choicePostActivity", {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
-    });
-    await queryInterface.addColumn("Users", "advicePostActivity", {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
-    });
-    await queryInterface.addColumn("Users", "receiveLikeActivity", {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      defaultValue: 0,
-    });
     // return await queryInterface.addeColumn("Replies", "userKey", {
     //   allowNull: false,
     //   type: Sequelize.INTEGER,
@@ -51,12 +26,12 @@ module.exports = {
     //     key: "userKey",
     //   },
     // });
-    // return queryInterface.changeColumn("isChoices", "choiceId", {
+    // return queryInterface.addColumn("Notes", "roomId", {
     //   allowNull: false,
     //   type: Sequelize.INTEGER,
     //   references: {
-    //     model: "Choices",
-    //     key: "choiceId",
+    //     model: "NoteRooms",
+    //     key: "roomId",
     //   },
     //   onDelete: "cascade",
     // });
@@ -71,7 +46,6 @@ module.exports = {
      */
     // return await queryInterface.dropTable("isChoices");
     // return queryInterface.dropTable("DailyUpdate");
-    // return queryInterface.removeColumn("AdviceImages", "resizeImage");
-    // return queryInterface.removeColumn("Users", "resizeImg");
+    // return queryInterface.removeColumn("Notes", "roomId");
   },
 };
