@@ -9,23 +9,40 @@ module.exports = {
      * Example:
     //  * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.changeColumn("Notes", "roomId", {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      references: {
-        model: "NoteRooms",
-        key: "roomId",
-      },
-      onDelete: "cascade",
-    });
-    // return await queryInterface.addColumn("Replies", "userKey", {
+    // await queryInterface.changeColumn("Notes", "roomId", {
     //   allowNull: false,
     //   type: Sequelize.INTEGER,
     //   references: {
-    //     model: "Users",
-    //     key: "userKey",
+    //     model: "NoteRooms",
+    //     key: "roomId",
     //   },
+    //   onDelete: "cascade",
     // });
+    await queryInterface.addColumn("Users", "commentActivity", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    });
+    await queryInterface.addColumn("Users", "choiceActivity", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    });
+    await queryInterface.addColumn("Users", "choicePostActivity", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    });
+    await queryInterface.addColumn("Users", "advicePostActivity", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    });
+    await queryInterface.addColumn("Users", "receiveLikeActivity", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    });
     // return await queryInterface.addeColumn("Replies", "userKey", {
     //   allowNull: false,
     //   type: Sequelize.INTEGER,

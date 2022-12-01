@@ -56,6 +56,18 @@ class MissionService {
       (x) => x.CommentSelects.length
     ).length;
 
+    // totalAdviceComment: 댓글작성 횟수,
+    // totalChoicePick: 투표 횟수,
+    // totalAdvice: 답해주기글 횟수,
+    // totalChoice: 골라주기글 횟수,
+    // totalPost: 총 작성게시글 수,
+    // viewCount: 총 게시글 조회수,
+    // likeTotal: 좋아요 받은 갯수,
+    // msgOpen: 메세지 오픈 횟수,
+    // Selected: 채택받은 횟수,
+    // totalSolution: 마감한 게시글수(채택마감+선택마감),
+    // missionComplete: 미션 완료 수
+
     /**고민 마감 횟수 */
     const totalSolution = totalSelect + totalEndChoice;
     console.log(
