@@ -2,8 +2,13 @@ const ErrorCustom = require("../exceptions/error-custom");
 const UserRepository = require("../repositories/users.repository.js");
 const AdviceRepository = require("../repositories/advice.repository");
 const ChoiceRepository = require("../repositories/choice.repository");
+const MissionService = require("../services/mission.service");
 const MissionRepository = require("../repositories/mission.repository");
 const DailyMsgRepository = require("../repositories/dailymessage.repository");
+
+const SocketIO = require("socket.io");
+const server = require("../app");
+const io = SocketIO(server, { path: "/socket.io" });
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -16,6 +21,7 @@ class UserService {
   choiceRepository = new ChoiceRepository();
   missionRepository = new MissionRepository();
   dailyMsgRepository = new DailyMsgRepository();
+  missionService = new MissionService();
 
   //유저 생성(가입)
   createUser = async ({
@@ -111,6 +117,12 @@ class UserService {
     const dailyData = await redisCli.hGetAll(`${userKey}`);
     let isOpen;
     dailyData.isOpen == "0" ? (isOpen = false) : (isOpen = true);
+    if (!isOpen) {
+      const missionComplete = await this.missionService.MyNewComplete(userKey);
+      if (missionComplete.length) {
+        io.emit("complete_aram", "보상을 확인하세요");
+      }
+    }
     return { isOpen, dailyData };
   };
 

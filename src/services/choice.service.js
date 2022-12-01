@@ -161,6 +161,10 @@ class ChoiceService {
         choiceId,
         choiceNum
       );
+      const missionComplete = await this.missionService.MyNewComplete(userKey);
+      if (missionComplete.length) {
+        io.emit("complete_aram", "보상을 확인하세요");
+      }
       return true;
     }
   };

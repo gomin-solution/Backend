@@ -136,7 +136,6 @@ class UserController {
         return res.status(401).json({ message: "로그인이 필요한 기능입니다." });
       }
       const { isOpen } = await this.userService.getDailymessage(userKey);
-      console.log(isOpen);
       if (!isOpen) {
         await this.userService.updateMessageOpen(userKey);
         return res

@@ -3,6 +3,10 @@ const CommentRepository = require("../repositories/comment.repository"); //리�
 const AdviceRepository = require("../repositories/advice.repository");
 const MissionService = require("../services/mission.service");
 
+const SocketIO = require("socket.io");
+const server = require("../app");
+const io = SocketIO(server, { path: "/socket.io" });
+
 class CommentService {
   commentRepository = new CommentRepository();
   adviceRepository = new AdviceRepository();
@@ -23,7 +27,9 @@ class CommentService {
       comment
     );
     const missionComplete = await this.missionService.MyNewComplete(userKey);
-    console.log(missionComplete);
+    if (missionComplete.length) {
+      io.emit("complete_aram", "보상을 확인하세요");
+    }
 
     return createComment;
   };
