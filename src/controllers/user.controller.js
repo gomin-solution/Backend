@@ -97,6 +97,23 @@ class UserController {
     }
   };
 
+  //비밀번호 변경
+  passwordChange = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+
+      const { password } = await joi.passwordSchema.validateAsync(req.body);
+
+      const hashed = await bcrypt.hash(password, 12);
+
+      await this.userService.passwordChange(userKey, hashed);
+
+      return res.status(200).json({ message: "비밀번호 변경 완료" });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   //메인페이지 가져오기
   mainPage = async (req, res, next) => {
     try {

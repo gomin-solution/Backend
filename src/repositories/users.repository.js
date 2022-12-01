@@ -45,6 +45,10 @@ class UserRepository {
     return await User.findOne({ where: { userId: userId } });
   };
 
+  passwordChange = async (userKey, hashed) => {
+    return await User.update({ password: hashed }, { where: { userKey } });
+  };
+
   uploadUserImage = async (findUserImage, userKey) => {
     const updateImageUrl = await User.update(
       { userImg: findUserImage },
