@@ -51,17 +51,21 @@ class UserController {
 
       //refreshtoken을 userId키로 redis에 저장
       await redisCli.set(userId, refreshToken);
-
-      res.cookie("accesstoken", accessToken, {
-        sameSite: "none",
-        secure: true,
-      });
-
-      res.cookie("refreshtoken", refreshToken, {
-        sameSite: "none",
-        secure: true,
-        httpOnly: true,
-      });
+      //배포환경인 경우 보안 설정된 쿠키 전송
+      if (process.env.NODE_ENV == "production") {
+        res.cookie("accesstoken", accessToken, {
+          sameSite: "none",
+          secure: true,
+        });
+        res.cookie("refreshtoken", refreshToken, {
+          sameSite: "none",
+          secure: true,
+          httpOnly: true,
+        });
+      } else {
+        res.cookie("accesstoken", accessToken);
+        res.cookie("refreshtoken", refreshToken);
+      }
 
       return res.status(200).json({ message: "로그인 성공.", nickname });
     } catch (error) {
