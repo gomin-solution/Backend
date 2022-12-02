@@ -4,7 +4,7 @@ const choiceService = new ChoiceService();
 const choiceController = new ChoiceController();
 jest.mock("../models/choice");
 jest.mock("../repositories/choice.repository");
-jest.mock("../repositories/choice.service");
+jest.mock("../services/choice.service");
 
 describe("choiceController", () => {
   const res = {
