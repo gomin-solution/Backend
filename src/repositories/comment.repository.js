@@ -135,13 +135,12 @@ class CommentRepository {
 
   //대댓글 삭제하기
   deleteRe = async (replyId, userKey) => {
-    const comment = "삭제된 덧글입니다.";
-    const targetUser = "삭제";
-    const deleteRe = await Reply.update(
-      { comment, targetUser },
-      { where: { replyId } }
-    );
-    return deleteRe;
+    const data = await Reply.destroy({
+      where: {
+        [Op.and]: [{ replyId }],
+      },
+    });
+    return data;
   };
 }
 
