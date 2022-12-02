@@ -27,11 +27,13 @@ module.exports = async (req, res, next) => {
     try {
       //accesstoken 검증 성공시 다음 미들웨어,실패시 refreshtoken검증
       jwt.verify(accesstoken, process.env.SECRET_KEY);
+
       nextMiddleware(accesstoken);
     } catch (error) {
       //refreshToken 검증 성공시 acesstoken재발급 후 다음미들웨어 호출
       const decoded = jwt.decode(accesstoken);
       const token = await redisCli.get(`${decoded.userId}`);
+      //refreshtoken이 저장된 값과 다를 경우 재로그인 애러 전송
       if (refreshtoken === token) {
         jwt.verify(refreshtoken, process.env.SECRET_KEY);
         //accesstoken 재발급
@@ -39,19 +41,21 @@ module.exports = async (req, res, next) => {
           { userId: decoded.userId, userKey: decoded.userKey },
           process.env.SECRET_KEY,
           {
-            expiresIn: "30s",
+            expiresIn: "10s",
           }
         );
+        //새로운 accesstoken 쿠키에 저장
         res.cookie("accesstoken", newAccessToken, {
           sameSite: "none",
           secure: true,
         });
+
         nextMiddleware(newAccessToken);
       } else {
         return res.status(403).json({ errMsg: "다시 로그인 해주세요." });
       }
     }
   } catch (error) {
-    return res.status(403).json({ errMsg: "다시 로그인 해주세요." });
+    return res.status(403).json({ errMsg: "다시 로그인 해주세요" });
   }
 };

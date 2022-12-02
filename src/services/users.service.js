@@ -60,7 +60,7 @@ class UserService {
       { userId: user.userId, userKey: user.userKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "1h",
+        expiresIn: "10s",
       }
     );
 
