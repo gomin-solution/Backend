@@ -215,21 +215,50 @@ class MissionService {
     /**투표 게시글 작성 수 */
     const totalChoice = totalReword.Choices.length;
 
+    /**마감된 투표 게시글 수 */
+    const totalEndChoice = totalReword.Choices.filter(
+      (choice) => choice.isEnd == true
+    ).length;
+
     /**총게시글 작성 수 */
     const totalPost = totalAdvice + totalChoice;
 
     /**행운의 편지 열기 횟수 */
     const totalOpen = totalReword.msgOpenCount;
 
+    /**채택받은 횟수 */
+    const totalSelected = totalReword.CommentSelects.length;
+
+    /**채택한 횟수 */
+    const totalSelect = totalReword.Comments.filter(
+      (x) => x.CommentSelects.length
+    ).length;
+
+    /**고민 마감 횟수 */
+    const totalSolution = totalSelect + totalEndChoice;
+    // totalAdviceComment: 댓글작성 횟수,
+    // totalChoicePick: 투표 횟수,
+    // totalAdvice: 답해주기글 횟수,
+    // totalChoice: 골라주기글 횟수,
+    // totalPost: 총 작성게시글 수,
+    // viewCount: 총 게시글 조회수,
+    // likeTotal: 좋아요 받은 갯수,
+    // msgOpen: 메세지 오픈 횟수,
+    // Selected: 채택받은 횟수,
+    // totalSolution: 마감한 게시글수(채택마감+선택마감),
+    // missionComplete: 미션 완료 수
+
     console.log(
-      `totalAdviceComment:${totalAdviceComment}, 
-        totalChoicePick:${totalChoicePick}, 
-        totalAdvice:${totalAdvice},
-        totalChoice${totalChoice},
-        totalPost${totalPost},
-        viewCount:${viewCount},
-        likeTotal:${likeTotal},
-        totalOpen:${totalOpen}`
+      `totalAdviceComment:${totalAdviceComment},
+      totalChoicePick:${totalChoicePick},
+      totalAdvice:${totalAdvice},
+      totalChoice${totalChoice},
+      totalPost${totalPost},
+      viewCount:${viewCount},
+      likeTotal:${likeTotal},
+      totalOpen:${totalOpen},
+      totalSelected:${totalSelected},
+      totalSolution${totalSolution}`
     );
     /**모든 미션Id */
     const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
