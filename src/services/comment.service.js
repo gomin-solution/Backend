@@ -26,10 +26,12 @@ class CommentService {
       adviceId,
       comment
     );
-    const missionComplete = await this.missionService.MyNewComplete(userKey);
-    if (missionComplete.length) {
-      io.emit("complete_aram", "보상을 확인하세요");
-    }
+
+    //미션 알람
+    // const missionComplete = await this.missionService.MyNewComplete(userKey);
+    // if (missionComplete.length) {
+    //   io.emit("complete_aram", "보상을 확인하세요");
+    // }
 
     return createComment;
   };
@@ -79,12 +81,12 @@ class CommentService {
       const commentUser = await this.commentRepository.findComment(commentId);
 
       //좋아요 받은 유저 미션 현황
-      const missionComplete = await this.missionService.MyNewComplete(
-        commentUser.userKey
-      );
-      if (missionComplete.length) {
-        io.emit("complete_aram", "보상을 확인하세요");
-      }
+      // const missionComplete = await this.missionService.MyNewComplete(
+      //   commentUser.userKey
+      // );
+      // if (missionComplete.length) {
+      //   io.emit("complete_aram", "보상을 확인하세요");
+      // }
 
       return like;
     }
@@ -113,12 +115,13 @@ class CommentService {
       commentId
     );
 
-    const missionComplete = await this.missionService.MyNewComplete(
-      findComment.userKey
-    );
-    if (missionComplete.length) {
-      io.emit("complete_aram", "보상을 확인하세요");
-    }
+    //미션알람
+    // const missionComplete = await this.missionService.MyNewComplete(
+    //   findComment.userKey
+    // );
+    // if (missionComplete.length) {
+    //   io.emit("complete_aram", "보상을 확인하세요");
+    // }
 
     return select;
   };
