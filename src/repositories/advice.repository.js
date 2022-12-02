@@ -106,7 +106,6 @@ class AdviceRepository {
         
       ],
     });
-    console.log(AdviceOne)
     return AdviceOne;
   };
 
