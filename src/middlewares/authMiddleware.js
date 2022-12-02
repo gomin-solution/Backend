@@ -5,6 +5,24 @@ require("dotenv").config();
 
 // 유저 인증에 실패하면 403 상태 코드를 반환한다.
 module.exports = async (req, res, next) => {
+  /**로그아웃 function */
+  function logout() {
+    res.cookie("accesstoken", "expire", {
+      maxAge: 0,
+      sameSite: "none",
+      secure: true,
+      httpOnly: true,
+    });
+
+    res.cookie("refreshtoken", "expire", {
+      maxAge: 0,
+      sameSite: "none",
+      secure: true,
+      httpOnly: true,
+    });
+    return;
+  }
+
   try {
     const { accesstoken, refreshtoken } = req.cookies;
     console.log(req.cookies);
@@ -52,10 +70,12 @@ module.exports = async (req, res, next) => {
 
         nextMiddleware(newAccessToken);
       } else {
+        logout();
         return res.status(403).json({ errMsg: "다시 로그인 해주세요." });
       }
     }
   } catch (error) {
+    logout();
     return res.status(403).json({ errMsg: "다시 로그인 해주세요" });
   }
 };
