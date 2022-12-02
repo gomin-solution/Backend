@@ -157,6 +157,7 @@ class CommentService {
       delete re.updatedAt;
       re.updatedAt = dayjs(reply[i].updatedAt).tz().format("YYYY/MM/DD HH:mm");
       re.nickname = user.nickname;
+      re.userImage = user.userImg;
     }
     return reply;
   };
