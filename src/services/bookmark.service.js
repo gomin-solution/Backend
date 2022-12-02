@@ -46,25 +46,20 @@ class BookMarkService {
     const result = findBmChoice.map((post) => {
       let isChoice;
       post.Choice.isChoices.length ? (isChoice = true) : (isChoice = false);
-      let absolute_a = post.Choice.choice1Per;
-      let absolute_b = post.Choice.choice2Per;
-      let choice1Per;
-      let choice2Per;
-      if (absolute_a + absolute_b > 0) {
-        choice1Per = Math.round((absolute_a / (absolute_a + absolute_b)) * 100);
-        choice2Per = 100 - choice1Per;
-      }
+
       const createdAt = dayjs(post.Choice.createdAt)
         .tz()
         .format("YYYY/MM/DD HH:mm");
+
       const endTime = dayjs(post.Choice.endTime).format("YYYY/MM/DD HH:mm");
+
       return {
         choiceId: post.Choice.choiceId,
         title: post.Choice.title,
         choice1Name: post.Choice.choice1Name,
         choice2Name: post.Choice.choice2Name,
-        choice1Per: choice1Per,
-        choice2Per: choice2Per,
+        choice1Per: post.Choice.choice1Per,
+        choice2Per: post.Choice.choice2Per,
         userImage: post.Choice.User.userImg,
         nickname: post.Choice.User.nickname,
         createdAt: createdAt,

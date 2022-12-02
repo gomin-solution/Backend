@@ -115,10 +115,6 @@ class ChoiceService {
           findMychoice[i].choiceId
         );
 
-        let absolute_a = findMychoice[i].choice1Per;
-        let absolute_b = findMychoice[i].choice2Per;
-        let sum = absolute_a + absolute_b;
-        let result_a = (absolute_a / sum) * 100;
         const date = dayjs(findMychoice[i].createdAt)
           .tz()
           .format("YYYY/MM/DD HH:mm");
@@ -128,8 +124,8 @@ class ChoiceService {
           title: findMychoice[i].title,
           choice1Name: findMychoice[i].choice1Name,
           choice2Name: findMychoice[i].choice2Name,
-          choice1Per: Math.round(result_a),
-          choice2Per: 100 - Math.round(result_a),
+          choice1Per: findMychoice[i].choice1Per,
+          choice2Per: findMychoice[i].choice2Per,
           userImage: myData.userImg,
           nickname: myData.nickname,
           createdAt: date,
