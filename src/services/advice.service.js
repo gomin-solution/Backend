@@ -201,6 +201,7 @@ class AdviceService {
       });
     }
 
+
     let selectComment;
     const commentArray = [];
     findOneAdvice.Comments.forEach((comment) => {
