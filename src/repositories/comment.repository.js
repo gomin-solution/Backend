@@ -4,6 +4,7 @@ const {
   Reply,
   CommentSelect,
   Advice,
+  User,
 } = require("../models"); //모델 데이터를 가져오고
 const { Op } = require("sequelize");
 const Report = require("../schemas/report");
@@ -115,6 +116,12 @@ class CommentRepository {
         [Op.and]: [{ commentId }],
       },
     });
+    return data;
+  };
+
+  //==============================
+  getUser = async (userKey) => {
+    const data = await User.findByPk(userKey);
     return data;
   };
 

@@ -2,6 +2,13 @@ const ErrorCustom = require("../exceptions/error-custom");
 const CommentRepository = require("../repositories/comment.repository"); //리포지토리의 내용을 가져와야한다.
 const AdviceRepository = require("../repositories/advice.repository");
 
+const dayjs = require("dayjs");
+const timezone = require("dayjs/plugin/timezone");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
+
 class CommentService {
   commentRepository = new CommentRepository();
   adviceRepository = new AdviceRepository();
@@ -106,6 +113,16 @@ class CommentService {
   //대댓글 가져오기
   getReComment = async (commentId) => {
     const reply = await this.commentRepository.getReComment(commentId);
+
+    for (let i = 0; i < reply.length; i++) {
+      let a = reply[i].userKey;
+      let user = await this.commentRepository.getUser(a);
+      let re = reply[i].dataValues;
+      delete re.targetUser;
+      delete re.updatedAt;
+      re.updatedAt = dayjs(reply[i].updatedAt).tz().format("YYYY/MM/DD HH:mm");
+      re.nickname = user.nickname;
+    }
     return reply;
   };
 
