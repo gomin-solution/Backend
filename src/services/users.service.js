@@ -60,12 +60,12 @@ class UserService {
       { userId: user.userId, userKey: user.userKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "10s",
+        expiresIn: "60s",
       }
     );
 
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-      expiresIn: "20s",
+      expiresIn: "15d",
     });
     const nickname = user.nickname;
     const userKey = user.userKey;

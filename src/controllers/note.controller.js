@@ -26,6 +26,7 @@ class NoteController {
   roomlist = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
+
       const roomlist = await this.noteService.allRooms(userKey);
 
       return res.status(200).json(roomlist);

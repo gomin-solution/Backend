@@ -22,7 +22,7 @@ class UserRepository {
       password: hashed,
       isAdult: isAdult,
       userImg:
-        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
+        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
     });
   };
 

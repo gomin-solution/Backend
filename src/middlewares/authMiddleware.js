@@ -59,7 +59,7 @@ module.exports = async (req, res, next) => {
           { userId: decoded.userId, userKey: decoded.userKey },
           process.env.SECRET_KEY,
           {
-            expiresIn: "10s",
+            expiresIn: "60s",
           }
         );
         //새로운 accesstoken 쿠키에 저장
