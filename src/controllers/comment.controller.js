@@ -210,7 +210,7 @@ class CommentController {
       const reply = await this.commentService.deleteRe(replyId, userKey);
 
       if (!reply) {
-        res.status(400).json({ mes: "이미 삭제된 덧글 입니다." });
+        res.status(400).json({ mes: "권한이 없습니다." });
       }
 
       res.status(200).json({ mes: "대댓글 삭제 완료", data: reply });

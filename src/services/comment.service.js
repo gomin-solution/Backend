@@ -149,8 +149,9 @@ class CommentService {
 
   //대댓글 삭제하기
   deleteRe = async (replyId, userKey) => {
+    //먼저 검증을 하고 삭제
     const check = await this.commentRepository.checkRe(replyId);
-    if (check.targetUser === "삭제") {
+    if (check.userKey !== userKey) {
       return;
     }
     const data = await this.commentRepository.deleteRe(replyId, userKey);
