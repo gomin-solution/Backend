@@ -33,11 +33,12 @@ class ChoiceService {
       console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
     });
-    const missionComplete = await this.missionService.MyNewComplete(userKey);
+    //알람
+    // const missionComplete = await this.missionService.MyNewComplete(userKey);
 
-    if (missionComplete.length) {
-      io.emit("complete_aram", "보상을 확인하세요");
-    }
+    // if (missionComplete.length) {
+    //   io.emit("complete_aram", "보상을 확인하세요");
+    // }
 
     return createchoice;
   };
@@ -161,10 +162,11 @@ class ChoiceService {
         choiceId,
         choiceNum
       );
-      const missionComplete = await this.missionService.MyNewComplete(userKey);
-      if (missionComplete.length) {
-        io.emit("complete_aram", "보상을 확인하세요");
-      }
+      //알람
+      // const missionComplete = await this.missionService.MyNewComplete(userKey);
+      // if (missionComplete.length) {
+      //   io.emit("complete_aram", "보상을 확인하세요");
+      // }
       return true;
     }
   };

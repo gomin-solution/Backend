@@ -122,12 +122,13 @@ class UserService {
     const dailyData = await redisCli.hGetAll(`${userKey}`);
     let isOpen;
     dailyData.isOpen == "0" ? (isOpen = false) : (isOpen = true);
-    if (!isOpen) {
-      const missionComplete = await this.missionService.MyNewComplete(userKey);
-      if (missionComplete.length) {
-        io.emit("complete_aram", "보상을 확인하세요");
-      }
-    }
+    //미션알람
+    // if (!isOpen) {
+    //   const missionComplete = await this.missionService.MyNewComplete(userKey);
+    //   if (missionComplete.length) {
+    //     io.emit("complete_aram", "보상을 확인하세요");
+    //   }
+    // }
     return { isOpen, dailyData };
   };
 
