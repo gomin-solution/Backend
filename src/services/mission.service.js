@@ -8,7 +8,7 @@ class MissionService {
   //알람용 미션확인
   // MyNewComplete = async (userKey) => {
   //   /**유저의 활동 정보를 모두 가져옴 */
-  //   const totalReword = await this.userRepository.totalReword(userKey);
+  //   const totalRewordawait this.userRepository.totalReword(userKey);
 
   //   const likeArray = totalReword.Comments.map((x) => x.CommentLikes.length);
   //   /**내가 받은 총 좋아요수 */
@@ -187,14 +187,14 @@ class MissionService {
     /**유저의 활동 정보를 모두 가져옴 */
     const totalReword = await this.userRepository.totalReword(userKey);
 
-    const likeArray = totalReword[0].Comments.map((x) => x.CommentLikes.length);
+    const likeArray = totalReword.Comments.map((x) => x.CommentLikes.length);
     /**내가 받은 총 좋아요수 */
     let likeTotal = 0;
     likeArray.forEach((x) => {
       likeTotal += x;
     });
 
-    const viewCountArray = totalReword[0].Advice.map((x) => x.viewCount);
+    const viewCountArray = totalReword.Advice.map((x) => x.viewCount);
 
     /**내 게시글의 총 조회수 */
     let viewCount = 0;
@@ -204,22 +204,22 @@ class MissionService {
     });
 
     /** 내가 조언해준 횟수*/
-    const totalAdviceComment = totalReword[0].Comments.length;
+    const totalAdviceComment = totalReword.Comments.length;
 
     /**내가 투표한횟수 */
-    const totalChoicePick = totalReword[0].isChoices.length;
+    const totalChoicePick = totalReword.isChoices.length;
 
     /**내가 쓴 조언게시글 수 */
-    const totalAdvice = totalReword[0].Advice.length;
+    const totalAdvice = totalReword.Advice.length;
 
     /**투표 게시글 작성 수 */
-    const totalChoice = totalReword[0].Choices.length;
+    const totalChoice = totalReword.Choices.length;
 
     /**총게시글 작성 수 */
     const totalPost = totalAdvice + totalChoice;
 
     /**행운의 편지 열기 횟수 */
-    const totalOpen = totalReword[0].msgOpenCount;
+    const totalOpen = totalReword.msgOpenCount;
 
     console.log(
       `totalAdviceComment:${totalAdviceComment}, 
