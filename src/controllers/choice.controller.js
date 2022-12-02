@@ -11,6 +11,8 @@ class ChoiceController {
       }
       const { title, choice1Name, choice2Name, endTime } = req.body;
 
+      console.log(title, choice1Name, choice2Name, endTime);
+
       if (!title || !choice1Name || !choice2Name || !endTime) {
         res.status(400).send({ errorMessage: "입력 내용을 확인해 주십시오" });
         return;
