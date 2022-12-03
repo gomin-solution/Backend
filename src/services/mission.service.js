@@ -194,14 +194,13 @@ class MissionService {
       likeTotal += x;
     });
 
-    const viewCountArray = totalReword.Advice.map((x) => x.viewCount);
-
     /**내 게시글의 총 조회수 */
     let viewCount = 0;
+    // const viewCountArray = totalReword.Advice.map((x) => x.viewCount);
 
-    viewCountArray.forEach((x) => {
-      viewCount += x;
-    });
+    // viewCountArray.forEach((x) => {
+    //   viewCount += x;
+    // });
 
     /** 내가 조언해준 횟수*/
     const totalAdviceComment = totalReword.Comments.length;
@@ -236,6 +235,7 @@ class MissionService {
 
     /**고민 마감 횟수 */
     const totalSolution = totalSelect + totalEndChoice;
+
     // totalAdviceComment: 댓글작성 횟수,
     // totalChoicePick: 투표 횟수,
     // totalAdvice: 답해주기글 횟수,
