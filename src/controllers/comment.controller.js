@@ -148,8 +148,6 @@ class CommentController {
         re,
         targetUser
       );
-
-      console.log(reply);
       res.status(200).json({ data: reply });
     } catch (err) {
       next(err);
@@ -161,9 +159,6 @@ class CommentController {
     try {
       const { commentId } = req.params;
       const { userKey } = res.locals.user;
-      //re: 대댓글 내용
-      //targetUser: 만약 대댓글 중에서 해당 대댓글에 답글을 달고 싶다면 그 대상의 userKey
-      //targetUser는 null이 가능하다.
 
       const reply = await this.commentService.getReComment(commentId);
 
@@ -189,7 +184,7 @@ class CommentController {
       res.status(400).json({ mes: "삭제된 덧글 입니다." });
     }
 
-    res.status(200).json({ data: reply });
+    res.status(200).json({ mes: "수정 성공", data: reply });
     try {
     } catch (err) {
       next(err);
@@ -210,7 +205,7 @@ class CommentController {
       const reply = await this.commentService.deleteRe(replyId, userKey);
 
       if (!reply) {
-        res.status(400).json({ mes: "이미 삭제된 덧글 입니다." });
+        res.status(400).json({ mes: "권한이 없습니다." });
       }
 
       res.status(200).json({ mes: "대댓글 삭제 완료", data: reply });

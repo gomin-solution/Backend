@@ -33,11 +33,12 @@ class ChoiceService {
       console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
     });
-    const missionComplete = await this.missionService.MyNewComplete(userKey);
+    //알람
+    // const missionComplete = await this.missionService.MyNewComplete(userKey);
 
-    if (missionComplete.length) {
-      io.emit("complete_aram", "보상을 확인하세요");
-    }
+    // if (missionComplete.length) {
+    //   io.emit("complete_aram", "보상을 확인하세요");
+    // }
 
     return createchoice;
   };
@@ -114,10 +115,6 @@ class ChoiceService {
           findMychoice[i].choiceId
         );
 
-        let absolute_a = findMychoice[i].choice1Per;
-        let absolute_b = findMychoice[i].choice2Per;
-        let sum = absolute_a + absolute_b;
-        let result_a = (absolute_a / sum) * 100;
         const date = dayjs(findMychoice[i].createdAt)
           .tz()
           .format("YYYY/MM/DD HH:mm");
@@ -127,8 +124,8 @@ class ChoiceService {
           title: findMychoice[i].title,
           choice1Name: findMychoice[i].choice1Name,
           choice2Name: findMychoice[i].choice2Name,
-          choice1Per: Math.round(result_a),
-          choice2Per: 100 - Math.round(result_a),
+          choice1: findMychoice[i].choice1Per,
+          choice2: findMychoice[i].choice2Per,
           userImage: myData.userImg,
           nickname: myData.nickname,
           createdAt: date,
@@ -161,10 +158,11 @@ class ChoiceService {
         choiceId,
         choiceNum
       );
-      const missionComplete = await this.missionService.MyNewComplete(userKey);
-      if (missionComplete.length) {
-        io.emit("complete_aram", "보상을 확인하세요");
-      }
+      //알람
+      // const missionComplete = await this.missionService.MyNewComplete(userKey);
+      // if (missionComplete.length) {
+      //   io.emit("complete_aram", "보상을 확인하세요");
+      // }
       return true;
     }
   };

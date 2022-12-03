@@ -7,6 +7,13 @@ const SocketIO = require("socket.io");
 const server = require("../app");
 const io = SocketIO(server, { path: "/socket.io" });
 
+const dayjs = require("dayjs");
+const timezone = require("dayjs/plugin/timezone");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
+
 class CommentService {
   commentRepository = new CommentRepository();
   adviceRepository = new AdviceRepository();
@@ -26,10 +33,12 @@ class CommentService {
       adviceId,
       comment
     );
-    const missionComplete = await this.missionService.MyNewComplete(userKey);
-    if (missionComplete.length) {
-      io.emit("complete_aram", "보상을 확인하세요");
-    }
+
+    //미션 알람
+    // const missionComplete = await this.missionService.MyNewComplete(userKey);
+    // if (missionComplete.length) {
+    //   io.emit("complete_aram", "보상을 확인하세요");
+    // }
 
     return createComment;
   };
@@ -79,12 +88,12 @@ class CommentService {
       const commentUser = await this.commentRepository.findComment(commentId);
 
       //좋아요 받은 유저 미션 현황
-      const missionComplete = await this.missionService.MyNewComplete(
-        commentUser.userKey
-      );
-      if (missionComplete.length) {
-        io.emit("complete_aram", "보상을 확인하세요");
-      }
+      // const missionComplete = await this.missionService.MyNewComplete(
+      //   commentUser.userKey
+      // );
+      // if (missionComplete.length) {
+      //   io.emit("complete_aram", "보상을 확인하세요");
+      // }
 
       return like;
     }
@@ -114,12 +123,13 @@ class CommentService {
       commentId
     );
 
-    const missionComplete = await this.missionService.MyNewComplete(
-      findComment.userKey
-    );
-    if (missionComplete.length) {
-      io.emit("complete_aram", "보상을 확인하세요");
-    }
+    //미션알람
+    // const missionComplete = await this.missionService.MyNewComplete(
+    //   findComment.userKey
+    // );
+    // if (missionComplete.length) {
+    //   io.emit("complete_aram", "보상을 확인하세요");
+    // }
 
     return select;
   };
@@ -139,6 +149,17 @@ class CommentService {
   //대댓글 가져오기
   getReComment = async (commentId) => {
     const reply = await this.commentRepository.getReComment(commentId);
+
+    for (let i = 0; i < reply.length; i++) {
+      let a = reply[i].userKey;
+      let user = await this.commentRepository.getUser(a);
+      let re = reply[i].dataValues;
+      delete re.targetUser;
+      delete re.updatedAt;
+      re.updatedAt = dayjs(reply[i].updatedAt).tz().format("YYYY/MM/DD HH:mm");
+      re.nickname = user.nickname;
+      re.userImage = user.userImg;
+    }
     return reply;
   };
 
@@ -150,8 +171,9 @@ class CommentService {
 
   //대댓글 삭제하기
   deleteRe = async (replyId, userKey) => {
+    //먼저 검증을 하고 삭제
     const check = await this.commentRepository.checkRe(replyId);
-    if (check.targetUser === "삭제") {
+    if (check.userKey !== userKey) {
       return;
     }
     const data = await this.commentRepository.deleteRe(replyId, userKey);

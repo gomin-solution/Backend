@@ -22,7 +22,7 @@ class UserRepository {
       password: hashed,
       isAdult: isAdult,
       userImg:
-        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4",
+        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
     });
   };
 
@@ -70,19 +70,24 @@ class UserRepository {
   };
 
   totalReword = async (userKey) => {
-    return await User.findOne({
+    const totalreward = await User.findOne({
       where: { userKey: userKey },
       include: [
         {
           model: Comment,
-          include: [{ model: CommentLike }, { model: CommentSelect }],
+          include: [
+            { model: CommentLike, attributes: ["userKey"] },
+            { model: CommentSelect, attributes: ["userKey"] },
+          ],
+          attributes: ["userKey"],
         },
-        { model: isChoice },
-        { model: Advice },
-        { model: Choice },
-        { model: CommentSelect },
+        { model: isChoice, attributes: ["userKey"] },
+        { model: Advice, attributes: ["userKey"] },
+        { model: Choice, attributes: ["isEnd"] },
+        { model: CommentSelect, attributes: ["userKey"] },
       ],
     });
+    return totalreward;
   };
 
   updateUserNickname = async (userKey, nickname) => {

@@ -27,13 +27,12 @@ class AdviceService {
       content,
       isAdult
     );
-    const missionComplete = await this.missionService.MyNewComplete(userKey);
+    //미션 알람
+    // const missionComplete = await this.missionService.MyNewComplete(userKey);
 
-    if (missionComplete.length) {
-      console.log("//////알람실행//////");
-      console.log(userKey);
-      io.to(userKey).emit("mission_alarm", "보상을 확인하세요");
-    }
+    // if (missionComplete.length) {
+    //   io.to(userKey).emit("mission_alarm", "보상을 확인하세요");
+    // }
 
     return createAdviceData;
   };

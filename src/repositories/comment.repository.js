@@ -4,6 +4,7 @@ const {
   Reply,
   CommentSelect,
   Advice,
+  User,
 } = require("../models"); //모델 데이터를 가져오고
 const { Op } = require("sequelize");
 const Report = require("../schemas/report");
@@ -118,6 +119,12 @@ class CommentRepository {
     return data;
   };
 
+  //==============================
+  getUser = async (userKey) => {
+    const data = await User.findByPk(userKey);
+    return data;
+  };
+
   //대댓글 수정하기
   putRe = async (replyId, userKey, re) => {
     const putRe = await Reply.update({ comment: re }, { where: { replyId } });
@@ -135,13 +142,12 @@ class CommentRepository {
 
   //대댓글 삭제하기
   deleteRe = async (replyId, userKey) => {
-    const comment = "삭제된 덧글입니다.";
-    const targetUser = "삭제";
-    const deleteRe = await Reply.update(
-      { comment, targetUser },
-      { where: { replyId } }
-    );
-    return deleteRe;
+    const data = await Reply.destroy({
+      where: {
+        [Op.and]: [{ replyId }],
+      },
+    });
+    return data;
   };
 }
 
