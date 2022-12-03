@@ -26,12 +26,11 @@ class UserRepository {
     });
   };
 
-  userKakao = async (id, nickname) => {
+  userKakao = async (id) => {
     const [data, created] = await User.findOrCreate({
       where: { userId: id },
       defaults: {
         userId: id,
-        nickname: nickname,
         userImg:
           "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
       },

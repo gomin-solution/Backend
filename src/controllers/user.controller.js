@@ -82,8 +82,7 @@ class UserController {
 
       console.log(id);
       const { accessToken, refreshToken } = await this.userService.userKakao(
-        id,
-        nickname
+        id
       );
       //refreshtoken을 userId키로 redis에 저장
       await redisCli.set(id, refreshToken);
