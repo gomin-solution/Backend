@@ -26,6 +26,20 @@ class UserRepository {
     });
   };
 
+  userKakao = async (id, nickname) => {
+    const [data, created] = await User.findOrCreate({
+      where: { userId: id },
+      defaults: {
+        userId: id,
+        nickname: nickname,
+        userImg:
+          "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
+      },
+    });
+
+    return data;
+  };
+
   findUser = async (userKey) => {
     return await User.findOne({
       where: { userKey: userKey },
@@ -47,6 +61,10 @@ class UserRepository {
 
   passwordChange = async (userKey, hashed) => {
     return await User.update({ password: hashed }, { where: { userKey } });
+  };
+
+  nicknameChange = async (userKey, nickname) => {
+    return await User.update({ nickname: nickname }, { where: { userKey } });
   };
 
   uploadUserImage = async (findUserImage, userKey) => {

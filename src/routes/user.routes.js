@@ -29,6 +29,9 @@ router.post("/signup/check", userController.check);
 //로그인
 router.post("/login", LoginMiddleware, userController.login);
 
+//닉네임 변경
+router.put("/nickname", authMiddleware, userController.nicknameChange);
+
 //카카오 로그인
 router.post("/kakao", LoginMiddleware, userController.kakao);
 

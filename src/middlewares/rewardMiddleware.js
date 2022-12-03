@@ -1,6 +1,9 @@
+const UserRepository = require("../repositories/users.repository.js");
+const MissionRepository = require("../repositories/mission.repository");
+
 module.exports = async (data, req, res, next) => {
   /**유저의 활동 정보를 모두 가져옴 */
-  //   const totalReword = await this.userRepository.totalReword(userKey);
+  const totalReword = await new UserRepository().totalReword(userKey);
   console.log("///////////////req///////////////");
   console.log(req);
   console.log("////////////////res/////////////");
@@ -86,9 +89,7 @@ module.exports = async (data, req, res, next) => {
   const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   /**완료한 미션 */
-  const completedMission = await this.missionRepository.completeMission(
-    userKey
-  );
+  let completedMission = await new MissionRepository().completeMission(userKey);
 
   /**완료한 미션 ID */
   const CompleteMission = completedMission.map((x) => x.missionId);
@@ -99,7 +100,7 @@ module.exports = async (data, req, res, next) => {
   );
 
   /**미완료 미션을 가져와 기준에 충족하면 newCompleteMissonId 배열에 추가*/
-  const mission = await this.missionRepository.mission(unCompleteMission);
+  const mission = await new MissionRepository().mission(unCompleteMission);
 
   /**새로 완료한 미션이 담긴 배열 */
   const newCompleteMissionId = [];
@@ -172,10 +173,9 @@ module.exports = async (data, req, res, next) => {
   });
 
   for (const missionId of newCompleteMissionId) {
-    await this.missionRepository.createCompleteMission(userKey, missionId);
+    await new MissionRepository().createCompleteMission(userKey, missionId);
   }
 
-  //   if (newCompleteMissionId) {
-  //     io.to(userKey).emit("missionAlarm", "미션을 완료했습니다");
-  //   }
+  completedMission = await new MissionRepository().completeMission(userKey)
+    .length;
 };
