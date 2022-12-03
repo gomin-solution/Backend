@@ -34,6 +34,7 @@ class UserController {
         password: hashed,
         isAdult: isAdult,
       });
+
       res.status(200).json({ message: "회원가입 성공" });
     } catch (error) {
       next(error);
