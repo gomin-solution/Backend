@@ -392,6 +392,9 @@ class MissionService {
         viewCount: viewCount,
         likeTotal: likeTotal,
         msgOpen: totalOpen,
+        Selected: totalSelected,
+        totalSolution: totalSolution,
+        missionComplete: missionComplete.length,
       },
     };
 
