@@ -52,6 +52,7 @@ module.exports = async (req, res, next) => {
       const decoded = jwt.decode(accesstoken);
       const token = await redisCli.get(`${decoded.userId}`);
       //refreshtoken이 저장된 값과 다를 경우 재로그인 애러 전송
+      //중복 로그인 방지
       if (refreshtoken === token) {
         jwt.verify(refreshtoken, process.env.SECRET_KEY);
         //accesstoken 재발급

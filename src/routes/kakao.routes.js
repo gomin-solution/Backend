@@ -48,7 +48,7 @@ const kakaoCallback = (req, res, next) => {
   }
 };
 
-router.get(
+router.post(
   "/kakao",
   passport.authenticate("kakao", {
     scope: ["profile_nickname", "profile_image", "account_email", "age_range"],

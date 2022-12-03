@@ -276,9 +276,6 @@ class MissionService {
       (x) => !CompleteMission.includes(x)
     );
 
-    console.log(unCompleteMission);
-    console.log(CompleteMission);
-
     /**미완료 미션을 가져와 기준에 충족하면 newCompleteMissonId 배열에 추가*/
     const mission = await this.missionRepository.mission(unCompleteMission);
 
@@ -360,6 +357,7 @@ class MissionService {
     const missionComplete = await this.missionRepository.completeMission(
       userKey
     );
+    ////////////////여기부분 까지////////////
     const missionCompleteId = missionComplete.map((x) => {
       return [x.missionId, x.isGet];
     });
