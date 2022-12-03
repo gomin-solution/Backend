@@ -13,6 +13,10 @@ module.exports = (req, res, next) => {
       });
     }
 
+    if (payload) {
+      console.log(payload);
+    }
+
     next();
   } catch (error) {
     console.trace(error);

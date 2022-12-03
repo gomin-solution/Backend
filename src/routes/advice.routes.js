@@ -13,8 +13,7 @@ adviceRouter.post(
   "/",
   authMiddleware,
   uploadadvice.array("image", 3),
-  adviceController.creatAdvice,
-  rewardMiddleware
+  adviceController.creatAdvice
 );
 
 //조언 게시글 조회
