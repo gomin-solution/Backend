@@ -107,6 +107,7 @@ class UserController {
           message: "카카오 로그인 성공.",
           isMember: true,
           nickname: data.nickname,
+          userKey: data.userKey,
         });
       }
     } catch (error) {
