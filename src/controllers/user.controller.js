@@ -100,10 +100,8 @@ class UserController {
         res.cookie("accesstoken", accessToken);
         res.cookie("refreshtoken", refreshToken);
       }
-      console.log("//////////여기///////////");
-      console.log("created", created, "data", data);
       if (created) {
-        return res.status(200).json({ message: "신규가입.", isMember: false });
+        return res.status(201).json({ message: "신규가입.", isMember: false });
       } else {
         return res.status(200).json({
           message: "카카오 로그인 성공.",
