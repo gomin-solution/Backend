@@ -78,11 +78,32 @@ class UserController {
 
   kakao = async (req, res, next) => {
     try {
-      const { payload } = req.body;
-      console.log("넘어옴");
-      console.log(payload);
+      const { id, nickname } = req.body;
 
-      return res.status(200).json({ message: "테스트 성공." });
+      console.log(id, nickname);
+      const { accessToken, refreshToken } = await this.userService.userKakao(
+        id,
+        nickname
+      );
+      //refreshtoken을 userId키로 redis에 저장
+      await redisCli.set(userId, refreshToken);
+      //배포환경인 경우 보안 설정된 쿠키 전송
+      if (process.env.NODE_ENV == "production") {
+        res.cookie("accesstoken", accessToken, {
+          sameSite: "none",
+          secure: true,
+        });
+        res.cookie("refreshtoken", refreshToken, {
+          sameSite: "none",
+          secure: true,
+          httpOnly: true,
+        });
+      } else {
+        res.cookie("accesstoken", accessToken);
+        res.cookie("refreshtoken", refreshToken);
+      }
+
+      return res.status(200).json({ message: "카카오 로그인 성공." });
     } catch (error) {
       next(error);
     }
@@ -117,7 +138,6 @@ class UserController {
   passwordChange = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-
       const { password } = await joi.passwordSchema.validateAsync(req.body);
 
       const hashed = await bcrypt.hash(password, 12);
@@ -125,6 +145,20 @@ class UserController {
       await this.userService.passwordChange(userKey, hashed);
 
       return res.status(200).json({ message: "비밀번호 변경 완료" });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  nicknameChange = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+
+      const { nickname } = await joi.nicknameSchema.validateAsync(req.body);
+
+      await this.userService.nicknameChange(userKey, nickname);
+
+      return res.status(200).json({ message: "닉네임 변경 완료", userKey });
     } catch (error) {
       next(error);
     }

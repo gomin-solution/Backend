@@ -59,4 +59,13 @@ module.exports = {
       .required()
       .error(new ErrorCustom(400, "비밀번호는 최소 8자 이상이어야 합니다.")),
   }),
+
+  nicknameSchema: Joi.object({
+    nickname: Joi.string()
+      .pattern(new RegExp("^[가-힣a-zA-z0-9]{1,8}$"))
+      .required()
+      .error(
+        new ErrorCustom(400, "닉네임은 영문 숫자 한글 8자 이내여야 합니다.")
+      ),
+  }),
 };

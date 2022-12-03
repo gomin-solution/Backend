@@ -15,7 +15,7 @@ module.exports = {
         unique: true,
       },
       nickname: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
         unique: true,
       },
@@ -36,8 +36,9 @@ module.exports = {
         allowNull: true,
       },
       grade: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: true,
+        defaultValue: "주니어 해결사",
       },
       msgOpenCount: {
         type: Sequelize.INTEGER,

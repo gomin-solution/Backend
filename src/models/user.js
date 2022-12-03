@@ -76,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       nickname: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true,
       },
@@ -97,8 +97,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       grade: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "주니어 해결사",
       },
       msgOpenCount: {
         type: DataTypes.INTEGER,

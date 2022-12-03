@@ -48,6 +48,24 @@ class UserService {
     return;
   };
 
+  userKakao = async (id, nickname) => {
+    const userData = await this.userRepository.userKakao(id, nickname);
+
+    const accessToken = jwt.sign(
+      { userId: id, userKey: userData.userKey },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "60s",
+      }
+    );
+
+    const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+      expiresIn: "15d",
+    });
+
+    return { accessToken, refreshToken };
+  };
+
   //유저 검증
   verifyUser = async (userId, password) => {
     const user = await this.userRepository.findUserId(userId);
@@ -87,8 +105,18 @@ class UserService {
     return;
   };
 
+  //비밀번호 변경
   passwordChange = async (userKey, hashed) => {
-    return await this.userRepository.passwordChange(userKey, hashed);
+    const user = await this.userRepository.findUserKey(userKey);
+    if (!user.password)
+      throw new ErrorCustom(400, "비밀번호를 변경할 수 없습니다.");
+    await this.userRepository.passwordChange(userKey, hashed);
+    return;
+  };
+
+  //닉네임 변경
+  nicknameChange = async (userKey, nickname) => {
+    return await this.userRepository.nicknameChange(userKey, nickname);
   };
 
   //메인페이지 데이터 가공해서 보내주기
