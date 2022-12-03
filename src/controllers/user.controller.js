@@ -81,9 +81,8 @@ class UserController {
       const { id } = req.body;
 
       console.log(id);
-      const { accessToken, refreshToken } = await this.userService.userKakao(
-        id
-      );
+      const { accessToken, refreshToken, created, data } =
+        await this.userService.userKakao(id);
       //refreshtoken을 userId키로 redis에 저장
       await redisCli.set(id, refreshToken);
       //배포환경인 경우 보안 설정된 쿠키 전송
@@ -101,8 +100,17 @@ class UserController {
         res.cookie("accesstoken", accessToken);
         res.cookie("refreshtoken", refreshToken);
       }
-
-      return res.status(200).json({ message: "카카오 로그인 성공." });
+      console.log("//////////여기///////////");
+      console.log("created", created, "data", data);
+      if (created) {
+        return res.status(200).json({ message: "신규가입.", isMember: false });
+      } else {
+        return res.status(200).json({
+          message: "카카오 로그인 성공.",
+          isMember: true,
+          nickname: data.nickname,
+        });
+      }
     } catch (error) {
       next(error);
     }
@@ -111,7 +119,9 @@ class UserController {
   //아이디 닉네임 중복검사
   check = async (req, res, next) => {
     try {
-      const { nickname, userId } = req.body;
+      const { nickname, userId } = await joi.checkSchema.validateAsync(
+        req.body
+      );
 
       if (!nickname && !userId) {
         return res.status(400).json({ message: "잘못된 요청입니다" });

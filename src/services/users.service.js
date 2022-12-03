@@ -48,11 +48,11 @@ class UserService {
     return;
   };
 
-  userKakao = async (id, nickname) => {
-    const userData = await this.userRepository.userKakao(id, nickname);
+  userKakao = async (id) => {
+    const { data, created } = await this.userRepository.userKakao(id);
 
     const accessToken = jwt.sign(
-      { userId: id, userKey: userData.userKey },
+      { userId: id, userKey: data.userKey },
       process.env.SECRET_KEY,
       {
         expiresIn: "60s",
@@ -63,7 +63,7 @@ class UserService {
       expiresIn: "15d",
     });
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, created, data };
   };
 
   //유저 검증
@@ -275,12 +275,6 @@ class UserService {
     const findUser = await this.userRepository.findUser(userKey);
     if (!findUser) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
     await this.userRepository.updateUserNickname(userKey, nickname);
-  };
-
-  //회원탈퇴
-  bye = async (userKey) => {
-    const bye = await this.userRepository.bye(userKey);
-    return bye;
   };
 }
 

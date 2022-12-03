@@ -68,4 +68,18 @@ module.exports = {
         new ErrorCustom(400, "닉네임은 영문 숫자 한글 8자 이내여야 합니다.")
       ),
   }),
+
+  checkSchema: Joi.object({
+    userId: Joi.string()
+      .pattern(new RegExp("^(?=.*[a-zA-Z])[a-zA-Z0-9]{4,10}$"))
+      .required()
+      .error(new ErrorCustom(400, "아이디 형식은 영문 숫자 4자 이상 입니다")),
+
+    nickname: Joi.string()
+      .pattern(new RegExp("^[가-힣a-zA-z0-9]{1,8}$"))
+      .required()
+      .error(
+        new ErrorCustom(400, "닉네임은 영문 숫자 한글 8자 이내여야 합니다.")
+      ),
+  }),
 };

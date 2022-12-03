@@ -36,7 +36,7 @@ class UserRepository {
       },
     });
 
-    return data;
+    return { data, created };
   };
 
   findUser = async (userKey) => {
