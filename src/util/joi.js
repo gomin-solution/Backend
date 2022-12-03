@@ -58,6 +58,15 @@ module.exports = {
       )
       .required()
       .error(new ErrorCustom(400, "비밀번호는 최소 8자 이상이어야 합니다.")),
+
+    newPassword: Joi.string()
+      .pattern(
+        new RegExp(
+          "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$"
+        )
+      )
+      .required()
+      .error(new ErrorCustom(400, "비밀번호는 최소 8자 이상이어야 합니다.")),
   }),
 
   nicknameSchema: Joi.object({

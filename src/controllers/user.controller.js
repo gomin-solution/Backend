@@ -147,11 +147,13 @@ class UserController {
   passwordChange = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      const { password } = await joi.passwordSchema.validateAsync(req.body);
+      const { newPassword, password } = await joi.passwordSchema.validateAsync(
+        req.body
+      );
 
-      const hashed = await bcrypt.hash(password, 12);
+      const hashed = await bcrypt.hash(newPassword, 12);
 
-      await this.userService.passwordChange(userKey, hashed);
+      await this.userService.passwordChange(userKey, hashed, password);
 
       return res.status(200).json({ message: "비밀번호 변경 완료" });
     } catch (error) {
