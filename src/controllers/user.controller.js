@@ -76,6 +76,16 @@ class UserController {
     }
   };
 
+  kakao = async (req, res, next) => {
+    try {
+      const { payload } = req.body;
+
+      console.log(payload);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   //아이디 닉네임 중복검사
   check = async (req, res, next) => {
     try {

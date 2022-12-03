@@ -48,13 +48,13 @@ const kakaoCallback = (req, res, next) => {
   }
 };
 
-router.get(
-  "/kakao",
-  passport.authenticate("kakao", {
-    scope: ["profile_nickname", "profile_image", "account_email", "age_range"],
-  })
-);
+// router.get(
+//   "/kakao",
+//   passport.authenticate("kakao", {
+//     scope: ["profile_nickname", "profile_image", "account_email", "age_range"],
+//   })
+// );
 
-router.get("/kakao/callback", kakaoCallback);
+// router.get("/kakao/callback", kakaoCallback);
 
 module.exports = router;
