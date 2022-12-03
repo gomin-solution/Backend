@@ -150,14 +150,10 @@ class ChoiceService {
   choice = async (userKey, choiceId, choiceNum) => {
     const isChoice = await this.choiceRepository.isChoice(userKey, choiceId);
     if (isChoice) {
-      choice = await this.choiceRepository.cancelChoice(userKey, choiceId);
+      await this.choiceRepository.cancelChoice(userKey, choiceId);
       return false;
     } else {
-      choice = await this.choiceRepository.doChoice(
-        userKey,
-        choiceId,
-        choiceNum
-      );
+      await this.choiceRepository.doChoice(userKey, choiceId, choiceNum);
       //알람
       // const missionComplete = await this.missionService.MyNewComplete(userKey);
       // if (missionComplete.length) {
