@@ -4,17 +4,12 @@ require("dotenv").config();
 module.exports = (req, res, next) => {
   try {
     const { accesstoken, refreshtoken } = req.cookies;
-    const { payload } = req.body;
     console.log(req.cookies);
 
     if (accesstoken || refreshtoken) {
       return res.status(403).send({
         errorMessage: "이미 로그인이 되어있습니다.",
       });
-    }
-
-    if (payload) {
-      console.log(payload);
     }
 
     next();
