@@ -78,15 +78,14 @@ class UserController {
 
   kakao = async (req, res, next) => {
     try {
-      const { id, nickname } = req.body;
+      const { id } = req.body;
 
-      console.log(id, nickname);
+      console.log(id);
       const { accessToken, refreshToken } = await this.userService.userKakao(
-        id,
-        nickname
+        id
       );
       //refreshtoken을 userId키로 redis에 저장
-      await redisCli.set(userId, refreshToken);
+      await redisCli.set(id, refreshToken);
       //배포환경인 경우 보안 설정된 쿠키 전송
       if (process.env.NODE_ENV == "production") {
         res.cookie("accesstoken", accessToken, {
