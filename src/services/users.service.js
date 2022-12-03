@@ -152,23 +152,9 @@ class UserService {
     }
     const user = await this.userRepository.findUser(userKey);
 
-    let userImage = "";
-    if (
-      user.userImg ==
-      "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4"
-    ) {
-      userImage =
-        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4";
-    } else {
-      userImage =
-        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/" +
-        user.userImg;
-    }
-
     const result = {
       nickname: user.nickname,
-
-      userImage: userImage,
+      userImage: user.userImg,
       totalAdviceComment: user.Comments.length,
       totalChoicePick: user.isChoices.length,
     };
