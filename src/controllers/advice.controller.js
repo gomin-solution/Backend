@@ -32,6 +32,7 @@ class AdviceController {
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
       }
 
+      next({ userKey, title });
       res.status(200).json({
         msg: "게시글 업로드 완료!!",
         adviceId: createAdviceData.adviceId,

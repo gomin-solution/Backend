@@ -281,8 +281,10 @@ class MissionService {
 
     /**새로 완료한 미션이 담긴 배열 */
     const newCompleteMissionId = [];
+
     mission.forEach((mission) => {
       console.log(mission);
+
       //**게시글 작성 미션 */
       const Postmission = mission.PostMission?.postMission <= totalPost;
 
@@ -316,35 +318,43 @@ class MissionService {
       if (mission.missionId == 1) {
         Postmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
+
       if (mission.missionId == 2 || mission.missionId == 3) {
         Choicemission && Advicemission
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
+
       if (mission.missionId == 4) {
         Choicemission && Advicemission && Postmission
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
+
       if (mission.missionId == 5 || mission.missionId == 11) {
         Likemission && Selectedmission
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
+
       if (mission.missionId == 6) {
         Postmission && Choicemission && Likemission
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
+
       if (mission.missionId == 7) {
         Msgmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
+
       if (mission.missionId == 8 || mission.missionId == 10) {
         Selectedmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
+
       if (mission.missionId == 9) {
         Solutionmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
+
       if (mission.missionId == 12) {
         MissionComplete ? newCompleteMissionId.push(mission.missionId) : false;
       }
@@ -354,10 +364,10 @@ class MissionService {
       await this.missionRepository.createCompleteMission(userKey, missionId);
     }
 
+    ////////////////여기부분 까지////////////
     const missionComplete = await this.missionRepository.completeMission(
       userKey
     );
-    ////////////////여기부분 까지////////////
     const missionCompleteId = missionComplete.map((x) => {
       return [x.missionId, x.isGet];
     });

@@ -24,6 +24,7 @@ module.exports = () => {
           const ageRange = profile._json.kakao_account.age_range;
           let age;
           20 <= Number(ageRange.substr(0, 2)) ? (age = true) : (age = false);
+
           const exUser = await User.findOne({
             where: { userId: email },
           });

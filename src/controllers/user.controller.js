@@ -163,7 +163,6 @@ class UserController {
           .status(200)
           .json({ message: "오늘 처음 메세지를 열었습니다!" });
       }
-
       return res.status(401).json({ message: "잘못된 요청입니다" });
     } catch (error) {
       next(error);
