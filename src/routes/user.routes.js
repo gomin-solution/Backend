@@ -6,6 +6,7 @@ const LogoutMiddleware = require("../middlewares/LogoutMiddleware");
 const uploaduser = require("../modules/user.multer");
 const UserController = require("../controllers/user.controller");
 const userController = new UserController();
+const rewardMiddleware = require("../middlewares/rewardMiddleware");
 
 const AdviceController = require("../controllers/advice.controller");
 const adviceController = new AdviceController();
@@ -27,6 +28,9 @@ router.post("/signup/check", userController.check);
 
 //로그인
 router.post("/login", LoginMiddleware, userController.login);
+
+//카카오 로그인
+router.post("/kakao", LoginMiddleware);
 
 //로그아웃
 router.delete("/logout", LogoutMiddleware);

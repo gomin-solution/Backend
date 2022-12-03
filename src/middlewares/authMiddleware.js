@@ -25,8 +25,6 @@ module.exports = async (req, res, next) => {
 
   try {
     const { accesstoken, refreshtoken } = req.cookies;
-    console.log(req.cookies);
-    console.log(req.headers);
 
     //로그인 안한경우 익명 정보로 저장
     if (!accesstoken) {
