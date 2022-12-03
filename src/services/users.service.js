@@ -106,10 +106,14 @@ class UserService {
   };
 
   //비밀번호 변경
-  passwordChange = async (userKey, hashed) => {
+  passwordChange = async (userKey, hashed, password) => {
     const user = await this.userRepository.findUserKey(userKey);
     if (!user.password)
       throw new ErrorCustom(400, "비밀번호를 변경할 수 없습니다.");
+
+    const passwordVerify = await bcrypt.compare(password, user.password);
+    if (!passwordVerify) throw new ErrorCustom(400, "비밀번호 오류");
+
     await this.userRepository.passwordChange(userKey, hashed);
     return;
   };
