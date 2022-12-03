@@ -30,7 +30,7 @@ router.post("/signup/check", userController.check);
 router.post("/login", LoginMiddleware, userController.login);
 
 //카카오 로그인
-router.post("/kakao", LoginMiddleware);
+router.post("/kakao", LoginMiddleware, userController.kakao);
 
 //로그아웃
 router.delete("/logout", LogoutMiddleware);
