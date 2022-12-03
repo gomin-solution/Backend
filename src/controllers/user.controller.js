@@ -161,6 +161,7 @@ class UserController {
     }
   };
 
+  //닉네임 변경
   nicknameChange = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
