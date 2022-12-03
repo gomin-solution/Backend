@@ -261,7 +261,7 @@ class MissionService {
       totalSolution${totalSolution}`
     );
     /**모든 미션Id */
-    const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
     /**완료한 미션 */
     const completedMission = await this.missionRepository.completeMission(
@@ -366,7 +366,7 @@ class MissionService {
     console.log(missionCompleteId);
 
     let result = [];
-    for (let i = 1; i < 10; i++) {
+    for (let i = 1; i < 13; i++) {
       let isComplete = false;
       let isGet = false;
       missionCompleteId.forEach((x) => {
@@ -377,7 +377,6 @@ class MissionService {
           isGet = true;
         }
       });
-
       result.push({
         mission: i,
         isComplete: isComplete,
