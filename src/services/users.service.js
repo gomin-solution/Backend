@@ -141,7 +141,14 @@ class UserService {
     adviceData.sort((a, b) => a.commentCount - b.commentCount);
     const lowAdviceData = adviceData.slice(0, 10);
     const getChoice = await this.choiceRepository.findUserChoice(userKey);
-    const totalCount = getAdvice.length + getChoice.length;
+
+    const select = getAdvice.filter(
+      (post) => 0 < post.Comments.CommentSelects.length
+    );
+
+    const isEnd = getChoice.filter((post) => post.isEnd == true);
+
+    const totalCount = select.length + isEnd.length;
 
     return {
       advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],

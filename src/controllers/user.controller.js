@@ -371,7 +371,7 @@ class UserController {
         httpOnly: true,
       });
 
-      res.status(200).json({ message: "안녕히가세요" });
+      res.status(200).json({ message: "다음에 또 봐요" });
     } catch (err) {
       next(err);
     }

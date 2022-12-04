@@ -36,7 +36,10 @@ class ChoiceRepository {
   };
 
   findUserChoice = async (userKey) => {
-    const findOnechoice = await Choice.findAll({ where: { userKey: userKey } });
+    const findOnechoice = await Choice.findAll({
+      where: { userKey: userKey },
+      attributes: ["isEnd"],
+    });
     return findOnechoice;
   };
 
