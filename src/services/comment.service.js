@@ -1,7 +1,7 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const CommentRepository = require("../repositories/comment.repository"); //리포지토리의 내용을 가져와야한다.
 const AdviceRepository = require("../repositories/advice.repository");
-const MissionService = require("../services/mission.service");
+const MissionRepository = require("../repositories/mission.repository");
 
 const SocketIO = require("socket.io");
 const server = require("../app");
@@ -17,7 +17,7 @@ dayjs.tz.setDefault("Asia/Seoul");
 class CommentService {
   commentRepository = new CommentRepository();
   adviceRepository = new AdviceRepository();
-  missionService = new MissionService();
+  missionRepository = new MissionRepository();
 
   //덧글 달기
   createComment = async (userKey, adviceId, comment) => {
@@ -34,11 +34,7 @@ class CommentService {
       comment
     );
 
-    //미션 알람
-    // const missionComplete = await this.missionService.MyNewComplete(userKey);
-    // if (missionComplete.length) {
-    //   io.emit("complete_aram", "보상을 확인하세요");
-    // }
+    await this.missionRepository.commentActivityCount(userKey);
 
     return createComment;
   };
@@ -87,14 +83,6 @@ class CommentService {
       );
       const commentUser = await this.commentRepository.findComment(commentId);
 
-      //좋아요 받은 유저 미션 현황
-      // const missionComplete = await this.missionService.MyNewComplete(
-      //   commentUser.userKey
-      // );
-      // if (missionComplete.length) {
-      //   io.emit("complete_aram", "보상을 확인하세요");
-      // }
-
       return like;
     }
   };
@@ -121,14 +109,6 @@ class CommentService {
       userKey,
       commentId
     );
-
-    //미션알람
-    // const missionComplete = await this.missionService.MyNewComplete(
-    //   findComment.userKey
-    // );
-    // if (missionComplete.length) {
-    //   io.emit("complete_aram", "보상을 확인하세요");
-    // }
 
     return select;
   };

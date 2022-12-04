@@ -57,6 +57,26 @@ class MissionRepository {
     return;
   };
 
+  //메세지 오픈 횟수 +1
+  messageOpenActivity = async (userKey) => {
+    return await UserActivity.increment(
+      { msgOpenCount: 1 },
+      { where: { userKey: userKey } }
+    );
+  };
+
+  //조언해주기 댓글 작성 횟수 +1
+  commentActivity = async (userKey) => {
+    await UserActivity.increment({ commentCount: 1 }, { where: userKey });
+    return;
+  };
+
+  //골라주기 마감시 +1
+  choiceEndActivity = async (userKey) => {
+    await UserActivity.increment({ choiceEndCount: 1 }, { where: userKey });
+    return;
+  };
+
   //미션 완료 추가
   createCompleteMission = async (userKey, missionId) => {
     await MissionComplete.create({
