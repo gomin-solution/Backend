@@ -6,7 +6,7 @@ const LogoutMiddleware = require("../middlewares/LogoutMiddleware");
 const uploaduser = require("../modules/user.multer");
 const UserController = require("../controllers/user.controller");
 const userController = new UserController();
-const rewardMiddleware = require("../middlewares/rewardMiddleware");
+const reward = require("../middlewares/rewardMiddleware");
 
 const AdviceController = require("../controllers/advice.controller");
 const adviceController = new AdviceController();
@@ -15,7 +15,7 @@ const adviceController = new AdviceController();
 router.get("/", auth, userController.mainPage);
 
 //행운의편지 메세지 열기
-router.put("/msg", auth, userController.dailyMessage);
+router.put("/msg", auth, userController.dailyMessage, reward);
 
 //회원가입
 router.post("/signup", LoginMiddleware, userController.signup);

@@ -30,7 +30,6 @@ class AdviceService {
 
     //답해주기 게시글 작성 횟수 +1
     await this.missionRepository.postAdviceActivity(userKey);
-
     return createAdviceData;
   };
 
