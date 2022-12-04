@@ -57,6 +57,25 @@ class MissionRepository {
     return;
   };
 
+
+  //메세지 오픈 횟수 +1
+  messageOpenActivity = async (userKey) => {
+    return await UserActivity.increment(
+      { msgOpenCount: 1 },
+      { where: { userKey: userKey } }
+    );
+  };
+
+  //조언해주기 댓글 작성 횟수 +1
+  commentActivity = async (userKey) => {
+    await UserActivity.increment({ commentCount: 1 }, { where: userKey });
+    return;
+  };
+
+  //골라주기 마감시 +1
+  choiceEndActivity = async (userKey) => {
+    await UserActivity.increment({ choiceEndCount: 1 }, { where: userKey });
+
   //선택하기 게시글 작성 횟수 +1
   postChoiceActivity = async (userKey) => {
     await UserActivity.increment({ postChoiceCount: 1 }, { where: userKey });
@@ -72,6 +91,7 @@ class MissionRepository {
   //채택받기
   selectActivity = async (userKey) => {
     await UserActivity.increment({ selectCount: 1 }, { where: userKey });
+
     return;
   };
 

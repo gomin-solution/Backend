@@ -1,5 +1,7 @@
 const ChoiceRepository = require("../repositories/choice.repository");
+
 const MissionService = require("../services/mission.service");
+
 const MissionRepository = require("../repositories/mission.repository");
 const schedule = require("node-schedule");
 const { DataExchange } = require("aws-sdk");
@@ -16,13 +18,14 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 class ChoiceService {
   choiceRepository = new ChoiceRepository();
+
   missionService = new MissionService();
+
   missionRepository = new MissionRepository();
 
   createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
     const date = dayjs(endTime).tz();
-    console.log("////////dayjs적용///////");
-    console.log(date);
+
     const scheduleDate = date.subtract(9, "hour").format();
     const createchoice = await this.choiceRepository.createchoice(
       userKey,
@@ -31,19 +34,17 @@ class ChoiceService {
       choice2Name,
       date
     );
+
     schedule.scheduleJob(scheduleDate, async () => {
       console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
+      await this.missionRepository.choiceEndActivity(userKey);
     });
-    //알람
-    // const missionComplete = await this.missionService.MyNewComplete(userKey);
 
-    // if (missionComplete.length) {
-    //   io.emit("complete_aram", "보상을 확인하세요");
-    // }
 
     //선택하기 게시글 작성 횟수 +1
     await this.missionRepository.postChoiceActivity(userKey);
+
 
     return createchoice;
   };
@@ -159,17 +160,14 @@ class ChoiceService {
       return false;
     } else {
       await this.choiceRepository.doChoice(userKey, choiceId, choiceNum);
-      //알람
-      // const missionComplete = await this.missionService.MyNewComplete(userKey);
-      // if (missionComplete.length) {
-      //   io.emit("complete_aram", "보상을 확인하세요");
-      // }
+
       return true;
     }
   };
 
   early = async (choiceId, userKey) => {
     const early = await this.choiceRepository.early(choiceId, userKey);
+    await this.missionRepository.choiceEndActivity(userKey);
     return early;
   };
 }

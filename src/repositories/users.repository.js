@@ -71,14 +71,6 @@ class UserRepository {
     return updateImageUrl;
   };
 
-  //메세지 오픈 횟수 +1
-  messageCountUp = async (userKey) => {
-    return await User.increment(
-      { msgOpenCount: 1 },
-      { where: { userKey: userKey } }
-    );
-  };
-
   totalChoice = async (userKey) => {
     return await isChoice.findAll({ where: { userKey: userKey } });
   };
