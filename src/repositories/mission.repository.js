@@ -88,7 +88,7 @@ class MissionRepository {
 
   choiceActivity = async (userKey) => {
     await UserActivity.increment(
-      { choiceEndCount: 1 },
+      { choiceCount: 1 },
       { where: { userKey: userKey } }
     );
     return;
