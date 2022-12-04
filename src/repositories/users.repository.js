@@ -76,7 +76,9 @@ class UserRepository {
   };
 
   totalReword = async (userKey) => {
-    const totalreward = await UserActivity.findOne({ where: userKey });
+    const totalreward = await UserActivity.findOne({
+      where: { userKey: userKey },
+    });
 
     return totalreward;
   };
