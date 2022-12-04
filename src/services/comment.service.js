@@ -1,6 +1,9 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const CommentRepository = require("../repositories/comment.repository"); //리포지토리의 내용을 가져와야한다.
 const AdviceRepository = require("../repositories/advice.repository");
+
+const MissionService = require("../services/mission.service");
+
 const MissionRepository = require("../repositories/mission.repository");
 
 const SocketIO = require("socket.io");
@@ -17,6 +20,9 @@ dayjs.tz.setDefault("Asia/Seoul");
 class CommentService {
   commentRepository = new CommentRepository();
   adviceRepository = new AdviceRepository();
+
+  missionService = new MissionService();
+
   missionRepository = new MissionRepository();
 
   //덧글 달기
@@ -83,6 +89,10 @@ class CommentService {
       );
       const commentUser = await this.commentRepository.findComment(commentId);
 
+
+      //좋아요 받은 사람 횟수 +1
+      await this.missionRepository.receiveLikeActivity(commentUser.userKey);
+
       return like;
     }
   };
@@ -109,6 +119,13 @@ class CommentService {
       userKey,
       commentId
     );
+
+
+
+    const commentUser = await this.commentRepository.findComment(commentId);
+
+    //채택받기 횟수 +1
+    await this.missionRepository.selectActivity(commentUser.userKey);
 
     return select;
   };
