@@ -2,7 +2,7 @@ const { Router } = require("express");
 const adviceRouter = Router();
 const uploadadvice = require("../modules/advice.multer");
 
-const authMiddleware = require("../middlewares/authMiddleware");
+const auth = require("../middlewares/authMiddleware");
 const rewardMiddleware = require("../middlewares/rewardMiddleware");
 
 const AdviceController = require("../controllers/advice.controller");
@@ -11,7 +11,7 @@ const adviceController = new AdviceController();
 //조언 게시글 업로드
 adviceRouter.post(
   "/",
-  authMiddleware,
+  auth,
   uploadadvice.array("image", 3),
   adviceController.creatAdvice
 );
@@ -19,22 +19,18 @@ adviceRouter.post(
 //조언 게시글 조회
 adviceRouter.get(
   "/category/:categoryId/:filterId",
-  authMiddleware,
+  auth,
   adviceController.allAdvice
 );
 
 //조언 게시글 상세조회
 
-adviceRouter.get(
-  "/:adviceId/:filterId",
-  authMiddleware,
-  adviceController.findOneAdvice
-);
+adviceRouter.get("/:adviceId/:filterId", auth, adviceController.findOneAdvice);
 
 //조언 게시글 수정
 adviceRouter.put(
   "/:adviceId",
-  authMiddleware,
+  auth,
   uploadadvice.array("image", 3),
   adviceController.updateAdvice
 );

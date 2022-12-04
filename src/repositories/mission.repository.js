@@ -57,7 +57,6 @@ class MissionRepository {
     return;
   };
 
-
   //메세지 오픈 횟수 +1
   messageOpenActivity = async (userKey) => {
     return await UserActivity.increment(
@@ -75,6 +74,8 @@ class MissionRepository {
   //골라주기 마감시 +1
   choiceEndActivity = async (userKey) => {
     await UserActivity.increment({ choiceEndCount: 1 }, { where: userKey });
+    return;
+  };
 
   //선택하기 게시글 작성 횟수 +1
   postChoiceActivity = async (userKey) => {

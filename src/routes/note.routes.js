@@ -1,25 +1,25 @@
 const { Router } = require("express");
 const noteRouter = Router();
 
-const authMiddleware = require("../middlewares/authMiddleware");
+const auth = require("../middlewares/authMiddleware");
 
 const NoteController = require("../controllers/note.controller");
 
 const noteController = new NoteController();
 
 // 쪽지 보내기
-noteRouter.post("/rooms", authMiddleware, noteController.createroom);
+noteRouter.post("/rooms", auth, noteController.createroom);
 
 //대화내용 불러오기
-noteRouter.get("/rooms/:roomId", authMiddleware, noteController.roadNotes);
+noteRouter.get("/rooms/:roomId", auth, noteController.roadNotes);
 
 // 쪽지방 목록 조회
-noteRouter.get("/rooms", authMiddleware, noteController.roomlist);
+noteRouter.get("/rooms", auth, noteController.roomlist);
 
 // // 쪽지함 조회
-// noteRouter.get("/", authMiddleware, noteController.allMyNote);
+// noteRouter.get("/", auth, noteController.allMyNote);
 
 //쪽지방 삭제=======
-noteRouter.delete("/rooms/:roomId", authMiddleware, noteController.deleteRoom);
+noteRouter.delete("/rooms/:roomId", auth, noteController.deleteRoom);
 
 module.exports = noteRouter;
