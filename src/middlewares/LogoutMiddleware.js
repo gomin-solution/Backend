@@ -1,9 +1,5 @@
-module.exports = (req, res, next) => {
+module.exports = (bye, req, res, next) => {
   try {
-    const { accesstoken, refreshtoken } = req.cookies;
-    console.log("accesstoken", accesstoken);
-    console.log("refreshtoken", refreshtoken);
-
     res.cookie("accesstoken", "expire", {
       maxAge: 0,
       sameSite: "none",
@@ -17,8 +13,13 @@ module.exports = (req, res, next) => {
       secure: true,
       httpOnly: true,
     });
-
-    return res.status(200).json({ message: "로그아웃 되었습니다" });
+    console.log("///////////bye//////////////");
+    console.log(bye);
+    if (bye) {
+      return res.status(200).json({ message: "탈퇴 처리 되었습니다" });
+    } else {
+      return res.status(200).json({ message: "로그아웃 되었습니다" });
+    }
   } catch (error) {
     console.trace(error);
     return res.status(400).send({

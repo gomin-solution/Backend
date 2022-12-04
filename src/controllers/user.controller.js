@@ -357,7 +357,7 @@ class UserController {
       }
 
       const bye = await this.userService.bye(userKey);
-      res.status(200).json({ message: "안녕히가세요", data: bye });
+      next(bye);
     } catch (err) {
       next(err);
     }

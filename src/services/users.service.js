@@ -282,7 +282,7 @@ class UserService {
   };
 
   bye = async (userKey) => {
-    const bye = await this.userRepository.bye(userKey);
+    return await this.userRepository.bye(userKey);
   };
 }
 

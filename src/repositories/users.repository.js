@@ -119,12 +119,11 @@ class UserRepository {
   bye = async (userKey) => {
     const exit = "탈퇴한 회원입니다.";
 
-    const bye = await User.update(
+    return await User.update(
       { userId: exit },
       { nickname: exit },
       { where: { userKey: userKey } }
     );
-    return bye;
   };
 }
 
