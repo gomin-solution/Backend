@@ -103,10 +103,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: "주니어 해결사",
       },
-      msgOpenCount: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

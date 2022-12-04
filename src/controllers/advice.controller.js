@@ -1,11 +1,13 @@
 const AdviceService = require("../services/advice.service");
 const AdviceImageService = require("../services/adviceimage.service");
+const MissionService = require("../services/mission.service");
 const aws = require("aws-sdk");
 require("dotenv").config();
 
 class AdviceController {
   adviceService = new AdviceService();
   adviceImageService = new AdviceImageService();
+  missionService = new MissionService();
 
   // 조언 게시물 생성
   creatAdvice = async (req, res, next) => {
@@ -31,7 +33,6 @@ class AdviceController {
         const imageUrl = images.map((url) => url.location);
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
       }
-
       next({ userKey, title });
       res.status(200).json({
         msg: "게시글 업로드 완료!!",

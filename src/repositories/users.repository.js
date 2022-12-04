@@ -1,12 +1,4 @@
-const {
-  User,
-  isChoice,
-  Comment,
-  CommentLike,
-  Advice,
-  Choice,
-  CommentSelect,
-} = require("../models");
+const { User, isChoice, Comment, UserActivity } = require("../models");
 
 class UserRepository {
   createUser = async ({
@@ -15,8 +7,7 @@ class UserRepository {
     password: hashed,
     isAdult: isAdult,
   }) => {
-    console.log("레파지토리", isAdult);
-    return await User.create({
+    const Userdata = await User.create({
       userId: userId,
       nickname: nickname,
       password: hashed,
@@ -24,6 +15,11 @@ class UserRepository {
       userImg:
         "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
     });
+    console.log("레파지토리", isAdult);
+
+    await UserActivity.create({ userKey: Userdata.userKey });
+
+    return Userdata;
   };
 
   userKakao = async (id) => {
@@ -35,6 +31,7 @@ class UserRepository {
           "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
       },
     });
+    await UserActivity.create({ userKey: data.userKey });
 
     return { data, created };
   };
@@ -87,23 +84,8 @@ class UserRepository {
   };
 
   totalReword = async (userKey) => {
-    const totalreward = await User.findOne({
-      where: { userKey: userKey },
-      include: [
-        {
-          model: Comment,
-          include: [
-            { model: CommentLike, attributes: ["userKey"] },
-            { model: CommentSelect, attributes: ["userKey"] },
-          ],
-          attributes: ["userKey"],
-        },
-        { model: isChoice, attributes: ["userKey"] },
-        { model: Advice, attributes: ["userKey"] },
-        { model: Choice, attributes: ["isEnd"] },
-        { model: CommentSelect, attributes: ["userKey"] },
-      ],
-    });
+    const totalreward = await UserActivity.findByPk(userKey);
+
     return totalreward;
   };
 
@@ -118,7 +100,6 @@ class UserRepository {
   //회원탈퇴
   bye = async (userKey) => {
     const exit = "탈퇴한 회원입니다.";
-
     return await User.update(
       { nickname: exit, userId: exit },
       { where: { userKey: userKey } }

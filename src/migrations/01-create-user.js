@@ -38,10 +38,6 @@ module.exports = {
         allowNull: true,
         defaultValue: "주니어 해결사",
       },
-      msgOpenCount: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

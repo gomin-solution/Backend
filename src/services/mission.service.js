@@ -1,21 +1,21 @@
 const MissionRepository = require("../repositories/mission.repository");
 const UserRepository = require("../repositories/users.repository");
-
+const CommentRepository = require("../repositories/comment.repository");
 class MissionService {
   missionRepository = new MissionRepository();
   userRepository = new UserRepository();
+  commentRepository = new CommentRepository();
 
   //리워드 페이지
   reword = async (userKey) => {
-    /**유저의 활동 정보를 모두 가져옴 */
+    //유저활동기록 가져오기
+    console.log("userKey", userKey);
     const totalReword = await this.userRepository.totalReword(userKey);
+    const Selects = await this.commentRepository.userSelect(userKey);
 
-    const likeArray = totalReword.Comments.map((x) => x.CommentLikes.length);
+    console.log(totalReword);
     /**내가 받은 총 좋아요수 */
-    let likeTotal = 0;
-    likeArray.forEach((x) => {
-      likeTotal += x;
-    });
+    const likeTotal = totalReword.receiveLikeCount;
 
     /**내 게시글의 총 조회수 */
     let viewCount = 0;
@@ -26,21 +26,19 @@ class MissionService {
     // });
 
     /** 내가 조언해준 횟수*/
-    const totalAdviceComment = totalReword.Comments.length;
+    const totalAdviceComment = totalReword.commentCount;
 
     /**내가 투표한횟수 */
-    const totalChoicePick = totalReword.isChoices.length;
+    const totalChoicePick = totalReword.choiceCount;
 
     /**내가 쓴 조언게시글 수 */
-    const totalAdvice = totalReword.Advice.length;
+    const totalAdvice = totalReword.postAdviceCount;
 
     /**투표 게시글 작성 수 */
-    const totalChoice = totalReword.Choices.length;
+    const totalChoice = totalReword.postChoiceCount;
 
     /**마감된 투표 게시글 수 */
-    const totalEndChoice = totalReword.Choices.filter(
-      (choice) => choice.isEnd == true
-    ).length;
+    const totalEndChoice = totalReword.choiceEndCount;
 
     /**총게시글 작성 수 */
     const totalPost = totalAdvice + totalChoice;
@@ -49,12 +47,10 @@ class MissionService {
     const totalOpen = totalReword.msgOpenCount;
 
     /**채택받은 횟수 */
-    const totalSelected = totalReword.CommentSelects.length;
+    const totalSelected = totalReword.selectCount;
 
     /**채택한 횟수 */
-    const totalSelect = totalReword.Comments.filter(
-      (x) => x.CommentSelects.length
-    ).length;
+    const totalSelect = Selects.length;
 
     /**고민 마감 횟수 */
     const totalSolution = totalSelect + totalEndChoice;
