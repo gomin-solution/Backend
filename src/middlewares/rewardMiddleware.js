@@ -4,6 +4,8 @@ const CommentRepository = require("../repositories/comment.repository.js");
 
 module.exports = async (userKey, req, res, next) => {
   /**유저의 활동 정보를 모두 가져옴 */
+  console.log("//////////넘어옴/////");
+  console.log(userKey);
   const totalReword = await new UserRepository().totalReword(userKey);
   const Selects = await new CommentRepository().userSelect(userKey);
 
@@ -92,7 +94,6 @@ module.exports = async (userKey, req, res, next) => {
   /**새로 완료한 미션이 담긴 배열 */
   const newCompleteMissionId = [];
   mission.forEach((mission) => {
-    console.log(mission);
     //**게시글 작성 미션 */
     const Postmission = mission.PostMission?.postMission <= totalPost;
 
@@ -165,4 +166,6 @@ module.exports = async (userKey, req, res, next) => {
 
   completedMission = await new MissionRepository().completeMission(userKey)
     .length;
+
+  return;
 };
