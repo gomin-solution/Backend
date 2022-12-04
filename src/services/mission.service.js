@@ -129,6 +129,10 @@ class MissionService {
 
     return data;
   };
+
+  postAdviceActivity = async (userKey) => {
+    await this.missionRepository.postAdviceActivity(userKey);
+  };
 }
 
 module.exports = MissionService;

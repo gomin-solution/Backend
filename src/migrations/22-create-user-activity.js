@@ -32,6 +32,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
+      msgOpenCount: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
     });
   },
   async down(queryInterface, Sequelize) {

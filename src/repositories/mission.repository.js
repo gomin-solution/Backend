@@ -10,6 +10,7 @@ const {
   SelectMission,
   SolutionMission,
   MissionCompleteMission,
+  UserActivity,
 } = require("../models");
 const { Op } = require("sequelize");
 
@@ -48,6 +49,12 @@ class MissionRepository {
     });
     console.log(postmission);
     return postmission;
+  };
+
+  //답해주기 게시글 작성 횟수 +1
+  postAdviceActivity = async (userKey) => {
+    await UserActivity.increment({ postAdviceCount: 1 }, { where: userKey });
+    return;
   };
 
   //미션 완료 추가

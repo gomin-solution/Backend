@@ -45,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
+      msgOpenCount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
     },
     {
       sequelize,
