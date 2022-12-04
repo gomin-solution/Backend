@@ -15,7 +15,7 @@ const adviceController = new AdviceController();
 router.get("/", auth, userController.mainPage);
 
 //행운의편지 메세지 열기
-router.put("/msg", auth, userController.dailyMessage);
+router.put("/msg", auth, userController.dailyMessage, rewardMiddleware);
 
 //회원가입
 router.post("/signup", LoginMiddleware, userController.signup);

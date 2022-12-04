@@ -89,11 +89,11 @@ class CommentService {
       );
       const commentUser = await this.commentRepository.findComment(commentId);
 
-
+      const commentUserKey = commentUser.userKey;
       //좋아요 받은 사람 횟수 +1
-      await this.missionRepository.receiveLikeActivity(commentUser.userKey);
+      await this.missionRepository.receiveLikeActivity(commentUserKey);
 
-      return like;
+      return { like, commentUserKey };
     }
   };
 
@@ -115,19 +115,14 @@ class CommentService {
       throw new ErrorCustom(400, "게시글 작성자만 채택할 수 있습니다.");
     }
 
-    const select = await this.commentRepository.selectComment(
-      userKey,
-      commentId
-    );
-
-
+    await this.commentRepository.selectComment(userKey, commentId);
 
     const commentUser = await this.commentRepository.findComment(commentId);
 
     //채택받기 횟수 +1
     await this.missionRepository.selectActivity(commentUser.userKey);
 
-    return select;
+    return commentUser.userKey;
   };
 
   //대댓글 기능===========================================================

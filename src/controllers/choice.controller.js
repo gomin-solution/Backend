@@ -11,8 +11,6 @@ class ChoiceController {
       }
       const { title, choice1Name, choice2Name, endTime } = req.body;
 
-      console.log(title, choice1Name, choice2Name, endTime);
-
       if (!title || !choice1Name || !choice2Name || !endTime) {
         res.status(400).send({ errorMessage: "입력 내용을 확인해 주십시오" });
         return;
@@ -24,6 +22,7 @@ class ChoiceController {
         choice2Name,
         endTime
       );
+      next(userKey);
       res
         .status(201)
         .send({ message: "투표 등록이 완료되었습니다.", data: createchoice });
@@ -101,6 +100,7 @@ class ChoiceController {
       }
 
       if (choice) {
+        next(userKey);
         res.status(200).json({ message: choiceNum + "번에 투표 성공" });
       } else {
         res.status(200).json({ message: "투표 취소" });

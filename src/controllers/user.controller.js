@@ -216,6 +216,7 @@ class UserController {
       const { isOpen } = await this.userService.getDailymessage(userKey);
       if (!isOpen) {
         await this.userService.updateMessageOpen(userKey);
+        next(userKey);
         return res
           .status(200)
           .json({ message: "오늘 처음 메세지를 열었습니다!" });
