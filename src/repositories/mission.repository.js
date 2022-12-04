@@ -80,12 +80,19 @@ class MissionRepository {
   //골라주기 마감시 +1
   choiceEndActivity = async (userKey) => {
     await UserActivity.increment(
-      { choiceEndCount: 1 },
+      { choiceCount: 1 },
       { where: { userKey: userKey } }
     );
     return;
   };
 
+  choiceActivity = async (userKey) => {
+    await UserActivity.increment(
+      { choiceEndCount: 1 },
+      { where: { userKey: userKey } }
+    );
+    return;
+  };
   //선택하기 게시글 작성 횟수 +1
   postChoiceActivity = async (userKey) => {
     await UserActivity.increment(
