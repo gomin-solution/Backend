@@ -17,7 +17,6 @@ module.exports = {
       nickname: {
         allowNull: true,
         type: Sequelize.STRING,
-        unique: true,
       },
       password: {
         allowNull: true,

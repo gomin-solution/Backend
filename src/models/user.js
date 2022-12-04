@@ -78,7 +78,6 @@ module.exports = (sequelize, DataTypes) => {
       nickname: {
         allowNull: true,
         type: DataTypes.STRING,
-        unique: true,
       },
       password: {
         allowNull: true,
