@@ -3,14 +3,7 @@ const MissionRepository = require("../repositories/mission.repository");
 
 module.exports = async (data, req, res, next) => {
   /**유저의 활동 정보를 모두 가져옴 */
-  const totalReword = await new UserRepository().totalReword(userKey);
-  console.log("///////////////req///////////////");
-  console.log(req);
-  console.log("////////////////res/////////////");
-  console.log(res);
-  console.log("/////////////userKey//////////");
-  console.log(data.userKey);
-  console.log(data.title);
+  // const totalReword = await new UserRepository().totalReword(userKey);
 
   const likeArray = totalReword.Comments.map((x) => x.CommentLikes.length);
   /**내가 받은 총 좋아요수 */

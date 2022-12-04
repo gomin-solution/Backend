@@ -60,6 +60,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         sourceKey: "userKey",
       });
+      this.hasOne(models.UserActivity, {
+        foreignKey: "userKey",
+        sourceKey: "userKey",
+      });
     }
   }
   User.init(
