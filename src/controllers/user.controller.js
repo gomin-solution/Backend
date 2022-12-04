@@ -353,8 +353,9 @@ class UserController {
     try {
       const { userKey } = res.locals.user;
       if (userKey == 0) {
-        return res.status(400).send({ message: "로그인이 필요합니다." });
+        return res.status(400).send({ message: "잘못된 요청입니다." });
       }
+
       const bye = await this.userService.bye(userKey);
       res.status(200).json({ message: "안녕히가세요", data: bye });
     } catch (err) {
