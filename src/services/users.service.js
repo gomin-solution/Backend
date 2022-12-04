@@ -280,6 +280,10 @@ class UserService {
     if (!findUser) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
     await this.userRepository.updateUserNickname(userKey, nickname);
   };
+
+  bye = async (userKey) => {
+    return await this.userRepository.bye(userKey);
+  };
 }
 
 module.exports = UserService;

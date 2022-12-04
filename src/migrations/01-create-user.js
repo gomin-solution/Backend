@@ -12,7 +12,6 @@ module.exports = {
       userId: {
         allowNull: false,
         type: Sequelize.STRING,
-        unique: true,
       },
       nickname: {
         allowNull: true,
