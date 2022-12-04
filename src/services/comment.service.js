@@ -40,7 +40,7 @@ class CommentService {
       comment
     );
 
-    await this.missionRepository.commentActivityCount(userKey);
+    await this.missionRepository.commentActivity(userKey);
 
     return createComment;
   };
