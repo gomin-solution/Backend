@@ -83,109 +83,6 @@ class MissionService {
       totalSelected:${totalSelected},
       totalSolution${totalSolution}`
     );
-    /**모든 미션Id */
-    const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-    /**완료한 미션 */
-    const completedMission = await this.missionRepository.completeMission(
-      userKey
-    );
-
-    /**완료한 미션 ID */
-    const CompleteMission = completedMission.map((x) => x.missionId);
-
-    /**미완료 미션ID */
-    const unCompleteMission = missionarray.filter(
-      (x) => !CompleteMission.includes(x)
-    );
-
-    /**미완료 미션을 가져와 기준에 충족하면 newCompleteMissonId 배열에 추가*/
-    const mission = await this.missionRepository.mission(unCompleteMission);
-
-    /**새로 완료한 미션이 담긴 배열 */
-    const newCompleteMissionId = [];
-
-    mission.forEach((mission) => {
-      console.log(mission);
-
-      //**게시글 작성 미션 */
-      const Postmission = mission.PostMission?.postMission <= totalPost;
-
-      /** 투표하기 미션 */
-      const Choicemission =
-        mission.ChoiceMission?.choiceMission <= totalChoicePick;
-
-      /**답해주기 게시글 미션 */
-      const Advicemission =
-        mission.AdviceMission?.adviceMission <= totalAdviceComment;
-
-      /**좋아요 받기 미션 */
-      const Likemission = mission.LikeMission?.likeMission <= likeTotal;
-
-      /**채택받기 미션 */
-      const Selectedmission =
-        mission.SelectMission?.selectMission <= totalSelected;
-
-      /**행운 메제시 열기 미션 */
-      const Msgmission = mission.MsgMission?.msgMission <= totalOpen;
-
-      /**해결한 고민 미션 */
-      const Solutionmission =
-        mission.SolutionMission?.solutionMission <= totalSolution;
-
-      /**완료한 미션 */
-      const MissionComplete =
-        mission.MissionCompleteMission?.completeMission <=
-        CompleteMission.length;
-
-      if (mission.missionId == 1) {
-        Postmission ? newCompleteMissionId.push(mission.missionId) : false;
-      }
-
-      if (mission.missionId == 2 || mission.missionId == 3) {
-        Choicemission && Advicemission
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
-      }
-
-      if (mission.missionId == 4) {
-        Choicemission && Advicemission && Postmission
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
-      }
-
-      if (mission.missionId == 5 || mission.missionId == 11) {
-        Likemission && Selectedmission
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
-      }
-
-      if (mission.missionId == 6) {
-        Postmission && Choicemission && Likemission
-          ? newCompleteMissionId.push(mission.missionId)
-          : false;
-      }
-
-      if (mission.missionId == 7) {
-        Msgmission ? newCompleteMissionId.push(mission.missionId) : false;
-      }
-
-      if (mission.missionId == 8 || mission.missionId == 10) {
-        Selectedmission ? newCompleteMissionId.push(mission.missionId) : false;
-      }
-
-      if (mission.missionId == 9) {
-        Solutionmission ? newCompleteMissionId.push(mission.missionId) : false;
-      }
-
-      if (mission.missionId == 12) {
-        MissionComplete ? newCompleteMissionId.push(mission.missionId) : false;
-      }
-    });
-
-    for (const missionId of newCompleteMissionId) {
-      await this.missionRepository.createCompleteMission(userKey, missionId);
-    }
 
     ////////////////여기부분 까지////////////
     const missionComplete = await this.missionRepository.completeMission(
@@ -194,7 +91,6 @@ class MissionService {
     const missionCompleteId = missionComplete.map((x) => {
       return [x.missionId, x.isGet];
     });
-    console.log(missionCompleteId);
 
     let result = [];
     for (let i = 1; i < 13; i++) {
