@@ -120,8 +120,7 @@ class UserRepository {
     const exit = "탈퇴한 회원입니다.";
 
     return await User.update(
-      { userId: exit },
-      { nickname: exit },
+      { nickname: exit, userId: exit },
       { where: { userKey: userKey } }
     );
   };
