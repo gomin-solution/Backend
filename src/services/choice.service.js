@@ -41,10 +41,8 @@ class ChoiceService {
       await this.missionRepository.choiceEndActivity(userKey);
     });
 
-
     //선택하기 게시글 작성 횟수 +1
     await this.missionRepository.postChoiceActivity(userKey);
-
 
     return createchoice;
   };
@@ -157,9 +155,11 @@ class ChoiceService {
     const isChoice = await this.choiceRepository.isChoice(userKey, choiceId);
     if (isChoice) {
       await this.choiceRepository.cancelChoice(userKey, choiceId);
+
       return false;
     } else {
       await this.choiceRepository.doChoice(userKey, choiceId, choiceNum);
+      await this.missionRepository.choiceActivity(userKey);
 
       return true;
     }
