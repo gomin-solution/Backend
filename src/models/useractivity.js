@@ -49,6 +49,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
+      selectCount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      choiceEndCount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
     },
     {
       sequelize,

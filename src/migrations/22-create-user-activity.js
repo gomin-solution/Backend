@@ -36,6 +36,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
+      selectCount: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      choiceEndCount: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
     });
   },
   async down(queryInterface, Sequelize) {

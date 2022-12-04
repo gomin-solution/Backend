@@ -1,16 +1,14 @@
 const UserRepository = require("../repositories/users.repository.js");
 const MissionRepository = require("../repositories/mission.repository");
+const CommentRepository = require("../repositories/comment.repository.js");
 
 module.exports = async (data, req, res, next) => {
   /**유저의 활동 정보를 모두 가져옴 */
   const totalReword = await new UserRepository().totalReword(userKey);
+  const Selects = await new CommentRepository().userSelect(userKey);
 
-  const likeArray = totalReword.Comments.map((x) => x.CommentLikes.length);
   /**내가 받은 총 좋아요수 */
-  let likeTotal = 0;
-  likeArray.forEach((x) => {
-    likeTotal += x;
-  });
+  const likeTotal = totalReword.receiveLikeCount;
 
   /**내 게시글의 총 조회수 */
   let viewCount = 0;
@@ -27,15 +25,13 @@ module.exports = async (data, req, res, next) => {
   const totalChoicePick = totalReword.choiceCount;
 
   /**내가 쓴 조언게시글 수 */
-  const totalAdvice = totalReword.Advice.length;
+  const totalAdvice = totalReword.postAdviceCount;
 
   /**투표 게시글 작성 수 */
-  const totalChoice = totalReword.Choices.length;
+  const totalChoice = totalReword.postChoiceCount;
 
   /**마감된 투표 게시글 수 */
-  const totalEndChoice = totalReword.Choices.filter(
-    (choice) => choice.isEnd == true
-  ).length;
+  const totalEndChoice = totalReword.choiceEndCount;
 
   /**총게시글 작성 수 */
   const totalPost = totalAdvice + totalChoice;
@@ -44,12 +40,10 @@ module.exports = async (data, req, res, next) => {
   const totalOpen = totalReword.msgOpenCount;
 
   /**채택받은 횟수 */
-  const totalSelected = totalReword.CommentSelects.length;
+  const totalSelected = totalReword.selectCount;
 
   /**채택한 횟수 */
-  const totalSelect = totalReword.Comments.filter(
-    (x) => x.CommentSelects.length
-  ).length;
+  const totalSelect = Selects.length;
 
   /**고민 마감 횟수 */
   const totalSolution = totalSelect + totalEndChoice;

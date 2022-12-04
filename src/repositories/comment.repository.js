@@ -90,6 +90,13 @@ class CommentRepository {
     return data;
   };
 
+  userSelect = async (userKey) => {
+    return await CommentSelect.findAll({
+      where: { userKey: userKey },
+      attributes: ["commentId"],
+    });
+  };
+
   findAllSelect = async () => {
     return await CommentSelect.findAll({ attributes: ["id"] });
   };

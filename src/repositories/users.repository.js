@@ -1,13 +1,4 @@
-const {
-  User,
-  isChoice,
-  Comment,
-  CommentLike,
-  Advice,
-  Choice,
-  CommentSelect,
-  UserActivity,
-} = require("../models");
+const { User, isChoice, Comment, UserActivity } = require("../models");
 
 class UserRepository {
   createUser = async ({
@@ -16,7 +7,7 @@ class UserRepository {
     password: hashed,
     isAdult: isAdult,
   }) => {
-    const User = await User.create({
+    const Userdata = await User.create({
       userId: userId,
       nickname: nickname,
       password: hashed,
@@ -25,8 +16,10 @@ class UserRepository {
         "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
     });
     console.log("레파지토리", isAdult);
-    await UserActivity.create({ userKey: User.userKey });
-    return User;
+
+    await UserActivity.create({ userKey: Userdata.userKey });
+
+    return Userdata;
   };
 
   userKakao = async (id) => {
