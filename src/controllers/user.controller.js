@@ -353,11 +353,25 @@ class UserController {
     try {
       const { userKey } = res.locals.user;
       if (userKey == 0) {
-        return res.status(400).send({ message: "잘못된 요청입니다." });
+        return res.status(400).send({ message: "로그인이 필요합니다." });
       }
+      await this.userService.bye(userKey);
 
-      const bye = await this.userService.bye(userKey);
-      next(bye);
+      res.cookie("accesstoken", "expire", {
+        maxAge: 0,
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+      });
+
+      res.cookie("refreshtoken", "expire", {
+        maxAge: 0,
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+      });
+
+      res.status(200).json({ message: "안녕히가세요" });
     } catch (err) {
       next(err);
     }
