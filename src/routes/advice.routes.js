@@ -3,7 +3,7 @@ const adviceRouter = Router();
 const uploadadvice = require("../modules/advice.multer");
 
 const auth = require("../middlewares/authMiddleware");
-const rewardMiddleware = require("../middlewares/rewardMiddleware");
+const reward = require("../middlewares/rewardMiddleware");
 
 const AdviceController = require("../controllers/advice.controller");
 const adviceController = new AdviceController();
@@ -13,7 +13,8 @@ adviceRouter.post(
   "/",
   auth,
   uploadadvice.array("image", 3),
-  adviceController.creatAdvice
+  adviceController.creatAdvice,
+  reward
 );
 
 //조언 게시글 조회
