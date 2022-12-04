@@ -5,6 +5,7 @@ const ChoiceRepository = require("../repositories/choice.repository");
 const MissionService = require("../services/mission.service");
 const MissionRepository = require("../repositories/mission.repository");
 const DailyMsgRepository = require("../repositories/dailymessage.repository");
+const CommentRepository = require("../repositories/comment.repository");
 
 const SocketIO = require("socket.io");
 const server = require("../app");
@@ -22,6 +23,7 @@ class UserService {
   missionRepository = new MissionRepository();
   dailyMsgRepository = new DailyMsgRepository();
   missionService = new MissionService();
+  commentRepository = new CommentRepository();
 
   //유저 생성(가입)
   createUser = async ({
@@ -127,6 +129,7 @@ class UserService {
   mainPage = async (userKey) => {
     const getAdvice = await this.adviceRepository.getAdvice();
     const dailyData = await redisCli.hGetAll(`${userKey}`);
+    const select = await this.commentRepository.findAllSelect();
     let isOpen;
     dailyData.isOpen == "0" || userKey == 0
       ? (isOpen = false)
@@ -140,11 +143,7 @@ class UserService {
     });
     adviceData.sort((a, b) => a.commentCount - b.commentCount);
     const lowAdviceData = adviceData.slice(0, 10);
-    const getChoice = await this.choiceRepository.findUserChoice(userKey);
-
-    const select = getAdvice.filter(
-      (post) => 0 < post.Comments.CommentSelects.length
-    );
+    const getChoice = await this.choiceRepository.findAllChoiceForMain(userKey);
 
     const isEnd = getChoice.filter((post) => post.isEnd == true);
 

@@ -33,7 +33,7 @@ class AdviceRepository {
         {
           model: Comment,
           attributes: ["userKey"],
-          include: { model: CommentSelect },
+          include: { model: CommentSelect, attributes: ["userKey"] },
         },
         { model: Category, attributes: ["name"] },
       ],
