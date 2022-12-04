@@ -77,6 +77,25 @@ class MissionRepository {
     return;
   };
 
+  //선택하기 게시글 작성 횟수 +1
+  postChoiceActivity = async (userKey) => {
+    await UserActivity.increment({ postChoiceCount: 1 }, { where: userKey });
+    return;
+  };
+
+  //좋아요 받기
+  receiveLikeActivity = async (userKey) => {
+    await UserActivity.increment({ receiveLikeCount: 1 }, { where: userKey });
+    return;
+  };
+
+  //채택받기
+  selectActivity = async (userKey) => {
+    await UserActivity.increment({ selectCount: 1 }, { where: userKey });
+
+    return;
+  };
+
   //미션 완료 추가
   createCompleteMission = async (userKey, missionId) => {
     await MissionComplete.create({

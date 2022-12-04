@@ -1,4 +1,7 @@
 const ChoiceRepository = require("../repositories/choice.repository");
+
+const MissionService = require("../services/mission.service");
+
 const MissionRepository = require("../repositories/mission.repository");
 const schedule = require("node-schedule");
 const { DataExchange } = require("aws-sdk");
@@ -15,6 +18,9 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 class ChoiceService {
   choiceRepository = new ChoiceRepository();
+
+  missionService = new MissionService();
+
   missionRepository = new MissionRepository();
 
   createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
@@ -34,6 +40,12 @@ class ChoiceService {
       await this.choiceRepository.updateEnd(createchoice.choiceId);
       await this.missionRepository.choiceEndActivity(userKey);
     });
+
+
+    //선택하기 게시글 작성 횟수 +1
+    await this.missionRepository.postChoiceActivity(userKey);
+
+
     return createchoice;
   };
 
