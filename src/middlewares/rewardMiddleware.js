@@ -165,6 +165,7 @@ module.exports = async (userKey, req, res, next) => {
       const gradeKeyword = "마스터 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
     }
+
     return;
   } catch (error) {
     console.trace(error);
