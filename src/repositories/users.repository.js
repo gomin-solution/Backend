@@ -15,7 +15,6 @@ class UserRepository {
       userImg:
         "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
     });
-    console.log("레파지토리", isAdult);
 
     await UserActivity.create({ userKey: Userdata.userKey });
 
@@ -65,9 +64,9 @@ class UserRepository {
     return await User.update({ nickname: nickname }, { where: { userKey } });
   };
 
-  uploadUserImage = async (findUserImage, userKey) => {
+  upGradeUser = async (Image, gradeKeyword, userKey) => {
     const updateImageUrl = await User.update(
-      { userImg: findUserImage },
+      { userImg: Image, grade: gradeKeyword },
       { where: { userKey } }
     );
     return updateImageUrl;

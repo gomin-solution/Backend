@@ -55,38 +55,9 @@ class MissionService {
     /**고민 마감 횟수 */
     const totalSolution = totalSelect + totalEndChoice;
 
-    // totalAdviceComment: 댓글작성 횟수,
-    // totalChoicePick: 투표 횟수,
-    // totalAdvice: 답해주기글 횟수,
-    // totalChoice: 골라주기글 횟수,
-    // totalPost: 총 작성게시글 수,
-    // viewCount: 총 게시글 조회수,
-    // likeTotal: 좋아요 받은 갯수,
-    // msgOpen: 메세지 오픈 횟수,
-    // Selected: 채택받은 횟수,
-    // totalSolution: 마감한 게시글수(채택마감+선택마감),
-    // missionComplete: 미션 완료 수
-
-    console.log(
-      `totalAdviceComment:${totalAdviceComment},
-      totalChoicePick:${totalChoicePick},
-      totalAdvice:${totalAdvice},
-      totalChoice${totalChoice},
-      totalPost${totalPost},
-      viewCount:${viewCount},
-      likeTotal:${likeTotal},
-      totalOpen:${totalOpen},
-      totalSelected:${totalSelected},
-      totalSolution${totalSolution}`
-    );
-
-    ////////////////여기부분 까지////////////
-    const missionComplete = await this.missionRepository.completeMission(
+    const missionCompleteId = await this.missionRepository.completeMission(
       userKey
     );
-    const missionCompleteId = missionComplete.map((x) => {
-      return [x.missionId, x.isGet];
-    });
 
     let result = [];
     for (let i = 1; i < 13; i++) {
