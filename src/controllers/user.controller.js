@@ -55,12 +55,10 @@ class UserController {
       //배포환경인 경우 보안 설정된 쿠키 전송
       if (process.env.NODE_ENV == "production") {
         res.cookie("accesstoken", accessToken, {
-          expires: new Date(Date.now() + 1296000),
           sameSite: "none",
           secure: true,
         });
         res.cookie("refreshtoken", refreshToken, {
-          expires: new Date(Date.now() + 1296000),
           sameSite: "none",
           secure: true,
           httpOnly: true,
