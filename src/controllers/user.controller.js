@@ -55,12 +55,12 @@ class UserController {
       //배포환경인 경우 보안 설정된 쿠키 전송
       if (process.env.NODE_ENV == "production") {
         res.cookie("accesstoken", accessToken, {
-          maxAge: 60 * 60 * 1000,
+          maxAge: 360000,
           sameSite: "none",
           secure: true,
         });
         res.cookie("refreshtoken", refreshToken, {
-          maxAge: 60 * 60 * 1000,
+          maxAge: 360000,
           sameSite: "none",
           secure: true,
           httpOnly: true,
