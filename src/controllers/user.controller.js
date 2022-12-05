@@ -70,7 +70,13 @@ class UserController {
         res.cookie("accesstoken", accessToken);
         res.cookie("refreshtoken", refreshToken);
       }
-      res.status(200).json({ message: "로그인 성공.", nickname, userKey });
+      res.status(200).json({
+        message: "로그인 성공.",
+        nickname,
+        userKey,
+        accessToken,
+        refreshToken,
+      });
     } catch (error) {
       next(error);
     }
@@ -103,13 +109,22 @@ class UserController {
         res.cookie("refreshtoken", refreshToken);
       }
       if (created) {
-        return res.status(201).json({ message: "신규가입.", isMember: false });
+        return res
+          .status(201)
+          .json({
+            message: "신규가입.",
+            isMember: false,
+            accessToken,
+            refreshToken,
+          });
       } else {
         return res.status(200).json({
           message: "카카오 로그인 성공.",
           isMember: true,
           nickname: data.nickname,
           userKey: data.userKey,
+          accessToken,
+          refreshToken,
         });
       }
     } catch (error) {
