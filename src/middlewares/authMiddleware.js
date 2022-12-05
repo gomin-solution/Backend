@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 const redisCli = require("../util/redis");
 require("dotenv").config();
+const cookie = require("cookie");
 
 // 유저 인증에 실패하면 403 상태 코드를 반환한다.
 module.exports = async (req, res, next) => {
@@ -63,6 +64,7 @@ module.exports = async (req, res, next) => {
         );
         //새로운 accesstoken 쿠키에 저장
         res.cookie("accesstoken", newAccessToken, {
+          expires: new Date(Date.now() + 1296000),
           sameSite: "none",
           secure: true,
         });
