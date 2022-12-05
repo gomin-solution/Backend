@@ -3,7 +3,6 @@ const router = express.Router();
 const auth = require("../middlewares/authMiddleware");
 const LoginMiddleware = require("../middlewares/LoginMiddleware");
 const LogoutMiddleware = require("../middlewares/LogoutMiddleware");
-const uploaduser = require("../modules/user.multer");
 const UserController = require("../controllers/user.controller");
 const userController = new UserController();
 const reward = require("../middlewares/rewardMiddleware");
@@ -40,14 +39,6 @@ router.delete("/logout", LogoutMiddleware);
 
 //로그인테스트
 router.post("/test", auth);
-
-// 프로필 이미지 수정
-router.put(
-  "/mypage",
-  auth,
-  uploaduser.single("image"),
-  userController.profileUpdate
-);
 
 //설정 페이지(관리자 인경우 신고 리스트 보내기)
 router.get("/setting", auth, userController.setting);

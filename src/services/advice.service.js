@@ -174,6 +174,7 @@ class AdviceService {
       userKey,
       adviceId
     );
+
     const findCreatedAt = dayjs(findOneAdvice.createdAt).tz();
     const plusThreeSec = findCreatedAt.add(3, "s");
     const findUpdatedAt = dayjs(findOneAdvice.updatedAt).tz();
@@ -195,6 +196,7 @@ class AdviceService {
         ];
       });
     }
+
 
     let selectComment;
     const commentArray = [];

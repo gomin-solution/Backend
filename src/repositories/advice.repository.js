@@ -116,7 +116,7 @@ class AdviceRepository {
         { model: Category },
       ],
     });
-    console.log(AdviceOne);
+    console.log(AdviceOne)
     return AdviceOne;
   };
 
