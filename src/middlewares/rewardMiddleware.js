@@ -1,6 +1,9 @@
 const UserRepository = require("../repositories/users.repository.js");
 const MissionRepository = require("../repositories/mission.repository");
 const CommentRepository = require("../repositories/comment.repository.js");
+const {
+  ConfigurationServicePlaceholders,
+} = require("aws-sdk/lib/config_service_placeholders.js");
 
 module.exports = async (userKey, req, res, next) => {
   try {
@@ -114,7 +117,7 @@ module.exports = async (userKey, req, res, next) => {
           ? newCompleteMissionId.push(mission.missionId)
           : false;
       }
-      if (mission.missionId == 5 || mission.missionId == 11) {
+      if (mission.missionId == 5) {
         Likemission && Selectedmission
           ? newCompleteMissionId.push(mission.missionId)
           : false;
@@ -133,6 +136,9 @@ module.exports = async (userKey, req, res, next) => {
       if (mission.missionId == 9) {
         Solutionmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
+      if (mission.missionId == 11) {
+        Likemission ? newCompleteMissionId.push(mission.missionId) : false;
+      }
       if (mission.missionId == 12) {
         MissionComplete ? newCompleteMissionId.push(mission.missionId) : false;
       }
@@ -147,6 +153,9 @@ module.exports = async (userKey, req, res, next) => {
     );
     let grade = 1;
     const image = `https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade${grade}.png`;
+
+    console.log("/////////here/////////");
+    console.log(missionCompleteId.length);
 
     if (3 <= missionCompleteId.length && missionCompleteId.length < 6) {
       grade = 2;
