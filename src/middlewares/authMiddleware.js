@@ -12,6 +12,9 @@ module.exports = async (req, res, next) => {
     const refreshTokenType = refreshtoken?.split(" ")[0];
     const accessToken = authorization?.split(" ")[1];
     const refreshToken = refreshtoken?.split(" ")[1];
+    console.log("/////here//////");
+    console.log("accessToken", accessToken);
+    console.log("refreshtoken", refreshtoken);
 
     if (accessToken == "undefined") {
       res.locals.user = { userKey: 0, userId: "Anonymous" };
@@ -65,7 +68,7 @@ module.exports = async (req, res, next) => {
         { userId: decoded.userId, userKey: decoded.userKey },
         process.env.SECRET_KEY,
         {
-          expiresIn: "10s",
+          expiresIn: "20s",
         }
       );
       return res
