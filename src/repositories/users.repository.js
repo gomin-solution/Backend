@@ -84,6 +84,13 @@ class UserRepository {
     return totalreward;
   };
 
+  grade = async (userKey) => {
+    return await User.findOne({
+      where: { userKey: userKey },
+      attributes: ["grade"],
+    });
+  };
+
   updateUserNickname = async (userKey, nickname) => {
     const updateAdviceContentData = await User.update(
       { nickname: nickname },

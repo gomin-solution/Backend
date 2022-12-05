@@ -9,11 +9,10 @@ class MissionService {
   //리워드 페이지
   reword = async (userKey) => {
     //유저활동기록 가져오기
-    console.log("userKey", userKey);
     const totalReword = await this.userRepository.totalReword(userKey);
     const Selects = await this.commentRepository.userSelect(userKey);
+    const grade = await this.userRepository.grade(userKey);
 
-    console.log(totalReword);
     /**내가 받은 총 좋아요수 */
     const likeTotal = totalReword.receiveLikeCount;
 
@@ -60,8 +59,6 @@ class MissionService {
     );
     const allMision = await this.missionRepository.findAllMission();
 
-    console.log(missionComplete);
-
     let result = [];
     for (const mission of allMision) {
       let isComplete = false;
@@ -103,6 +100,7 @@ class MissionService {
         totalSolution: totalSolution,
         missionComplete: missionComplete.length,
       },
+      grade: grade.grade,
     };
 
     return data;
