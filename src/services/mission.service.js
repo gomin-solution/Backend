@@ -9,11 +9,10 @@ class MissionService {
   //리워드 페이지
   reword = async (userKey) => {
     //유저활동기록 가져오기
-    console.log("userKey", userKey);
     const totalReword = await this.userRepository.totalReword(userKey);
     const Selects = await this.commentRepository.userSelect(userKey);
+    const grade = await this.userRepository.grade(userKey);
 
-    console.log(totalReword);
     /**내가 받은 총 좋아요수 */
     const likeTotal = totalReword.receiveLikeCount;
 
@@ -55,27 +54,36 @@ class MissionService {
     /**고민 마감 횟수 */
     const totalSolution = totalSelect + totalEndChoice;
 
-    const missionCompleteId = await this.missionRepository.completeMission(
+    const missionComplete = await this.missionRepository.completeMission(
       userKey
     );
+    const allMision = await this.missionRepository.findAllMission();
 
     let result = [];
-    for (let i = 1; i < 13; i++) {
+    for (const mission of allMision) {
       let isComplete = false;
       let isGet = false;
-      missionCompleteId.forEach((x) => {
-        if (x[0] == i) {
+      missionComplete.forEach((complete) => {
+        if (complete.missionId == mission.missionId) {
           isComplete = true;
-        }
-        if (x[0] == i && x[1] == 1) {
-          isGet = true;
+          complete.isGet ? (isGet = true) : (isGet = false);
         }
       });
-      result.push({
-        mission: i,
-        isComplete: isComplete,
-        isGet: isGet,
-      });
+      if (isGet) {
+        result.push({
+          mission: mission.missionId,
+          isComplete: isComplete,
+          isGet: isGet,
+          pharse: mission.pharse,
+          rewardName: mission.rewardName,
+        });
+      } else {
+        result.push({
+          mission: mission.missionId,
+          isComplete: isComplete,
+          isGet: isGet,
+        });
+      }
     }
     const data = {
       result: result,
@@ -90,8 +98,9 @@ class MissionService {
         msgOpen: totalOpen,
         Selected: totalSelected,
         totalSolution: totalSolution,
-        missionComplete: missionCompleteId.length,
+        missionComplete: missionComplete.length,
       },
+      grade: grade.grade,
     };
 
     return data;

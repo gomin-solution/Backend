@@ -68,9 +68,9 @@ class UserRepository {
     return await User.update({ nickname: nickname }, { where: { userKey } });
   };
 
-  upGradeUser = async (Image, gradeKeyword, userKey) => {
+  upGradeUser = async (image, gradeKeyword, userKey) => {
     const updateImageUrl = await User.update(
-      { userImg: Image, grade: gradeKeyword },
+      { userImg: image, grade: gradeKeyword },
       { where: { userKey } }
     );
     return updateImageUrl;
@@ -88,9 +88,25 @@ class UserRepository {
     return totalreward;
   };
 
+
   //임시 비밀번호 전달
   temporaryPassword = async (userId, hashed) => {
     return await User.update({ password: hashed }, { where: { userId: userId } });
+
+  grade = async (userKey) => {
+    return await User.findOne({
+      where: { userKey: userKey },
+      attributes: ["grade"],
+    });
+  };
+
+  updateUserNickname = async (userKey, nickname) => {
+    const updateAdviceContentData = await User.update(
+      { nickname: nickname },
+      { where: { userKey: userKey } }
+    );
+    return updateAdviceContentData;
+
   };
 
   //회원탈퇴
