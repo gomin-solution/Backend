@@ -67,7 +67,7 @@ class MissionService {
       let isComplete = false;
       let isGet = false;
       missionComplete.forEach((complete) => {
-        if (complete.missionId == i) {
+        if (complete.missionId == mission.missionId) {
           isComplete = true;
           complete.isGet ? (isGet = true) : (isGet = false);
         }
