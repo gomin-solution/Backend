@@ -61,9 +61,6 @@ router.get("/search/:keyword", auth, userController.search);
 //리워드
 router.get("/reword", auth, userController.reword);
 
-// 프로필 이미지 업로드
-//router.put("/mypage", auth, userController.profileUpdate);
-
 //조언 게시글 삭제
 router.delete("/advice/:adviceId", auth, adviceController.deleteAdvice);
 
