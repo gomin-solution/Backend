@@ -6,6 +6,7 @@ const ManagerService = require("../services/manager.service");
 const joi = require("../util/joi");
 const bcrypt = require("bcrypt");
 const ErrorCustom = require("../exceptions/error-custom");
+const cookie = require("cookie");
 
 require("dotenv").config();
 
@@ -55,22 +56,29 @@ class UserController {
       //배포환경인 경우 보안 설정된 쿠키 전송
       if (process.env.NODE_ENV == "production") {
         res.cookie("accesstoken", accessToken, {
+          expires: new Date(Date.now() + 1296000),
           sameSite: "none",
           secure: true,
         });
         res.cookie("refreshtoken", refreshToken, {
+          expires: new Date(Date.now() + 1296000),
           sameSite: "none",
           secure: true,
           httpOnly: true,
         });
       } else {
-        res.cookie("accesstoken", accessToken);
-        res.cookie("refreshtoken", refreshToken);
-      }
+        // res.cookie("accesstoken", accessToken);
+        // res.cookie("refreshtoken", refreshToken);
 
-      return res
-        .status(200)
-        .json({ message: "로그인 성공.", nickname, userKey });
+        // res.status(200).json({ message: "로그인 성공.", nickname, userKey });
+        res.writeHead(200, {
+          "Set-Cookie": [
+            `accessToken=${accessToken}; Max-Age=${60 * 60 * 24}`,
+            `refreshToken=${refreshToken}; Max-Age=${60 * 60 * 24}`,
+          ],
+        });
+        console.log(res);
+      }
     } catch (error) {
       next(error);
     }
@@ -88,12 +96,12 @@ class UserController {
       //배포환경인 경우 보안 설정된 쿠키 전송
       if (process.env.NODE_ENV == "production") {
         res.cookie("accesstoken", accessToken, {
-          maxAge: 60 * 60 * 24 * 15,
+          expires: new Date(Date.now() + 1296000),
           sameSite: "none",
           secure: true,
         });
         res.cookie("refreshtoken", refreshToken, {
-          maxAge: 60 * 60 * 24 * 15,
+          expires: new Date(Date.now() + 1296000),
           sameSite: "none",
           secure: true,
           httpOnly: true,
