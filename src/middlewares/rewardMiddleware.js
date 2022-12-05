@@ -148,26 +148,27 @@ module.exports = async (userKey, req, res, next) => {
     const missionCompleteId = await new MissionRepository().completeMission(
       userKey
     );
-    let grade = 1;
-    const image = `https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade${grade}.png`;
 
     console.log("/////////here/////////");
     console.log(missionCompleteId.length);
 
     if (3 <= missionCompleteId.length && missionCompleteId.length < 6) {
-      grade = 2;
+      const image =
+        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade2.png";
       const gradeKeyword = "프로 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
     }
 
     if (6 <= missionCompleteId.length && missionCompleteId.length < 10) {
-      grade = 3;
+      const image =
+        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade3.png";
       const gradeKeyword = "엘리트 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
     }
 
     if (10 <= missionCompleteId.length) {
-      grade = 4;
+      const image =
+        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade4.png";
       const gradeKeyword = "마스터 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
     }
