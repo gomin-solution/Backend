@@ -19,11 +19,10 @@ class MissionRepository {
   completeMission = async (userKey) => {
     return await MissionComplete.findAll({
       where: { userKey: userKey },
-      attributes: ["missionId"],
     });
   };
 
-  //미션 불러오기
+  //미완료 미션 불러오기
   mission = async (unCompleteMission) => {
     return await Mission.findAll({
       where: { missionId: unCompleteMission },
@@ -38,6 +37,11 @@ class MissionRepository {
         { model: MissionCompleteMission },
       ],
     });
+  };
+
+  //모든 미션 불러오기
+  findAllMission = async () => {
+    return await Mission.findAll();
   };
 
   Postmission = async (userKey) => {

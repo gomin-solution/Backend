@@ -55,27 +55,38 @@ class MissionService {
     /**고민 마감 횟수 */
     const totalSolution = totalSelect + totalEndChoice;
 
-    const missionCompleteId = await this.missionRepository.completeMission(
+    const missionComplete = await this.missionRepository.completeMission(
       userKey
     );
+    const allMision = await this.missionRepository.findAllMission();
+
+    console.log(missionComplete);
 
     let result = [];
-    for (let i = 1; i < 13; i++) {
+    for (const mission of allMision) {
       let isComplete = false;
       let isGet = false;
-      missionCompleteId.forEach((x) => {
-        if (x[0] == i) {
+      missionComplete.forEach((complete) => {
+        if (complete.missionId == i) {
           isComplete = true;
-        }
-        if (x[0] == i && x[1] == 1) {
-          isGet = true;
+          complete.isGet ? (isGet = true) : (isGet = false);
         }
       });
-      result.push({
-        mission: i,
-        isComplete: isComplete,
-        isGet: isGet,
-      });
+      if (isGet) {
+        result.push({
+          mission: mission.missionId,
+          isComplete: isComplete,
+          isGet: isGet,
+          pharse: mission.pharse,
+          rewardName: mission.rewardName,
+        });
+      } else {
+        result.push({
+          mission: mission.missionId,
+          isComplete: isComplete,
+          isGet: isGet,
+        });
+      }
     }
     const data = {
       result: result,
@@ -90,7 +101,7 @@ class MissionService {
         msgOpen: totalOpen,
         Selected: totalSelected,
         totalSolution: totalSolution,
-        missionComplete: missionCompleteId.length,
+        missionComplete: missionComplete.length,
       },
     };
 
