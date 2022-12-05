@@ -63,7 +63,7 @@ module.exports = async (req, res, next) => {
         );
         //새로운 accesstoken 쿠키에 저장
         res.cookie("accesstoken", newAccessToken, {
-          maxAge: 60 * 60 * 24 * 15,
+          maxAge: 60 * 60 * 1000,
           sameSite: "none",
           secure: true,
         });
