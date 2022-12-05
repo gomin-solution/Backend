@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
 
     if (accessToken == "undefined") {
       res.locals.user = { userKey: 0, userId: "Anonymous" };
-      next();
+      return next();
     }
 
     if (
