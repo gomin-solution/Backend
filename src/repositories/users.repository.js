@@ -64,9 +64,9 @@ class UserRepository {
     return await User.update({ nickname: nickname }, { where: { userKey } });
   };
 
-  upGradeUser = async (Image, gradeKeyword, userKey) => {
+  upGradeUser = async (image, gradeKeyword, userKey) => {
     const updateImageUrl = await User.update(
-      { userImg: Image, grade: gradeKeyword },
+      { userImg: image, grade: gradeKeyword },
       { where: { userKey } }
     );
     return updateImageUrl;
