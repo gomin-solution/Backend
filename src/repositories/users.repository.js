@@ -88,10 +88,13 @@ class UserRepository {
     return totalreward;
   };
 
-
   //임시 비밀번호 전달
   temporaryPassword = async (userId, hashed) => {
-    return await User.update({ password: hashed }, { where: { userId: userId } });
+    return await User.update(
+      { password: hashed },
+      { where: { userId: userId } }
+    );
+  };
 
   grade = async (userKey) => {
     return await User.findOne({
@@ -106,7 +109,6 @@ class UserRepository {
       { where: { userKey: userKey } }
     );
     return updateAdviceContentData;
-
   };
 
   //회원탈퇴
