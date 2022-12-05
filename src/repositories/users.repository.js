@@ -31,7 +31,9 @@ class UserRepository {
           "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
       },
     });
-    await UserActivity.create({ userKey: data.userKey });
+    if (created) {
+      await UserActivity.create({ userKey: data.userKey });
+    }
 
     return { data, created };
   };
