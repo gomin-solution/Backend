@@ -36,7 +36,6 @@ jobs:
         working-directory: ./
         run: |
           npm install
-          npm build
 
       - name: zip file
         run: zip -r cicdtest.zip ./src ./scripts ./appspec.yml ./.env ./package.json
