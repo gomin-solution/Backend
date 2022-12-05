@@ -90,7 +90,7 @@ class MissionService {
         msgOpen: totalOpen,
         Selected: totalSelected,
         totalSolution: totalSolution,
-        missionComplete: missionComplete.length,
+        missionComplete: missionCompleteId.length,
       },
     };
 
