@@ -52,6 +52,15 @@ class UserService {
 
   userKakao = async (id) => {
     const { data, created } = await this.userRepository.userKakao(id);
+    if (created) {
+      const DailyArray = await this.dailyMsgRepository.allMsg();
+      const msgArray = DailyArray.map((x) => x.msg);
+      const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
+      await redisCli.hSet(`${createUser.userKey}`, {
+        msg: msg,
+        isOpen: 0,
+      });
+    }
 
     const accessToken = jwt.sign(
       { userId: id, userKey: data.userKey },
