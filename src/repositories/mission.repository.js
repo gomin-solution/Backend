@@ -17,7 +17,10 @@ const { Op } = require("sequelize");
 class MissionRepository {
   //미션완료 불러오기
   completeMission = async (userKey) => {
-    return await MissionComplete.findAll({ where: { userKey: userKey } });
+    return await MissionComplete.findAll({
+      where: { userKey: userKey },
+      attributes: ["missionId"],
+    });
   };
 
   //미션 불러오기
@@ -39,7 +42,7 @@ class MissionRepository {
 
   Postmission = async (userKey) => {
     const postmission = await PostMission.findAll({
-      attribute: ["missionId"],
+      attributes: ["missionId"],
       include: [
         {
           model: Mission,

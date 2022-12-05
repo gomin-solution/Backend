@@ -5,8 +5,6 @@ const CommentRepository = require("../repositories/comment.repository.js");
 module.exports = async (userKey, req, res, next) => {
   try {
     /**유저의 활동 정보를 모두 가져옴 */
-    console.log("//////////넘어옴/////");
-    console.log(userKey);
     const totalReword = await new UserRepository().totalReword(userKey);
     const Selects = await new CommentRepository().userSelect(userKey);
 
@@ -51,30 +49,6 @@ module.exports = async (userKey, req, res, next) => {
     /**고민 마감 횟수 */
     const totalSolution = totalSelect + totalEndChoice;
 
-    // totalAdviceComment: 댓글작성 횟수,
-    // totalChoicePick: 투표 횟수,
-    // totalAdvice: 답해주기글 횟수,
-    // totalChoice: 골라주기글 횟수,
-    // totalPost: 총 작성게시글 수,
-    // viewCount: 총 게시글 조회수,
-    // likeTotal: 좋아요 받은 갯수,
-    // msgOpen: 메세지 오픈 횟수,
-    // Selected: 채택받은 횟수,
-    // totalSolution: 마감한 게시글수(채택마감+선택마감),
-    // missionComplete: 미션 완료 수
-
-    console.log(
-      `totalAdviceComment:${totalAdviceComment},
-      totalChoicePick:${totalChoicePick},
-      totalAdvice:${totalAdvice},
-      totalChoice${totalChoice},
-      totalPost${totalPost},
-      viewCount:${viewCount},
-      likeTotal:${likeTotal},
-      totalOpen:${totalOpen},
-      totalSelected:${totalSelected},
-      totalSolution${totalSolution}`
-    );
     /**모든 미션Id */
     const missionarray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -168,8 +142,29 @@ module.exports = async (userKey, req, res, next) => {
       await new MissionRepository().createCompleteMission(userKey, missionId);
     }
 
-    completedMission = await new MissionRepository().completeMission(userKey)
-      .length;
+    const missionCompleteId = await new MissionRepository().completeMission(
+      userKey
+    );
+    let grade = 1;
+    const image = `https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade${grade}.png`;
+
+    if (3 <= missionCompleteId.length && missionCompleteId.length < 6) {
+      grade = 2;
+      const gradeKeyword = "프로 해결사";
+      await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
+    }
+
+    if (6 <= missionCompleteId.length && missionCompleteId.length < 10) {
+      grade = 3;
+      const gradeKeyword = "엘리트 해결사";
+      await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
+    }
+
+    if (10 <= missionCompleteId.length) {
+      grade = 4;
+      const gradeKeyword = "마스터 해결사";
+      await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
+    }
 
     return;
   } catch (error) {
