@@ -1,9 +1,6 @@
 const UserRepository = require("../repositories/users.repository.js");
 const MissionRepository = require("../repositories/mission.repository");
 const CommentRepository = require("../repositories/comment.repository.js");
-const {
-  ConfigurationServicePlaceholders,
-} = require("aws-sdk/lib/config_service_placeholders.js");
 
 module.exports = async (userKey, req, res, next) => {
   try {
