@@ -54,22 +54,7 @@ class UserController {
       //refreshtoken을 userId키로 redis에 저장
       await redisCli.set(userId, refreshToken);
       //배포환경인 경우 보안 설정된 쿠키 전송
-      if (process.env.NODE_ENV == "production") {
-        res.cookie("accesstoken", accessToken, {
-          expires: new Date(Date.now() + 1296000),
-          sameSite: "none",
-          secure: true,
-        });
-        res.cookie("refreshtoken", refreshToken, {
-          expires: new Date(Date.now() + 1296000),
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-        });
-      } else {
-        res.cookie("accesstoken", accessToken);
-        res.cookie("refreshtoken", refreshToken);
-      }
+
       res.status(200).json({
         message: "로그인 성공.",
         nickname,
@@ -92,31 +77,14 @@ class UserController {
       //refreshtoken을 userId키로 redis에 저장
       await redisCli.set(id, refreshToken);
       //배포환경인 경우 보안 설정된 쿠키 전송
-      if (process.env.NODE_ENV == "production") {
-        res.cookie("accesstoken", accessToken, {
-          expires: new Date(Date.now() + 1296000),
-          sameSite: "none",
-          secure: true,
-        });
-        res.cookie("refreshtoken", refreshToken, {
-          expires: new Date(Date.now() + 1296000),
-          sameSite: "none",
-          secure: true,
-          httpOnly: true,
-        });
-      } else {
-        res.cookie("accesstoken", accessToken);
-        res.cookie("refreshtoken", refreshToken);
-      }
+
       if (created) {
-        return res
-          .status(201)
-          .json({
-            message: "신규가입.",
-            isMember: false,
-            accessToken,
-            refreshToken,
-          });
+        return res.status(201).json({
+          message: "신규가입.",
+          isMember: false,
+          accessToken,
+          refreshToken,
+        });
       } else {
         return res.status(200).json({
           message: "카카오 로그인 성공.",

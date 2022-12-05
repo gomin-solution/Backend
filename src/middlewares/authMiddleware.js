@@ -6,77 +6,82 @@ const cookie = require("cookie");
 
 // 유저 인증에 실패하면 403 상태 코드를 반환한다.
 module.exports = async (req, res, next) => {
-  /**로그아웃 function */
-  function logout() {
-    res.cookie("accesstoken", "expire", {
-      maxAge: 0,
-      sameSite: "none",
-      secure: true,
-      httpOnly: true,
-    });
-
-    res.cookie("refreshtoken", "expire", {
-      maxAge: 0,
-      sameSite: "none",
-      secure: true,
-      httpOnly: true,
-    });
-    return;
-  }
-
   try {
-    const { accesstoken, refreshtoken } = req.cookies;
+    const { authorization, refreshtoken } = req.headers;
 
-    //로그인 안한경우 익명 정보로 저장
-    if (!accesstoken) {
+    const acesstokenType = authorization?.split(" ")[0];
+    const refreshTokenType = refreshtoken?.split(" ")[0];
+    const accessToken = authorization?.split(" ")[1];
+    const refreshToken = refreshtoken?.split(" ")[1];
+
+    if (accessToken == "undefined") {
       res.locals.user = { userKey: 0, userId: "Anonymous" };
-      return next();
+      next();
     }
 
-    /**유저 정보를 저장하고 다음 미들웨어 호출 */
-    const nextMiddleware = async (token) => {
-      const { userId } = jwt.verify(token, process.env.SECRET_KEY);
-      const user = await User.findOne({ where: { userId: userId } });
-      res.locals.user = user;
-      return next();
-    };
+    if (
+      (authorization && acesstokenType !== "Bearer") ||
+      (refreshtoken && refreshTokenType !== "Bearer")
+    )
+      return res
+        .status(400)
+        .json({ message: "잘못된 요청입니다. 다시 로그인 해주세요" });
 
-    try {
-      //accesstoken 검증 성공시 다음 미들웨어,실패시 refreshtoken검증
-      jwt.verify(accesstoken, process.env.SECRET_KEY);
-
-      nextMiddleware(accesstoken);
-    } catch (error) {
-      //refreshToken 검증 성공시 acesstoken재발급 후 다음미들웨어 호출
-      const decoded = jwt.decode(accesstoken);
-      const token = await redisCli.get(`${decoded.userId}`);
-      //refreshtoken이 저장된 값과 다를 경우 재로그인 애러 전송
-      //중복 로그인 방지
-      if (refreshtoken === token) {
-        jwt.verify(refreshtoken, process.env.SECRET_KEY);
-        //accesstoken 재발급
-        const newAccessToken = jwt.sign(
-          { userId: decoded.userId, userKey: decoded.userKey },
-          process.env.SECRET_KEY,
-          {
-            expiresIn: "60s",
-          }
-        );
-        //새로운 accesstoken 쿠키에 저장
-        res.cookie("accesstoken", newAccessToken, {
-          expires: new Date(Date.now() + 1296000),
-          sameSite: "none",
-          secure: true,
-        });
-
-        nextMiddleware(newAccessToken);
-      } else {
-        logout();
-        return res.status(403).json({ errMsg: "다시 로그인 해주세요." });
+    /**AccessToken검증 */
+    function validateAccessToken(accessToken) {
+      try {
+        jwt.verify(accessToken, process.env.SECRET_KEY);
+        return true;
+      } catch (error) {
+        return false;
       }
     }
+
+    /**RefreshToken검증 */
+    async function validateRefreshToken(refreshToken) {
+      try {
+        const decoded = jwt.decode(accessToken);
+        const token = await redisCli.get(`${decoded.userId}`);
+        if (refreshToken === token) {
+          jwt.verify(refreshToken, process.env.SECRET_KEY);
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        return false;
+      }
+    }
+
+    const isAccessTokenValidate = validateAccessToken(accessToken);
+    const isRefreshTokenValidate = await validateRefreshToken(refreshToken);
+
+    if (refreshToken && !isRefreshTokenValidate) {
+      return res.status(403).json({ message: "다시 로그인 해주세요." });
+    }
+
+    if (refreshToken && accessToken && isRefreshTokenValidate) {
+      const decoded = jwt.decode(accessToken);
+      const newAccessToken = jwt.sign(
+        { userId: decoded.userId, userKey: decoded.userKey },
+        process.env.SECRET_KEY,
+        {
+          expiresIn: "60s",
+        }
+      );
+      return res.status(201).json({ message: "토큰 재발급", newAccessToken });
+    }
+
+    if (!refreshToken && !isAccessTokenValidate) {
+      return res.status(405).json({ message: "만료" });
+    } else if (accessToken !== "undefined") {
+      /**토큰이 유효한 경우 */
+      const { userId } = jwt.verify(accessToken, process.env.SECRET_KEY);
+      const user = await User.findOne({ where: { userId: userId } }); //
+      res.locals.user = user;
+      next();
+    }
   } catch (error) {
-    logout();
-    return res.status(403).json({ errMsg: "다시 로그인 해주세요" });
+    next(error);
   }
 };
