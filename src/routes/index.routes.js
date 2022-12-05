@@ -11,26 +11,26 @@ const managerRouter = require("./manager.routes");
 const reportRouter = require("./report.routes");
 
 //로그인,회원가입,메인페이지
-router.use("/api", userRouter);
+router.use("/", userRouter);
 
-router.use("/api/bookmark", bookMarkRouter);
+router.use("/bookmark", bookMarkRouter);
 
 // 조언 게시글
-router.use("/api/advice", adviceRouter);
+router.use("/advice", adviceRouter);
 
 // 투표 게시글 관련
-router.use("/api", choiceRouter);
+router.use("/", choiceRouter);
 
 // 조언 게시글의 덧글 관련
-router.use("/api/advice/comment", commentRouter);
+router.use("/advice/comment", commentRouter);
 
 // 쪽지 관련
-router.use("/api", noteRouter);
+router.use("/", noteRouter);
 
 // 관리자 관련
-router.use("/api", managerRouter);
+router.use("/", managerRouter);
 
 // 신고 관련
-router.use("/api", reportRouter);
+router.use("/", reportRouter);
 
 module.exports = router;
