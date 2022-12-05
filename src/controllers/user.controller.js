@@ -67,18 +67,10 @@ class UserController {
           httpOnly: true,
         });
       } else {
-        // res.cookie("accesstoken", accessToken);
-        // res.cookie("refreshtoken", refreshToken);
-
-        // res.status(200).json({ message: "로그인 성공.", nickname, userKey });
-        res.writeHead(200, {
-          "Set-Cookie": [
-            `accessToken=${accessToken}; Max-Age=${60 * 60 * 24}`,
-            `refreshToken=${refreshToken}; Max-Age=${60 * 60 * 24}`,
-          ],
-        });
-        console.log(res);
+        res.cookie("accesstoken", accessToken);
+        res.cookie("refreshtoken", refreshToken);
       }
+      res.status(200).json({ message: "로그인 성공.", nickname, userKey });
     } catch (error) {
       next(error);
     }
