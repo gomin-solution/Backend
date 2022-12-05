@@ -12,12 +12,10 @@ module.exports = {
       userId: {
         allowNull: false,
         type: Sequelize.STRING,
-        unique: true,
       },
       nickname: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
-        unique: true,
       },
       password: {
         allowNull: true,
@@ -36,12 +34,9 @@ module.exports = {
         allowNull: true,
       },
       grade: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: true,
-      },
-      msgOpenCount: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
+        defaultValue: "주니어 해결사",
       },
       createdAt: {
         allowNull: false,

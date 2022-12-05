@@ -24,6 +24,7 @@ class CommentController {
         adviceId,
         comment
       );
+      next(userKey);
       res.status(201).send({ Message: "댓글 작성 완료", data: createComment });
     } catch (error) {
       next(error);
@@ -88,25 +89,26 @@ class CommentController {
         return res.status(400).send({ message: "로그인이 필요합니다." });
       }
 
-      const Likes = await this.commentService.updateCommentLike(
-        userKey,
-        commentId
-      );
+      const { like, commentUserKey } =
+        await this.commentService.updateCommentLike(userKey, commentId);
       const count = await this.commentService.countComment(commentId);
 
-      if (Likes === -1) {
+      if (like === -1) {
         return res
           .status(400)
           .send({ message: "자신의 덧글에는 좋아요를 할 수 없습니다." });
       }
 
-      let mes = "";
-      if (Likes) {
-        mes = "좋아요 성공";
+      if (like) {
+        next(commentUserKey);
+        res
+          .status(200)
+          .json({ Message: "좋아요 성공", data: like, count: count });
       } else {
-        mes = "좋아요 취소";
+        res
+          .status(200)
+          .json({ Message: "좋아요 취소", data: like, count: count });
       }
-      res.status(200).json({ Message: mes, data: Likes, count: count });
     } catch (error) {
       next(error);
     }
@@ -118,13 +120,12 @@ class CommentController {
     const { commentId } = req.params;
 
     try {
-      await this.commentService.selectComment(userKey, commentId);
-      // let message = "";
-      // if (selectComment) {
-      //   message = "채택 성공";
-      // } else {
-      //   message = "채택 취소";
-      // }
+      const selectComment = await this.commentService.selectComment(
+        userKey,
+        commentId
+      );
+
+      next(selectComment);
       res.status(200).json({ Message: "채택되었습니다." });
     } catch (err) {
       next(err);

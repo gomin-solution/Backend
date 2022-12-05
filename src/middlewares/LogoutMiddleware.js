@@ -1,9 +1,5 @@
 module.exports = (req, res, next) => {
   try {
-    const { accesstoken, refreshtoken } = req.cookies;
-    console.log("accesstoken", accesstoken);
-    console.log("refreshtoken", refreshtoken);
-
     res.cookie("accesstoken", "expire", {
       maxAge: 0,
       sameSite: "none",

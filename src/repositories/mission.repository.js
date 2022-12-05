@@ -10,6 +10,7 @@ const {
   SelectMission,
   SolutionMission,
   MissionCompleteMission,
+  UserActivity,
 } = require("../models");
 const { Op } = require("sequelize");
 
@@ -48,6 +49,76 @@ class MissionRepository {
     });
     console.log(postmission);
     return postmission;
+  };
+
+  //답해주기 게시글 작성 횟수 +1
+  postAdviceActivity = async (userKey) => {
+    await UserActivity.increment(
+      { postAdviceCount: 1 },
+      { where: { userKey: userKey } }
+    );
+    return;
+  };
+
+  //메세지 오픈 횟수 +1
+  messageOpenActivity = async (userKey) => {
+    return await UserActivity.increment(
+      { msgOpenCount: 1 },
+      { where: { userKey: userKey } }
+    );
+  };
+
+  //조언해주기 댓글 작성 횟수 +1
+  commentActivity = async (userKey) => {
+    await UserActivity.increment(
+      { commentCount: 1 },
+      { where: { userKey: userKey } }
+    );
+    return;
+  };
+
+  //골라주기 마감시 +1
+  choiceEndActivity = async (userKey) => {
+    await UserActivity.increment(
+      { choiceCount: 1 },
+      { where: { userKey: userKey } }
+    );
+    return;
+  };
+
+  choiceActivity = async (userKey) => {
+    await UserActivity.increment(
+      { choiceCount: 1 },
+      { where: { userKey: userKey } }
+    );
+    return;
+  };
+  //선택하기 게시글 작성 횟수 +1
+  postChoiceActivity = async (userKey) => {
+    await UserActivity.increment(
+      { postChoiceCount: 1 },
+      { where: { userKey: userKey } }
+    );
+    return;
+  };
+
+  //좋아요 받기
+  receiveLikeActivity = async (userKey) => {
+    await UserActivity.increment(
+      { receiveLikeCount: 1 },
+      { where: { userKey: userKey } }
+    );
+    return;
+  };
+
+  //채택받기
+  selectActivity = async (userKey) => {
+    await UserActivity.increment(
+      { selectCount: 1 },
+      { where: { userKey: userKey } }
+    );
+
+    return;
   };
 
   //미션 완료 추가

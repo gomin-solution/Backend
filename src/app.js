@@ -18,7 +18,12 @@ const socket = require("./socket");
 connect();
 schedule();
 
-const whitelist = [process.env.CLIENT, "http://localhost:3000", undefined]; //Thunder client 요청의 경우 undefined 허용
+const whitelist = [
+  process.env.CLIENT_1,
+  process.env.CLIENT_2,
+  "http://localhost:3000",
+  undefined,
+]; //Thunder client 요청의 경우 undefined 허용
 
 const corsOptions = {
   origin: function (origin, callback) {

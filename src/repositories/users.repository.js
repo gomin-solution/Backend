@@ -1,12 +1,4 @@
-const {
-  User,
-  isChoice,
-  Comment,
-  CommentLike,
-  Advice,
-  Choice,
-  CommentSelect,
-} = require("../models");
+const { User, isChoice, Comment, UserActivity } = require("../models");
 
 class UserRepository {
   createUser = async ({
@@ -15,8 +7,7 @@ class UserRepository {
     password: hashed,
     isAdult: isAdult,
   }) => {
-    console.log("레파지토리", isAdult);
-    return await User.create({
+    const Userdata = await User.create({
       userId: userId,
       nickname: nickname,
       password: hashed,
@@ -24,6 +15,25 @@ class UserRepository {
       userImg:
         "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
     });
+    console.log("레파지토리", isAdult);
+
+    await UserActivity.create({ userKey: Userdata.userKey });
+
+    return Userdata;
+  };
+
+  userKakao = async (id) => {
+    const [data, created] = await User.findOrCreate({
+      where: { userId: id },
+      defaults: {
+        userId: id,
+        userImg:
+          "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
+      },
+    });
+    await UserActivity.create({ userKey: data.userKey });
+
+    return { data, created };
   };
 
   findUser = async (userKey) => {
@@ -49,6 +59,10 @@ class UserRepository {
     return await User.update({ password: hashed }, { where: { userKey } });
   };
 
+  nicknameChange = async (userKey, nickname) => {
+    return await User.update({ nickname: nickname }, { where: { userKey } });
+  };
+
   uploadUserImage = async (findUserImage, userKey) => {
     const updateImageUrl = await User.update(
       { userImg: findUserImage },
@@ -57,36 +71,15 @@ class UserRepository {
     return updateImageUrl;
   };
 
-  //메세지 오픈 횟수 +1
-  messageCountUp = async (userKey) => {
-    return await User.increment(
-      { msgOpenCount: 1 },
-      { where: { userKey: userKey } }
-    );
-  };
-
   totalChoice = async (userKey) => {
     return await isChoice.findAll({ where: { userKey: userKey } });
   };
 
   totalReword = async (userKey) => {
-    const totalreward = await User.findOne({
+    const totalreward = await UserActivity.findOne({
       where: { userKey: userKey },
-      include: [
-        {
-          model: Comment,
-          include: [
-            { model: CommentLike, attributes: ["userKey"] },
-            { model: CommentSelect, attributes: ["userKey"] },
-          ],
-          attributes: ["userKey"],
-        },
-        { model: isChoice, attributes: ["userKey"] },
-        { model: Advice, attributes: ["userKey"] },
-        { model: Choice, attributes: ["isEnd"] },
-        { model: CommentSelect, attributes: ["userKey"] },
-      ],
     });
+
     return totalreward;
   };
 
@@ -100,12 +93,11 @@ class UserRepository {
 
   //회원탈퇴
   bye = async (userKey) => {
-    const nickname = "탈퇴한 회원입니다.";
-    const bye = await User.update(
-      { nickname: nickname },
+    const exit = "탈퇴한 회원입니다.";
+    return await User.update(
+      { nickname: exit, userId: exit },
       { where: { userKey: userKey } }
     );
-    return bye;
   };
 }
 

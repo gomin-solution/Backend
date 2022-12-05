@@ -34,6 +34,7 @@ class UserController {
         password: hashed,
         isAdult: isAdult,
       });
+
       res.status(200).json({ message: "회원가입 성공" });
     } catch (error) {
       next(error);
@@ -75,10 +76,51 @@ class UserController {
     }
   };
 
+  kakao = async (req, res, next) => {
+    try {
+      const { id } = req.body;
+
+      console.log(id);
+      const { accessToken, refreshToken, created, data } =
+        await this.userService.userKakao(id);
+      //refreshtoken을 userId키로 redis에 저장
+      await redisCli.set(id, refreshToken);
+      //배포환경인 경우 보안 설정된 쿠키 전송
+      if (process.env.NODE_ENV == "production") {
+        res.cookie("accesstoken", accessToken, {
+          sameSite: "none",
+          secure: true,
+        });
+        res.cookie("refreshtoken", refreshToken, {
+          sameSite: "none",
+          secure: true,
+          httpOnly: true,
+        });
+      } else {
+        res.cookie("accesstoken", accessToken);
+        res.cookie("refreshtoken", refreshToken);
+      }
+      if (created) {
+        return res.status(201).json({ message: "신규가입.", isMember: false });
+      } else {
+        return res.status(200).json({
+          message: "카카오 로그인 성공.",
+          isMember: true,
+          nickname: data.nickname,
+          userKey: data.userKey,
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
+
   //아이디 닉네임 중복검사
   check = async (req, res, next) => {
     try {
-      const { nickname, userId } = req.body;
+      const { nickname, userId } = await joi.checkSchema.validateAsync(
+        req.body
+      );
 
       if (!nickname && !userId) {
         return res.status(400).json({ message: "잘못된 요청입니다" });
@@ -104,14 +146,30 @@ class UserController {
   passwordChange = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
+      const { newPassword, password } = await joi.passwordSchema.validateAsync(
+        req.body
+      );
 
-      const { password } = await joi.passwordSchema.validateAsync(req.body);
+      const hashed = await bcrypt.hash(newPassword, 12);
 
-      const hashed = await bcrypt.hash(password, 12);
-
-      await this.userService.passwordChange(userKey, hashed);
+      await this.userService.passwordChange(userKey, hashed, password);
 
       return res.status(200).json({ message: "비밀번호 변경 완료" });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  //닉네임 변경
+  nicknameChange = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+
+      const { nickname } = await joi.nicknameSchema.validateAsync(req.body);
+
+      await this.userService.nicknameChange(userKey, nickname);
+
+      return res.status(200).json({ message: "닉네임 변경 완료", userKey });
     } catch (error) {
       next(error);
     }
@@ -158,11 +216,11 @@ class UserController {
       const { isOpen } = await this.userService.getDailymessage(userKey);
       if (!isOpen) {
         await this.userService.updateMessageOpen(userKey);
+        next(userKey);
         return res
           .status(200)
           .json({ message: "오늘 처음 메세지를 열었습니다!" });
       }
-
       return res.status(401).json({ message: "잘못된 요청입니다" });
     } catch (error) {
       next(error);
@@ -298,8 +356,23 @@ class UserController {
       if (userKey == 0) {
         return res.status(400).send({ message: "로그인이 필요합니다." });
       }
-      const bye = await this.userService.bye(userKey);
-      res.status(200).json({ message: "안녕히가세요", data: bye });
+      await this.userService.bye(userKey);
+
+      res.cookie("accesstoken", "expire", {
+        maxAge: 0,
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+      });
+
+      res.cookie("refreshtoken", "expire", {
+        maxAge: 0,
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+      });
+
+      res.status(200).json({ message: "다음에 또 봐요" });
     } catch (err) {
       next(err);
     }

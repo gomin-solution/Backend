@@ -1,7 +1,7 @@
 const ErrorCustom = require("../exceptions/error-custom");
 const AdviceRepository = require("../repositories/advice.repository");
 const UserRepository = require("../repositories/users.repository");
-const MissionService = require("../services/mission.service");
+const MissionRepository = require("../repositories/mission.repository");
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
@@ -16,7 +16,7 @@ dayjs.tz.setDefault("Asia/Seoul");
 class AdviceService {
   adviceRepository = new AdviceRepository();
   userRepository = new UserRepository();
-  missionService = new MissionService();
+  missionRepository = new MissionRepository();
 
   // 게시물 생성
   createAdvice = async (userKey, title, categoryId, content, isAdult) => {
@@ -27,13 +27,9 @@ class AdviceService {
       content,
       isAdult
     );
-    //미션 알람
-    // const missionComplete = await this.missionService.MyNewComplete(userKey);
 
-    // if (missionComplete.length) {
-    //   io.to(userKey).emit("mission_alarm", "보상을 확인하세요");
-    // }
-
+    //답해주기 게시글 작성 횟수 +1
+    await this.missionRepository.postAdviceActivity(userKey);
     return createAdviceData;
   };
 

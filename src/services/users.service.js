@@ -5,6 +5,7 @@ const ChoiceRepository = require("../repositories/choice.repository");
 const MissionService = require("../services/mission.service");
 const MissionRepository = require("../repositories/mission.repository");
 const DailyMsgRepository = require("../repositories/dailymessage.repository");
+const CommentRepository = require("../repositories/comment.repository");
 
 const SocketIO = require("socket.io");
 const server = require("../app");
@@ -22,6 +23,7 @@ class UserService {
   missionRepository = new MissionRepository();
   dailyMsgRepository = new DailyMsgRepository();
   missionService = new MissionService();
+  commentRepository = new CommentRepository();
 
   //유저 생성(가입)
   createUser = async ({
@@ -46,6 +48,24 @@ class UserService {
       isOpen: 0,
     });
     return;
+  };
+
+  userKakao = async (id) => {
+    const { data, created } = await this.userRepository.userKakao(id);
+
+    const accessToken = jwt.sign(
+      { userId: id, userKey: data.userKey },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "60s",
+      }
+    );
+
+    const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+      expiresIn: "15d",
+    });
+
+    return { accessToken, refreshToken, created, data };
   };
 
   //유저 검증
@@ -87,14 +107,29 @@ class UserService {
     return;
   };
 
-  passwordChange = async (userKey, hashed) => {
-    return await this.userRepository.passwordChange(userKey, hashed);
+  //비밀번호 변경
+  passwordChange = async (userKey, hashed, password) => {
+    const user = await this.userRepository.findUserKey(userKey);
+    if (!user.password)
+      throw new ErrorCustom(400, "비밀번호를 변경할 수 없습니다.");
+
+    const passwordVerify = await bcrypt.compare(password, user.password);
+    if (!passwordVerify) throw new ErrorCustom(400, "비밀번호 오류");
+
+    await this.userRepository.passwordChange(userKey, hashed);
+    return;
+  };
+
+  //닉네임 변경
+  nicknameChange = async (userKey, nickname) => {
+    return await this.userRepository.nicknameChange(userKey, nickname);
   };
 
   //메인페이지 데이터 가공해서 보내주기
   mainPage = async (userKey) => {
     const getAdvice = await this.adviceRepository.getAdvice();
     const dailyData = await redisCli.hGetAll(`${userKey}`);
+    const select = await this.commentRepository.findAllSelect();
     let isOpen;
     dailyData.isOpen == "0" || userKey == 0
       ? (isOpen = false)
@@ -108,8 +143,11 @@ class UserService {
     });
     adviceData.sort((a, b) => a.commentCount - b.commentCount);
     const lowAdviceData = adviceData.slice(0, 10);
-    const getChoice = await this.choiceRepository.findUserChoice(userKey);
-    const totalCount = getAdvice.length + getChoice.length;
+    const getChoice = await this.choiceRepository.findAllChoiceForMain(userKey);
+
+    const isEnd = getChoice.filter((post) => post.isEnd == true);
+
+    const totalCount = select.length + isEnd.length;
 
     return {
       advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],
@@ -136,7 +174,7 @@ class UserService {
     await redisCli.hSet(`${userKey}`, {
       isOpen: 1,
     });
-    await this.userRepository.messageCountUp(userKey);
+    await this.missionRepository.messageOpenActivity(userKey);
   };
 
   //마이페이지 데이터 가져오기
@@ -152,23 +190,9 @@ class UserService {
     }
     const user = await this.userRepository.findUser(userKey);
 
-    let userImage = "";
-    if (
-      user.userImg ==
-      "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4"
-    ) {
-      userImage =
-        "https://imgfiles-cdn.plaync.com/file/LoveBeat/download/20200204052053-LbBHjntyUkg2jL3XC3JN0-v4";
-    } else {
-      userImage =
-        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage-resize/" +
-        user.userImg;
-    }
-
     const result = {
       nickname: user.nickname,
-
-      userImage: userImage,
+      userImage: user.userImg,
       totalAdviceComment: user.Comments.length,
       totalChoicePick: user.isChoices.length,
     };
@@ -195,14 +219,6 @@ class UserService {
     const choiceData = getChoice.map((post) => {
       let boolean;
       let isChoice;
-      let absolute_a = post.choice1Per;
-      let absolute_b = post.choice2Per;
-      let choice1Per;
-      let choice2Per;
-      if (absolute_a + absolute_b > 0) {
-        choice1Per = Math.round((absolute_a / (absolute_a + absolute_b)) * 100);
-        choice2Per = 100 - choice1Per;
-      }
       post.isChoices.length ? (isChoice = true) : (isChoice = false);
       post.ChoiceBMs.length ? (boolean = true) : (boolean = false);
       return {
@@ -210,8 +226,8 @@ class UserService {
         title: post.title,
         choice1Name: post.choice1Name,
         choice2Name: post.choice2Name,
-        choice1Per: choice1Per,
-        choice2Per: choice2Per,
+        choice1: post.choice1Per,
+        choice2: post.choice2Per,
         userImage: post.User.userImg,
         nickname: post.User.nickname,
         createdAt: post.createdAt,
@@ -271,10 +287,8 @@ class UserService {
     await this.userRepository.updateUserNickname(userKey, nickname);
   };
 
-  //회원탈퇴
   bye = async (userKey) => {
-    const bye = await this.userRepository.bye(userKey);
-    return bye;
+    return await this.userRepository.bye(userKey);
   };
 }
 

@@ -60,6 +60,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userKey",
         sourceKey: "userKey",
       });
+      this.hasOne(models.UserActivity, {
+        foreignKey: "userKey",
+        sourceKey: "userKey",
+      });
     }
   }
   User.init(
@@ -73,12 +77,10 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         allowNull: false,
         type: DataTypes.STRING,
-        unique: true,
       },
       nickname: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
-        unique: true,
       },
       password: {
         allowNull: true,
@@ -97,12 +99,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       grade: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
-      },
-      msgOpenCount: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
+        defaultValue: "주니어 해결사",
       },
       createdAt: {
         allowNull: false,

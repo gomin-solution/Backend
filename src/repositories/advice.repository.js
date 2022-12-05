@@ -11,7 +11,6 @@ const {
 const { Op } = require("sequelize");
 const AdviceReport = require("../schemas/adviceReport");
 
-
 class AdviceRepository {
   //조언 게시글 업로드
   createAdvice = async (userKey, title, categoryId, content, isAdult) => {
@@ -30,7 +29,15 @@ class AdviceRepository {
   // 조언 게시물(메인페이지 용)
   getAdvice = async () => {
     const getAdvice = await Advice.findAll({
-      include: [{ model: Comment }, { model: Category }],
+      include: [
+        {
+          model: Comment,
+          attributes: ["userKey"],
+          include: { model: CommentSelect, attributes: ["userKey"] },
+        },
+        { model: Category, attributes: ["name"] },
+      ],
+      attributes: ["adviceId", "title"],
     });
     return getAdvice;
   };
@@ -100,12 +107,16 @@ class AdviceRepository {
         {
           model: Comment,
           order: [["commentId", "DESC"]],
-          include: [{ model: CommentLike }, { model : CommentSelect }, { model: User }],
+          include: [
+            { model: CommentLike },
+            { model: CommentSelect },
+            { model: User },
+          ],
         },
         { model: Category },
-        
       ],
     });
+    console.log(AdviceOne)
     return AdviceOne;
   };
 
@@ -161,7 +172,6 @@ class AdviceRepository {
       include: [{ model: Category }, { model: User }],
     });
   };
-  
 }
 
 module.exports = AdviceRepository;

@@ -90,6 +90,17 @@ class CommentRepository {
     return data;
   };
 
+  userSelect = async (userKey) => {
+    return await CommentSelect.findAll({
+      where: { userKey: userKey },
+      attributes: ["commentId"],
+    });
+  };
+
+  findAllSelect = async () => {
+    return await CommentSelect.findAll({ attributes: ["id"] });
+  };
+
   //특정 댓글 조회
   findComment = async (commentId) => {
     return await Comment.findOne({
