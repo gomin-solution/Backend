@@ -66,7 +66,7 @@ class UserService {
       { userId: id, userKey: data.userKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "60s",
+        expiresIn: "10s",
       }
     );
 
@@ -89,7 +89,7 @@ class UserService {
       { userId: user.userId, userKey: user.userKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "60s",
+        expiresIn: "10s",
       }
     );
 
@@ -119,8 +119,8 @@ class UserService {
   //아이디 찾기
   findId = async (userId) => {
     const findUserId = await this.userRepository.findUserId(userId);
-    return findUserId
-  }
+    return findUserId;
+  };
 
   //비밀번호 변경
   passwordChange = async (userKey, hashed, password) => {
@@ -134,15 +134,13 @@ class UserService {
     await this.userRepository.passwordChange(userKey, hashed);
     return;
   };
-  
+
   //임시 비밀번호 생성
   temporaryPassword = async (userId, hashed) => {
     const findUserId = await this.userRepository.findUserId(userId);
 
-    await this.userRepository.temporaryPassword(userId, hashed)
-
-  }
-
+    await this.userRepository.temporaryPassword(userId, hashed);
+  };
 
   //닉네임 변경
   nicknameChange = async (userKey, nickname) => {
