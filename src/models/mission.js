@@ -45,6 +45,12 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
+      pharse: {
+        type: DataTypes.STRING,
+      },
+      rewardName: {
+        type: DataTypes.STRING,
+      },
     },
     {
       sequelize,
