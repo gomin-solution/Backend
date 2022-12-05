@@ -116,6 +116,12 @@ class UserService {
     return;
   };
 
+  //아이디 찾기
+  findId = async (userId) => {
+    const findUserId = await this.userRepository.findUserId(userId);
+    return findUserId
+  }
+
   //비밀번호 변경
   passwordChange = async (userKey, hashed, password) => {
     const user = await this.userRepository.findUserKey(userKey);
@@ -128,6 +134,15 @@ class UserService {
     await this.userRepository.passwordChange(userKey, hashed);
     return;
   };
+  
+  //임시 비밀번호 생성
+  temporaryPassword = async (userId, hashed) => {
+    const findUserId = await this.userRepository.findUserId(userId);
+
+    await this.userRepository.temporaryPassword(userId, hashed)
+
+  }
+
 
   //닉네임 변경
   nicknameChange = async (userKey, nickname) => {
@@ -266,18 +281,6 @@ class UserService {
     return { choice: choiceData, advice: adviceData };
   };
 
-  uploadUserImage = async (imageUrl, userKey) => {
-    const foundData = await this.userRepository.findUserKey(userKey);
-    if (!foundData) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
-    const findUserImage = imageUrl.split("/")[4];
-
-    const uploadImagesData = await this.userRepository.uploadUserImage(
-      findUserImage,
-      userKey
-    );
-    return uploadImagesData;
-  };
-
   getReword = async (userKey, missionId) => {
     const isGet = await this.missionRepository.getReword(userKey, missionId);
     return isGet;
@@ -289,11 +292,6 @@ class UserService {
       missionId
     );
     return getComplete;
-  };
-  updateUserNickname = async (userKey, nickname) => {
-    const findUser = await this.userRepository.findUser(userKey);
-    if (!findUser) throw new ErrorCustom(400, "사용자가 존재하지 않습니다.");
-    await this.userRepository.updateUserNickname(userKey, nickname);
   };
 
   bye = async (userKey) => {

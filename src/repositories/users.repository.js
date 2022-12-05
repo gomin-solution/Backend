@@ -48,6 +48,10 @@ class UserRepository {
     return await User.findByPk(userKey);
   };
 
+  findUserId = async (userId) => {
+    return await User.findByPk(userId);
+  };
+
   findNickname = async (nickname) => {
     return await User.findOne({ where: { nickname: nickname } });
   };
@@ -84,12 +88,9 @@ class UserRepository {
     return totalreward;
   };
 
-  updateUserNickname = async (userKey, nickname) => {
-    const updateAdviceContentData = await User.update(
-      { nickname: nickname },
-      { where: { userKey: userKey } }
-    );
-    return updateAdviceContentData;
+  //임시 비밀번호 전달
+  temporaryPassword = async (userId, hashed) => {
+    return await User.update({ password: hashed }, { where: { userId: userId } });
   };
 
   //회원탈퇴

@@ -153,6 +153,7 @@ class UserController {
       const { newPassword, password } = await joi.passwordSchema.validateAsync(
         req.body
       );
+      
 
       const hashed = await bcrypt.hash(newPassword, 12);
 
@@ -300,54 +301,6 @@ class UserController {
       } else {
         return res.status(400).json({ message: "이미 휙득 했습니다" });
       }
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  // 프로필 수정
-  profileUpdate = async (req, res, next) => {
-    const { userKey } = res.locals.user;
-    if (userKey == 0) {
-      return res.status(400).send({ message: "로그인이 필요합니다." });
-    }
-    const image = req.file;
-    const { nickname } = req.body;
-
-    const findUser = await this.userService.findUserImage(userKey);
-    const findUserImage = findUser.userImage;
-
-    try {
-      //이미지 수정
-      if (image) {
-        for (let i = 0; i < findUserImage.length; i++) {
-          const s3 = new aws.S3({
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-            region: process.env.AWS_REGION,
-          });
-
-          const params = {
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: findUserImage[i],
-          };
-
-          s3.deleteObject(params, function (err, data) {});
-        }
-
-        const imageUrl = image.location;
-        await this.userService.uploadUserImage(imageUrl, userKey);
-      }
-
-      if (nickname) {
-        await this.userService.updateUserNickname(userKey, nickname);
-      }
-
-      if (!image && !nickname) {
-        return res.status(200).json({ msg: "변경할 내용이 없습니다" });
-      }
-
-      res.status(200).json({ msg: "프로필 수정 완료!" });
     } catch (error) {
       next(error);
     }
