@@ -68,7 +68,7 @@ module.exports = async (req, res, next) => {
         { userId: decoded.userId, userKey: decoded.userKey },
         process.env.SECRET_KEY,
         {
-          expiresIn: "20s",
+          expiresIn: "30s",
         }
       );
       return res

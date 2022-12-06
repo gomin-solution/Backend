@@ -106,7 +106,7 @@ class CommentService {
   //댓글 채택하기
   selectComment = async (userKey, commentId) => {
     const findComment = await this.commentRepository.findComment(commentId);
-    console.log(findComment)
+    console.log(findComment);
 
     if (findComment.userKey == userKey) {
       throw new ErrorCustom(400, "본인 댓글을 채택할 수 없어요.");

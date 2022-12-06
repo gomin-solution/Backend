@@ -116,13 +116,16 @@ class AdviceRepository {
         { model: Category },
       ],
     });
-    console.log(AdviceOne)
+    console.log(AdviceOne);
     return AdviceOne;
   };
 
   // 조언 게시물 조회(리워드 용)
   findAdvice = async (adviceId) => {
-    return await Advice.findByPk(adviceId);
+    return await Advice.findOne({
+      where: { adviceId: adviceId },
+      attributes: ["userKey"],
+    });
   };
 
   // 이미지 찾기(조언 게시글 수정용)
