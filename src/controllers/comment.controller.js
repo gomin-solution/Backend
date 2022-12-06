@@ -92,6 +92,7 @@ class CommentController {
       const { like, commentUserKey } =
         await this.commentService.updateCommentLike(userKey, commentId);
 
+
       const count = await this.commentService.countComment(commentId);
 
       if (like !== -1 && commentUserKey) {
