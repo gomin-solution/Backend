@@ -66,7 +66,7 @@ class UserService {
       { userId: id, userKey: data.userKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "10s",
+        expiresIn: "30s",
       }
     );
 
@@ -89,7 +89,7 @@ class UserService {
       { userId: user.userId, userKey: user.userKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "20s",
+        expiresIn: "30s",
       }
     );
 
@@ -215,8 +215,7 @@ class UserService {
     const result = {
       nickname: user.nickname,
       userImage: user.userImg,
-      totalAdviceComment: user.Comments.length,
-      totalChoicePick: user.isChoices.length,
+      grade: user.grade,
     };
 
     return result;
@@ -232,6 +231,22 @@ class UserService {
       userImage: totalUserImage,
     };
     return result;
+  };
+
+  //검색 페이지
+  searchPage = async (userKey) => {
+    const user = await this.userRepository.findUser(userKey);
+    const advice = await this.adviceRepository.findHot3();
+
+    const advicehot3 = advice.map((advice) => {
+      return {
+        adviceId: advice.adviceId,
+        category: advice.Category.name,
+        title: advice.title,
+      };
+    });
+
+    return { nickname: user.nickname, advice: advicehot3 };
   };
 
   //검색 가져오기

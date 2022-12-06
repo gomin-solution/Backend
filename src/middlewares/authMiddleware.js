@@ -17,6 +17,7 @@ module.exports = async (req, res, next) => {
     console.log("refreshtoken", refreshtoken);
 
     if (accessToken == "undefined") {
+      //익명유저
       res.locals.user = { userKey: 0, userId: "Anonymous" };
       return next();
     }
@@ -68,7 +69,7 @@ module.exports = async (req, res, next) => {
         { userId: decoded.userId, userKey: decoded.userKey },
         process.env.SECRET_KEY,
         {
-          expiresIn: "20s",
+          expiresIn: "30s",
         }
       );
       return res
@@ -78,9 +79,9 @@ module.exports = async (req, res, next) => {
 
     if (!refreshToken && !isAccessTokenValidate) {
       return res.status(405).json({ message: "만료" });
-    } else if (accessToken !== "undefined") {
+    } else if (accessToken !== "undefined" && isAccessTokenValidate) {
       /**토큰이 유효한 경우 */
-      const { userId } = jwt.verify(accessToken, process.env.SECRET_KEY);
+      const { userId } = jwt.decode(accessToken);
       const user = await User.findOne({ where: { userId: userId } }); //
       res.locals.user = user;
       next();

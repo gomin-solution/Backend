@@ -47,7 +47,6 @@ class UserController {
     try {
       // const { email, password } = await joi.loginSchema.validateAsync(req.body);
       const { userId, password } = req.body;
-
       const { accessToken, refreshToken, nickname, userKey } =
         await this.userService.verifyUser(userId, password);
 
@@ -134,7 +133,6 @@ class UserController {
       const { newPassword, password } = await joi.passwordSchema.validateAsync(
         req.body
       );
-      
 
       const hashed = await bcrypt.hash(newPassword, 12);
 
@@ -237,11 +235,22 @@ class UserController {
   search = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
-      // const { keyword } = req.body;
       const { keyword } = req.params;
       const result = await this.userService.search(userKey, keyword);
 
       return res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  searchPage = async (req, res, next) => {
+    try {
+      const { userKey } = res.locals.user;
+
+      const searchPage = await this.userService.searchPage(userKey);
+
+      return res.status(200).json(searchPage);
     } catch (error) {
       next(error);
     }

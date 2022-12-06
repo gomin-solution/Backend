@@ -116,13 +116,16 @@ class AdviceRepository {
         { model: Category },
       ],
     });
-    console.log(AdviceOne)
+    console.log(AdviceOne);
     return AdviceOne;
   };
 
   // 조언 게시물 조회(리워드 용)
   findAdvice = async (adviceId) => {
-    return await Advice.findByPk(adviceId);
+    return await Advice.findOne({
+      where: { adviceId: adviceId },
+      attributes: ["userKey"],
+    });
   };
 
   // 이미지 찾기(조언 게시글 수정용)
@@ -154,6 +157,15 @@ class AdviceRepository {
 
   upCountView = async (adviceId) => {
     await Advice.increment({ viewCount: 1 }, { where: { adviceId: adviceId } });
+  };
+
+  findHot3 = async () => {
+    return await Advice.findAll({
+      include: { model: Category },
+      order: [["viewcount", "DESC"]],
+      limit: 3,
+      attributes: ["title", "adviceId"],
+    });
   };
 
   //조언 게시물 삭제

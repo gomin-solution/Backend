@@ -40,7 +40,7 @@ class UserRepository {
   findUser = async (userKey) => {
     return await User.findOne({
       where: { userKey: userKey },
-      include: [{ model: isChoice }, { model: Comment }],
+      attributes: ["grade", "userImg", "nickname"],
     });
   };
 
@@ -113,7 +113,7 @@ class UserRepository {
 
   //회원탈퇴
   bye = async (userKey) => {
-    const exit = "탈퇴한 회원입니다.";
+    const exit = "알 수 없음";
     return await User.update(
       { nickname: exit, userId: exit },
       { where: { userKey: userKey } }
