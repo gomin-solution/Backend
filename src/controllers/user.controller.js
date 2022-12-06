@@ -300,6 +300,7 @@ class UserController {
   bye = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
+      console.log(`//////${userKey}///////////`);
       if (userKey == 0) {
         return res.status(400).send({ message: "로그인이 필요합니다." });
       }
