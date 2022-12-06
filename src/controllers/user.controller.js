@@ -48,6 +48,10 @@ class UserController {
       // const { email, password } = await joi.loginSchema.validateAsync(req.body);
       const { userId, password } = req.body;
 
+      console.log("//////////로그인요청");
+      console.log("userId", userId);
+      console.log("password", password);
+
       const { accessToken, refreshToken, nickname, userKey } =
         await this.userService.verifyUser(userId, password);
 

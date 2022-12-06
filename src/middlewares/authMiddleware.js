@@ -17,6 +17,7 @@ module.exports = async (req, res, next) => {
     console.log("refreshtoken", refreshtoken);
 
     if (accessToken == "undefined") {
+      //익명유저
       res.locals.user = { userKey: 0, userId: "Anonymous" };
       return next();
     }
