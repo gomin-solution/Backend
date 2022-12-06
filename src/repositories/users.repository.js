@@ -40,7 +40,7 @@ class UserRepository {
   findUser = async (userKey) => {
     return await User.findOne({
       where: { userKey: userKey },
-      include: [{ model: isChoice }, { model: Comment }],
+      attributes: ["grade", "userImg", "nickname"],
     });
   };
 
