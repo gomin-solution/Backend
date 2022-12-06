@@ -91,20 +91,17 @@ class CommentController {
 
       const { like, commentUserKey } =
         await this.commentService.updateCommentLike(userKey, commentId);
+
       const count = await this.commentService.countComment(commentId);
 
-      if (like === -1) {
-        return res
-          .status(400)
-          .send({ message: "자신의 덧글에는 좋아요를 할 수 없습니다." });
-      }
-
-      if (like) {
+      if (like !== -1 && commentUserKey) {
         next(commentUserKey);
         res
           .status(200)
           .json({ Message: "좋아요 성공", data: like, count: count });
-      } else {
+      }
+      if (like !== -1 && !commentUserKey) {
+        next();
         res
           .status(200)
           .json({ Message: "좋아요 취소", data: like, count: count });
