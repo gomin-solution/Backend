@@ -34,13 +34,10 @@ class NoteService {
         ? (nickname = room.User2.nickname)
         : (nickname = room.User1.nickname);
 
-      const recentDate = room.Notes.createdAt;
-      console.log("//////////recentDate/////////////");
-      console.log(recentDate);
+      const recentDate = room.Notes[0].createdAt;
 
       const date = dayjs(recentDate).tz().format("YYYY/MM/DD HH:mm");
-      console.log("///////////date///////////");
-      console.log(date);
+
       return {
         roomId: room.roomId,
         title: room.title,
