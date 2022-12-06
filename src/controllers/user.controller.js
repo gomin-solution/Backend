@@ -134,7 +134,6 @@ class UserController {
       const { newPassword, password } = await joi.passwordSchema.validateAsync(
         req.body
       );
-      
 
       const hashed = await bcrypt.hash(newPassword, 12);
 
