@@ -159,6 +159,15 @@ class AdviceRepository {
     await Advice.increment({ viewCount: 1 }, { where: { adviceId: adviceId } });
   };
 
+  findHot3 = async () => {
+    return await Advice.findAll({
+      include: { model: Category },
+      order: [["viewcount", "DESC"]],
+      limit: 3,
+      attributes: ["title", "adviceId"],
+    });
+  };
+
   //조언 게시물 삭제
   adviceDelete = async (adviceId) => {
     const adviceDelete = await Advice.destroy({

@@ -233,6 +233,22 @@ class UserService {
     return result;
   };
 
+  //검색 페이지
+  searchPage = async (userKey) => {
+    const user = await this.userRepository.findUser(userKey);
+    const advice = await this.adviceRepository.findHot3();
+
+    const advicehot3 = advice.map((advice) => {
+      return {
+        adviceId: advice.adviceId,
+        category: advice.Category.name,
+        title: advice.title,
+      };
+    });
+
+    return { nickname: user.nickname, advice: advicehot3 };
+  };
+
   //검색 가져오기
   search = async (userKey, keyword) => {
     const getChoice = await this.choiceRepository.choiceSeach(userKey, keyword);

@@ -93,12 +93,6 @@ class CommentController {
         await this.commentService.updateCommentLike(userKey, commentId);
       const count = await this.commentService.countComment(commentId);
 
-      if (like === -1) {
-        return res
-          .status(400)
-          .send({ message: "자신의 덧글에는 좋아요를 할 수 없습니다." });
-      }
-
       if (like) {
         next(commentUserKey);
         res
