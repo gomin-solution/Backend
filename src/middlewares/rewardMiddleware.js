@@ -4,6 +4,9 @@ const CommentRepository = require("../repositories/comment.repository.js");
 
 module.exports = async (userKey, req, res, next) => {
   try {
+    if (userKey?.name) {
+      next(userKey);
+    }
     /**유저의 활동 정보를 모두 가져옴 */
     const totalReword = await new UserRepository().totalReword(userKey);
     const Selects = await new CommentRepository().userSelect(userKey);
