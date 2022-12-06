@@ -87,10 +87,7 @@ class UserService {
     if (!passwordVerify) throw new ErrorCustom(400, "비밀번호 오류");
     const accessToken = jwt.sign(
       { userId: user.userId, userKey: user.userKey },
-      process.env.SECRET_KEY,
-      {
-        expiresIn: "30s",
-      }
+      process.env.SECRET_KEY
     );
 
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {

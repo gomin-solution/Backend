@@ -15,6 +15,7 @@ const upload = multer({
     s3: s3,
     bucket: process.env.AWS_BUCKET_NAME,
     key: function (req, file, cb) {
+      console.log("/////////////s3//////////////");
       console.log("file", file);
       console.log("cb", cb);
       const ext = path.extname(file.originalname);
