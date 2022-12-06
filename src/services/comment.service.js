@@ -68,19 +68,23 @@ class CommentService {
   updateCommentLike = async (userKey, commentId) => {
     const dup = await this.commentRepository.findComment(commentId);
 
-    if (dup.userKey === userKey) return -1;
+    //댓글작성자와 좋아요 시도한 자의 userKey가 같으면 에러!
+    if (dup.userKey === userKey) {
+      throw new Error("본인 게시글에는 좋아요를 할 수 없습니다.");
+    }
 
     const isCommentLike = await this.commentRepository.isCommentLike(
       userKey,
       commentId
     );
+
     //취소
     if (isCommentLike) {
       const cancel = await this.commentRepository.cancelCommentLike(
         userKey,
         commentId
       );
-      return cancel;
+      return { cancel, undefined };
     } else {
       //등록
       const like = await this.commentRepository.createCommentLike(
