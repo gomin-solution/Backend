@@ -81,7 +81,7 @@ module.exports = async (req, res, next) => {
       return res.status(405).json({ message: "만료" });
     } else if (accessToken !== "undefined" && isAccessTokenValidate) {
       /**토큰이 유효한 경우 */
-      const { userId } = jwt.verify(accessToken, process.env.SECRET_KEY);
+      const { userId } = jwt.decode(accessToken);
       const user = await User.findOne({ where: { userId: userId } }); //
       res.locals.user = user;
       next();
