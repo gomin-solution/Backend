@@ -300,24 +300,12 @@ class UserController {
   bye = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
+      console.log(`//////${userKey}///////////`);
       if (userKey == 0) {
         return res.status(400).send({ message: "로그인이 필요합니다." });
       }
+
       await this.userService.bye(userKey);
-
-      res.cookie("accesstoken", "expire", {
-        maxAge: 0,
-        sameSite: "none",
-        secure: true,
-        httpOnly: true,
-      });
-
-      res.cookie("refreshtoken", "expire", {
-        maxAge: 0,
-        sameSite: "none",
-        secure: true,
-        httpOnly: true,
-      });
 
       res.status(200).json({ message: "다음에 또 봐요" });
     } catch (err) {
