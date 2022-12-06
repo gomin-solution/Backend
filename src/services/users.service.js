@@ -215,8 +215,7 @@ class UserService {
     const result = {
       nickname: user.nickname,
       userImage: user.userImg,
-      totalAdviceComment: user.Comments.length,
-      totalChoicePick: user.isChoices.length,
+      grade: user.grade,
     };
 
     return result;
