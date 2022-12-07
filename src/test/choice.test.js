@@ -1,11 +1,3 @@
-// const ChoiceController = require("../controllers/choice.controller");
-// const ChoiceService = require("../services/choice.service");
-// const choiceService = new ChoiceService();
-// const choiceController = new ChoiceController(); //테스트 대상을 가져옴
-// jest.mock("../models/choice");
-// jest.mock("../repositories/choice.repository");
-// jest.mock("../services/choice.service");
-
 const ChoiceService = require("../services/choice.service");
 const choiceService = new ChoiceService();
 

@@ -32,11 +32,6 @@ describe("advice서비스 테스트", () => {
     expect(await adviceService.findAllAdviceOne()).toEqual(data);
   });
 
-  //   test("findAllAdviceOne이 실패하는가?", async () => {
-  //     adviceService.adviceRepository.findAllAdviceOne = jest.fn(() => false);
-  //     expect(await adviceService.findAllAdviceOne()).toEqual(data);
-  //   });
-
   //리턴 값이 없기 때문에 익스펙트에 아무것도 들어가지 않음
   test("updateAdviceTitle이 성공하는가?", async () => {
     adviceService.adviceRepository.findAllAdvice = jest.fn(() => data);
