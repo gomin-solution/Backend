@@ -25,9 +25,9 @@ class ChoiceService {
   missionRepository = new MissionRepository();
 
   createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
-    const date = dayjs(endTime).tz().format();
-    const limitDate = dayjs().tz().add(7, "day").format();
-    const nowTime = dayjs().tz().format();
+    const date = dayjs(endTime).tz();
+    const limitDate = dayjs().tz().add(7, "day");
+    const nowTime = dayjs().tz();
 
     if (limitDate < date || date < nowTime) {
       throw new ErrorCustom(400, "잘못된 날짜 입니다");
@@ -37,7 +37,7 @@ class ChoiceService {
       throw new ErrorCustom(400, "잘못된 형식입니다");
     }
 
-    //const scheduleDate = date.subtract(9, "hour").format();
+    const scheduleDate = date.subtract(9, "hour").format();
     const createchoice = await this.choiceRepository.createchoice(
       userKey,
       title,
@@ -46,7 +46,7 @@ class ChoiceService {
       date
     );
 
-    schedule.scheduleJob(/*scheduleDate*/ date, async () => {
+    schedule.scheduleJob(scheduleDate, async () => {
       console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
       await this.missionRepository.choiceEndActivity(userKey);
