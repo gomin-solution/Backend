@@ -21,15 +21,15 @@ module.exports = {
     //     key: "userKey",
     //   },
     // });
-    // return queryInterface.addColumn("Notes", "roomId", {
-    //   allowNull: false,
-    //   type: Sequelize.INTEGER,
-    //   references: {
-    //     model: "NoteRooms",
-    //     key: "roomId",
-    //   },
-    //   onDelete: "cascade",
-    // });
+    return queryInterface.addColumn("Notes", "roomId", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      references: {
+        model: "NoteRooms",
+        key: "roomId",
+      },
+      onDelete: "cascade",
+    });
   },
 
   async down(queryInterface, Sequelize) {
@@ -41,6 +41,6 @@ module.exports = {
      */
     // return await queryInterface.dropTable("isChoices");
     // return queryInterface.dropTable("DailyUpdate");
-    // return queryInterface.removeColumn("Notes", "roomId");
+    return queryInterface.removeColumn("Notes", "roomId");
   },
 };
