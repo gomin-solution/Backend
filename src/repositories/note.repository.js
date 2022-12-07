@@ -28,6 +28,7 @@ class NoteRepository {
         { model: User, as: "User2", attributes: ["nickname", "userKey"] },
         { model: Note, order: [["createdAt", "DESC"]], limit: 1 },
       ],
+      order: [["createdAt", "DESC"]],
     });
 
     return allRooms;

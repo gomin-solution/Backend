@@ -10,6 +10,7 @@ const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
 const SocketIO = require("socket.io");
 const server = require("../app");
+const ErrorCustom = require("../exceptions/error-custom");
 const io = SocketIO(server, { path: "/socket.io" });
 
 dayjs.extend(utc);
@@ -25,6 +26,16 @@ class ChoiceService {
 
   createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
     const date = dayjs(endTime).tz();
+    const limitDate = dayjs().tz().add(7, "day");
+    const nowTime = dayjs().tz();
+
+    if (limitDate < date || date < nowTime) {
+      throw new ErrorCustom(400, "잘못된 날짜 입니다");
+    }
+
+    if (10 < choice1Name.length || 10 < choice2Name.length) {
+      throw new ErrorCustom(400, "잘못된 형식입니다");
+    }
 
     const scheduleDate = date.subtract(9, "hour").format();
     const createchoice = await this.choiceRepository.createchoice(

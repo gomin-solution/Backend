@@ -51,6 +51,7 @@ router.get("/search/:keyword", auth, userController.search);
 
 //검색 페이지
 router.get("/search", auth, userController.searchPage);
+
 //리워드
 router.get("/reword", auth, userController.reword);
 

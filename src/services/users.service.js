@@ -246,7 +246,7 @@ class UserService {
       };
     });
 
-    return { nickname: user.nickname, advice: advicehot3 };
+    return { nickname: user?.nickname, advice: advicehot3 };
   };
 
   //검색 가져오기
