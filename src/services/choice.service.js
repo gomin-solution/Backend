@@ -27,8 +27,9 @@ class ChoiceService {
   createchoice = async (userKey, title, choice1Name, choice2Name, endTime) => {
     const date = dayjs(endTime).tz().format();
     const limitDate = dayjs().tz().add(7, "day").format();
+    const nowTime = dayjs().tz().format();
 
-    if (limitDate < date) {
+    if (limitDate < date || date < nowTime) {
       throw new ErrorCustom(400, "잘못된 날짜 입니다");
     }
 
