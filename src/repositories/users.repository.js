@@ -26,6 +26,7 @@ class UserRepository {
       where: { userId: id },
       defaults: {
         userId: id,
+        nickname: "닉네임을 설정해 주세요",
         userImg:
           "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
       },
