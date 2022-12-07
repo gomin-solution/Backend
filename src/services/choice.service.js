@@ -37,7 +37,7 @@ class ChoiceService {
       throw new ErrorCustom(400, "잘못된 형식입니다");
     }
 
-    const scheduleDate = date.subtract(9, "hour").format();
+    //const scheduleDate = date.subtract(9, "hour").format();
     const createchoice = await this.choiceRepository.createchoice(
       userKey,
       title,
@@ -46,7 +46,7 @@ class ChoiceService {
       date
     );
 
-    schedule.scheduleJob(scheduleDate, async () => {
+    schedule.scheduleJob(/*scheduleDate*/ date, async () => {
       console.log("마감 스케쥴 실행됨");
       await this.choiceRepository.updateEnd(createchoice.choiceId);
       await this.missionRepository.choiceEndActivity(userKey);
