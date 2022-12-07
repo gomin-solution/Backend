@@ -1,0 +1,102 @@
+const BookMarkRepository = require("../repositories/bookmark.repository");
+const dayjs = require("dayjs");
+const timezone = require("dayjs/plugin/timezone");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
+class BookMarkService {
+  bookmarkRepository = new BookMarkRepository();
+
+  updateChoiceBM = async (userKey, choiceId) => {
+    //북마크 없으면 생성
+    const createBookmark = await this.bookmarkRepository.addChoiceBm(
+      userKey,
+      choiceId
+    );
+
+    //북마크가 있을시 삭제
+    if (!createBookmark) {
+      await this.bookmarkRepository.cancelChoiceBm(userKey, choiceId);
+      return { msg: "취소 되었습니다" };
+    }
+
+    return { msg: "등록 되었습니다" };
+  };
+
+  updateAdviceBM = async (userKey, adviceId) => {
+    //북마크 없으면 생성
+    const createBookmark = await this.bookmarkRepository.addAdviceBm(
+      userKey,
+      adviceId
+    );
+
+    //북마크가 있을시 삭제
+    if (!createBookmark) {
+      await this.bookmarkRepository.cancelAdviceBm(userKey, adviceId);
+      return { msg: "취소 되었습니다" };
+    }
+
+    return { msg: "등록 되었습니다" };
+  };
+
+  findBmChoice = async (userKey) => {
+    const findBmChoice = await this.bookmarkRepository.findBmChoice(userKey);
+
+    const result = findBmChoice.map((post) => {
+      let isChoice;
+      post.Choice.isChoices.length ? (isChoice = true) : (isChoice = false);
+
+      const createdAt = dayjs(post.Choice.createdAt)
+        .tz()
+        .format("YYYY/MM/DD HH:mm");
+
+      const endTime = dayjs(post.Choice.endTime).format("YYYY/MM/DD HH:mm");
+
+      return {
+        choiceId: post.Choice.choiceId,
+        title: post.Choice.title,
+        choice1Name: post.Choice.choice1Name,
+        choice2Name: post.Choice.choice2Name,
+        choice1: post.Choice.choice1Per,
+        choice2: post.Choice.choice2Per,
+        userImage: post.Choice.User.userImg,
+        nickname: post.Choice.User.nickname,
+        createdAt: createdAt,
+        endTime: endTime,
+        choiceCount: post.Choice.choiceCount,
+        userKey: post.Choice.userKey,
+        isBookMark: true,
+        isChoice: isChoice,
+        isEnd: post.Choice.isEnd,
+      };
+    });
+
+    return result;
+  };
+
+  findBmAdvice = async (userKey) => {
+    const findBmAdvice = await this.bookmarkRepository.findBmAdvice(userKey);
+
+    const result = findBmAdvice.map((post) => {
+      const createdAt = dayjs(post.Advice.createdAt)
+        .tz()
+        .format("YYYY/MM/DD HH:mm");
+      return {
+        adviceId: post.Advice.adviceId,
+        title: post.Advice.title,
+        content: post.Advice.content,
+        createdAt: createdAt,
+        userKey: post.Advice.userKey,
+        CommentCount: post.Advice.Comments.length,
+        viewCount: post.Advice.viewCount,
+        catrgoryId: post.Advice.catrgoryId,
+        category: post.Advice.Category.name,
+      };
+    });
+
+    return result;
+  };
+}
+
+module.exports = BookMarkService;
