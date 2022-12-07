@@ -5,7 +5,7 @@ name: gomin_solution_backend
 
 on:
   push:
-    branches: [main]
+    branches: [Dev]
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -30,7 +30,7 @@ jobs:
         run: |
           touch .env
           cat << EOF >> .env
-          ${{ secrets.ENV }}
+          ${{ secrets.ENV_TEST }}
 
       - name: build client files
         working-directory: ./
@@ -38,13 +38,13 @@ jobs:
           npm install
 
       - name: zip file
-        run: zip -r cicdtest.zip ./src ./scripts ./appspec.yml ./.env ./package.json
+        run: zip -r cicdtest.zip ./src ./.env
 
       - name: AWS connect
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_TEST }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_TEST }}
           aws-region: ap-northeast-2
 
       - name: upload to S3
@@ -52,7 +52,7 @@ jobs:
 
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
-          --application-name auto-build-gomin
+          --application-name cicd-depoly-jun
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name auto-build-gomin
+          --deployment-group-name GROUP
           --s3-location bucket=build-bucket,bundleType=zip,key=public/cicdtest.zip
