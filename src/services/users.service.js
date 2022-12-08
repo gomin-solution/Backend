@@ -81,7 +81,7 @@ class UserService {
     const findUserId = await this.userRepository.findUserKey(userKey);
 
     const accessToken = jwt.sign(
-      { userId: findUserId.id, userKey: userKey },
+      { userId: findUserId.userId, userKey: userKey },
       process.env.SECRET_KEY,
       {
         expiresIn: "30m",
