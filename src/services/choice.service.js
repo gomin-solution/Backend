@@ -69,7 +69,9 @@ class ChoiceService {
         let isBookMark;
         let isChoice;
         choice.ChoiceBMs.length ? (isBookMark = true) : (isBookMark = false);
-        choice.isChoices.length ? (isChoice = true) : (isChoice = false);
+        choice.isChoices.length
+          ? (isChoice = choice.isChoices.choiceNum)
+          : (isChoice = false);
         const createdAt = dayjs(choice.createdAt)
           .tz()
           .format("YYYY/MM/DD HH:mm");
