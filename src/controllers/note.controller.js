@@ -27,6 +27,10 @@ class NoteController {
     try {
       const { userKey } = res.locals.user;
 
+      if (userKey == 0) {
+        return res.status(400).send({ message: "로그인이 필요합니다." });
+      }
+
       const roomlist = await this.noteService.allRooms(userKey);
 
       return res.status(200).json(roomlist);
