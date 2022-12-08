@@ -28,7 +28,12 @@ class ChoiceRepository {
       order: [["createdAt", "DESC"]],
       include: [
         { model: User },
-        { model: isChoice, where: { userKey: userKey }, required: false },
+        {
+          model: isChoice,
+          where: { userKey: userKey },
+          required: false,
+          attributes: ["choiceNum"],
+        },
         { model: ChoiceBM, where: { userKey: userKey }, required: false },
       ],
     });
