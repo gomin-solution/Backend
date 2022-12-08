@@ -77,6 +77,24 @@ class UserService {
     return { accessToken, refreshToken, created, data };
   };
 
+  Kakaotoken = async (userKey) => {
+    const findUserId = await this.userRepository.findUserKey(userKey);
+
+    const accessToken = jwt.sign(
+      { userId: findUserId.id, userKey: userKey },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "30s",
+      }
+    );
+
+    const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+      expiresIn: "15d",
+    });
+
+    return { accessToken, refreshToken };
+  };
+
   //유저 검증
   verifyUser = async (userId, password) => {
     const user = await this.userRepository.findUserId(userId);
@@ -144,7 +162,12 @@ class UserService {
 
   //닉네임 변경
   nicknameChange = async (userKey, nickname) => {
-    return await this.userRepository.nicknameChange(userKey, nickname);
+    const existNickname = await this.userRepository.findNickname(nickname);
+    if (existNickname) {
+      throw new ErrorCustom(400, "중복된 닉네임 입니다");
+    }
+    await this.userRepository.nicknameChange(userKey, nickname);
+    return;
   };
 
   //메인페이지 데이터 가공해서 보내주기
