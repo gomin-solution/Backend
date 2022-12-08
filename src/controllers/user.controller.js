@@ -73,18 +73,17 @@ class UserController {
       console.log(id);
       const { accessToken, refreshToken, created, data } =
         await this.userService.userKakao(id);
-      //refreshtoken을 userId키로 redis에 저장
-      await redisCli.set(id, refreshToken);
-      //배포환경인 경우 보안 설정된 쿠키 전송
 
-      if (created) {
+      if (created || !data.nickname) {
         return res.status(201).json({
           message: "신규가입.",
           isMember: false,
-          accessToken,
-          refreshToken,
+          userKey: data.userKey,
         });
       } else {
+        //refreshtoken을 userId키로 redis에 저장
+        await redisCli.set(id, refreshToken);
+
         return res.status(200).json({
           message: "카카오 로그인 성공.",
           isMember: true,
@@ -159,6 +158,20 @@ class UserController {
     }
   };
 
+  kakaoNickname = async (req, res, next) => {
+    try {
+      const { userKey, nickname } = req.body;
+      await this.userService.nicknameChange(userKey, nickname);
+
+      const { accessToken, refreshToken } = await this.userService.Kakaotoken(
+        userKey
+      );
+
+      return res.status(200).json({ accessToken, refreshToken, userKey });
+    } catch (error) {
+      next(error);
+    }
+  };
   //메인페이지 가져오기
   mainPage = async (req, res, next) => {
     try {

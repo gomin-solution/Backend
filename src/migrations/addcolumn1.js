@@ -9,9 +9,13 @@ module.exports = {
      * Example:
     //  * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.changeColumn("Users", "grade", {
-      type: DataTypes.STRING,
-      defaultValue: "주니어 해결사",
+    await queryInterface.changeColumn("ChoiceBMs", "choiceId", {
+      type: Sequelize.INTEGER,
+      references: {
+        model: "Choices",
+        key: "choiceId",
+      },
+      onDelete: "cascade",
     });
     // return await queryInterface.addeColumn("Replies", "userKey", {
     //   allowNull: false,
@@ -21,15 +25,15 @@ module.exports = {
     //     key: "userKey",
     //   },
     // });
-    return queryInterface.addColumn("Notes", "roomId", {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      references: {
-        model: "NoteRooms",
-        key: "roomId",
-      },
-      onDelete: "cascade",
-    });
+    // return queryInterface.addColumn("Notes", "roomId", {
+    //   allowNull: false,
+    //   type: Sequelize.INTEGER,
+    //   references: {
+    //     model: "NoteRooms",
+    //     key: "roomId",
+    //   },
+    //   onDelete: "cascade",
+    // });
   },
 
   async down(queryInterface, Sequelize) {
@@ -41,6 +45,6 @@ module.exports = {
      */
     // return await queryInterface.dropTable("isChoices");
     // return queryInterface.dropTable("DailyUpdate");
-    return queryInterface.removeColumn("Notes", "roomId");
+    // return queryInterface.removeColumn("Notes", "roomId");
   },
 };
