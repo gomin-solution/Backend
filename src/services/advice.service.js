@@ -197,7 +197,6 @@ class AdviceService {
       });
     }
 
-
     let selectComment;
     const commentArray = [];
     findOneAdvice.Comments.forEach((comment) => {
@@ -239,6 +238,10 @@ class AdviceService {
     }
     if (filterId == "1") {
       commentArray.sort((a, b) => b.likeCount - a.likeCount);
+    }
+
+    if (filterId == "2") {
+      commentArray.sort((a, b) => b.commentId - a.commentId);
     }
 
     let boolean;
