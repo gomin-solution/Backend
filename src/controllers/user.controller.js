@@ -161,6 +161,9 @@ class UserController {
   kakaoNickname = async (req, res, next) => {
     try {
       const { userKey, nickname } = req.body;
+      if (!userKey || !nickname) {
+        res.status(400).json({ erroMessage: "잘못된 요청입니다" });
+      }
       await this.userService.nicknameChange(userKey, nickname);
 
       const { accessToken, refreshToken } = await this.userService.Kakaotoken(
