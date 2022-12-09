@@ -59,7 +59,7 @@ class UserService {
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "15d",
     });
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, userKey: createUser.userKey };
   };
 
   userKakao = async (id) => {
