@@ -86,7 +86,7 @@ class UserController {
         });
       } else {
         //refreshtoken을 userId키로 redis에 저장
-        await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
+        await redisCli.set(id, refreshToken, { EX: 60 * 60 * 24 * 15 });
 
         return res.status(200).json({
           message: "카카오 로그인 성공.",
