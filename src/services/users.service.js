@@ -247,7 +247,7 @@ class UserService {
     }
     const user = await this.userRepository.findUser(userKey);
     let isKakao;
-    Number(user.userId) == NaN ? (isKakao = false) : (isKakao = true);
+    isNaN(Number(user.userId)) ? (isKakao = false) : (isKakao = true);
 
     const result = {
       nickname: user.nickname,
