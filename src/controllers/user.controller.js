@@ -37,9 +37,6 @@ class UserController {
           isAdult: isAdult,
         });
 
-      console.log(accessToken);
-      console.log(refreshToken);
-
       await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
 
       res
@@ -89,7 +86,7 @@ class UserController {
         });
       } else {
         //refreshtoken을 userId키로 redis에 저장
-        await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
+        await redisCli.set(id, refreshToken, { EX: 60 * 60 * 24 * 15 });
 
         return res.status(200).json({
           message: "카카오 로그인 성공.",
@@ -159,7 +156,7 @@ class UserController {
 
       await this.userService.nicknameChange(userKey, nickname);
 
-      return res.status(200).json({ message: "닉네임 변경 완료", userKey });
+      return res.status(200).json({ message: "닉네임 변경 완료" });
     } catch (error) {
       next(error);
     }
