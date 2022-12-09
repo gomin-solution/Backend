@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middlewares/authMiddleware");
 const LoginMiddleware = require("../middlewares/LoginMiddleware");
-const LogoutMiddleware = require("../middlewares/LogoutMiddleware");
 const UserController = require("../controllers/user.controller");
 const userController = new UserController();
 const reward = require("../middlewares/rewardMiddleware");

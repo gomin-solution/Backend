@@ -234,11 +234,14 @@ class UserService {
       };
     }
     const user = await this.userRepository.findUser(userKey);
+    let isKakao;
+    Number(user.userId) == NaN ? (isKakao = false) : (isKakao = true);
 
     const result = {
       nickname: user.nickname,
       userImage: user.userImg,
       grade: user.grade,
+      isKakao: isKakao,
     };
 
     return result;

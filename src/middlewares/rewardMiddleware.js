@@ -14,14 +14,6 @@ module.exports = async (userKey, req, res, next) => {
     /**내가 받은 총 좋아요수 */
     const likeTotal = totalReword.receiveLikeCount;
 
-    /**내 게시글의 총 조회수 */
-    let viewCount = 0;
-    // const viewCountArray = totalReword.Advice.map((x) => x.viewCount);
-
-    // viewCountArray.forEach((x) => {
-    //   viewCount += x;
-    // });
-
     /** 내가 조언해준 횟수*/
     const totalAdviceComment = totalReword.commentCount;
 
@@ -151,9 +143,6 @@ module.exports = async (userKey, req, res, next) => {
     const missionCompleteId = await new MissionRepository().completeMission(
       userKey
     );
-
-    console.log("/////////here/////////");
-    console.log(missionCompleteId.length);
 
     if (3 <= missionCompleteId.length && missionCompleteId.length < 6) {
       const image =

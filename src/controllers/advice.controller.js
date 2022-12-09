@@ -91,6 +91,8 @@ class AdviceController {
     const images = req.files;
     const findAdvice = await this.adviceService.findAllAdviceOne(adviceId);
 
+    console.log(images);
+
     try {
       if (userKey !== findAdvice.userKey) {
         return res.status(400).json({ errorMessage: "권한이 없습니다." });
