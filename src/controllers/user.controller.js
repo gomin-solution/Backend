@@ -40,7 +40,7 @@ class UserController {
       console.log(accessToken);
       console.log(refreshToken);
 
-      await redisCli.set(userId, refreshToken);
+      await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
 
       res
         .status(200)
@@ -58,7 +58,7 @@ class UserController {
         await this.userService.verifyUser(userId, password);
 
       //refreshtoken을 userId키로 redis에 저장
-      await redisCli.set(userId, refreshToken);
+      await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
       //배포환경인 경우 보안 설정된 쿠키 전송
 
       res.status(200).json({
@@ -89,7 +89,7 @@ class UserController {
         });
       } else {
         //refreshtoken을 userId키로 redis에 저장
-        await redisCli.set(id, refreshToken);
+        await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
 
         return res.status(200).json({
           message: "카카오 로그인 성공.",
