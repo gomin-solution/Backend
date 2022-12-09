@@ -29,18 +29,22 @@ class UserController {
 
       const hashed = await bcrypt.hash(password, 12);
 
-      const { accessToken, refreshToken } = await this.userService.createUser({
-        userId: userId,
-        nickname: nickname,
-        password: hashed,
-        isAdult: isAdult,
-      });
+      const { accessToken, refreshToken, userKey } =
+        await this.userService.createUser({
+          userId: userId,
+          nickname: nickname,
+          password: hashed,
+          isAdult: isAdult,
+        });
+
+      console.log(accessToken);
+      console.log(refreshToken);
 
       await redisCli.set(userId, refreshToken);
 
       res
         .status(200)
-        .json({ message: "회원가입 성공", accessToken, refreshToken });
+        .json({ message: "회원가입 성공", accessToken, refreshToken, userKey });
     } catch (error) {
       next(error);
     }
@@ -49,7 +53,6 @@ class UserController {
   /**로그인 컨트롤러 */
   login = async (req, res, next) => {
     try {
-      // const { email, password } = await joi.loginSchema.validateAsync(req.body);
       const { userId, password } = req.body;
       const { accessToken, refreshToken, nickname, userKey } =
         await this.userService.verifyUser(userId, password);

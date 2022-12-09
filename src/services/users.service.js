@@ -59,7 +59,7 @@ class UserService {
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "15d",
     });
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, userKey: createUser.userKey };
   };
 
   userKakao = async (id) => {
@@ -247,7 +247,7 @@ class UserService {
     }
     const user = await this.userRepository.findUser(userKey);
     let isKakao;
-    Number(user.userId) == NaN ? (isKakao = false) : (isKakao = true);
+    isNaN(Number(user.userId)) ? (isKakao = false) : (isKakao = true);
 
     const result = {
       nickname: user.nickname,
