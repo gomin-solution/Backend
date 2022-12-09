@@ -29,14 +29,18 @@ class UserController {
 
       const hashed = await bcrypt.hash(password, 12);
 
-      await this.userService.createUser({
+      const { accessToken, refreshToken } = await this.userService.createUser({
         userId: userId,
         nickname: nickname,
         password: hashed,
         isAdult: isAdult,
       });
 
-      res.status(200).json({ message: "회원가입 성공" });
+      await redisCli.set(userId, refreshToken);
+
+      res
+        .status(200)
+        .json({ message: "회원가입 성공", accessToken, refreshToken });
     } catch (error) {
       next(error);
     }

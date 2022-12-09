@@ -3,8 +3,9 @@ const UserController = require("../controllers/user.controller");
 
 describe("미들웨어", () => {
   const res = {
-    status: jest.fn(() => res),
-    json: jest.fn(),
+    status: jest.fn(() => {
+      return { json: jest.fn() };
+    }),
   };
   const next = jest.fn();
 

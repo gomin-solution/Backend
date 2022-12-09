@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middlewares/authMiddleware");
 const LoginMiddleware = require("../middlewares/LoginMiddleware");
-const LogoutMiddleware = require("../middlewares/LogoutMiddleware");
 const UserController = require("../controllers/user.controller");
 const userController = new UserController();
 const reward = require("../middlewares/rewardMiddleware");
@@ -36,9 +35,6 @@ router.post("/kakao", LoginMiddleware, userController.kakao);
 
 //카카오 닉네임
 router.put("/kakao/nickname", auth, userController.kakaoNickname);
-
-//로그아웃
-router.delete("/logout", LogoutMiddleware);
 
 //로그인테스트
 router.post("/test", auth);
