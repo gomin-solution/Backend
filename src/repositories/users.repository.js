@@ -30,6 +30,7 @@ class UserRepository {
           "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
       },
     });
+
     if (created) {
       await UserActivity.create({ userKey: data.userKey });
     }
@@ -53,7 +54,10 @@ class UserRepository {
   };
 
   findNickname = async (nickname) => {
-    return await User.findOne({ where: { nickname: nickname } });
+    return await User.findOne({
+      where: { nickname: nickname },
+      attributes: ["nickname"],
+    });
   };
 
   findUserId = async (userId) => {

@@ -8,10 +8,10 @@ const { DataExchange } = require("aws-sdk");
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
-const SocketIO = require("socket.io");
-const server = require("../app");
+// const SocketIO = require("socket.io");
+// const server = require("../app");
+// const io = SocketIO(server, { path: "/socket.io" });
 const ErrorCustom = require("../exceptions/error-custom");
-const io = SocketIO(server, { path: "/socket.io" });
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -69,7 +69,9 @@ class ChoiceService {
         let isBookMark;
         let isChoice;
         choice.ChoiceBMs.length ? (isBookMark = true) : (isBookMark = false);
-        choice.isChoices.length ? (isChoice = true) : (isChoice = false);
+        choice.isChoices.length
+          ? (isChoice = choice.isChoices[0].choiceNum)
+          : (isChoice = false);
         const createdAt = dayjs(choice.createdAt)
           .tz()
           .format("YYYY/MM/DD HH:mm");

@@ -3,6 +3,7 @@ const express = require("express");
 const fs = require("fs");
 const HTTPS = require("https");
 const HTTP = require("http");
+const helmet = require("helmet");
 
 const connect = require("./schemas/index");
 const cors = require("cors");
@@ -21,6 +22,7 @@ schedule();
 const whitelist = [
   process.env.CLIENT_1,
   process.env.CLIENT_2,
+  process.env.TEST_CLIENT,
   "http://localhost:3000",
   undefined,
 ]; //Thunder client 요청의 경우 undefined 허용
@@ -37,6 +39,7 @@ const corsOptions = {
   credentials: true,
 };
 
+app.use(helmet());
 app.use(cors(corsOptions)); // 옵션을 추가한 CORS 미들웨어 추가
 
 app.use(cookieParser());

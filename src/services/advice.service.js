@@ -5,9 +5,9 @@ const MissionRepository = require("../repositories/mission.repository");
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
-const SocketIO = require("socket.io");
-const server = require("../app");
-const io = SocketIO(server, { path: "/socket.io" });
+// const SocketIO = require("socket.io");
+// const server = require("../app");
+// const io = SocketIO(server, { path: "/socket.io" });
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -197,7 +197,6 @@ class AdviceService {
       });
     }
 
-
     let selectComment;
     const commentArray = [];
     findOneAdvice.Comments.forEach((comment) => {
@@ -239,6 +238,10 @@ class AdviceService {
     }
     if (filterId == "1") {
       commentArray.sort((a, b) => b.likeCount - a.likeCount);
+    }
+
+    if (filterId == "2") {
+      commentArray.sort((a, b) => b.commentId - a.commentId);
     }
 
     let boolean;
