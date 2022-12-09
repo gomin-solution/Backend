@@ -37,6 +37,9 @@ class UserController {
           isAdult: isAdult,
         });
 
+      console.log(accessToken);
+      console.log(refreshToken);
+
       await redisCli.set(userId, refreshToken);
 
       res
