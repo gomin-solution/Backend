@@ -47,7 +47,19 @@ class UserService {
       msg: msg,
       isOpen: 0,
     });
-    return;
+
+    const accessToken = jwt.sign(
+      { userId: userId, userKey: createUser.userKey },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "30m",
+      }
+    );
+
+    const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
+      expiresIn: "15d",
+    });
+    return { accessToken, refreshToken };
   };
 
   userKakao = async (id) => {

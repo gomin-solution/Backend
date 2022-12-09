@@ -29,7 +29,7 @@ class UserController {
 
       const hashed = await bcrypt.hash(password, 12);
 
-      await this.userService.createUser({
+      const { accessToken, refreshToken } = await this.userService.createUser({
         userId: userId,
         nickname: nickname,
         password: hashed,
