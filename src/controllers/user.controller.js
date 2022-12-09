@@ -36,7 +36,11 @@ class UserController {
         isAdult: isAdult,
       });
 
-      res.status(200).json({ message: "회원가입 성공" });
+      await redisCli.set(userId, refreshToken);
+
+      res
+        .status(200)
+        .json({ message: "회원가입 성공", accessToken, refreshToken });
     } catch (error) {
       next(error);
     }

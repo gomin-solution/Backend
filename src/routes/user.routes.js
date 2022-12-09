@@ -37,9 +37,6 @@ router.post("/kakao", LoginMiddleware, userController.kakao);
 //카카오 닉네임
 router.put("/kakao/nickname", auth, userController.kakaoNickname);
 
-//로그아웃
-router.delete("/logout", LogoutMiddleware);
-
 //로그인테스트
 router.post("/test", auth);
 

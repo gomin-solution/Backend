@@ -1,4 +1,3 @@
-
 const AdviceService = require("../services/advice.service");
 const adviceService = new AdviceService();
 
