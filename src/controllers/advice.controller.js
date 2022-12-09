@@ -113,9 +113,14 @@ class AdviceController {
             Key: findImageAdvice[i],
           };
 
-          s3.deleteObject(params);
+          s3.deleteObject(params, function (err, data) {
+            if (err) {
+              console.log(err, err.stack);
+            }
+          });
+          
         }
-        await this.adviceImageService.imageDelete(adviceId);
+        await this.adviceImageService.imageDelete(adviceId);        
         const imageUrl = images.map((url) => url.location);
         await this.adviceImageService.createAdviceImage(adviceId, imageUrl);
       }
@@ -169,7 +174,11 @@ class AdviceController {
           Key: findDeleteImages[i],
         };
 
-        s3.deleteObject(params);
+        s3.deleteObject(params, function (err, data) {
+          if (err) {
+            console.log(err, err.stack);
+          }
+        });
       }
 
       //게시물 삭제

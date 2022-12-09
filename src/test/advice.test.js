@@ -18,14 +18,11 @@ const adviceId = 2;
 
 describe("advice서비스 테스트", () => {
   test("createAdvice가 성공하는가?", async () => {
-    adviceService.adviceRepository.createAdvice = jest.fn(() => ({
-      title: "새로운 어드바이스",
-    }));
-    expect(
+    adviceService.adviceRepository.createAdvice = jest.fn(() => data);
+    expect( // 다음과 같은 결과가 나와야한다.
       await adviceService.createAdvice(userKey, title, categoryId, content)
-    ).toEqual({
-      title: "새로운 어드바이스",
-    });
+    ).toEqual(
+      data);
   });
 
   test("findAllAdviceOne이 성공하는가?", async () => {
