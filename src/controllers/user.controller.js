@@ -37,9 +37,6 @@ class UserController {
           isAdult: isAdult,
         });
 
-      console.log(accessToken);
-      console.log(refreshToken);
-
       await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
 
       res
@@ -159,7 +156,7 @@ class UserController {
 
       await this.userService.nicknameChange(userKey, nickname);
 
-      return res.status(200).json({ message: "닉네임 변경 완료", userKey });
+      return res.status(200).json({ message: "닉네임 변경 완료" });
     } catch (error) {
       next(error);
     }
