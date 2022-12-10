@@ -9,8 +9,8 @@ const commentRouter = require("./comment.routes");
 const noteRouter = require("./note.routes");
 const managerRouter = require("./manager.routes");
 const reportRouter = require("./report.routes");
-
-const mailRouter = require("./mail.routes")
+const mailRouter = require("./mail.routes");
+const pushRouter = require("./push.routes");
 
 //로그인,회원가입,메인페이지
 router.use("/", userRouter);
@@ -36,5 +36,7 @@ router.use("/", managerRouter);
 router.use("/", reportRouter);
 
 router.use("/mailtest", mailRouter);
+
+router.use("/push", pushRouter);
 
 module.exports = router;

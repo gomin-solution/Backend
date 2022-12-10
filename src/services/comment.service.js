@@ -6,10 +6,6 @@ const MissionService = require("../services/mission.service");
 
 const MissionRepository = require("../repositories/mission.repository");
 
-const SocketIO = require("socket.io");
-const server = require("../app");
-const io = SocketIO(server, { path: "/socket.io" });
-
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
@@ -39,11 +35,6 @@ class CommentService {
       adviceId,
       comment
     );
-
-    io.to(findAdvice.userKey).emit("comment_alarm", {
-      adviceId: adviceId,
-      title: findAdvice.title,
-    });
 
     await this.missionRepository.commentActivity(userKey);
 
