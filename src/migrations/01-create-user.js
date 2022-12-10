@@ -46,6 +46,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      deviceToken: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
