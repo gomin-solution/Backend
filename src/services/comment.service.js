@@ -40,6 +40,8 @@ class CommentService {
       comment
     );
 
+    console.log("////////댓글 작성///////");
+    console.log(findAdvice.userKey);
     io.to(findAdvice.userKey).emit("comment_alarm", {
       adviceId: adviceId,
       title: findAdvice.title,
