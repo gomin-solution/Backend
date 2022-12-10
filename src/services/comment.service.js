@@ -41,7 +41,7 @@ class CommentService {
     await this.missionRepository.commentActivity(userKey);
 
     const message = {
-      token: findAdvice.Users.deviceToken,
+      token: findAdvice.User.deviceToken,
       data: {
         title: "고민접기",
         body: "게시물에 댓글이 달렸습니다!",
