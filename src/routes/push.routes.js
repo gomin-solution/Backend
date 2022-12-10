@@ -15,7 +15,10 @@ router.post("/", authMiddleware, async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { deviceToken } = req.body;
     console.log(deviceToken);
-    await User.update({ deviceToken }, { where: { userKey: userKey } });
+    await User.update(
+      { deviceToken: deviceToken },
+      { where: { userKey: userKey } }
+    );
 
     return res.status(200).json({
       msg: "토큰 저장 성공",
