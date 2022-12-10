@@ -40,16 +40,12 @@ class CommentService {
 
     await this.missionRepository.commentActivity(userKey);
 
-    console.log("/////////댓글작성///////////");
-    console.log("userkey", findAdvice.userKey);
-    console.log("deviceTOken", findAdvice.User.deviceToken);
-
     const message = {
       token: findAdvice.User.deviceToken,
       data: {
         title: "고민접기",
         body: "게시물에 댓글이 달렸습니다!",
-        link: `/board-advice/${adviceId}`,
+        link: `board-advice/${adviceId}`,
       },
     };
 
