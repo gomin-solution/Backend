@@ -45,15 +45,15 @@ class CommentService {
       data: {
         title: "고민접기",
         body: "게시물에 댓글이 달렸습니다!",
-        link: `/board-advice/${adviceId}`,
+        link: `board-advice/${adviceId}`,
       },
     };
 
     admin
       .messaging()
       .send(message)
-      .catch(function (err) {
-        next(err);
+      .catch(function (error) {
+        console.trace(error);
       });
 
     return createComment;
