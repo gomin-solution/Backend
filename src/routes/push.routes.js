@@ -14,6 +14,8 @@ router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const { userKey } = res.locals.user;
     const { deviceToken } = req.body;
+    console.log("//////////////디바이스 토큰//////////");
+    console.log(userKey);
     console.log(deviceToken);
     await User.update(
       { deviceToken: deviceToken },
