@@ -6,6 +6,8 @@ const MissionService = require("../services/mission.service");
 
 const MissionRepository = require("../repositories/mission.repository");
 
+const admin = require("firebase-admin");
+
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
@@ -37,6 +39,22 @@ class CommentService {
     );
 
     await this.missionRepository.commentActivity(userKey);
+
+    const message = {
+      token: findAdvice.deviceToken,
+      data: {
+        title: "고민접기",
+        body: "게시물에 댓글이 달렸습니다!",
+        link: `/board-advice/${adviceId}`,
+      },
+    };
+
+    admin
+      .messaging()
+      .send(message)
+      .catch(function (err) {
+        next(err);
+      });
 
     return createComment;
   };
