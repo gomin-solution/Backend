@@ -125,7 +125,7 @@ class AdviceRepository {
   findAdvice = async (adviceId) => {
     return await Advice.findOne({
       where: { adviceId: adviceId },
-      attributes: ["userKey"],
+      attributes: ["userKey", "title"],
     });
   };
 

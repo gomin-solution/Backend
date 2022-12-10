@@ -40,6 +40,11 @@ class CommentService {
       comment
     );
 
+    io.to(findAdvice.userKey).emit("comment_alarm", {
+      adviceId: adviceId,
+      title: findAdvice.title,
+    });
+
     await this.missionRepository.commentActivity(userKey);
 
     return createComment;
