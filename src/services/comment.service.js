@@ -40,6 +40,10 @@ class CommentService {
 
     await this.missionRepository.commentActivity(userKey);
 
+    console.log("/////////댓글작성///////////");
+    console.log("userkey", findAdvice.userKey);
+    console.log("deviceTOken", findAdvice.User.deviceToken);
+
     const message = {
       token: findAdvice.User.deviceToken,
       data: {
@@ -52,8 +56,8 @@ class CommentService {
     admin
       .messaging()
       .send(message)
-      .catch(function (err) {
-        next(err);
+      .catch(function (error) {
+        console.trace(error);
       });
 
     return createComment;
