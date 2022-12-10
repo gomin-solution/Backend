@@ -75,7 +75,9 @@ module.exports = async () => {
       await new ChoiceRepository().updateEnd(choice.choiceId);
       //작성자 마감횟수 +1
       await new MissionRepository().choiceEndActivity(choice.userKey);
-    } else {
+    } else if (!choice.isEnd) {
+      console.log("스케줄 다시설정");
+      console.log(scheduleDate, choice.choiceId);
       schedule.scheduleJob(scheduleDate, async () => {
         console.log("마감 스케쥴 실행됨");
         //isEnd업데이트
