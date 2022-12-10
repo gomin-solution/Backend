@@ -23,6 +23,7 @@ class AdviceRepository {
       viewCount: 0,
       isAdult: isAdult,
     });
+
     return createAdvice;
   };
 

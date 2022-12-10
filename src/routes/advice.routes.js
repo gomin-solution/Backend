@@ -25,7 +25,6 @@ adviceRouter.get(
 );
 
 //조언 게시글 상세조회
-
 adviceRouter.get("/:adviceId/:filterId", auth, adviceController.findOneAdvice);
 
 //조언 게시글 수정
