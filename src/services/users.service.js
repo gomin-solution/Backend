@@ -7,10 +7,6 @@ const MissionRepository = require("../repositories/mission.repository");
 const DailyMsgRepository = require("../repositories/dailymessage.repository");
 const CommentRepository = require("../repositories/comment.repository");
 
-const SocketIO = require("socket.io");
-const server = require("../app");
-const io = SocketIO(server, { path: "/socket.io" });
-
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const redisCli = require("../util/redis");
