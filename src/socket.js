@@ -7,6 +7,7 @@ const UserController = require("./controllers/user.controller");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
+const admin = require("firebase-admin");
 
 module.exports = (server) => {
   // 서버 연결, path는 프론트와 일치시켜준다.
