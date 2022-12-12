@@ -34,10 +34,21 @@ router.post("/", authMiddleware, async (req, res, next) => {
 router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const { userKey } = res.locals.user;
-    const alarms = await redisCli.lRange(`${userKey}_A`, 0, -1);
+    const Alarms = await redisCli.lRange(`${userKey}_A`, 0, -1);
 
-    const Alarms = alarms.map((alarm) => JSON.parse(alarm));
-    return res.status(200).json({ Alarms });
+    const alarms = Alarms.map((alarm) => JSON.parse(alarm));
+    return res.status(200).json({ alarms });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:index", authMiddleware, async (req, res, next) => {
+  try {
+    const { userKey } = res.locals.user;
+    const { alarm } = req.body;
+    const Alarm = JSON.stringify(alarm);
+    await redisCli.lRem(`${userKey}_A`, 1, `${Alarm}`);
   } catch (error) {
     next(error);
   }
