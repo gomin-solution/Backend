@@ -1,6 +1,7 @@
 const UserRepository = require("../repositories/users.repository.js");
 const MissionRepository = require("../repositories/mission.repository");
 const CommentRepository = require("../repositories/comment.repository.js");
+const admin = require("firebase-admin");
 
 module.exports = async (userKey, req, res, next) => {
   try {
@@ -168,6 +169,9 @@ module.exports = async (userKey, req, res, next) => {
 
     const Userdata = await new UserRepository().userDeviceToken(userKey);
     if (newCompleteMissionId.length) {
+      console.log("///////////디바이스 토큰//////////");
+      console.log(Userdata.deviceToken);
+
       const message = {
         token: Userdata.deviceToken,
         data: {
