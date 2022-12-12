@@ -70,7 +70,7 @@ module.exports = (server) => {
         note: note,
         date: date,
       };
-      const sendUserData = await User.findeOne({
+      const sendUserData = await User.findOne({
         where: { userKey: sendUser },
         attributes: ["deviceToken"],
       });
