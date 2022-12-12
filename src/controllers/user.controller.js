@@ -191,7 +191,7 @@ class UserController {
 
       return res
         .status(200)
-        .json({ mainpage: mainpage, dailyMessage: dailyData.msg });
+        .json({ mainpage: mainpage, dailyMessage: dailyData?.msg });
     } catch (error) {
       next(error);
     }
