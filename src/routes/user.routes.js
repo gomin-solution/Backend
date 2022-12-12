@@ -33,8 +33,8 @@ router.put("/nickname", auth, userController.nicknameChange);
 //카카오 로그인
 router.post("/kakao", LoginMiddleware, userController.kakao);
 
-//카카오 닉네임
-router.put("/kakao/nickname", auth, userController.kakaoNickname);
+//카카오 회원가입(닉네임 설정)
+router.put("/kakao/nickname", auth, userController.kakaoSignup);
 
 //로그인테스트
 router.post("/test", auth);
