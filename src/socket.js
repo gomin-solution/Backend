@@ -76,15 +76,18 @@ module.exports = (server) => {
         attributes: ["deviceToken"],
       });
       io.to(roomId).emit("message", msg);
-
+      const messageData = {
+        title: "고민접기",
+        body: "쪽지가 도착했습니다!",
+        link: `rooms/${roomId}`,
+        date: dayjs().tz().format("MM/DD HH:mm"),
+      };
       const message = {
         token: sendUserData.deviceToken,
-        data: {
-          title: "고민접기",
-          body: "쪽지가 도착했습니다!",
-          link: `rooms/${roomId}`,
-        },
+        data: messageData,
       };
+      const jsonData = JSON.stringify(messageData);
+      await redisCli.rPush(`${findAdvice.userKey}_A`, jsonData);
 
       admin
         .messaging()

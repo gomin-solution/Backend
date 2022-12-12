@@ -7,14 +7,13 @@ require("dotenv").config();
 module.exports = async (req, res, next) => {
   try {
     const { authorization, refreshtoken } = req.headers;
+    console.log("////////미들웨어/////////");
+    console.log("refreshtoken", refreshtoken);
 
     const acesstokenType = authorization?.split(" ")[0];
     const refreshTokenType = refreshtoken?.split(" ")[0];
     const accessToken = authorization?.split(" ")[1];
     const refreshToken = refreshtoken?.split(" ")[1];
-    console.log("/////here//////");
-    console.log("accessToken", accessToken);
-    console.log("refreshtoken", refreshtoken);
 
     if (accessToken == "undefined") {
       //익명유저
@@ -59,11 +58,11 @@ module.exports = async (req, res, next) => {
     const isAccessTokenValidate = validateAccessToken(accessToken);
     const isRefreshTokenValidate = await validateRefreshToken(refreshToken);
 
-    if (refreshToken && !isRefreshTokenValidate) {
+    if (!isRefreshTokenValidate) {
       return res.status(403).json({ message: "다시 로그인 해주세요." });
     }
 
-    if (refreshToken && accessToken && isRefreshTokenValidate) {
+    if (!isAccessTokenValidate && isRefreshTokenValidate) {
       const decoded = jwt.decode(accessToken);
       const newAccessToken = jwt.sign(
         { userId: decoded.userId, userKey: decoded.userKey },
@@ -77,12 +76,12 @@ module.exports = async (req, res, next) => {
         .json({ message: "토큰 재발급", accessToken: newAccessToken });
     }
 
-    if (!refreshToken && !isAccessTokenValidate) {
+    if (!isAccessTokenValidate) {
       return res.status(405).json({ message: "만료" });
     } else if (accessToken !== "undefined" && isAccessTokenValidate) {
       /**토큰이 유효한 경우 */
       const { userId } = jwt.decode(accessToken);
-      const user = await User.findOne({ where: { userId: userId } }); //
+      const user = await User.findOne({ where: { userId: userId } });
       res.locals.user = user;
       next();
     }

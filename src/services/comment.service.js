@@ -7,6 +7,7 @@ const MissionService = require("../services/mission.service");
 const MissionRepository = require("../repositories/mission.repository");
 
 const admin = require("firebase-admin");
+const redisCli = require("../util/redis");
 
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
@@ -39,15 +40,19 @@ class CommentService {
     );
 
     await this.missionRepository.commentActivity(userKey);
+    const messageData = {
+      title: "고민접기",
+      body: "게시물에 댓글이 달렸습니다!",
+      link: `board-advice/${adviceId}`,
+      date: dayjs().tz().format("MM/DD HH:mm"),
+    };
 
     const message = {
       token: findAdvice.User.deviceToken,
-      data: {
-        title: "고민접기",
-        body: "게시물에 댓글이 달렸습니다!",
-        link: `board-advice/${adviceId}`,
-      },
+      data: messageData,
     };
+    const jsonData = JSON.stringify(messageData);
+    await redisCli.rPush(`${findAdvice.userKey}_A`, jsonData);
 
     admin
       .messaging()
@@ -140,15 +145,20 @@ class CommentService {
 
     //채택받기 횟수 +1
     await this.missionRepository.selectActivity(commentUser.userKey);
+    const messageData = {
+      title: "고민접기",
+      body: "작성하신 댓글이 채택되었습니다!",
+      link: `board-advice/${findComment.adviceId}`,
+      date: dayjs().tz().format("MM/DD HH:mm"),
+    };
 
     const message = {
       token: findComment.User.deviceToken,
-      data: {
-        title: "고민접기",
-        body: "작성하신 댓글이 채택되었습니다!",
-        link: `board-advice/${findComment.adviceId}`,
-      },
+      data: messageData,
     };
+
+    const jsonData = JSON.stringify(messageData);
+    await redisCli.rPush(`${findAdvice.userKey}_A`, jsonData);
 
     admin
       .messaging()

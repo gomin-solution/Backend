@@ -2,6 +2,7 @@ const UserRepository = require("../repositories/users.repository.js");
 const MissionRepository = require("../repositories/mission.repository");
 const CommentRepository = require("../repositories/comment.repository.js");
 const admin = require("firebase-admin");
+const redisCli = require("../util/redis");
 
 module.exports = async (userKey, req, res, next) => {
   try {
@@ -169,14 +170,19 @@ module.exports = async (userKey, req, res, next) => {
 
     const Userdata = await new UserRepository().userDeviceToken(userKey);
     if (newCompleteMissionId.length) {
+      const messageData = {
+        title: "고민접기",
+        body: "리워드를 확인하세요!",
+        link: `reward`,
+        date: dayjs().tz().format("MM/DD HH:mm"),
+      };
       const message = {
         token: Userdata.deviceToken,
-        data: {
-          title: "고민접기",
-          body: "리워드를 확인하세요!",
-          link: `reward`,
-        },
+        data: messageData,
       };
+
+      const jsonData = JSON.stringify(messageData);
+      await redisCli.rPush(`${findAdvice.userKey}_A`, jsonData);
 
       admin
         .messaging()
