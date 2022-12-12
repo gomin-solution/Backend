@@ -149,6 +149,7 @@ class CommentService {
       title: "고민접기",
       body: "작성하신 댓글이 채택되었습니다!",
       link: `board-advice/${findComment.adviceId}`,
+      date: dayjs().tz().format("MM/DD HH:mm"),
     };
 
     const message = {
