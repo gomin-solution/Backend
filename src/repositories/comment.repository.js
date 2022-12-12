@@ -105,7 +105,7 @@ class CommentRepository {
   findComment = async (commentId) => {
     return await Comment.findOne({
       where: { commentId: commentId },
-      include: { model: Advice },
+      include: [{ model: Advice }, { model: User }],
     });
   };
 
