@@ -164,7 +164,7 @@ class UserController {
     }
   };
 
-  kakaoNickname = async (req, res, next) => {
+  kakaoSignup = async (req, res, next) => {
     try {
       const { userKey, nickname } = req.body;
       if (!userKey || !nickname) {
