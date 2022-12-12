@@ -7,13 +7,14 @@ require("dotenv").config();
 module.exports = async (req, res, next) => {
   try {
     const { authorization, refreshtoken, interceptor } = req.headers;
-    console.log("////////미들웨어/////////");
-    console.log("refreshtoken", refreshtoken);
 
     const acesstokenType = authorization?.split(" ")[0];
     const refreshTokenType = refreshtoken?.split(" ")[0];
     const accessToken = authorization?.split(" ")[1];
     const refreshToken = refreshtoken?.split(" ")[1];
+    console.log("////////미들웨어/////////");
+    console.log("refreshtoken", refreshtoken);
+    console.log("accessToken", accessToken);
 
     if (accessToken == "undefined") {
       //익명유저
