@@ -184,7 +184,7 @@ class UserService {
     const dailyData = await redisCli.hGetAll(`${userKey}`);
     const select = await this.commentRepository.findAllSelect();
     let isOpen;
-    dailyData.isOpen == "0" || userKey == 0
+    dailyData?.isOpen == "0" || userKey == 0
       ? (isOpen = false)
       : (isOpen = true);
     const adviceData = getAdvice.map((post) => {
