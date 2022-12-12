@@ -51,8 +51,8 @@ class CommentService {
       token: findAdvice.User.deviceToken,
       data: messageData,
     };
-    const jsondata = JSON.stringify(messageData);
-    await redisCli.rPush(`${findAdvice.userKey}_A`, jsondata);
+    const jsonData = JSON.stringify(messageData);
+    await redisCli.rPush(`${findAdvice.userKey}_A`, jsonData);
 
     admin
       .messaging()
@@ -145,15 +145,19 @@ class CommentService {
 
     //채택받기 횟수 +1
     await this.missionRepository.selectActivity(commentUser.userKey);
+    const messageData = {
+      title: "고민접기",
+      body: "작성하신 댓글이 채택되었습니다!",
+      link: `board-advice/${findComment.adviceId}`,
+    };
 
     const message = {
       token: findComment.User.deviceToken,
-      data: {
-        title: "고민접기",
-        body: "작성하신 댓글이 채택되었습니다!",
-        link: `board-advice/${findComment.adviceId}`,
-      },
+      data: messageData,
     };
+
+    const jsonData = JSON.stringify(messageData);
+    await redisCli.rPush(`${findAdvice.userKey}_A`, jsonData);
 
     admin
       .messaging()
