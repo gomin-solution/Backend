@@ -12,9 +12,6 @@ module.exports = async (req, res, next) => {
     const refreshTokenType = refreshtoken?.split(" ")[0];
     const accessToken = authorization?.split(" ")[1];
     const refreshToken = refreshtoken?.split(" ")[1];
-    console.log("/////here//////");
-    console.log("accessToken", accessToken);
-    console.log("refreshtoken", refreshtoken);
 
     if (accessToken == "undefined") {
       //익명유저
@@ -82,7 +79,7 @@ module.exports = async (req, res, next) => {
     } else if (accessToken !== "undefined" && isAccessTokenValidate) {
       /**토큰이 유효한 경우 */
       const { userId } = jwt.decode(accessToken);
-      const user = await User.findOne({ where: { userId: userId } }); //
+      const user = await User.findOne({ where: { userId: userId } });
       res.locals.user = user;
       next();
     }
