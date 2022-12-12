@@ -44,7 +44,7 @@ class CommentService {
       title: "고민접기",
       body: "게시물에 댓글이 달렸습니다!",
       link: `board-advice/${adviceId}`,
-      date: dayjs().tz().format("MM/DD HH:mm"),
+      date: dayjs().tz().format("YYYY/MM/DD HH:mm:ss"),
     };
 
     const message = {
@@ -149,7 +149,7 @@ class CommentService {
       title: "고민접기",
       body: "작성하신 댓글이 채택되었습니다!",
       link: `board-advice/${findComment.adviceId}`,
-      date: dayjs().tz().format("MM/DD HH:mm"),
+      date: dayjs().tz().format("YYYY/MM/DD HH:mm:ss"),
     };
 
     const message = {

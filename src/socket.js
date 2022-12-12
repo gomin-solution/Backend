@@ -80,7 +80,7 @@ module.exports = (server) => {
         title: "고민접기",
         body: "쪽지가 도착했습니다!",
         link: `rooms/${roomId}`,
-        date: dayjs().tz().format("MM/DD HH:mm"),
+        date: dayjs().tz().format("YYYY/MM/DD HH:mm:ss"),
       };
       const message = {
         token: sendUserData.deviceToken,

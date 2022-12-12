@@ -174,7 +174,7 @@ module.exports = async (userKey, req, res, next) => {
         title: "고민접기",
         body: "리워드를 확인하세요!",
         link: `reward`,
-        date: dayjs().tz().format("MM/DD HH:mm"),
+        date: dayjs().tz().format("YYYY/MM/DD HH:mm:ss"),
       };
       const message = {
         token: Userdata.deviceToken,
