@@ -6,7 +6,7 @@ require("dotenv").config();
 // 유저 인증에 실패하면 403 상태 코드를 반환한다.
 module.exports = async (req, res, next) => {
   try {
-    const { authorization, refreshtoken } = req.headers;
+    const { authorization, refreshtoken, interceptor } = req.headers;
     console.log("////////미들웨어/////////");
     console.log("refreshtoken", refreshtoken);
 
@@ -67,7 +67,17 @@ module.exports = async (req, res, next) => {
       return res.status(403).json({ message: "다시 로그인 해주세요." });
     }
 
-    if (!isAccessTokenValidate && isRefreshTokenValidate) {
+    if (!isAccessTokenValidate && !interceptor) {
+      return res.status(405).json({ message: "만료" });
+    } else if (accessToken !== "undefined" && isAccessTokenValidate) {
+      /**토큰이 유효한 경우 */
+      const { userId } = jwt.decode(accessToken);
+      const user = await User.findOne({ where: { userId: userId } });
+      res.locals.user = user;
+      next();
+    }
+
+    if (!isAccessTokenValidate && isRefreshTokenValidate && interceptor) {
       const decoded = jwt.decode(accessToken);
       const newAccessToken = jwt.sign(
         { userId: decoded.userId, userKey: decoded.userKey },
@@ -79,16 +89,6 @@ module.exports = async (req, res, next) => {
       return res
         .status(201)
         .json({ message: "토큰 재발급", accessToken: newAccessToken });
-    }
-
-    if (!isAccessTokenValidate) {
-      return res.status(405).json({ message: "만료" });
-    } else if (accessToken !== "undefined" && isAccessTokenValidate) {
-      /**토큰이 유효한 경우 */
-      const { userId } = jwt.decode(accessToken);
-      const user = await User.findOne({ where: { userId: userId } });
-      res.locals.user = user;
-      next();
     }
   } catch (error) {
     next(error);
