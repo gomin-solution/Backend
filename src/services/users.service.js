@@ -212,7 +212,7 @@ class UserService {
   getDailymessage = async (userKey) => {
     const dailyData = await redisCli.hGetAll(`${userKey}`);
     let isOpen;
-    dailyData.isOpen == "0" ? (isOpen = false) : (isOpen = true);
+    dailyData?.isOpen == "0" || !dailyData ? (isOpen = false) : (isOpen = true);
     //미션알람
     // if (!isOpen) {
     //   const missionComplete = await this.missionService.MyNewComplete(userKey);
