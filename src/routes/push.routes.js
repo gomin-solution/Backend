@@ -4,6 +4,7 @@ const { User } = require("../models");
 const authMiddleware = require("../middlewares/authMiddleware");
 const admin = require("firebase-admin");
 let serAccount = require("../config/firebase");
+const redisCli = require("../util/redis");
 
 admin.initializeApp({
   credential: admin.credential.cert(serAccount),
@@ -25,8 +26,20 @@ router.post("/", authMiddleware, async (req, res, next) => {
     return res.status(200).json({
       msg: "토큰 저장 성공",
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/", authMiddleware, async (req, res, next) => {
+  try {
+    const { userKey } = res.locals.user;
+    const alarms = await redisCli.lRange(`${userKey}_A`, 0, -1);
+
+    const Alarms = alarms.map((alarm) => JSON.parse(alarm));
+    return res.status(200).json({ Alarms });
+  } catch (error) {
+    next(error);
   }
 });
 
