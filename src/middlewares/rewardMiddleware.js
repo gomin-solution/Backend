@@ -96,6 +96,7 @@ module.exports = async (userKey, req, res, next) => {
         mission.MissionCompleteMission?.completeMission <=
         CompleteMission.length;
 
+      //미션 조건 충족시 미션완료 배열에 미션 ID추가
       if (mission.missionId == 1) {
         Postmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
@@ -163,6 +164,25 @@ module.exports = async (userKey, req, res, next) => {
         "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade4.png";
       const gradeKeyword = "마스터 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
+    }
+
+    const Userdata = await new UserRepository().userDeviceToken(userKey);
+    if (newCompleteMissionId.length) {
+      const message = {
+        token: Userdata.deviceToken,
+        data: {
+          title: "고민접기",
+          body: `미션을 완료하셨습니다.\n지금 바로 리워드 보상을 받으세요`,
+          link: `reward`,
+        },
+      };
+
+      admin
+        .messaging()
+        .send(message)
+        .catch(function (error) {
+          console.trace(error);
+        });
     }
 
     return;
