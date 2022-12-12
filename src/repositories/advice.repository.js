@@ -126,7 +126,7 @@ class AdviceRepository {
     return await Advice.findOne({
       where: { adviceId: adviceId },
       attributes: ["userKey", "title"],
-      include: { model: User, attributes: ["deviceToken"] },
+      include: { model: User, attributes: ["deviceToken", "userKey"] },
     });
   };
 
