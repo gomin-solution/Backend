@@ -169,14 +169,11 @@ module.exports = async (userKey, req, res, next) => {
 
     const Userdata = await new UserRepository().userDeviceToken(userKey);
     if (newCompleteMissionId.length) {
-      console.log("///////////디바이스 토큰//////////");
-      console.log(Userdata.deviceToken);
-
       const message = {
         token: Userdata.deviceToken,
         data: {
           title: "고민접기",
-          body: `미션을 완료하셨습니다.\n지금 바로 리워드 보상을 받으세요`,
+          body: "리워드를 확인하세요!",
           link: `reward`,
         },
       };
