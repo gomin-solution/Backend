@@ -52,7 +52,7 @@ class CommentService {
       data: messageData,
     };
     const jsondata = JSON.stringify(messageData);
-    await redisCli.lPush(`${findAdvice.userKey}_A`, jsondata);
+    await redisCli.rPush(`${findAdvice.userKey}_A`, jsondata);
 
     admin
       .messaging()
