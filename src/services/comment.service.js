@@ -6,9 +6,7 @@ const MissionService = require("../services/mission.service");
 
 const MissionRepository = require("../repositories/mission.repository");
 
-const SocketIO = require("socket.io");
-const server = require("../app");
-const io = SocketIO(server, { path: "/socket.io" });
+const admin = require("firebase-admin");
 
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
@@ -41,6 +39,22 @@ class CommentService {
     );
 
     await this.missionRepository.commentActivity(userKey);
+
+    const message = {
+      token: findAdvice.User.deviceToken,
+      data: {
+        title: "고민접기",
+        body: "게시물에 댓글이 달렸습니다!",
+        link: `board-advice/${adviceId}`,
+      },
+    };
+
+    admin
+      .messaging()
+      .send(message)
+      .catch(function (error) {
+        console.trace(error);
+      });
 
     return createComment;
   };
@@ -126,6 +140,22 @@ class CommentService {
 
     //채택받기 횟수 +1
     await this.missionRepository.selectActivity(commentUser.userKey);
+
+    const message = {
+      token: findComment.User.deviceToken,
+      data: {
+        title: "고민접기",
+        body: "작성하신 댓글이 채택되었습니다!",
+        link: `board-advice/${findComment.adviceId}`,
+      },
+    };
+
+    admin
+      .messaging()
+      .send(message)
+      .catch(function (error) {
+        console.trace(error);
+      });
 
     return commentUser.userKey;
   };

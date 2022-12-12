@@ -23,6 +23,7 @@ class AdviceRepository {
       viewCount: 0,
       isAdult: isAdult,
     });
+
     return createAdvice;
   };
 
@@ -124,7 +125,8 @@ class AdviceRepository {
   findAdvice = async (adviceId) => {
     return await Advice.findOne({
       where: { adviceId: adviceId },
-      attributes: ["userKey"],
+      attributes: ["userKey", "title"],
+      include: { model: User, attributes: ["deviceToken"] },
     });
   };
 

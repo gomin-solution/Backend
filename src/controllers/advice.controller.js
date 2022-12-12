@@ -19,6 +19,7 @@ class AdviceController {
 
     const { title, categoryId, content } = req.body;
     const images = req.files;
+    console.log(images)
     try {
       const createAdviceData = await this.adviceService.createAdvice(
         userKey,
@@ -90,6 +91,8 @@ class AdviceController {
     }
     const images = req.files;
     const findAdvice = await this.adviceService.findAllAdviceOne(adviceId);
+
+    console.log(images);
 
     try {
       if (userKey !== findAdvice.userKey) {

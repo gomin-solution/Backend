@@ -1,6 +1,7 @@
 const UserRepository = require("../repositories/users.repository.js");
 const MissionRepository = require("../repositories/mission.repository");
 const CommentRepository = require("../repositories/comment.repository.js");
+const admin = require("firebase-admin");
 
 module.exports = async (userKey, req, res, next) => {
   try {
@@ -13,14 +14,6 @@ module.exports = async (userKey, req, res, next) => {
 
     /**내가 받은 총 좋아요수 */
     const likeTotal = totalReword.receiveLikeCount;
-
-    /**내 게시글의 총 조회수 */
-    let viewCount = 0;
-    // const viewCountArray = totalReword.Advice.map((x) => x.viewCount);
-
-    // viewCountArray.forEach((x) => {
-    //   viewCount += x;
-    // });
 
     /** 내가 조언해준 횟수*/
     const totalAdviceComment = totalReword.commentCount;
@@ -104,6 +97,7 @@ module.exports = async (userKey, req, res, next) => {
         mission.MissionCompleteMission?.completeMission <=
         CompleteMission.length;
 
+      //미션 조건 충족시 미션완료 배열에 미션 ID추가
       if (mission.missionId == 1) {
         Postmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
@@ -152,9 +146,6 @@ module.exports = async (userKey, req, res, next) => {
       userKey
     );
 
-    console.log("/////////here/////////");
-    console.log(missionCompleteId.length);
-
     if (3 <= missionCompleteId.length && missionCompleteId.length < 6) {
       const image =
         "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade2.png";
@@ -174,6 +165,25 @@ module.exports = async (userKey, req, res, next) => {
         "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade4.png";
       const gradeKeyword = "마스터 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
+    }
+
+    const Userdata = await new UserRepository().userDeviceToken(userKey);
+    if (newCompleteMissionId.length) {
+      const message = {
+        token: Userdata.deviceToken,
+        data: {
+          title: "고민접기",
+          body: "리워드를 확인하세요!",
+          link: `reward`,
+        },
+      };
+
+      admin
+        .messaging()
+        .send(message)
+        .catch(function (error) {
+          console.trace(error);
+        });
     }
 
     return;

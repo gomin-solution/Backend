@@ -29,14 +29,19 @@ class UserController {
 
       const hashed = await bcrypt.hash(password, 12);
 
-      await this.userService.createUser({
-        userId: userId,
-        nickname: nickname,
-        password: hashed,
-        isAdult: isAdult,
-      });
+      const { accessToken, refreshToken, userKey } =
+        await this.userService.createUser({
+          userId: userId,
+          nickname: nickname,
+          password: hashed,
+          isAdult: isAdult,
+        });
 
-      res.status(200).json({ message: "회원가입 성공" });
+      await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
+
+      res
+        .status(200)
+        .json({ message: "회원가입 성공", accessToken, refreshToken, userKey });
     } catch (error) {
       next(error);
     }
@@ -45,13 +50,12 @@ class UserController {
   /**로그인 컨트롤러 */
   login = async (req, res, next) => {
     try {
-      // const { email, password } = await joi.loginSchema.validateAsync(req.body);
       const { userId, password } = req.body;
       const { accessToken, refreshToken, nickname, userKey } =
         await this.userService.verifyUser(userId, password);
 
       //refreshtoken을 userId키로 redis에 저장
-      await redisCli.set(userId, refreshToken);
+      await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
       //배포환경인 경우 보안 설정된 쿠키 전송
 
       res.status(200).json({
@@ -82,7 +86,7 @@ class UserController {
         });
       } else {
         //refreshtoken을 userId키로 redis에 저장
-        await redisCli.set(id, refreshToken);
+        await redisCli.set(id, refreshToken, { EX: 60 * 60 * 24 * 15 });
 
         return res.status(200).json({
           message: "카카오 로그인 성공.",
@@ -152,7 +156,7 @@ class UserController {
 
       await this.userService.nicknameChange(userKey, nickname);
 
-      return res.status(200).json({ message: "닉네임 변경 완료", userKey });
+      return res.status(200).json({ message: "닉네임 변경 완료" });
     } catch (error) {
       next(error);
     }
