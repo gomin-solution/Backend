@@ -7,6 +7,7 @@ const MissionService = require("../services/mission.service");
 const MissionRepository = require("../repositories/mission.repository");
 
 const admin = require("firebase-admin");
+const redisCli = require("../util/redis");
 
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
@@ -39,15 +40,19 @@ class CommentService {
     );
 
     await this.missionRepository.commentActivity(userKey);
+    const messageData = {
+      title: "고민접기",
+      body: "게시물에 댓글이 달렸습니다!",
+      link: `board-advice/${adviceId}`,
+      date: dayjs().tz().format("MM/DD HH:mm"),
+    };
 
     const message = {
       token: findAdvice.User.deviceToken,
-      data: {
-        title: "고민접기",
-        body: "게시물에 댓글이 달렸습니다!",
-        link: `board-advice/${adviceId}`,
-      },
+      data: messageData,
     };
+
+    redisCli.lpush(`${findAdvice.userKey}_A`, messageData);
 
     admin
       .messaging()
