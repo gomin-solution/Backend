@@ -43,7 +43,7 @@ router.get("/", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.delete("/:index", authMiddleware, async (req, res, next) => {
+router.delete("/", authMiddleware, async (req, res, next) => {
   try {
     const { userKey } = res.locals.user;
     const { alarm } = req.body;
