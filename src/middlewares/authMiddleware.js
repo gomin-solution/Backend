@@ -44,6 +44,7 @@ module.exports = async (req, res, next) => {
       try {
         const decoded = jwt.decode(accessToken);
         const token = await redisCli.get(`${decoded.userId}`);
+        console.log("decoded.userId", decoded.userId);
         console.log("refreshToken", refreshToken);
         console.log("token", token);
         if (refreshToken === token) {
