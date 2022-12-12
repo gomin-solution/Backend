@@ -51,8 +51,8 @@ class CommentService {
       token: findAdvice.User.deviceToken,
       data: messageData,
     };
-
-    // await redisCli.lPush(`${findAdvice.userKey}_A`, messageData);
+    const jsondata = JSON.stringify(messageData);
+    await redisCli.lPush(`${findAdvice.userKey}_A`, jsondata);
 
     admin
       .messaging()
