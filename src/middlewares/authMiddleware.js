@@ -7,6 +7,8 @@ require("dotenv").config();
 module.exports = async (req, res, next) => {
   try {
     const { authorization, refreshtoken } = req.headers;
+    console.log("////////미들웨어/////////");
+    console.log("refreshtoken", refreshtoken);
 
     const acesstokenType = authorization?.split(" ")[0];
     const refreshTokenType = refreshtoken?.split(" ")[0];
