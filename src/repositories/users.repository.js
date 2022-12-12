@@ -64,6 +64,13 @@ class UserRepository {
     return await User.findOne({ where: { userId: userId } });
   };
 
+  userDeviceToken = async (userKey) => {
+    return await User.findOne({
+      where: { userKey: userKey },
+      attributes: ["deviceToken"],
+    });
+  };
+
   passwordChange = async (userKey, hashed) => {
     return await User.update({ password: hashed }, { where: { userKey } });
   };
