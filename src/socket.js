@@ -1,8 +1,9 @@
 const SocketIO = require("socket.io");
-const { Note, NoteRoom } = require("./models");
+const { Note, NoteRoom, User } = require("./models");
 const dayjs = require("dayjs");
 const timezone = require("dayjs/plugin/timezone");
 const utc = require("dayjs/plugin/utc");
+const UserController = require("./controllers/user.controller");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
@@ -32,10 +33,7 @@ module.exports = (server) => {
 
     //메인페이지 연결시
     socket.on("main_connect", (userKey) => {
-      console.log("//////메인페이지 연결됨/////////");
-      console.log(userKey);
       socket.join(userKey);
-      console.log(socket.rooms);
     });
 
     //* 룸 입장
@@ -64,8 +62,6 @@ module.exports = (server) => {
       });
       const findRoom = await NoteRoom.findByPk(roomId);
       let sendUser;
-      console.log("user1", findRoom.user1);
-      console.log("user2", findRoom.user2);
       findRoom.user1 == userKey
         ? (sendUser = findRoom.user2)
         : (sendUser = findRoom.user1);
@@ -74,8 +70,27 @@ module.exports = (server) => {
         note: note,
         date: date,
       };
+      const sendUserData = await User.findeOne({
+        where: { userKey: sendUser },
+        attributes: ["deviceToken"],
+      });
       io.to(roomId).emit("message", msg);
-      io.to(sendUser).emit("message_alarm");
+
+      const message = {
+        token: sendUserData.deviceToken,
+        data: {
+          title: "고민접기",
+          body: "쪽지가 도착했습니다!",
+          link: `rooms/${roomId}`,
+        },
+      };
+
+      admin
+        .messaging()
+        .send(message)
+        .catch(function (error) {
+          console.trace(error);
+        });
     });
   });
 };
