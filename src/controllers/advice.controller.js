@@ -19,6 +19,7 @@ class AdviceController {
 
     const { title, categoryId, content } = req.body;
     const images = req.files;
+    console.log(images)
     try {
       const createAdviceData = await this.adviceService.createAdvice(
         userKey,
