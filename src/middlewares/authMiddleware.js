@@ -48,9 +48,11 @@ module.exports = async (req, res, next) => {
           jwt.verify(refreshToken, process.env.SECRET_KEY);
           return true;
         } else {
+          console.log("/////////토큰 불일치///////");
           return false;
         }
       } catch (error) {
+        console.log("////////토큰 만료/////////");
         return false;
       }
     }
