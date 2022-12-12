@@ -9,6 +9,7 @@ module.exports = async (req, res, next) => {
     const { authorization, refreshtoken } = req.headers;
     console.log("////////미들웨어/////////");
     console.log("refreshtoken", refreshtoken);
+    console.log("accessToken", accessToken);
 
     const acesstokenType = authorization?.split(" ")[0];
     const refreshTokenType = refreshtoken?.split(" ")[0];
