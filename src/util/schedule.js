@@ -79,13 +79,16 @@ module.exports = async () => {
       console.log("스케줄 다시설정");
       console.log(scheduleDate, choice.choiceId);
       console.log("마감시간", dayjs(choice.endTime).tz().format());
-      schedule.scheduleJob(dayjs(choice.endTime).tz().format(), async () => {
-        console.log("마감 스케쥴 실행됨");
-        //isEnd업데이트
-        await new ChoiceRepository().updateEnd(choice.choiceId);
-        //작성자 마감횟수 +1
-        await new MissionRepository().choiceEndActivity(choice.userKey);
-      });
+      schedule.scheduleJob(
+        dayjs(choice.endTime).subtract(9, "hour").format(),
+        async () => {
+          console.log("마감 스케쥴 실행됨");
+          //isEnd업데이트
+          await new ChoiceRepository().updateEnd(choice.choiceId);
+          //작성자 마감횟수 +1
+          await new MissionRepository().choiceEndActivity(choice.userKey);
+        }
+      );
     }
   }
 };
