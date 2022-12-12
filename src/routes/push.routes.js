@@ -49,6 +49,7 @@ router.delete("/:index", authMiddleware, async (req, res, next) => {
     const { alarm } = req.body;
     const Alarm = JSON.stringify(alarm);
     await redisCli.lRem(`${userKey}_A`, 1, `${Alarm}`);
+    return res.status(200).json({ message: "알람확인" });
   } catch (error) {
     next(error);
   }
