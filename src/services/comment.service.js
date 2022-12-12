@@ -141,6 +141,22 @@ class CommentService {
     //채택받기 횟수 +1
     await this.missionRepository.selectActivity(commentUser.userKey);
 
+    const message = {
+      token: findComment.User.deviceToken,
+      data: {
+        title: "고민접기",
+        body: "작성하신 댓글이 채택되었습니다!",
+        link: `board-advice/${findComment.adviceId}`,
+      },
+    };
+
+    admin
+      .messaging()
+      .send(message)
+      .catch(function (error) {
+        console.trace(error);
+      });
+
     return commentUser.userKey;
   };
 

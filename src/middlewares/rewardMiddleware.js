@@ -1,6 +1,7 @@
 const UserRepository = require("../repositories/users.repository.js");
 const MissionRepository = require("../repositories/mission.repository");
 const CommentRepository = require("../repositories/comment.repository.js");
+const admin = require("firebase-admin");
 
 module.exports = async (userKey, req, res, next) => {
   try {
@@ -96,6 +97,7 @@ module.exports = async (userKey, req, res, next) => {
         mission.MissionCompleteMission?.completeMission <=
         CompleteMission.length;
 
+      //미션 조건 충족시 미션완료 배열에 미션 ID추가
       if (mission.missionId == 1) {
         Postmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
@@ -163,6 +165,25 @@ module.exports = async (userKey, req, res, next) => {
         "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade4.png";
       const gradeKeyword = "마스터 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
+    }
+
+    const Userdata = await new UserRepository().userDeviceToken(userKey);
+    if (newCompleteMissionId.length) {
+      const message = {
+        token: Userdata.deviceToken,
+        data: {
+          title: "고민접기",
+          body: "리워드를 확인하세요!",
+          link: `reward`,
+        },
+      };
+
+      admin
+        .messaging()
+        .send(message)
+        .catch(function (error) {
+          console.trace(error);
+        });
     }
 
     return;
