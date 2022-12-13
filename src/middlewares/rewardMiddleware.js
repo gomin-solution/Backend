@@ -174,7 +174,7 @@ module.exports = async (userKey, req, res, next) => {
     // if (12 <= missionCompleteId.length) {
     //   const image =
     //     "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade4.png";
-    //   const gradeKeyword = "마스터 해결사";
+    //   const gradeKeyword = "시크릿 해결사";
     //   await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
     // }
 
