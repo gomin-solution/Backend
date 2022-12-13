@@ -64,14 +64,9 @@ module.exports = (server) => {
       });
       const findRoom = await NoteRoom.findByPk(roomId);
       let sendUser;
-      let receiveUser;
-      if (findRoom.user1 == userKey) {
-        sendUser = findRoom.user2;
-        receiveUser = findRoom.user1;
-      } else {
-        sendUser = findRoom.user1;
-        receiveUser = findRoom.user2;
-      }
+      findRoom.user1 == userKey
+        ? (sendUser = findRoom.user2)
+        : (sendUser = findRoom.user1);
       const msg = {
         userKey: userKey,
         note: note,
@@ -97,7 +92,7 @@ module.exports = (server) => {
         };
 
         const jsonData = JSON.stringify(messageData);
-        await redisCli.rPush(`${receiveUser}_A`, jsonData);
+        await redisCli.rPush(`${sendUser}_A`, jsonData);
 
         admin
           .messaging()
