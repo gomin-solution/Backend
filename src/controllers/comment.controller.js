@@ -16,7 +16,7 @@ class CommentController {
       }
 
       if (!comment) {
-        res.status(400).send({ errorMessage: "댓글 내용을 입력해주세요" }); //덧글 내용이 없다면 덧글을 입력해달라는 메시지 출력
+        res.status(400).send({ errorMessage: "댓글 내용을 입력해주세요" });
         return;
       }
       const createComment = await this.commentService.createComment(
@@ -79,7 +79,7 @@ class CommentController {
     }
   };
 
-  //좋아요를 하면 해당 데이터와 해당 덧글의 좋아요의 수를 반환한다. 단, 자신의 덧글에는 좋아요를 할 수 없다.
+  //자신의 덧글에는 좋아요를 할 수 없다.
   likeComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
@@ -91,7 +91,6 @@ class CommentController {
 
       const { like, commentUserKey } =
         await this.commentService.updateCommentLike(userKey, commentId);
-
 
       const count = await this.commentService.countComment(commentId);
 
@@ -130,16 +129,12 @@ class CommentController {
     }
   };
 
-  //대댓글 기능===========================================================
-  //대댓글 생성 기능
+  //대댓글 생성
   reComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
       const { userKey } = res.locals.user;
       const { re, targetUser } = req.body;
-      //re: 대댓글 내용
-      //targetUser: 만약 대댓글 중에서 해당 대댓글에 답글을 달고 싶다면 그 대상의 userKey
-      //targetUser는 null이 가능하다.
 
       const reply = await this.commentService.reComment(
         userKey,
@@ -167,7 +162,7 @@ class CommentController {
     }
   };
 
-  //대댓글 수정 기능
+  //대댓글 수정
   putRe = async (req, res, next) => {
     const { replyId } = req.params;
     const { userKey } = res.locals.user;
@@ -190,8 +185,7 @@ class CommentController {
     }
   };
 
-  //대댓글 삭제 기능
-  //실제로 삭제하진 않고 내용을 "삭제된 덧글입니다."로 바꾼다.
+  //대댓글 삭제
   deleteRe = async (req, res, next) => {
     try {
       const { replyId } = req.params;

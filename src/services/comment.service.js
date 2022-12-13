@@ -90,7 +90,6 @@ class CommentService {
   updateCommentLike = async (userKey, commentId) => {
     const dup = await this.commentRepository.findComment(commentId);
 
-    //댓글작성자와 좋아요 시도한 자의 userKey가 같으면 에러!
     if (dup.userKey === userKey) {
       throw new Error("본인 게시글에는 좋아요를 할 수 없습니다.");
     }
@@ -175,7 +174,6 @@ class CommentService {
     return commentUser.userKey;
   };
 
-  //대댓글 기능===========================================================
   //대댓글 생성 기능
   reComment = async (userKey, commentId, re, targetUser) => {
     const reply = await this.commentRepository.createReply(
@@ -212,7 +210,6 @@ class CommentService {
 
   //대댓글 삭제하기
   deleteRe = async (replyId, userKey) => {
-    //먼저 검증을 하고 삭제
     const check = await this.commentRepository.checkRe(replyId);
     if (check.userKey !== userKey) {
       return;

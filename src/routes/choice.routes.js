@@ -22,6 +22,4 @@ router.put("/choice/early/:choiceId", auth, choiceController.early);
 //마이페이지에서 내가 작성한 투표 게시글 삭제
 router.delete("/choice/:choiceId", auth, choiceController.deletechoice);
 
-// router.put("/choice/:choiceId", auth, choiceController.endChoice);
-
 module.exports = router;

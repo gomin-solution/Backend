@@ -27,7 +27,6 @@ class CommentRepository {
     const data = await Comment.findByPk(commentId);
     const dataId = data.userKey;
     if (userKey !== dataId) {
-      //로그인한 사람의 id와 comment가 가진 userKey가 다를 경우
       return;
     }
     const updateCommentData = await Comment.update(
@@ -39,7 +38,6 @@ class CommentRepository {
 
   //덧글 삭제
   deleteComment = async (commentId, userKey) => {
-    console.log(commentId);
     //하위 데이터 전부 삭제
     const data = await CommentLike.destroy({
       where: {
@@ -130,7 +128,6 @@ class CommentRepository {
     return data;
   };
 
-  //==============================
   getUser = async (userKey) => {
     const data = await User.findByPk(userKey);
     return data;
