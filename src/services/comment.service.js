@@ -136,6 +136,8 @@ class CommentService {
     if (findComment.userKey == userKey) {
       throw new ErrorCustom(400, "본인 댓글을 채택할 수 없어요.");
     }
+    console.log("/////////////////채택검증////////");
+    console.log(findComment.Advice.userKey, userKey);
 
     if (findComment.Advice.userKey !== userKey) {
       throw new ErrorCustom(400, "게시글 작성자만 채택할 수 있습니다.");
@@ -153,6 +155,7 @@ class CommentService {
       link: `board-advice/${findComment.adviceId}`,
       date: dayjs().tz().format("YYYY/MM/DD HH:mm:ss"),
     };
+
     //디바이스 토큰이 있는 경우 푸시알람
     if (findComment.User.deviceToken) {
       const message = {
