@@ -180,6 +180,9 @@ module.exports = async (userKey, req, res, next) => {
 
     const Userdata = await new UserRepository().userDeviceToken(userKey);
 
+    console.log("///////////리워드 미들웨어/////////");
+    console.log(Userdata);
+
     //새로 달성한 미션과 유저의 디바이스 토큰이 있는 경우
     if (newCompleteMissionId.length && Userdata.deviceToken) {
       const messageData = {
