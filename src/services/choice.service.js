@@ -58,9 +58,6 @@ class ChoiceService {
   findAllchoice = async (userKey, sort) => {
     try {
       const findAllChoice = await this.choiceRepository.findAllchoice(userKey);
-      //데이터를 최신순으로 로드하여 choiceper값을 변환하고 count값을 추가하고
-      //북마크, 투표여부를 표시하고, 작성장의 프로필 사진을 가져온다.
-      //이 데이터들은 최신순, 참여순, 마감순에 따라 정렬이 가능하다.
 
       const allChoice = findAllChoice.map((choice) => {
         let isBookMark;
