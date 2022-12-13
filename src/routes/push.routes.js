@@ -53,7 +53,7 @@ router.delete("/:index", authMiddleware, async (req, res, next) => {
       "LREM",
       `${userKey}_A`,
       Number(index),
-      "by index",
+      "BY INDEX",
     ]);
     return res.status(200).json({ message: "알람삭제" });
   } catch (error) {
