@@ -169,13 +169,16 @@ module.exports = async (userKey, req, res, next) => {
     }
 
     const Userdata = await new UserRepository().userDeviceToken(userKey);
-    if (newCompleteMissionId.length) {
+
+    //새로 달성한 미션과 유저의 디바이스 토큰이 있는 경우
+    if (newCompleteMissionId.length && Userdata.deviceToken) {
       const messageData = {
         title: "고민접기",
         body: "리워드를 확인하세요!",
         link: `reward`,
         date: dayjs().tz().format("YYYY/MM/DD HH:mm:ss"),
       };
+
       const message = {
         token: Userdata.deviceToken,
         data: messageData,
