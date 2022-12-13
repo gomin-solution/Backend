@@ -195,7 +195,7 @@ module.exports = async (userKey, req, res, next) => {
       };
 
       const jsonData = JSON.stringify(messageData);
-      await redisCli.rPush(`${findAdvice.userKey}_A`, jsonData);
+      await redisCli.rPush(`${userKey}_A`, jsonData);
 
       admin
         .messaging()
