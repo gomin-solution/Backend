@@ -11,6 +11,7 @@ module.exports = async (userKey, req, res, next) => {
     }
     /**유저의 활동 정보를 모두 가져옴 */
     const totalReword = await new UserRepository().totalReword(userKey);
+
     const Selects = await new CommentRepository().userSelect(userKey);
 
     /**내가 받은 총 좋아요수 */
@@ -102,6 +103,7 @@ module.exports = async (userKey, req, res, next) => {
       if (mission.missionId == 1) {
         Postmission ? newCompleteMissionId.push(mission.missionId) : false;
       }
+
       if (mission.missionId == 2 || mission.missionId == 3) {
         Choicemission && Advicemission
           ? newCompleteMissionId.push(mission.missionId)
@@ -167,6 +169,14 @@ module.exports = async (userKey, req, res, next) => {
       const gradeKeyword = "마스터 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
     }
+
+    //추가예정
+    // if (12 <= missionCompleteId.length) {
+    //   const image =
+    //     "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade4.png";
+    //   const gradeKeyword = "마스터 해결사";
+    //   await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
+    // }
 
     const Userdata = await new UserRepository().userDeviceToken(userKey);
 
