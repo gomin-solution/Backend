@@ -46,18 +46,12 @@ router.get("/", authMiddleware, async (req, res, next) => {
 router.delete("/:index", authMiddleware, async (req, res, next) => {
   try {
     const { userKey } = res.locals.user;
-    // const { alarm } = req.body;
     const { index } = req.params;
     console.log("//////push알람삭제");
     const alarm = await redisCli.lIndex(`${userKey}_A`, Number(index));
 
     console.log(alarm);
-    // await redisCli.sendCommand([
-    //   "LREM",
-    //   `${userKey}_A`,
-    //   Number(index),
-    //   "BY INDEX",
-    // ]);
+    await redisCli.lRem(`${userKey}_A`, 1, alarm);
     return res.status(200).json({ message: "알람삭제" });
   } catch (error) {
     next(error);
