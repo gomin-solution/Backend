@@ -166,7 +166,6 @@ class AdviceService {
 
   //  조언 게시물 상세페이지 조회
   findOneAdvice = async (userKey, adviceId, filterId) => {
-    console.log(userKey, adviceId, filterId);
     const findOneAdvice = await this.adviceRepository.findOneAdvice(
       userKey,
       adviceId
@@ -180,17 +179,11 @@ class AdviceService {
     let findAdviceImageArray = [];
     if (dayjs().tz() <= plusThreeSec || dayjs().tz() <= plusUpdateThreeSec) {
       findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-        return [
-          "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage/" +
-            post.adviceImage,
-        ];
+        return ["d1zudc9azdqoxt.cloudfront.net/" + post.adviceImage];
       });
     } else {
       findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-        return [
-          "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage-resize/" +
-            post.adviceImage,
-        ];
+        return ["https://dq07gjrnobmcn.cloudfront.net/" + post.adviceImage];
       });
     }
 
