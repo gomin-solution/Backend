@@ -74,7 +74,7 @@ class UserService {
       { userId: id, userKey: data.userKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "30s",
+        expiresIn: "30m",
       }
     );
 
@@ -92,7 +92,7 @@ class UserService {
       { userId: findUserId.userId, userKey: userKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "30s",
+        expiresIn: "30m",
       }
     );
 
@@ -115,7 +115,7 @@ class UserService {
       { userId: user.userId, userKey: user.userKey },
       process.env.SECRET_KEY,
       {
-        expiresIn: "30s",
+        expiresIn: "30m",
       }
     );
 
