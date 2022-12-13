@@ -38,28 +38,31 @@ class CommentService {
       adviceId,
       comment
     );
+    //디바이스 토큰이 있는 경우 푸시알람
+    if (findAdvice.User.deviceToken) {
+      await this.missionRepository.commentActivity(userKey);
+      const messageData = {
+        title: "고민접기",
+        body: "게시물에 댓글이 달렸습니다!",
+        link: `board-advice/${adviceId}`,
+        date: dayjs().tz().format("YYYY/MM/DD HH:mm:ss"),
+      };
 
-    await this.missionRepository.commentActivity(userKey);
-    const messageData = {
-      title: "고민접기",
-      body: "게시물에 댓글이 달렸습니다!",
-      link: `board-advice/${adviceId}`,
-      date: dayjs().tz().format("YYYY/MM/DD HH:mm:ss"),
-    };
+      const message = {
+        token: findAdvice.User.deviceToken,
+        data: messageData,
+      };
 
-    const message = {
-      token: findAdvice.User.deviceToken,
-      data: messageData,
-    };
-    const jsonData = JSON.stringify(messageData);
-    await redisCli.rPush(`${findAdvice.userKey}_A`, jsonData);
+      const jsonData = JSON.stringify(messageData);
+      await redisCli.rPush(`${findAdvice.userKey}_A`, jsonData);
 
-    admin
-      .messaging()
-      .send(message)
-      .catch(function (error) {
-        console.trace(error);
-      });
+      admin
+        .messaging()
+        .send(message)
+        .catch(function (error) {
+          console.trace(error);
+        });
+    }
 
     return createComment;
   };
@@ -151,21 +154,23 @@ class CommentService {
       link: `board-advice/${findComment.adviceId}`,
       date: dayjs().tz().format("YYYY/MM/DD HH:mm:ss"),
     };
+    //디바이스 토큰이 있는 경우 푸시알람
+    if (findComment.User.deviceToken) {
+      const message = {
+        token: findComment.User.deviceToken,
+        data: messageData,
+      };
 
-    const message = {
-      token: findComment.User.deviceToken,
-      data: messageData,
-    };
+      const jsonData = JSON.stringify(messageData);
+      await redisCli.rPush(`${findComment.userKey}_A`, jsonData);
 
-    const jsonData = JSON.stringify(messageData);
-    await redisCli.rPush(`${findComment.userKey}_A`, jsonData);
-
-    admin
-      .messaging()
-      .send(message)
-      .catch(function (error) {
-        console.trace(error);
-      });
+      admin
+        .messaging()
+        .send(message)
+        .catch(function (error) {
+          console.trace(error);
+        });
+    }
 
     return commentUser.userKey;
   };
