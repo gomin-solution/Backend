@@ -62,6 +62,7 @@ module.exports = (server) => {
         userKey: userKey,
         note: note,
       });
+
       const findRoom = await NoteRoom.findByPk(roomId);
       let sendUser;
       findRoom.user1 == userKey
@@ -76,6 +77,7 @@ module.exports = (server) => {
         where: { userKey: sendUser },
         attributes: ["deviceToken"],
       });
+
       io.to(roomId).emit("message", msg);
 
       if (sendUserData.deviceToken) {
