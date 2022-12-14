@@ -5,7 +5,6 @@ const userKey = 1;
 const title = "새로운 어드바이스";
 const categoryId = 2;
 const content = "어드바이스의 컨텐츠";
-const isAdult = true;
 
 const data = {
   userKey: 1,
