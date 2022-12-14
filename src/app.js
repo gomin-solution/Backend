@@ -20,6 +20,7 @@ connect();
 schedule();
 
 const whitelist = [
+  "undefined",
   process.env.CLIENT_1,
   process.env.CLIENT_2,
   process.env.CLIENT_3,
