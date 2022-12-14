@@ -187,7 +187,7 @@ class UserController {
       const { userKey } = res.locals.user;
       const mainpage = await this.userService.mainPage(userKey);
 
-      const { dailyData } = await this.userService.getDailymessage(userKey);
+      // const { dailyData } = await this.userService.getDailymessage(userKey);
 
       return res
         .status(200)
