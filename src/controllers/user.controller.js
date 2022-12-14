@@ -188,7 +188,7 @@ class UserController {
       const mainpage = await this.userService.mainPage(userKey);
 
       // const { dailyData } = await this.userService.getDailymessage(userKey);
-
+      let dailyData = "테스트";
       return res
         .status(200)
         .json({ mainpage: mainpage, dailyMessage: dailyData?.msg });
