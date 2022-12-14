@@ -37,7 +37,7 @@ router.get("/", authMiddleware, async (req, res, next) => {
     const Alarms = await redisCli.lRange(`${userKey}_A`, 0, -1);
 
     const alarms = Alarms.map((alarm) => JSON.parse(alarm));
-    alarms.sort((a, b) => a.date < b.date);
+    alarms.sort((a, b) => b.date < a.date);
     return res.status(200).json({ alarms });
   } catch (error) {
     next(error);
