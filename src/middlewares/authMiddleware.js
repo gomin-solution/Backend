@@ -45,18 +45,13 @@ module.exports = async (req, res, next) => {
       try {
         const decoded = jwt.decode(accessToken);
         const token = await redisCli.get(`${decoded.userId}`);
-        console.log("decoded.userId", decoded.userId);
-        console.log("refreshToken", refreshToken);
-        console.log("token", token);
         if (refreshToken === token) {
           jwt.verify(refreshToken, process.env.SECRET_KEY);
           return true;
         } else {
-          console.log("/////////토큰 불일치///////");
           return false;
         }
       } catch (error) {
-        console.log("////////토큰 만료/////////");
         return false;
       }
     }
@@ -68,18 +63,9 @@ module.exports = async (req, res, next) => {
       return res.status(403).json({ message: "다시 로그인 해주세요." });
     }
 
-    if (!isAccessTokenValidate && !interceptor) {
-      return res.status(405).json({ message: "만료" });
-    } else if (accessToken !== "undefined" && isAccessTokenValidate) {
-      /**토큰이 유효한 경우 */
-      const { userId } = jwt.decode(accessToken);
-      const user = await User.findOne({ where: { userId: userId } });
-      res.locals.user = user;
-      next();
-    }
-
-    if (!isAccessTokenValidate && isRefreshTokenValidate && interceptor) {
+    if (!isAccessTokenValidate) {
       const decoded = jwt.decode(accessToken);
+
       const newAccessToken = jwt.sign(
         { userId: decoded.userId, userKey: decoded.userKey },
         process.env.SECRET_KEY,
@@ -87,9 +73,16 @@ module.exports = async (req, res, next) => {
           expiresIn: "30m",
         }
       );
+
       return res
         .status(201)
         .json({ message: "토큰 재발급", accessToken: newAccessToken });
+    } else if (accessToken !== "undefined" && isAccessTokenValidate) {
+      /**토큰이 유효한 경우 */
+      const { userId } = jwt.decode(accessToken);
+      const user = await User.findOne({ where: { userId: userId } });
+      res.locals.user = user;
+      next();
     }
   } catch (error) {
     next(error);

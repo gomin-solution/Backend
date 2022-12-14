@@ -56,8 +56,8 @@ class UserController {
 
       //refreshtoken을 userId키로 redis에 저장
       await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
-      //배포환경인 경우 보안 설정된 쿠키 전송
 
+      //배포환경인 경우 보안 설정된 쿠키 전송
       res.status(200).json({
         message: "로그인 성공.",
         nickname,

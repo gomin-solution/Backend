@@ -111,6 +111,7 @@ class UserService {
     const passwordVerify = await bcrypt.compare(password, user.password);
 
     if (!passwordVerify) throw new ErrorCustom(400, "비밀번호 오류");
+
     const accessToken = jwt.sign(
       { userId: user.userId, userKey: user.userKey },
       process.env.SECRET_KEY,
@@ -122,6 +123,7 @@ class UserService {
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "15d",
     });
+
     const nickname = user.nickname;
     const userKey = user.userKey;
     return { accessToken, refreshToken, nickname, userKey };
