@@ -198,9 +198,9 @@ class UserService {
     // });
     // adviceData.sort((a, b) => a.commentCount - b.commentCount);
     // const lowAdviceData = adviceData.slice(0, 10);
-    // const getChoice = await this.choiceRepository.findAllChoiceForMain(userKey);
+    const getChoice = await this.choiceRepository.findAllChoiceForMain(userKey);
 
-    // const isEnd = getChoice.filter((post) => post.isEnd == true);
+    const isEnd = getChoice.filter((post) => post.isEnd == true);
 
     const totalCount = select.length + isEnd.length;
 
