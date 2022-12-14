@@ -179,7 +179,7 @@ class AdviceService {
     let findAdviceImageArray = [];
     if (dayjs().tz() <= plusThreeSec || dayjs().tz() <= plusUpdateThreeSec) {
       findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-        return ["d1zudc9azdqoxt.cloudfront.net/" + post.adviceImage];
+        return ["https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/adviceimage" + post.adviceImage];
       });
     } else {
       findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
