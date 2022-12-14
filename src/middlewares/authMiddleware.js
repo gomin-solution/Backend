@@ -6,7 +6,7 @@ require("dotenv").config();
 // 유저 인증에 실패하면 403 상태 코드를 반환한다.
 module.exports = async (req, res, next) => {
   try {
-    const { authorization, refreshtoken, interceptor } = req.headers;
+    const { authorization, refreshtoken } = req.headers;
 
     const acesstokenType = authorization?.split(" ")[0];
     const refreshTokenType = refreshtoken?.split(" ")[0];
@@ -70,7 +70,7 @@ module.exports = async (req, res, next) => {
         { userId: decoded.userId, userKey: decoded.userKey },
         process.env.SECRET_KEY,
         {
-          expiresIn: "20s",
+          expiresIn: "30m",
         }
       );
 
