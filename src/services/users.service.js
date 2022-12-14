@@ -184,7 +184,7 @@ class UserService {
   mainPage = async (userKey) => {
     // const getAdvice = await this.adviceRepository.getAdvice();
     const dailyData = await redisCli.hGetAll(`${userKey}`);
-    const select = await this.commentRepository.findAllSelect();
+    // const select = await this.commentRepository.findAllSelect();
     let isOpen;
     dailyData?.isOpen == "0" || userKey == 0
       ? (isOpen = false)
@@ -198,15 +198,15 @@ class UserService {
     // });
     // adviceData.sort((a, b) => a.commentCount - b.commentCount);
     // const lowAdviceData = adviceData.slice(0, 10);
-    const getChoice = await this.choiceRepository.findAllChoiceForMain(userKey);
+    // const getChoice = await this.choiceRepository.findAllChoiceForMain(userKey);
 
-    const isEnd = getChoice.filter((post) => post.isEnd == true);
+    // const isEnd = getChoice.filter((post) => post.isEnd == true);
 
-    const totalCount = select.length + isEnd.length;
+    // const totalCount = select.length + isEnd.length;
 
     return {
       // advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],
-      totalCount: totalCount,
+      // totalCount: totalCount,
       isOpen: isOpen,
     };
   };
@@ -215,13 +215,6 @@ class UserService {
     const dailyData = await redisCli.hGetAll(`${userKey}`);
     let isOpen;
     dailyData?.isOpen == "0" || !dailyData ? (isOpen = false) : (isOpen = true);
-    //미션알람
-    // if (!isOpen) {
-    //   const missionComplete = await this.missionService.MyNewComplete(userKey);
-    //   if (missionComplete.length) {
-    //     io.emit("complete_aram", "보상을 확인하세요");
-    //   }
-    // }
     return { isOpen, dailyData };
   };
 
