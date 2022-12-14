@@ -182,30 +182,30 @@ class UserService {
 
   //메인페이지 데이터 가공해서 보내주기
   mainPage = async (userKey) => {
-    const getAdvice = await this.adviceRepository.getAdvice();
+    // const getAdvice = await this.adviceRepository.getAdvice();
     const dailyData = await redisCli.hGetAll(`${userKey}`);
     const select = await this.commentRepository.findAllSelect();
     let isOpen;
     dailyData?.isOpen == "0" || userKey == 0
       ? (isOpen = false)
       : (isOpen = true);
-    const adviceData = getAdvice.map((post) => {
-      return {
-        adviceId: post.adviceId,
-        category: post.Category.name,
-        title: post.title,
-      };
-    });
-    adviceData.sort((a, b) => a.commentCount - b.commentCount);
-    const lowAdviceData = adviceData.slice(0, 10);
-    const getChoice = await this.choiceRepository.findAllChoiceForMain(userKey);
+    // const adviceData = getAdvice.map((post) => {
+    //   return {
+    //     adviceId: post.adviceId,
+    //     category: post.Category.name,
+    //     title: post.title,
+    //   };
+    // });
+    // adviceData.sort((a, b) => a.commentCount - b.commentCount);
+    // const lowAdviceData = adviceData.slice(0, 10);
+    // const getChoice = await this.choiceRepository.findAllChoiceForMain(userKey);
 
-    const isEnd = getChoice.filter((post) => post.isEnd == true);
+    // const isEnd = getChoice.filter((post) => post.isEnd == true);
 
     const totalCount = select.length + isEnd.length;
 
     return {
-      advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],
+      // advice: lowAdviceData[Math.floor(Math.random() * lowAdviceData.length)],
       totalCount: totalCount,
       isOpen: isOpen,
     };
