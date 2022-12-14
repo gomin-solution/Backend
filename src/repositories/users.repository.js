@@ -13,7 +13,7 @@ class UserRepository {
       password: hashed,
       isAdult: isAdult,
       userImg:
-        "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
+        "https://dq07gjrnobmcn.cloudfront.net/grade1.png",
     });
 
     await UserActivity.create({ userKey: Userdata.userKey });
@@ -27,7 +27,7 @@ class UserRepository {
       defaults: {
         userId: id,
         userImg:
-          "https://hh99projectimage-1.s3.ap-northeast-2.amazonaws.com/profileimage/grade1.png",
+          "https://dq07gjrnobmcn.cloudfront.net/grade1.png",
       },
     });
 
