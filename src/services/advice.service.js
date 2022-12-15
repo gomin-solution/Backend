@@ -183,7 +183,7 @@ class AdviceService {
       });
     } else {
       findAdviceImageArray = findOneAdvice.AdviceImages.map((post) => {
-        return ["https://dq07gjrnobmcn.cloudfront.net/" + post.adviceImage];
+        return ["https://d1zudc9azdqoxt.cloudfront.net/" + post.adviceImage];
       });
     }
 
