@@ -25,6 +25,8 @@
 ![image](https://user-images.githubusercontent.com/112886992/207830402-6c6de0dd-ba40-4c88-bd6c-c59e3a6924a1.png)
 
 <br/>
+![image](https://user-images.githubusercontent.com/98438390/207852089-0c4d2979-3b84-4b2d-9545-7d69685963c6.png)
+
 
 ## ⚙️ **_기술 스택_**
 
@@ -57,7 +59,7 @@
 <img src="https://img.shields.io/badge/CodeDeploy-212599?style=for-the-badge&logo=CodeDeploy&logoColor=white">
 <br/>
 
-## 🔩 **_기술 스택 & 라이브러리 사용 이유_**
+## 🔩 **_기술 스택 & 라이브러리 선정 이유_**
 **<details><summary>React-Query</summary>**
 -   **친숙한 React Hook을 사용 :** 복잡하고 장황한 코드가 필요한 다른 데이터 불러오기 방식과 달리 React Component 내부에서 간단하고 직관적으로 API를 사용할 수 있습니다.
 -   ************서버 상태 관리와 관련된 반복적인 작업들을 쉽게 처리 :************ 서버에서 받아오는 데이터를 처리할때 useEffect로 해결해야 했던 여러 가지 상황들을 refetchOnMount, refetchOnReconnect, refetchOnWindowFocus와 같은 옵션으로 쉽게 처리할 수 있습니다.
