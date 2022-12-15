@@ -25,6 +25,7 @@ const whitelist = [
   process.env.CLIENT_3,
   process.env.TEST_CLIENT,
   "http://localhost:3000",
+  undefined
 ]; //Thunder client 요청의 경우 undefined 허용
 
 const corsOptions = {

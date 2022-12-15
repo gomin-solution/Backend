@@ -184,14 +184,15 @@ class UserController {
   //메인페이지 가져오기
   mainPage = async (req, res, next) => {
     try {
-      const { userKey } = res.locals.user;
-      const mainpage = await this.userService.mainPage(userKey);
+      return res.status(200).send("lll")
+      // const { userKey } = res.locals.user;
+      // const mainpage = await this.userService.mainPage(userKey);
 
-      const { dailyData } = await this.userService.getDailymessage(userKey);
+      // const { dailyData } = await this.userService.getDailymessage(userKey);
 
-      return res
-        .status(200)
-        .json({ mainpage: mainpage, dailyMessage: dailyData?.msg });
+      // return res
+      //   .status(200)
+      //   .json({ mainpage: mainpage, dailyMessage: dailyData?.msg });
     } catch (error) {
       next(error);
     }
