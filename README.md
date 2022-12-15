@@ -79,8 +79,10 @@
 
 ## ⚠️ **_트러블 슈팅_**
 **<details><summary>리워드 페이지 속도 개선</summary>**
+문제
+![image](https://user-images.githubusercontent.com/98438390/207874893-f092cf62-f1ce-4c00-98fe-550fa2932fb6.png)
 
-*Write here!*
+
 
 </details>
 
