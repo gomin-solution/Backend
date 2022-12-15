@@ -5,7 +5,7 @@ name: gomin_solution_backend_testserver
 
 on:
   push:
-    branches: [Dev]
+    branches: [main]
 
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
         run: |
           touch .env
           cat << EOF >> .env
-          ${{ secrets.ENV_TEST }}
+          ${{ secrets.ENV }}
 
       - name: build client files
         working-directory: ./
