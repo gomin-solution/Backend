@@ -9,7 +9,7 @@
 >저희 고민접기는 여러분들의 크고 작은 다양한 고민을 접을 수 있도록 도와주는 커뮤니티입니다.<br/>
 ><br/>
 >**[:iphone: 고민접기 링크](https://gomin.site)**<br/>
->>**[📎 Frontend](https://github.com/gomin-solution/Frontend)**<br/>
+>**[📎 Frontend](https://github.com/gomin-solution/Frontend)**<br/>
 
 <br/>
 
