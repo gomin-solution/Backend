@@ -80,11 +80,11 @@
 ## ⚠️ **_트러블 슈팅_**
 **<details><summary>리워드 페이지 속도 개선</summary>**
 문제: 리워드 페이지의 서버 응답이 평균 2초 후반대
-![image](https://user-images.githubusercontent.com/98438390/207874893-f092cf62-f1ce-4c00-98fe-550fa2932fb6.png)
 원인파악: 코드를 주석해가며 찾은 결과 DB에서 유저활동 기록을 가져오는데 2초대가 걸림.
 필요한 데이터만 가져오기 위해 attribute속성을 사용해 속도를 개선하였지만 유저의 활동기록이 쌓일 수록 데이터를 가져오는데 많은 시간이 소요됨
 유저 활동기록 테이블을 따로 만들어 유저의 활동기록이 있을때 마다 데이터를 업데이트시킴.
 리워드 페이지 요청시 서버의 불필요한 Join이 없어지고 이미 업데이트된 유저의 활동기록을 가져와 속도를 개선할 수 있었음.
+![image](https://user-images.githubusercontent.com/98438390/207874893-f092cf62-f1ce-4c00-98fe-550fa2932fb6.png)
 ![image](https://user-images.githubusercontent.com/98438390/207877852-0ec4412f-bcb3-4019-b594-911582597915.png)
 
 
