@@ -119,4 +119,13 @@
 <br/>
 
 ## 📸 **_고민 접기의 팀원_**
+|역할|이름|Github|
+|------|---|---|
+|FE|홍정표|[Gihub](https://github.com/Jeongpyo-Hong)|
+|FE|정도은|[Github](https://github.com/do-eun)|
+|BE|이승표|[Github](https://github.com/leeSP22)|
+|BE|이준|[Github](https://github.com/Leejun2022)|
+|BE|손민성|[Github](https://github.com/Tarel-Github)|
+|DE|이현서|디자이너|
+
 >**FE** - 홍정표 정도은<br/>**BE** - 이승표 이준 손민성<br/>**DE** - 이현서
