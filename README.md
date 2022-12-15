@@ -83,7 +83,7 @@
 
 </details>
 
-**<details><summary>알림 기능 도입(Firebase Cloud Messaging)</summary>**
+**<details><summary>스케줄 초기화 문제</summary>**
 
 *Write here!*
 
