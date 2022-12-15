@@ -25,9 +25,9 @@
 ![image](https://user-images.githubusercontent.com/112886992/207830402-6c6de0dd-ba40-4c88-bd6c-c59e3a6924a1.png)
 
 <br/>
+
+## 🛠️ **_ERD_**
 ![image](https://user-images.githubusercontent.com/98438390/207852089-0c4d2979-3b84-4b2d-9545-7d69685963c6.png)
-
-
 ## ⚙️ **_기술 스택_**
 
 **Backend**<br /><br />
