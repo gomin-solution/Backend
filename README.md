@@ -14,12 +14,18 @@
 <br/>
 
 ## 💡 **_주요 기능_**
--   매일 색다른 행운 편지
--   골라주기 게시글 작성 후 투표하기
--   답해주기 게시글 작성하고 다른 유저들의 의견 받기
--   대화하고 싶은 유저와 1:1 쪽지하기
--   미션 완료 후 귀여운 종이접기  휙득하기
--   미션 완료에 따른 등급 상승
+
+<br/>
+
+| 매일 색다른 행운의 편지열기 |  골라주기 작성 후 투표 | 답해주기 작성 및 의견받기  |
+|:---: | :---: | :---: |
+| <img src="https://user-images.githubusercontent.com/112849712/207931147-af4eea01-a930-4e17-a326-5a750cd98293.gif" width="220" /> | <img src="https://user-images.githubusercontent.com/112849712/207931260-90a786a9-7aca-44f9-9f49-524164928eb5.gif" width="220" /> | <img src="https://user-images.githubusercontent.com/112849712/207931359-4576b136-a1a8-436d-887d-e0007f5a9dd5.gif" width="220" /> |
+
+| 유저와 1:1 쪽지하기 |  미션 완료 후 종이접기 획득하기 | 미션 완료에 따른 등급 상승 |
+|:---: | :---: | :---: |
+| <img src="https://user-images.githubusercontent.com/112849712/207931481-fffa89d9-d49e-46a5-a501-c05d4f61392b.gif" width="220" /> | <img src="https://user-images.githubusercontent.com/112849712/207931549-9ec6f670-0c2c-4804-971a-8960a91bd943.gif" width="220" /> | <img src="https://user-images.githubusercontent.com/112849712/207931603-4bfb07c9-4972-4cd4-8619-0e281f29514f.gif" width="220" /> |
+
++) 검색 기능, 알림 기능 도입 
 <br/>
 
 ## 🛠️ **_프로젝트 아키텍처_**
@@ -125,15 +131,14 @@ Safari 브라우저의 ITP에 의해 교차 도메인의 쿠키를 차단하여 
 - 인트로 페이지 이미지 리사이징 및 서버인증  미들웨어 개선을 통한 서비스 속도 향상
 - Intro에서 슬라이드 버튼과 스킵 버튼을 추가하여 편의성을 증대
 - 골라주기 항목 타이틀의 가독성을 높이고 본인이 선택한 항목 표기
-- 받아올 데이터가 없어서 빈 화면일 때 단순 텍스트가 아닌 이미지를 넣어서 완성도 향상
+- 받아올 데이터가 없어서 빈 화면일 때 단순 텍스트가 아닌 이미지를 넣어서 완성도 향상<br/>
+>**[📌 유저 피드백 정리](https://github.com/gomin-solution/Frontend/issues/199)**
+
 <br/>
 
 ## 📸 **_고민 접기의 팀원_**
-|역할|이름|Github|
-|------|---|---|
-|FE🍀|홍정표|[Github](https://github.com/Jeongpyo-Hong)|
-|FE|정도은|[Github](https://github.com/do-eun)|
-|BE🍀|이승표|[Github](https://github.com/leeSP22)|
-|BE|이준|[Github](https://github.com/Leejun2022)|
-|BE|손민성|[Github](https://github.com/Tarel-Github)|
-|DE|이현서|디자이너|
+| 🍀홍정표|정도은|🍀이승표|이준|손민성|이현서 |
+|:---: | :---: | :---: | :---: | :---: | :---: |
+ |<img width="180" alt="스크린샷 2022-12-16 오후 1 58 16" src="https://user-images.githubusercontent.com/112849712/208025805-db74f89f-4aee-4456-8677-f2a332272f12.png">|<img width="180" alt="스크린샷 2022-12-16 오후 1 58 20" src="https://user-images.githubusercontent.com/112849712/208025814-de14a534-785a-4df1-bd0f-441758c7a12e.png">|<img width="180" alt="스크린샷 2022-12-16 오후 1 58 26" src="https://user-images.githubusercontent.com/112849712/208025820-5812fcd9-fefc-40e5-a3fd-d77c04c40d2d.png">|<img width="180" alt="스크린샷 2022-12-16 오후 1 56 58" src="https://user-images.githubusercontent.com/112849712/208025823-15fd8103-bb02-4000-bbd9-dd29bc613537.png"> | <img width="180" alt="스크린샷 2022-12-16 오후 1 58 12" src="https://user-images.githubusercontent.com/112849712/208026972-d079ae90-8481-4f46-b2a6-71735a0e7898.png">|<img width="180" alt="스크린샷 2022-12-16 오후 2 08 05" src="https://user-images.githubusercontent.com/112849712/208027107-c9a78ff3-7dff-48e5-9810-10b00ac43474.png">|
+[FE](https://github.com/Jeongpyo-Hong) |[FE](https://github.com/do-eun)| [BE](https://github.com/leeSP22)| [BE](https://github.com/Leejun2022)| [BE](https://github.com/Tarel-Github)| 디자이너|
+
