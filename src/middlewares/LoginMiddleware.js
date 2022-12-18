@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-// 로그인 되어 있는 유저일 경우 Error를 반환한다.
+/** 로그인 되어 있는 유저일 경우 Error를 반환 */
 module.exports = (req, res, next) => {
   try {
     const { authorization } = req.headers;

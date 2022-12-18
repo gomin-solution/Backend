@@ -118,7 +118,6 @@ class AdviceController {
               console.log(err, err.stack);
             }
           });
-          
         }
         await this.adviceImageService.imageDelete(adviceId);
         const imageUrl = images.map((url) => url.location);

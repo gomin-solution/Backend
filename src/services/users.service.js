@@ -35,6 +35,7 @@ class UserService {
       password: hashed,
       isAdult: isAdult,
     });
+
     //오늘의 랜덤 메세지 유저키와 함께 생성
     const DailyArray = await this.dailyMsgRepository.allMsg();
     const msgArray = DailyArray.map((x) => x.msg);
@@ -44,6 +45,7 @@ class UserService {
       isOpen: 0,
     });
 
+    //에세스토큰 생성
     const accessToken = jwt.sign(
       { userId: userId, userKey: createUser.userKey },
       process.env.SECRET_KEY,
@@ -52,15 +54,18 @@ class UserService {
       }
     );
 
+    //리트레쉬토큰 생성
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "15d",
     });
     return { accessToken, refreshToken, userKey: createUser.userKey };
   };
 
+  //카카오 로그인/가입
   userKakao = async (id) => {
     const { data, created } = await this.userRepository.userKakao(id);
     if (created) {
+      //랜덤메세지 유저키와 저장
       const DailyArray = await this.dailyMsgRepository.allMsg();
       const msgArray = DailyArray.map((x) => x.msg);
       const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
@@ -70,6 +75,7 @@ class UserService {
       });
     }
 
+    //에세스토큰 생성
     const accessToken = jwt.sign(
       { userId: id, userKey: data.userKey },
       process.env.SECRET_KEY,
@@ -78,6 +84,7 @@ class UserService {
       }
     );
 
+    //리프레쉬토큰 생성
     const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
       expiresIn: "15d",
     });

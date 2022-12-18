@@ -15,7 +15,6 @@ class MailController {
       if (findId.nickname == nickname) {
         // 랜덤 스트링 생성
         const temporaryPassword = Math.random().toString(36).substring(2, 12);
-        console.log(temporaryPassword);
 
         const hashed = await bcrypt.hash(temporaryPassword, 12);
 
@@ -45,7 +44,9 @@ class MailController {
         transporter.sendMail(message, (err) => {
           if (err) next(err);
           else
-            res.status(200).json({ message: "임시 비밀번호 생성 완료", MailSucssess: true });
+            res
+              .status(200)
+              .json({ message: "임시 비밀번호 생성 완료", MailSucssess: true });
         });
       } else {
         res.status(200).json({ message: "당신은 주인이 아니군요." });
