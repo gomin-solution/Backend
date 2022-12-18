@@ -27,6 +27,7 @@ class UserController {
       const { userId, nickname, password, confirm, isAdult } =
         await joi.signupSchema.validateAsync(req.body);
 
+      /** 해쉬된 비밀번호*/
       const hashed = await bcrypt.hash(password, 12);
 
       const { accessToken, refreshToken, userKey } =
@@ -37,6 +38,7 @@ class UserController {
           isAdult: isAdult,
         });
 
+      //리프레쉬 토큰 저장
       await redisCli.set(userId, refreshToken, { EX: 60 * 60 * 24 * 15 });
 
       res
@@ -70,6 +72,7 @@ class UserController {
     }
   };
 
+  /**카카오 로그인 */
   kakao = async (req, res, next) => {
     try {
       const { id } = req.body;
@@ -78,6 +81,7 @@ class UserController {
       const { accessToken, refreshToken, created, data } =
         await this.userService.userKakao(id);
 
+      //닉네임이 없거나 새로 생성된 유저일 경우 isMember:false
       if (created || !data.nickname) {
         return res.status(201).json({
           message: "신규가입.",
@@ -87,9 +91,8 @@ class UserController {
       } else {
         //refreshtoken을 userId키로 redis에 저장
         await redisCli.set(id, refreshToken, { EX: 60 * 60 * 24 * 15 });
-        console.log("//////////카카오 로그인");
-        console.log("유저키", data.userKey);
 
+        //기존 가입된 유저일경우 isMember:true
         return res.status(200).json({
           message: "카카오 로그인 성공.",
           isMember: true,
@@ -104,7 +107,7 @@ class UserController {
     }
   };
 
-  //아이디 닉네임 중복검사
+  /** 아이디 닉네임 중복검사*/
   check = async (req, res, next) => {
     try {
       const { nickname, userId } = await joi.checkSchema.validateAsync(
@@ -131,7 +134,7 @@ class UserController {
     }
   };
 
-  //비밀번호 변경
+  /**비밀번호 변경 */
   passwordChange = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -149,7 +152,7 @@ class UserController {
     }
   };
 
-  //닉네임 변경
+  /**닉네임 변경 */
   nicknameChange = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -164,6 +167,7 @@ class UserController {
     }
   };
 
+  /**카카오 회원가입(닉네임 설정) */
   kakaoSignup = async (req, res, next) => {
     try {
       const { userKey, nickname } = req.body;
@@ -181,7 +185,11 @@ class UserController {
       next(error);
     }
   };
-  //메인페이지 가져오기
+
+  /**
+   * 메인페이지 가져오기
+   * @returns mainpage: 메인페이지 데이터, dailyMessage: 오늘의 행운편지
+   */
   mainPage = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -195,7 +203,9 @@ class UserController {
     }
   };
 
-  /**내가쓴 글 가져오기 */
+  /**내가쓴 글 가져오기
+   * @returns mychoice: 골라주기 글, myadvice: 답해주기 글
+   */
   myPost = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -210,7 +220,7 @@ class UserController {
     }
   };
 
-  //행운메세지 open 업데이트
+  /** 행운메세지 열기  */
   dailyMessage = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -231,7 +241,7 @@ class UserController {
     }
   };
 
-  //설정페이지 조회
+  /**설정페이지 조회*/
   setting = async (req, res, next) => {
     try {
       const { userKey, level } = res.locals.user;
@@ -251,7 +261,7 @@ class UserController {
     }
   };
 
-  //검색 조회
+  /**검색 조회*/
   search = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -264,6 +274,7 @@ class UserController {
     }
   };
 
+  /**검색 페이지*/
   searchPage = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -276,7 +287,7 @@ class UserController {
     }
   };
 
-  //리워드 페이지
+  /**리워드 페이지*/
   reword = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -291,7 +302,7 @@ class UserController {
     }
   };
 
-  //리워드 휙득요청
+  /**리워드 휙득요청 */
   getReword = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -316,7 +327,7 @@ class UserController {
     }
   };
 
-  //회원탈퇴
+  /**회원탈퇴 */
   bye = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
