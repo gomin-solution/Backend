@@ -7,7 +7,6 @@ const helmet = require("helmet");
 
 const connect = require("./schemas/index");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
 const indexRouter = require("./routes/index.routes");
 const schedule = require("./util/schedule");
 const { errorLogger, errorHandler } = require("./exceptions/error-handler");
@@ -43,7 +42,6 @@ const corsOptions = {
 app.use(helmet());
 app.use(cors(corsOptions)); // 옵션을 추가한 CORS 미들웨어 추가
 
-app.use(cookieParser());
 app.use(express.json());
 
 app.use("/", indexRouter);
