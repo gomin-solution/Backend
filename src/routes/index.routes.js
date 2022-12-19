@@ -15,6 +15,7 @@ const pushRouter = require("./push.routes");
 //로그인,회원가입,메인페이지
 router.use("/", userRouter);
 
+//북마크
 router.use("/bookmark", bookMarkRouter);
 
 // 조언 게시글
@@ -37,6 +38,7 @@ router.use("/", reportRouter);
 
 router.use("/mailtest", mailRouter);
 
+//푸쉬알람
 router.use("/push", pushRouter);
 
 module.exports = router;
