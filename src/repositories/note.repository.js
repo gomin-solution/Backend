@@ -34,20 +34,6 @@ class NoteRepository {
     return allRooms;
   };
 
-  allMyNote = async (userKey) => {
-    const allMyNote = await Note.findAll({
-      where: { [Op.or]: [{ tUser: userKey }, { fUser: userKey }] },
-    });
-    // // 보낸 쪽지
-    // const toMyNote = await Note.findAll({ where: {tUser: userKey}});
-    // // 받은 쪽지
-    // const fromMyNote = await Note.findAll({ where: {fUser: userKey} });
-    // const allMyNote = toMyNote.concat(fromMyNote).sort((a,b) => b.createdAt - a.createdAt)
-    // console.log(allMyNote, "이건그냥 이어붙인 것")
-
-    return allMyNote;
-  };
-
   roadNotes = async (roomId) => {
     const findallNote = await Note.findAll({
       order: [["createdAt", "ASC"]],

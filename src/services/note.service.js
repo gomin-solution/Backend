@@ -49,23 +49,6 @@ class NoteService {
     return rooms;
   };
 
-  allMyNote = async (userKey) => {
-    const allMyNote = await this.noteRepository.allMyNote(userKey);
-    const myNotePage = allMyNote.map((note) => {
-      let isMe;
-      note.fUser == userKey ? (isMe = true) : (isMe = false);
-      return {
-        noteId: note.noteId,
-        fUser: note.fUser, //보낸이
-        tUser: note.tUser, //빋는이
-        note: note.note,
-        isMe: isMe,
-      };
-    });
-
-    return myNotePage;
-  };
-
   roadNotes = async (roomId, userKey) => {
     const roadNotes = await this.noteRepository.roadNotes(roomId);
     //대화상대 닉네임

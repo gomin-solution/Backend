@@ -40,19 +40,7 @@ class NoteController {
     }
   };
 
-  /**쪽지 조회*/
-  allMyNote = async (req, res, next) => {
-    const { userKey } = res.locals.user;
-
-    try {
-      const myNotePage = await this.noteService.allMyNote(userKey);
-      return res.status(200).json({ myNotePage });
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  // 보낸 쪽지 상세 페이지
+  /**쪽지함 조회 */
   roadNotes = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
