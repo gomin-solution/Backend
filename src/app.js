@@ -41,11 +41,9 @@ const corsOptions = {
 
 app.use(helmet());
 app.use(cors(corsOptions)); // 옵션을 추가한 CORS 미들웨어 추가
-
 app.use(express.json());
 
 app.use("/", indexRouter);
-
 app.use(errorLogger); // Error Logger
 app.use(errorHandler); // Error Handler
 
@@ -61,7 +59,7 @@ if (process.env.NODE_ENV == "production") {
     server = HTTPS.createServer(option, app);
     server.listen(port, () => {
       console.log("HTTPS 서버가 실행되었습니다. 포트 :: " + port);
-      socket(server);
+      socket(server); //서버 정상 실행시 소켓 실행
     });
   } catch (error) {
     console.log("HTTPS 서버가 실행되지 않습니다.");

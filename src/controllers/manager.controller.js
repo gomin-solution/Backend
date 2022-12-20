@@ -3,7 +3,7 @@ const ManagerService = require("../services/manager.service");
 class ManagerController {
   managerService = new ManagerService();
 
-  //관리자 권한 부여
+  /**관리자 권한 부여 */
   newManager = async (req, res, next) => {
     try {
       const { targetUser } = req.body; //권한을 부여할 대상
@@ -28,7 +28,7 @@ class ManagerController {
     }
   };
 
-  //처벌
+  /**신고 제제하기 */
   punishment = async (req, res, next) => {
     try {
       const { reportId } = req.params;

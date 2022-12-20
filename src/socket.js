@@ -49,14 +49,13 @@ module.exports = (server) => {
       socket.leave(roomId);
     });
 
-    /**메세지 저장후 전달 */
+    //*메세지 저장후 전달
     socket.on("chat_message", async (data) => {
       let { note, roomId, userKey } = data;
 
       const date = dayjs().tz().format("YYYY/MM/DD HH:mm");
-      // const chatTime = new Date(today).setHours(new Date(today).getHours() - 9);
 
-      //DB에 메세지 저장
+      //*DB에 메세지 저장
       await Note.create({
         roomId: roomId,
         userKey: userKey,
@@ -96,6 +95,7 @@ module.exports = (server) => {
         const jsonData = JSON.stringify(messageData);
         await redisCli.rPush(`${sendUser}_A`, jsonData);
 
+        //* 메세지 수신자에게 푸쉬알람 보내기
         admin
           .messaging()
           .send(message)
