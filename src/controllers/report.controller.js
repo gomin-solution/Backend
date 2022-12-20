@@ -3,6 +3,7 @@ const ReportSer = require("../services/report.service");
 class ReportCon {
   reportSer = new ReportSer();
 
+  /**신고하기 */
   report = async (req, res, next) => {
     try {
       const { targetId } = req.params;
@@ -26,7 +27,7 @@ class ReportCon {
 
       let mes;
       if (!update) {
-        mes = "뭐하자는 겁니까?"; //본인이 작성한 게시글 본인이 신고한 경우
+        mes = "본인은 신고 할 수 없습니다"; //본인이 작성한 게시글 본인이 신고한 경우
         return res.status(400).json({ Message: mes });
       } else {
         mes = "신고 성공";

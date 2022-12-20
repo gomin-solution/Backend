@@ -56,7 +56,7 @@ class NoteController {
     }
   };
 
-  //쪽지방 삭제
+  /**쪽지방 삭제 */
   deleteRoom = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
