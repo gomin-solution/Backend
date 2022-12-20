@@ -3,7 +3,7 @@ const NoteService = require("../services/note.service");
 class NoteController {
   noteService = new NoteService();
 
-  // 쪽지 등록
+  /**쪽지방 생성 */
   createroom = async (req, res, next) => {
     try {
       const { userKey: fUser } = res.locals.user;
@@ -23,6 +23,7 @@ class NoteController {
     }
   };
 
+  /**쪽지방 리스트 조회 */
   roomlist = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -38,13 +39,13 @@ class NoteController {
       next(error);
     }
   };
-  // 쪽지 목록 페이지
+
+  /**쪽지 조회*/
   allMyNote = async (req, res, next) => {
     const { userKey } = res.locals.user;
 
     try {
       const myNotePage = await this.noteService.allMyNote(userKey);
-      // const test = myNotePage.map((x) => x.recipient)
       return res.status(200).json({ myNotePage });
     } catch (err) {
       next(err);
