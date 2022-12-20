@@ -1,6 +1,5 @@
 const authMiddleware = require("../middlewares/authMiddleware");
 const UserController = require("../controllers/user.controller");
-const redis = require("redis-mock");
 
 describe("미들웨어", () => {
   const res = {

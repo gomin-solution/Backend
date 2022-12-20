@@ -36,35 +36,6 @@ module.exports = async () => {
     console.log(dayjs().format("YYYY-MM-DD HH:mm:ss"));
   });
 
-  // schedule.scheduleJob(rule, async () => {
-  //   console.log("메세지 업데이트 스케줄 실행됨");
-  //   const DailyArray = await DailyMessage.findAll({});
-  //   const msgArray = DailyArray.map((x) => x.msg);
-  //   const allUser = await User.findAll({ attributes: ["userKey"] });
-  //   for (const item of allUser) {
-  //     const msg = msgArray[Math.floor(Math.random() * msgArray.length)];
-  //     console.log(msg);
-  //     console.log(item.userKey);
-
-  //     const foundItem = await DailyMessage.findOne({
-  //       where: { userKey: item.userKey },
-  //     });
-  //     if (!foundItem) {
-  //       // Item not found, create a new one
-  //       await DailyUpdate.create({
-  //         userKey: item.userKey,
-  //         msg: msg,
-  //         isOpen: 0,
-  //       });
-  //     }
-  //     // Found an item, update it
-  //     await DailyUpdate.update(
-  //       { msg: msg, isOpen: 0 },
-  //       { where: { userKey: item.userKey } }
-  //     );
-  //   }
-  // });
-
   const findAllChoice = await Choice.findAll({
     attributes: ["choiceId", "endTime", "isEnd", "userKey"],
   });

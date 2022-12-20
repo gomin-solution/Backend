@@ -136,7 +136,7 @@ class CommentService {
     if (findComment.userKey == userKey) {
       throw new ErrorCustom(400, "본인 댓글을 채택할 수 없어요.");
     }
-    console.log("/////////////////채택검증////////");
+
     console.log(findComment.Advice.userKey, userKey);
 
     if (findComment.Advice.userKey !== userKey) {
