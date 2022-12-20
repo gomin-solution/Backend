@@ -9,7 +9,7 @@ class AdviceController {
   adviceImageService = new AdviceImageService();
   missionService = new MissionService();
 
-  // 조언 게시물 생성
+  /**답해주기 게시글 생성 */
   creatAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
 
@@ -43,7 +43,7 @@ class AdviceController {
     }
   };
 
-  //조언 게시글조회
+  /**답해주기 게시글 전체 조회 */
   allAdvice = async (req, res, next) => {
     const { categoryId, filterId } = req.params;
     const { page } = req.query;
@@ -61,8 +61,7 @@ class AdviceController {
     }
   };
 
-  //상세페이지 조회
-  /*등록순, 좋아요순*/
+  /**답해주기 게시글 상세조회 */
   findOneAdvice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -80,7 +79,7 @@ class AdviceController {
     }
   };
 
-  // 조언 게시글 수정
+  /**답해주기 게시글 수정 */
   updateAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { adviceId } = req.params;
@@ -143,7 +142,7 @@ class AdviceController {
     }
   };
 
-  // 조언 게시글 삭제
+  /**답해주기 게시글 삭제 */
   deleteAdvice = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { adviceId } = req.params;

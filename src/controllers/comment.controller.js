@@ -5,6 +5,7 @@ class CommentController {
   commentService = new CommentService();
   adviceService = new AdviceService();
 
+  /**댓글 생성 */
   createComment = async (req, res, next) => {
     try {
       const { adviceId } = req.params;
@@ -31,6 +32,7 @@ class CommentController {
     }
   };
 
+  /**댓글 수정 */
   updateComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
@@ -57,6 +59,7 @@ class CommentController {
     }
   };
 
+  /**댓글 삭제 */
   deleteComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
@@ -79,7 +82,7 @@ class CommentController {
     }
   };
 
-  //자신의 덧글에는 좋아요를 할 수 없다.
+  /**댓글 좋아요 */
   likeComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
@@ -111,7 +114,7 @@ class CommentController {
     }
   };
 
-  //댓글 채택
+  /**댓글 채택 */
   selectComment = async (req, res, next) => {
     const { userKey } = res.locals.user;
     const { commentId } = req.params;
@@ -129,7 +132,7 @@ class CommentController {
     }
   };
 
-  //대댓글 생성
+  /**대댓글 생성 */
   reComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
@@ -148,7 +151,7 @@ class CommentController {
     }
   };
 
-  //대댓글 가져오기
+  /** 대댓글 조회 */
   getReComment = async (req, res, next) => {
     try {
       const { commentId } = req.params;
@@ -162,7 +165,7 @@ class CommentController {
     }
   };
 
-  //대댓글 수정
+  /**대댓글 수정 */
   putRe = async (req, res, next) => {
     const { replyId } = req.params;
     const { userKey } = res.locals.user;
@@ -185,7 +188,7 @@ class CommentController {
     }
   };
 
-  //대댓글 삭제
+  /**대댓글 삭제 */
   deleteRe = async (req, res, next) => {
     try {
       const { replyId } = req.params;

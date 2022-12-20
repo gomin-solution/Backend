@@ -3,6 +3,7 @@ const ChoiceService = require("../services/choice.service");
 class ChoiceController {
   choiceService = new ChoiceService();
 
+  /**골라주기 게시글 생성 */
   createchoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -31,7 +32,7 @@ class ChoiceController {
     }
   };
 
-  //모든 게시글 조회(1~10)
+  /** 모든 게시글 조회(1~10)*/
   allchoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -60,6 +61,7 @@ class ChoiceController {
     }
   };
 
+  /**골라주기 게시글 삭제 */
   deletechoice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -82,6 +84,7 @@ class ChoiceController {
     }
   };
 
+  /**골라주기 투표 */
   choice = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
@@ -110,7 +113,7 @@ class ChoiceController {
     }
   };
 
-  //조기 마감
+  /**골라주기 게시글 조기 마감 */
   early = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;

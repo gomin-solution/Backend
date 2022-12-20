@@ -3,6 +3,7 @@ const BookMarkService = require("../services/bookmark.service");
 class BookMarkController {
   bookmarkService = new BookMarkService();
 
+  /**골라주기 게시글 북마크 */
   updateChoiceBM = async (req, res, next) => {
     try {
       const { choiceId } = req.params;
@@ -20,6 +21,7 @@ class BookMarkController {
     }
   };
 
+  /**답해주기 게시글 북마크 */
   updateAdviceBM = async (req, res, next) => {
     try {
       const { adviceId } = req.params;
@@ -37,6 +39,7 @@ class BookMarkController {
     }
   };
 
+  /**북마크 찾기 */
   findBookMark = async (req, res, next) => {
     try {
       const { userKey } = res.locals.user;
