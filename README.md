@@ -34,7 +34,7 @@
 <br/>
 
 ## 🛠️ **_ERD_**
-![image](https://user-images.githubusercontent.com/98438390/207852089-0c4d2979-3b84-4b2d-9545-7d69685963c6.png)
+![image](https://user-images.githubusercontent.com/98438390/209053635-f3ef2e69-9bfa-4a0f-ab5b-70392836e5fa.png)
 **클릭시 확대됩니다☝**
 
 <br/>
@@ -85,6 +85,7 @@
 <br/>
 
 ## ⚠️ **_트러블 슈팅_**
+
 **<details><summary>리워드 페이지 속도 개선</summary>**
 ❗문제: 리워드 페이지의 서버 응답이 평균 2초 후반대가 걸림 <br />
 <br />
