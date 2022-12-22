@@ -123,7 +123,7 @@
     });
   };
 ```
-![image](https://user-images.githubusercontent.com/98438390/207874893-f092cf62-f1ce-4c00-98fe-550fa2932fb6.png)
+![image](https://user-images.githubusercontent.com/98438390/207874893-f092cf62-f1ce-4c00-98fe-550fa2932fb6.png)☝
   
 ```javascript
     totalReword = async (userKey) => {
@@ -147,7 +147,7 @@
     return totalreward;
   };
 ```
-  ![image](https://user-images.githubusercontent.com/98438390/209077367-2abc0eb7-5b12-4b88-a897-a29c8485905b.png)
+  ![image](https://user-images.githubusercontent.com/98438390/209077367-2abc0eb7-5b12-4b88-a897-a29c8485905b.png)☝
 
 유저 활동기록 테이블을 따로 만들어 유저의 활동이 있을때 마다 활동 기록 데이터를 업데이트시킴.
 리워드 페이지 요청시 유저 활동 정보를 가져오기 위한 불필요한 Join이 없어지고 이미 업데이트된 유저의 활동기록을 가져와 속도를 약 90% 개선할 수 있었음.
