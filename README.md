@@ -88,7 +88,7 @@
 
 **<details><summary>미션 테이블 정규화</summary>**
 
-❗문제:미션 테이블 데이터 삽입이상 현상</br>
+❗미션 테이블 데이터 삽입이상 현상</br>
 미션마다 가지는 퀘스트가 달라 해당 퀘스트가 없는 미션은 불필요 공간이 생김.
 ![image](https://user-images.githubusercontent.com/98438390/209066212-767daa14-3d9a-4a95-b2e6-35468cc018a0.png)
 </br> </br>
