@@ -191,7 +191,7 @@
       await new MissionRepository().choiceEndActivity(choice.userKey);
     } else if (!choice.isEnd) {
 
-      //else스케줄 재설정
+      //스케줄 재설정
       schedule.scheduleJob(
         dayjs(choice.endTime).subtract(9, "hour").format(),
         async () => {
