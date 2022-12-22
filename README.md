@@ -99,8 +99,6 @@
 </details>
 
 
-</br>
-
 **<details><summary>리워드 페이지 속도 개선</summary>**
 ❗문제: 리워드 페이지의 서버 응답이 평균 2초 후반대가 걸림 <br />
 <br />
