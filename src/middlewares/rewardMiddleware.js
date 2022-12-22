@@ -153,22 +153,19 @@ module.exports = async (userKey, req, res, next) => {
     );
 
     if (3 <= missionCompleteId.length && missionCompleteId.length < 6) {
-      const image =
-        "https://dq07gjrnobmcn.cloudfront.net/grade2.png";
+      const image = "https://dq07gjrnobmcn.cloudfront.net/grade2.png";
       const gradeKeyword = "프로 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
     }
 
     if (6 <= missionCompleteId.length && missionCompleteId.length < 10) {
-      const image =
-        "https://dq07gjrnobmcn.cloudfront.net/grade3.png";
+      const image = "https://dq07gjrnobmcn.cloudfront.net/grade3.png";
       const gradeKeyword = "엘리트 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
     }
 
     if (10 <= missionCompleteId.length) {
-      const image =
-        "https://dq07gjrnobmcn.cloudfront.net/grade4.png";
+      const image = "https://dq07gjrnobmcn.cloudfront.net/grade4.png";
       const gradeKeyword = "마스터 해결사";
       await new UserRepository().upGradeUser(image, gradeKeyword, userKey);
     }
@@ -182,9 +179,6 @@ module.exports = async (userKey, req, res, next) => {
     // }
 
     const Userdata = await new UserRepository().userDeviceToken(userKey);
-
-    console.log("///////////리워드 미들웨어/////////");
-    console.log(Userdata);
 
     //새로 달성한 미션과 유저의 디바이스 토큰이 있는 경우
     if (newCompleteMissionId.length && Userdata.deviceToken) {

@@ -17,7 +17,7 @@ class MissionService {
     const likeTotal = totalReword.receiveLikeCount;
 
     /**내 게시글의 총 조회수 */
-    let viewCount = 0;
+    //let viewCount = 0;
     // const viewCountArray = totalReword.Advice.map((x) => x.viewCount);
 
     // viewCountArray.forEach((x) => {
@@ -93,7 +93,6 @@ class MissionService {
         totalAdvice: totalAdvice,
         totalChoice: totalChoice,
         totalPost: totalPost,
-        viewCount: viewCount,
         likeTotal: likeTotal,
         msgOpen: totalOpen,
         Selected: totalSelected,
