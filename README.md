@@ -95,7 +95,7 @@
 </br>
 💡**정규화**</br>
 미션테이블을 분리하고 퀘스트 마다 매핑테이블을 만들어 분리</br>
-![image](https://user-images.githubusercontent.com/98438390/209072747-b3c9b56a-be0a-4e5e-be6b-8c73c5095cb5.png)
+![image](https://user-images.githubusercontent.com/98438390/209073009-205b0341-baef-4971-89ce-5104d2cdf5f6.png)
 </details>
 
 
