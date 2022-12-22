@@ -169,10 +169,37 @@
 
 ❗문제: 투표하기 게시글 자동 마감기능이 정상적으로 작동하지 않아 마감시간이 -로 표시됨.</br>
 </br>
-❓원인파악: 서버가 꺼지면 스케줄 스텍이 초기화 되어 스케줄이 작동하지 않아 발생한 문제.</br>
+❓원인파악: 서버가 꺼지면 스케줄 스택이 초기화 되어 스케줄이 작동하지 않아 발생한 문제.</br>
 </br>
 💡문제해결: 서버 실행시 스케줄이 재설정되도록 수정하고</br>
 마감기한이 이미 지난 게시글은 현재시간과 비교하여 마감처리 되도록 로직을 추가하여 문제를 해결.</br>
+```javascript
+  const findAllChoice = await Choice.findAll({
+    attributes: ["choiceId", "endTime", "isEnd", "userKey"],
+  });
+
+  for (const choice of findAllChoice) {
+    const scheduleDate = dayjs(choice.endTime).format();
+    //마감기한이 이미 지난 게시물은 마감처리
+    if (scheduleDate < dayjs().tz().format() && !choice.isEnd) {
+      //isEnd업데이트
+      await new ChoiceRepository().updateEnd(choice.choiceId);
+      //작성자 마감횟수 +1
+      await new MissionRepository().choiceEndActivity(choice.userKey);
+    } else if (!choice.isEnd) {
+      //else스케줄 재설정
+      schedule.scheduleJob(
+        dayjs(choice.endTime).subtract(9, "hour").format(),
+        async () => {
+          //isEnd업데이트
+          await new ChoiceRepository().updateEnd(choice.choiceId);
+          //작성자 마감횟수 +1
+          await new MissionRepository().choiceEndActivity(choice.userKey);
+        }
+      );
+    }
+  }
+```
 
 
 </details>
