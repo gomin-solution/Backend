@@ -105,7 +105,7 @@
 <br />
 ❓원인파악: 코드를 주석해가며 찾은 결과 DB에서 유저활동 기록을 가져오는데 2초대가 걸림.<br />
 <br />
-💡필요한 데이터만 가져오기 위해 attribute속성을 사용해 속도를 개선하였지만 유저의 활동이 쌓일 수록 데이터를 가져오는데 많은 시간이 소요됨
+💡필요한 데이터만 가져오기 위해 attribute속성을 사용해 속도를 개선
 ```javascript
   totalReword = async (userKey) => {
     return await User.findOne({
@@ -123,7 +123,7 @@
     });
   };
 ```
-![image](https://user-images.githubusercontent.com/98438390/207874893-f092cf62-f1ce-4c00-98fe-550fa2932fb6.png)☝
+![image](https://user-images.githubusercontent.com/98438390/207874893-f092cf62-f1ce-4c00-98fe-550fa2932fb6.png)
   
 ```javascript
     totalReword = async (userKey) => {
@@ -147,10 +147,13 @@
     return totalreward;
   };
 ```
-  ![image](https://user-images.githubusercontent.com/98438390/209077367-2abc0eb7-5b12-4b88-a897-a29c8485905b.png)☝
+  ![image](https://user-images.githubusercontent.com/98438390/209077367-2abc0eb7-5b12-4b88-a897-a29c8485905b.png)
 
-유저 활동기록 테이블을 따로 만들어 유저의 활동이 있을때 마다 활동 기록 데이터를 업데이트시킴.
-리워드 페이지 요청시 유저 활동 정보를 가져오기 위한 불필요한 Join이 없어지고 이미 업데이트된 유저의 활동기록을 가져와 속도를 약 90% 개선할 수 있었음.
+❗문제2: attribute 속성을 사용하여 속도가 개선 되었지만, 유저의 활동이 쌓일 수록 데이터를 가져오는데 시간이 많이 소요됨.<br/>
+❓원인:유저의 게시글 작성 횟수,조언을 해준 횟수 같은 유저활동 데이터를 기존 테이블들을 Join하여 얻을 수 있는 데이터라 판단하여 유저활동기록을 따로 저장하지 않았지만,<br/>
+유저의 활동이 쌓일 수록 계산해야 하는 데이터가 많아 지는 것이 원인이됨.<br/>
+💡유저 활동기록 테이블을 따로 만들어 유저의 활동이 있을때 마다 활동 기록 데이터를 업데이트시킴.
+리워드 페이지 요청시 유저 활동 정보를 가져오기 위한 불필요한 Join이 없어지고 이미 업데이트된 유저의 활동기록을 가져와 연산이 줄어들어 속도를 약 90% 개선할 수 있었음.
 <br />
 
 <br />
