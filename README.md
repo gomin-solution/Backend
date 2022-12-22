@@ -88,12 +88,12 @@
 
 **<details><summary>미션 테이블 정규화</summary>**
 
-❗미션 테이블 데이터 삽입이상 현상</br>
+❗**미션 테이블 데이터 삽입이상 현상**</br>
 미션마다 가지는 퀘스트가 달라 해당 퀘스트가 없는 미션은 불필요 공간이 생김.
 ![image](https://user-images.githubusercontent.com/98438390/209066212-767daa14-3d9a-4a95-b2e6-35468cc018a0.png)
 </br> </br>
 </br>
-💡정규화</br>
+💡**정규화**</br>
 미션테이블을 분리하고 퀘스트 마다 매핑테이블을 만들어 분리</br>
 ![image](https://user-images.githubusercontent.com/98438390/209067108-2d70d3c6-fa84-4b64-9577-83d7e9aedb21.png)
 </details>
