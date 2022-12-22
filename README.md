@@ -60,7 +60,7 @@
 <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">
 <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white">
 <img src="https://img.shields.io/badge/AWS Lambda-FF9900?style=for-the-badge&logo=AWS Lambda&logoColor=white">
-<img src="https://img.shields.io/badge/CodeDeploy-212599?style=for-the-badge&logo=CodeDeploy&logoColor=white">
+<img src="https://img.shields.io/badge/AWS CodeDeploy-212599?style=for-the-badge&logo=CodeDeploy&logoColor=white">
 <br />
 <br />
 <img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=for-the-badge&logo=JSON Web Tokens&logoColor=white">
