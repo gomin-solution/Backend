@@ -106,6 +106,23 @@
 ❓원인파악: 코드를 주석해가며 찾은 결과 DB에서 유저활동 기록을 가져오는데 2초대가 걸림.<br />
 <br />
 💡필요한 데이터만 가져오기 위해 attribute속성을 사용해 속도를 개선하였지만 유저의 활동이 쌓일 수록 데이터를 가져오는데 많은 시간이 소요됨
+```javascript
+  totalReword = async (userKey) => {
+    return await User.findOne({
+      where: { userKey: userKey },
+      include: [
+        {
+          model: Comment,
+          include: [{ model: CommentLike }, { model: CommentSelect }],
+        },
+        { model: isChoice },
+        { model: Advice },
+        { model: Choice },
+        { model: CommentSelect },
+      ],
+    });
+  };
+```
 유저 활동기록 테이블을 따로 만들어 유저의 활동이 있을때 마다 활동 기록 데이터를 업데이트시킴.
 리워드 페이지 요청시 유저 활동 정보를 가져오기 위한 불필요한 Join이 없어지고 이미 업데이트된 유저의 활동기록을 가져와 속도를 약 90% 개선할 수 있었음.
 <br />
