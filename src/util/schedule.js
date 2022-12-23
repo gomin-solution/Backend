@@ -42,12 +42,15 @@ module.exports = async () => {
 
   for (const choice of findAllChoice) {
     const scheduleDate = dayjs(choice.endTime).format();
+
+    //마감기한이 이미 지난 게시물은 마감처리
     if (scheduleDate < dayjs().tz().format() && !choice.isEnd) {
       //isEnd업데이트
       await new ChoiceRepository().updateEnd(choice.choiceId);
       //작성자 마감횟수 +1
       await new MissionRepository().choiceEndActivity(choice.userKey);
     } else if (!choice.isEnd) {
+      //else스케줄 재설정
       schedule.scheduleJob(
         dayjs(choice.endTime).subtract(9, "hour").format(),
         async () => {
