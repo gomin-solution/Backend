@@ -10,6 +10,8 @@
 ><br/>
 >**[:iphone: 고민접기 링크](https://gomin.site)**<br/>
 >**[📎 Frontend](https://github.com/gomin-solution/Frontend)**<br/>
+![image](https://user-images.githubusercontent.com/98438390/209317736-a9039dcf-c11e-4a48-9444-a970478b9e43.png)
+
 
 <br/>
 
