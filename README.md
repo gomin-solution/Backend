@@ -1,4 +1,4 @@
-
+![image](https://user-images.githubusercontent.com/98438390/209317736-a9039dcf-c11e-4a48-9444-a970478b9e43.png)
 
 
 ## 📃 **_고민접기, 당신의 고민을 접어드립니다._**
@@ -10,7 +10,7 @@
 ><br/>
 >**[:iphone: 고민접기 링크](https://gomin.site)**<br/>
 >**[📎 Frontend](https://github.com/gomin-solution/Frontend)**<br/>
-![image](https://user-images.githubusercontent.com/98438390/209317736-a9039dcf-c11e-4a48-9444-a970478b9e43.png)
+
 
 
 <br/>
