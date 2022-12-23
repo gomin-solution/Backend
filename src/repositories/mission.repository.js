@@ -54,7 +54,6 @@ class MissionRepository {
         },
       ],
     });
-    console.log(postmission);
     return postmission;
   };
 
