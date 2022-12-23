@@ -14,7 +14,6 @@ class ManagerRepository {
       { grade },
       { where: { userKey: targetUser } }
     );
-    console.log(newManager);
     return newManager;
   };
 

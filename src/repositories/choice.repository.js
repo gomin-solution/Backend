@@ -113,7 +113,6 @@ class ChoiceRepository {
       let data_1 = 0;
       let data_2 = 0;
       for (let i = 0; i < dataCount.length; i++) {
-        console.log(dataCount[i]);
         if (dataCount[i].choiceNum === 1) {
           data_1++;
         } else {
@@ -144,7 +143,6 @@ class ChoiceRepository {
     let data_1 = 0;
     let data_2 = 0;
     for (let i = 0; i < dataCount.length; i++) {
-      console.log(dataCount[i]);
       if (dataCount[i].choiceNum === 1) {
         data_1++;
       } else {

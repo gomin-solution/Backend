@@ -16,7 +16,6 @@ class NoteRepository {
         title: Title,
       },
     });
-    console.log(createNoteRoom.roomId);
     return createNoteRoom;
   };
 
@@ -48,7 +47,6 @@ class NoteRepository {
         },
       ],
     });
-    //console.log(findNoteOne, "이건 안나오나?");
 
     return findallNote;
   };
