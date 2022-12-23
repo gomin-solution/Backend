@@ -1,4 +1,4 @@
-
+![image](https://user-images.githubusercontent.com/98438390/209317736-a9039dcf-c11e-4a48-9444-a970478b9e43.png)
 
 
 ## 📃 **_고민접기, 당신의 고민을 접어드립니다._**
@@ -10,6 +10,8 @@
 ><br/>
 >**[:iphone: 고민접기 링크](https://gomin.site)**<br/>
 >**[📎 Frontend](https://github.com/gomin-solution/Frontend)**<br/>
+
+
 
 <br/>
 
@@ -34,7 +36,7 @@
 <br/>
 
 ## 🛠️ **_ERD_**
-![image](https://user-images.githubusercontent.com/98438390/207852089-0c4d2979-3b84-4b2d-9545-7d69685963c6.png)
+![image](https://user-images.githubusercontent.com/98438390/209053635-f3ef2e69-9bfa-4a0f-ab5b-70392836e5fa.png)
 **클릭시 확대됩니다☝**
 
 <br/>
@@ -60,6 +62,7 @@
 <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">
 <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white">
 <img src="https://img.shields.io/badge/AWS Lambda-FF9900?style=for-the-badge&logo=AWS Lambda&logoColor=white">
+<img src="https://img.shields.io/badge/AWS CodeDeploy-212599?style=for-the-badge&logo=CodeDeploy&logoColor=white">
 <br />
 <br />
 <img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=for-the-badge&logo=JSON Web Tokens&logoColor=white">
@@ -67,7 +70,6 @@
 <img src="https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=Socket.io&logoColor=white">
 <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">
 <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=for-the-badge&logo=GitHub Actions&logoColor=white">
-<img src="https://img.shields.io/badge/CodeDeploy-212599?style=for-the-badge&logo=CodeDeploy&logoColor=white">
 <br/>
 
 ## 🔩 **_기술적 의사 결정_**
@@ -85,16 +87,78 @@
 <br/>
 
 ## ⚠️ **_트러블 슈팅_**
+
+**<details><summary>미션 테이블 정규화</summary>**
+
+❗**미션 테이블 데이터 삽입이상 현상**</br>
+미션마다 가지는 퀘스트가 달라 해당 퀘스트가 없는 미션은 불필요 공간이 생김.
+![image](https://user-images.githubusercontent.com/98438390/209066212-767daa14-3d9a-4a95-b2e6-35468cc018a0.png)
+</br> </br>
+</br>
+💡**정규화**</br>
+미션테이블을 분리하고 퀘스트 마다 매핑테이블을 만들어 분리함.</br>
+![image](https://user-images.githubusercontent.com/98438390/209073009-205b0341-baef-4971-89ce-5104d2cdf5f6.png)</br>
+테이블을 나눴기 때문에 Join이 많이 발생하지만, 기능 특성상 가져오는 데이터의 양이 많지 않아 성능차이가 거의 없음. 때문에 테이블을 나누는 것으로 결정.
+</details>
+
+
 **<details><summary>리워드 페이지 속도 개선</summary>**
-❗문제: 리워드 페이지의 서버 응답이 평균 2초 후반대가 걸림 <br />
+❗**문제**: 리워드 페이지의 서버 응답이 평균 2초 후반대가 걸림 <br />
 <br />
-❓원인파악: 코드를 주석해가며 찾은 결과 DB에서 유저활동 기록을 가져오는데 2초대가 걸림.<br />
+❓**원인파악**: 코드를 주석해가며 찾은 결과 DB에서 유저활동 기록을 가져오는데 2초대가 걸림.<br />
 <br />
-💡필요한 데이터만 가져오기 위해 attribute속성을 사용해 속도를 개선하였지만 유저의 활동이 쌓일 수록 데이터를 가져오는데 많은 시간이 소요됨
-유저 활동기록 테이블을 따로 만들어 유저의 활동이 있을때 마다 활동 기록 데이터를 업데이트시킴.
-리워드 페이지 요청시 유저 활동 정보를 가져오기 위한 불필요한 Join이 없어지고 이미 업데이트된 유저의 활동기록을 가져와 속도를 약 90% 개선할 수 있었음.
-<br />
+💡필요한 데이터만 가져오기 위해 attribute속성을 사용해 속도를 개선
+```javascript
+  totalReword = async (userKey) => {
+    return await User.findOne({
+      where: { userKey: userKey },
+      include: [
+        {
+          model: Comment,
+          include: [{ model: CommentLike }, { model: CommentSelect }],
+        },
+        { model: isChoice },
+        { model: Advice },
+        { model: Choice },
+        { model: CommentSelect },
+      ],
+    });
+  };
+```
 ![image](https://user-images.githubusercontent.com/98438390/207874893-f092cf62-f1ce-4c00-98fe-550fa2932fb6.png)
+  
+```javascript
+    totalReword = async (userKey) => {
+    const totalreward = await User.findOne({
+      where: { userKey: userKey },
+      include: [
+        {
+          model: Comment,
+          include: [
+            { model: CommentLike, attributes: ["userKey"] },
+            { model: CommentSelect, attributes: ["userKey"] },
+          ],
+          attributes: ["userKey"],
+        },
+        { model: isChoice, attributes: ["userKey"] },
+        { model: Advice, attributes: ["userKey"] },
+        { model: Choice, attributes: ["isEnd"] },
+        { model: CommentSelect, attributes: ["userKey"] },
+      ],
+    });
+    return totalreward;
+  };
+```
+  ![image](https://user-images.githubusercontent.com/98438390/209077367-2abc0eb7-5b12-4b88-a897-a29c8485905b.png)
+
+❗**문제 2**: attribute 속성을 사용하여 속도가 개선 되었지만, 유저의 활동이 쌓일 수록 리워드 페이지 응답 시간이 길어지는 현상을 발견함.<br/>
+</br>
+❓**원인**: 유저활동기록(ex.게시글 작성횟수, 조언해준 횟수 등)를 기존 테이블들을 Join하여 얻을 수 있는 데이터라 판단하여 따로 저장하지 않았지만, 
+유저의 활동이 쌓일 수록 Join해서 가져오는 데이터도 같이 증가하여 위와 같은 문제가 생김.<br/>
+</br>
+💡유저 활동기록 테이블을 따로 만들어 유저의 활동이 있을때 마다 활동 기록 데이터를 업데이트시킴.<br />
+리워드 페이지 요청시 유저 활동 정보를 가져오기 위한 불필요한 Join이 없어지고 이미 업데이트된 데이터를 가져와 연산을 줄여 최종적으로 평균 2초 후반 에서 0.2초 후반으로 속도를 약 90% 개선할 수 있었음.
+<br />
 <br />
 ![image](https://user-images.githubusercontent.com/98438390/207877852-0ec4412f-bcb3-4019-b594-911582597915.png)
 
@@ -105,33 +169,65 @@
 
 **<details><summary>스케줄 초기화 문제</summary>**
 
-❗문제: 투표하기 게시글 자동 마감기능이 정상적으로 작동하지 않아 마감시간이 -로 표시됨.</br>
+❗**문제**: 투표하기 게시글 자동 마감기능이 정상적으로 작동하지 않아 마감시간이 -로 표시됨.</br>
 </br>
-❓원인파악: 서버가 꺼지면 스케줄 스텍이 초기화 되어 스케줄이 작동하지 않아 발생한 문제.</br>
+❓**원인파악**: 서버가 꺼지면 스케줄 스택이 초기화 되어 스케줄이 작동하지 않아 발생한 문제.</br>
 </br>
-💡문제해결: 서버 실행시 스케줄이 재설정되도록 수정하고</br>
+💡**문제해결**: 서버 실행시 스케줄이 재설정되도록 수정하고</br>
 마감기한이 이미 지난 게시글은 현재시간과 비교하여 마감처리 되도록 로직을 추가하여 문제를 해결.</br>
+```javascript
+  const findAllChoice = await Choice.findAll({
+    attributes: ["choiceId", "endTime", "isEnd", "userKey"],
+  });
+
+  for (const choice of findAllChoice) {
+    const scheduleDate = dayjs(choice.endTime).format();
+
+    //마감기한이 이미 지난 게시물은 마감처리
+    if (scheduleDate < dayjs().tz().format() && !choice.isEnd) {
+
+      //isEnd업데이트
+      await new ChoiceRepository().updateEnd(choice.choiceId);
+
+      //작성자 마감횟수 +1
+      await new MissionRepository().choiceEndActivity(choice.userKey);
+    } else if (!choice.isEnd) {
+
+      //스케줄 재설정
+      schedule.scheduleJob(
+        dayjs(choice.endTime).subtract(9, "hour").format(),
+        async () => {
+          //isEnd업데이트
+          await new ChoiceRepository().updateEnd(choice.choiceId);
+
+          //작성자 마감횟수 +1
+          await new MissionRepository().choiceEndActivity(choice.userKey);
+        }
+      );
+    }
+  }
+```
 
 
 </details>
 
 **<details><summary>Safari 브라우저의 쿠키 전송 이슈</summary>**
 
-❗문제: Safari 브라우저에서 쿠키가 전달되지 않는 문제<br/>
-❓원인파악:Safari 브라우저의 ITP에 의해 교차 도메인의 쿠키를 차단하여 생긴문제<br/>
+❗**문제**: Safari 브라우저에서 쿠키가 전달되지 않는 문제<br/>
+❓**원인파악**: Safari 브라우저의 ITP에 의해 교차 도메인의 쿠키를 차단하여 생긴문제<br/>
 <br/>
-💡의사결정: 이를 해결하기 위해 서버와 클라이언트의 도메인을 동일 출처로 맞춰야 했지만,배포환경을 변경하는것이 코스트가 크다고 판단하여
- 도메인을 변경하지 않고 토큰전달 방식을 바꾸는 것으로 문제를 해결.<br/>
+💡**의사결정**: 이를 해결하기 위해 서버와 클라이언트의 도메인을 동일 출처로 맞춰야 했지만,배포환경을 변경하는것이 코스트가 크다고 판단하여
+ 도메인을 변경하지 않고 토큰 발급 방식을 바디로 전송하는 것으로 변경하여 문제 해결.<br/>
 <br/>
-❗다른 문제: 토큰을 바디로 발급하는 것으로 Safari의 토큰전달 문제를 해결하였지만, 토큰 재발급시 서버에서 다음 미들웨어를 응답할 수 없는 문제가 발생.<br/>
-❓원인파악: 기존의 방식은 토큰 재발급시 재발급후 바로 쿠키에 토큰을 싣고 다음 미들웨어를 호출해 기존의 요청을 처리하였으나<br/>
+❗**다른 문제**: 토큰을 바디로 발급하는 것으로 Safari의 토큰전달 문제를 해결하였지만, 토큰 재발급시 서버에서 다음 미들웨어를 응답할 수 없는 문제가 발생.<br/>
+❓**원인파악**: 기존의 방식은 토큰 재발급시 재발급후 바로 쿠키에 토큰을 싣고 다음 미들웨어를 호출해 기존의 요청을 처리하였으나<br/>
 토큰을 바디로 보내게 되면서 다음 미들웨어에서 이중으로 응답할 수 없는 문제가 발생.<br/>
-💡문제해결: 클라이언트 에서 Interceptor를 적용하여 서버에서 주는 재발급 토큰을 감지하고 재발급 받은 토큰을 헤더에 실어 서버에 재요청 하는 방식으로 문제를 해결하였습니다.
+💡**문제해결**: 클라이언트 에서 Interceptor를 적용하여 서버에서 주는 재발급 토큰을 감지하고 재발급 받은 토큰을 헤더에 실어 서버에 재요청 하는 방식으로 문제를 해결하였습니다.
 
 </details>
 <br/>
 
-## ‼️ **_유저 피드백 개선_**
+## 📃 **_유저 피드백 개선_**
 ### **총 피드백 78개 중, 유효 피드백 58개, 반영 피드백 46개**
 - 인트로 페이지 이미지 리사이징 및 서버인증  미들웨어 개선을 통한 서비스 속도 향상
 - Intro에서 슬라이드 버튼과 스킵 버튼을 추가하여 편의성을 증대
