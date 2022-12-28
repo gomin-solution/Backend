@@ -1,6 +1,10 @@
 const authMiddleware = require("../middlewares/authMiddleware");
 const UserController = require("../controllers/user.controller");
 
+beforeAll(async () => {
+  const redisCli = await require("../util/redis");
+});
+
 describe("미들웨어", () => {
   const res = {
     status: jest.fn(() => res),
