@@ -6,6 +6,7 @@ const HTTP = require("http");
 const helmet = require("helmet");
 
 const connect = require("./schemas/index");
+const redisCli = require("./util/redis");
 const cors = require("cors");
 const indexRouter = require("./routes/index.routes");
 const schedule = require("./util/schedule");
