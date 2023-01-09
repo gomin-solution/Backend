@@ -36,7 +36,7 @@
 <br/>
 
 ## 🛠️ **_ERD_**
-![image](https://user-images.githubusercontent.com/98438390/211338456-313a751d-2b40-40c3-9231-0b90a3cf5bc3.png)
+![main_project_erd](https://user-images.githubusercontent.com/98438390/211344426-7a9bbe8b-72ec-4dcb-9edb-5428e0ec6741.png)
 **클릭시 확대됩니다☝**
 
 <br/>
